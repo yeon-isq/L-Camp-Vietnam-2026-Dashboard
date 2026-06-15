@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BeeSuite ERP — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">BeeSuite ERP</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City</span>
+          <span class="etag et-ind">Digital Services</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">BeeSuite ERP</div>
+        <div class="hero-sub">설립 3 years · www.beesuite.com</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">BeeSuite ERP은 베트남 중소기업을 위한 통합 비즈니스 관리 플랫폼이다. 베트남 중소기업이 겪는 분산된 시스템 운영과 높은 유지비용 문제를 해결하며, 연간 사용자당 구독료 270만 VND로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">8</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">30+</div><div class="kpi-desc">다산업 고객 확보 (IR 자료 명시)</div></div>
+<div class="kpi"><div class="kpi-val">10+ years</div><div class="kpi-desc">팀의 ERP 구현 경력</div></div>
+<div class="kpi"><div class="kpi-val">Viet Thuong Music</div><div class="kpi-desc">150명 사용자, 19개 지점 구현 완료</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 베트남 SME ERP 시장 규모에 대한 구체적 수치가 전혀 제시되지 않음. TAM/SAM/SOM 분석 부재. 경쟁사(Odoo, SAP 등) 대비 차별화 전략이 '베트남 생태계 연결'로만 설명되나 구체적 독점 파트너십이나 기술 장벽은 [미확인]. 확장 가능성은 3단계 가격 모델로 제시되나 실제 세그먼트별 고객 획득 근거 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 매출 데이터가 전혀 제시되지 않아 비즈니스 모델 검증 불가. 연간 구독료 270만 VND/사용자는 명시되나 실제 ARR, 고객당 평균 사용자 수, 이탈률 등 핵심 SaaS 지표 부재. 구현 매출(1억~5.5억 VND)은 프로젝트형 수익으로 반복성 낮음. 투자 유치 여부 및 목표 금액 [미확인]. 30+ 고객사 주장은 명단 없이 [부분 확인] 수준.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 사회적 가치 창출에 대한 언급이 전무. SME 운영 효율화는 일반적 B2B SaaS 가치이며, 명확한 사회문제 정의나 임팩트 측정 방식 부재. ESG Impact 항목이 신청서에 비어있어 사회적 가치 창출 의도 자체가 불분명.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 심층조사 미수행으로 자기보고 경력 검증 불가. IR 자료의 경력 기술(12+ years, 10+ years 등)은 [미확인]. 3명 핵심팀 구성은 명시되나 LinkedIn, 회사 등록 정보, 이전 프로젝트 레퍼런스 등 외부 검증 자료 전무. Key person dependency 리스크 높음. 도메인 전문성과 실제 역량 간 괴리 가능성을 배제할 수 없음.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[미확인] 롯데 연계 사업분야, 계열사, PoC 아이디어가 신청서에 전혀 명시되지 않음. ERP 솔루션이 롯데 유통·식품·건설 등 주요 사업과 연결 가능하나 지원자가 이를 구체화하지 않아 협력 의도 자체가 불분명. L-Camp 지원 동기도 공란으로 프로그램 적합성 판단 불가.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 1 + D 2 + E 1</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">8</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">미명시</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미명시</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>매출 및 고객 리텐션 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 30+ 고객사 주장에도 불구하고 ARR, MRR, churn rate 등 SaaS 핵심 지표가 전혀 제시되지 않아 실제 수익성 및 고객 만족도 판단 불가. 구현 매출 중심일 경우 확장성 제약.</td></tr>
+<tr><td>기술적 차별성 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 'AI 지원', '베트남 생태계 연결' 등 주장에 대한 구체적 기술 스펙, 특허, 독점 파트너십 근거 없음. Odoo 등 오픈소스 대비 모방 방어성 불분명.</td></tr>
+<tr><td>팀 검증 불가 및 Key Person Dependency</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 심층조사 미수행으로 자기보고 경력 검증 불가. 3명 핵심팀 구성으로 특정 인물 이탈 시 사업 지속성 위험.</td></tr>
+<tr><td>롯데 PoC 적합성 전무</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 롯데 계열사 연계 계획이 신청서에 전혀 없어 L-Camp 참여 목적 및 협력 가능성 불투명.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">시장 규모 및 성장성</span><span class="dvtag dv-r">시장 정량화 실패</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 SME ERP 시장에 대한 TAM/SAM/SOM 분석이 전혀 제시되지 않음 [미확인]. 베트남 중소기업 수, ERP 도입률, 연평균 성장률 등 핵심 시장 지표 부재 [미확인]. 경쟁사(Odoo, SAP Business One, MISA 등) 시장점유율 및 가격 비교 없이 '베트남 생태계 연결'만으로 차별화 주장 [부분 확인]. 목표 시장 규모 없이 3단계 가격 전략만 제시되어 실제 시장 기회 검증 불가능.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">제품-시장 적합성(PMF)</span><span class="dvtag dv-r">PMF 검증 미흡</span><span class="deep-arrow">▾</span></div><div class="deep-body">30+ 고객사 확보 주장하나 구체적 고객사명, 산업 분포, 사용자 수 미공개 [부분 확인]. 연간 구독료 270만 VND(약 $110)는 명시되나 실제 ARR, NRR, 고객당 평균 사용자 수 등 SaaS 핵심 지표 전무 [미확인]. '롤아웃' 단계 언급은 초기 트랙션을 시사하나 월간 성장률, 이탈률 데이터 없어 PMF 달성 여부 판단 불가 [미확인]. 구현 매출(1억~5.5억 VND)은 일회성 프로젝트 수익으로 반복 매출 모델 안정성 입증 안 됨.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">비즈니스 모델 지속가능성</span><span class="dvtag dv-r">수익성 검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">연간 구독료 270만 VND는 소규모 고객 기준 매우 낮은 가격대로 CAC 회수 기간 불명확 [미확인]. 구현 비용(중형 2억~5.5억 VND)이 구독 매출보다 높아 초기에는 프로젝트 중심 수익 구조로 보임 [부분 확인]. LTV/CAC 비율, 유닛 이코노믹스, 현금 소진율 등 재무 건전성 지표 전혀 제시 안 됨 [미확인]. 투자 유치 여부 및 목표 금액 공란으로 자금 조달 계획 불명 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-6</span><span class="deep-title">기술적 차별성 및 진입장벽</span><span class="dvtag dv-a">기술 우위 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">AI 기반 데이터 검색 및 의사결정 지원 기능 언급하나 구체적 AI 모델, 알고리즘, 정확도 등 기술 상세 미제공 [부분 확인]. '베트남 생태계 연결'을 핵심 차별점으로 주장하나 독점 파트너십, API 통합 범위, 표준 준수 인증 등 검증 자료 없음 [미확인]. Odoo 등 오픈소스 ERP 대비 기술적·기능적 우위 설명 부재 [미확인]. 플랫폼 전환 비용이 낮은 SME 시장 특성상 네트워크 효과나 데이터 lock-in 구축 전략 불분명.</div></div>
+<div class="deep-category-label">Category D — 팀/경영진</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업팀 역량 및 경력 검증</span><span class="dvtag dv-r">경력 검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">IR 자료에 '12+ years', '10+ years' 등 경력 기술되나 LinkedIn, 회사 등록 정보, 이전 직장 레퍼런스 등 외부 검증 자료 전무 [미확인]. 3명 핵심팀 구성 명시되나 구체적 역할 분담, 이전 프로젝트 성과, 도메인 전문성 입증 자료 없음 [미확인]. 베트남 ERP 시장 경험이나 기술 개발 실적에 대한 구체적 증거 부재로 자기보고 경력의 신뢰성 판단 불가 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-4</span><span class="deep-title">팀 완결성 및 Key Person Risk</span><span class="dvtag dv-r">조직 리스크 높음</span><span class="deep-arrow">▾</span></div><div class="deep-body">3명 핵심팀으로 CRM·공급망·회계·HR·AI 등 광범위한 ERP 모듈 개발 및 운영은 현실적으로 어려움 [부분 확인]. 기술, 영업, 재무, 고객지원 등 핵심 기능별 전담 인력 구성 불명확 [미확인]. Key person dependency 리스크 매우 높으며, 창업자 이탈 시 사업 연속성 위협 [확인]. 30+ 고객사 대응을 위한 CS 조직, 개발 로드맵 실행을 위한 엔지니어링 리소스 확보 계획 미제시 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-5</span><span class="deep-title">실행력 및 트랙 레코드</span><span class="dvtag dv-a">실행 증거 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">3년 운영 기간 동안 30+ 고객 확보는 연평균 10개사 수준으로 SME SaaS 기준 낮은 성장세 [부분 확인]. 매출 데이터, 고객 성공 사례, 제품 업데이트 이력 등 구체적 실행 증거 전혀 제시 안 됨 [미확인]. 수상 이력, 정부 지원사업 선정, 언론 보도 등 외부 검증 자료 공란 [미확인]. 피칭 자료 외 제품 데모 영상, 고객 레퍼런스, 기술 백서 등 보완 자료 없어 실제 실행 능력 판단 곤란.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>Viet Thuong Music (150명, 19개 지점) 구현 레퍼런스 확보 [확인]</li>
+<li>3단계 가격 모델(표준/프로페셔널/엔터프라이즈)로 세그먼트 대응 구조 설계 [확인]</li>
+<li>베트남 VAS 회계 표준 준수 명시 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>매출·ARR·고객 리텐션 등 SaaS 핵심 지표 전혀 미공개 [미확인]</li>
+<li>팀 경력 외부 검증 불가, Key person dependency 리스크 높음 [미확인]</li>
+<li>30+ 고객사 주장의 구체적 명단·계약 규모·업종 분포 부재 [미확인]</li>
+<li>구현 매출(프로젝트형) 의존도 높아 반복 수익성 불확실 [부분 확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 SME 디지털 전환 수요 증가</li>
+<li>글로벌 ERP(Odoo, SAP) 대비 로컬 표준 준수 및 가격 경쟁력</li>
+<li>롯데 베트남 계열사의 협력사 ERP 통합 수요 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Odoo 등 오픈소스 ERP의 낮은 진입장벽과 커스터마이징 유연성</li>
+<li>베트남 내 로컬 ERP 업체들의 가격 경쟁 심화</li>
+<li>구현 중심 매출 모델의 확장성 한계</li>
+<li>베트남 경제 둔화 시 SME IT 투자 감소 위험</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">8</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">BeeSuite ERP은 베트남 SME ERP 시장에서 30+ 고객사를 확보했다고 주장하나, 매출·ARR·이탈률 등 SaaS 핵심 지표가 전혀 제시되지 않아 비즈니스 모델 검증이 불가능하다. 가장 큰 미검증 가정은 '통합 플랫폼과 베트남 생태계 연결이 Odoo/SAP 대비 충분한 경쟁우위를 만든다'는 것인데, 기술적 장벽이나 독점 파트너십 근거가 없어 모방 방어성이 취약하다. 팀 경력은 외부 검증 불가이며, 롯데 PoC 계획이 전무해 L-Camp 적합성이 매우 낮다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">1 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">8 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>BeeSuite ERP · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-15 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

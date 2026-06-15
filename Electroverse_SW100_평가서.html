@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electroverse — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Electroverse</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ha Noi</span>
+          <span class="etag et-ind">Education</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Electroverse</div>
+        <div class="hero-sub">설립 1년 · https://electroverseshop.com/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Electroverse는 7~14세 어린이를 위한 STEM 전자 교육 키트를 제공하는 하이테크 교육 완구 브랜드이다. 어린이들이 겪는 논리적 사고력 부족 문제를 실습 기반 학습으로 해결하며, B2B 및 B2C 판매로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          30개 이상의 학교 및 STEM 센터 네트워크가 실제 안정적 매출원으로 전환되며, B2B 채널이 지속 가능한 수익 구조를 만든다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-fail">📄 IR Deck 읽기 실패</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">9</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">50M</div><div class="kpi-desc">통화 및 기간 미명시. 검증 불가 [미확인]</div></div>
+<div class="kpi"><div class="kpi-val">30+개</div><div class="kpi-desc">학교 및 STEM 센터 [부분 확인]</div></div>
+<div class="kpi"><div class="kpi-val">4개 기관</div><div class="kpi-desc">Steam for Vietnam, MakerViet 등 [확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">베트남 STEM 교육 시장의 구체적 규모(TAM/SAM/SOM)가 전혀 제시되지 않음 [미확인]. 경쟁사 분석 및 차별화 전략이 부재하며, 단순히 '7~14세 어린이 대상 STEM 키트'라는 제품 설명만 존재. 국제 시장으로의 확장 가능성에 대한 근거도 없음. IR Deck 부재로 시장 데이터 검증 불가.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">사업모델이 'B2B 및 B2C 판매'로만 언급되어 있으나 가격 구조, 단위경제, 고객획득비용, 재구매율 등 핵심 지표가 전혀 없음 [미확인]. 매출 50,000,000이 명시되어 있으나 통화 단위(VND/USD), 기간, 매출 구성(B2B vs B2C 비율)이 불명확하여 투자 적합성 판단 불가 [미확인]. IR Deck 부재로 비즈니스 모델 검증 불가.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">STEM 교육을 통한 어린이 논리적 사고력 향상이라는 사회적 가치 방향성은 명확함 [확인]. Steam for Vietnam, MakerViet 등 주요 교육 기관과의 협력 관계는 임팩트 창출 가능성을 시사 [확인]. 그러나 임팩트의 규모(수혜 학생 수), 깊이(학습 성과 측정), 지속성(교육 효과 추적)에 대한 구체적 데이터가 전혀 제시되지 않음 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 조사 결과, 창업자 및 핵심 팀원의 신원이 전혀 확인되지 않음 [미확인]. LinkedIn 프로필 부재, 웹사이트 접근 제한, 소셜미디어 활동 극히 제한적(Facebook 팔로워 179명). 회사는 베트남 법인으로 등록되어 있으나 [확인], 팀의 교육적 배경, 도메인 전문성, 이전 창업 경험 등 투자 실사에 필수적인 정보가 완전히 부재. '5년 이상 STEM 경험 엔지니어 팀'은 자체 주장일 뿐 외부 검증 불가 [미확인]. 투명성 부족으로 인한 투자 리스크가 매우 높음.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">롯데 주요 사업분야(식품·유통·건설·AI/첨단산업)와의 연관성이 불명확함. 신청서에 'Relevant LOTTE Business Area', 'LOTTE Affiliate', 'Proposed PoC Idea' 항목이 모두 비어 있음 [미확인]. 교육 완구 브랜드가 롯데 계열사(백화점/마트/홈쇼핑)와 유통 협력 가능성은 있으나, 이에 대한 구체적 계획이나 제안이 전혀 없음. PoC 협력 가능성 평가 불가.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 1</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">9</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">정보 없음</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">정보 없음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">정보 없음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">회사 자료에 따르면 'STEM 전자/전기 분야에서 5년 이상 경험을 보유한 젊은 엔지니어 팀'으로 구성되어 있다고 주장하나, 구체적인 검증 불가. Steam for Vietnam, MakerViet, GaraStem, VinUni 등과의 파트너십은 일정 수준의 도메인 신뢰성을 시사하나, 개별 팀원의 전문성은 확인할 수 없음</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">팀 구성에 대한 정보가 전무하여 평가 불가. 기술 개발, 교육 콘텐츠 설계, 영업/마케팅, 운영 등 핵심 역할의 분담 및 역량을 확인할 수 없음. B2B2C 모델을 운영한다고 주장하나 이를 실행할 팀 구조가 불분명함</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">신뢰성 평가가 매우 어려운 상황. 긍정 요소: (1) 베트남 정부에 정식 등록된 법인 (세금번호: 0318945765), (2) Startup Wheel 등 공인된 플랫폼에 소개됨, (3) 주요 STEM 기관들과 파트너십 보유, (4) Arduino Day Vietnam 2025 등 공식 행사 참여. 부정 요소: (1) 창업팀 정보 전무, (2) 온라인 프레즌스 매우 약함, (3) 펀딩 이력 없음, (4) 투명성 부족. 전반적으로 초기 단계 스타트업으로 보이나 정보 부족으로 인해 투자 리스크가 매우 높음</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 문제는 **팀 정보의 완전한 부재**임. 투자 결정에 필수적인 다음 정보들이 전혀 확인되지 않음: (1) 창업자 및 핵심 팀원의 신원, (2) 교육적 배경 및 관련 경력, (3) 이전 창업 경험, (4) LinkedIn 또는 기타 전문 네트워크 프로필, (5) 추천인 또는 레퍼런스. 이는 표준적인 스타트업 투자 실사에서 절대적으로 필요한 정보들임. 또한 회사 웹사이트의 접근성 문제, 제한적인 소셜미디어 활동, 재무 정보 부재 등도 심각한 공백임. 투자 진행 시 반드시 직접 미팅 및 서류 확인이 선행되어야 함</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Electroverse electroverseshop.com founding team · Electroverse education startup founders · Electroverse Vietnam STEM founders team · Electroverse startupwheel Vietnam founders · "Electroverse" "electroverseshop.com" founder CEO · Electroverse STEM Vietnam team members names</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">정보 확인 불가 (Information Not Available)</div><div class="member-role">Founder/CEO</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 창업팀 구성원의 이름, 경력, 학력 등 기본 정보가 공개되지 않음 - 투명성 부족</span><span class='flag-item'>⑊ LinkedIn 프로필이 존재하지 않거나 찾을 수 없음</span><span class='flag-item'>⑊ 회사 웹사이트(electroverseshop.com) 접근 제한 또는 정보 부족</span><span class='flag-item'>⑊ 공식 소셜미디어 계정(Facebook)의 팔로워 수가 매우 적음 (179명)</span><span class='flag-item'>⑊ 창업 연도 및 자금 조달 이력 미공개</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Electroverse (CÔNG TY TNHH CÔNG NGHỆ GIÁO DỤC ĐIỆN TỬ ELECTROVERSE)</td><td>창업자/경영진 (추정)</td><td>설립일 불명 - 현재</td><td style="font-size:11px;">공개 자료에서 구체적인 창업자 이름이 확인되지 않음. 회사는 베트남 호치민시 7군에 등록됨 (사업자등록번호: 0318945765)</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 창업팀의 구체적인 정보가 공개되지 않아 도메인 전문성을 평가할 수 없음. 회사 설명에 따르면 '5년 이상 STEM 경험을 가진 젊은 엔지니어 팀'으로 구성되어 있다고 하나, 개별 구성원의 배경은 확인 불가</div><div class="ma-overall"><strong>종합 평가:</strong> Electroverse는 베트남 STEM 교육 분야에서 활동하는 회사로 확인되나, 창업팀에 대한 공개 정보가 극히 제한적임. 회사는 법적으로 등록되어 있고 주요 교육 기관들과 협력 관계를 맺고 있는 것으로 보이나, 팀의 투명성이 매우 낮아 실사(due diligence) 수행에 심각한 어려움이 있음. 추가 정보 확보를 위해 직접 컨택 또는 현지 조사가 필요함</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>창업팀 정보 완전 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>투자 실사의 기본인 창업자 신원, 경력, 전문성을 전혀 확인할 수 없음. 이는 표준적인 투자 프로세스에서 절대적 결격 사유에 해당 [미확인]</td></tr>
+<tr><td>재무 데이터 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>매출 50M의 통화 단위(VND/USD), 기간, 구성(B2B vs B2C), 이익률 등이 전혀 명시되지 않아 실적 검증 불가 [미확인]</td></tr>
+<tr><td>비즈니스 모델 구체성 부족</td><td><span class="rpill-sm rp-h">높음</span></td><td>가격 정책, 고객획득비용, 재구매율, 단위경제 등 수익성 판단에 필요한 핵심 지표 전무 [미확인]</td></tr>
+<tr><td>IR Deck 부재</td><td><span class="rpill-sm rp-m">중간</span></td><td>PDF 텍스트 추출 실패로 전략, 시장 분석, 재무 계획 등 상세 정보 확인 불가. 신청서만으로는 평가 한계 명확</td></tr>
+<tr><td>롯데 연계성 불명확</td><td><span class="rpill-sm rp-m">중간</span></td><td>PoC 아이디어 및 협력 계열사가 명시되지 않아 L-Camp 프로그램 적합성 평가 불가 [미확인]</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category C — 교육/임팩트</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-1</span><span class="deep-title">교육 효과성 검증 및 측정</span><span class="dvtag dv-r">임팩트 측정 미비</span><span class="deep-arrow">▾</span></div><div class="deep-body">STEM 키트를 통한 논리적 사고력 향상이라는 교육 목표는 명확하나, 학습 성과에 대한 정량적 측정 지표가 전혀 제시되지 않음 [미확인]. Steam for Vietnam, MakerViet 등 주요 교육기관과의 협력은 확인되나 [확인], 실제 수혜 학생 수, 학습 전후 능력 변화, 교육 효과 지속성 등 핵심 임팩트 데이터 부재 [미확인]. 30개 이상 학교 네트워크 보유 주장도 구체적 검증 불가 [부분 확인]. 교육 완구 시장에서 '재미'와 '학습 효과'의 균형점 입증 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-2</span><span class="deep-title">베트남 STEM 교육 시장 침투력</span><span class="dvtag dv-a">시장 검증 초기 단계</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 교육 시장 특성상 B2B(학교/기관) 채널 진입이 중요한데, 구체적인 B2B 계약 규모나 재구매율 데이터가 없음 [미확인]. 매출 50,000,000 (단위 불명)이 B2B/B2C 중 어느 채널에서 발생했는지 불투명하며, 제품 보급률이나 시장 점유율 추정 불가 [미확인]. Arduino Day Vietnam 2025 참여는 STEM 커뮤니티 내 인지도를 시사하나 [확인], 실제 시장 견인력으로 이어지는지 검증 필요. 7~14세 타겟층의 제품 선호도 및 학부모 구매 의사 데이터 부재.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-3</span><span class="deep-title">교육 콘텐츠 차별화 및 확장성</span><span class="dvtag dv-r">차별화 근거 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">STEM 전자 키트 시장은 글로벌 브랜드(Lego Education, Arduino, Micro:bit 등)와 중국 저가 제품이 경쟁하는 레드오션인데, Electroverse만의 교육적 차별점이 불명확함 [미확인]. 실습 기반 학습(hands-on learning)은 업계 표준이며, 구체적인 커리큘럼 설계, 교사용 가이드, 온라인 학습 플랫폼 통합 등 부가 가치 제공 여부 불확실 [미확인]. 제품 라인업 확장 계획이나 콘텐츠 IP 보유 현황도 제시되지 않아, 장기 성장 전략 평가 불가 [미확인].</div></div>
+<div class="deep-category-label">Category D — 팀 역량 및 실행력</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업팀 투명성 및 검증 가능성</span><span class="dvtag dv-r">심각한 정보 공개 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">창업자 및 핵심 팀원의 이름, 경력, 학력 등 기본 프로필이 전혀 공개되지 않아 투자 실사 진행 자체가 불가능함 [미확인]. LinkedIn 프로필 부재, 웹사이트 접근 제한, Facebook 팔로워 179명 등 디지털 존재감이 극히 미약하여 팀의 실재성에 대한 의구심 발생 [확인]. '5년 이상 STEM 경험 엔지니어 팀'은 자체 주장일 뿐 외부 검증 불가 [미확인]. 베트남 법인 등록은 확인되나 [확인], 운영 주체의 신원 확인 실패는 투자 리스크의 핵심 레드 플래그.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">STEM 교육 도메인 전문성</span><span class="dvtag dv-r">전문성 입증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">교육 완구 사업은 제품 개발(전자공학), 교육과정 설계(교육학), 아동 심리 이해가 복합적으로 요구되는데, 팀의 관련 배경이 전혀 확인되지 않음 [미확인]. Steam for Vietnam 등 협력기관과의 관계가 팀의 전문성에서 비롯된 것인지, 단순 영업 관계인지 판단 불가 [부분 확인]. 이전 창업 경험, 교육 관련 출판물, 학회 발표, 특허 출원 등 도메인 전문성을 입증할 객관적 지표 전무 [미확인]. IR Deck 접근 불가로 팀 소개 섹션 검토 불가능.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">비즈니스 실행 역량 및 견인력</span><span class="dvtag dv-a">초기 검증 단계</span><span class="deep-arrow">▾</span></div><div class="deep-body">설립 1년차 스타트업으로 30개 이상 학교 네트워크 구축 주장은 인상적이나 [부분 확인], 구체적인 계약 건수, 납품 규모, 고객 만족도가 제시되지 않아 실질적 성과 판단 어려움 [미확인]. '롤아웃' 단계 명시는 초기 시장 진입을 시사하나, B2B 파이프라인의 전환율이나 B2C 채널의 고객획득비용 대비 생애가치(LTV/CAC) 데이터 없음 [미확인]. Arduino Day 참여 등 커뮤니티 활동은 확인되나 [확인], 이것이 실제 매출로 연결되는 실행력 증명 부족.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-4</span><span class="deep-title">자금 조달 및 재무 투명성</span><span class="dvtag dv-r">재무 정보 불투명</span><span class="deep-arrow">▾</span></div><div class="deep-body">매출 50,000,000의 통화 단위(VND인 경우 약 $2,000, USD인 경우 $50M)가 명시되지 않아 사업 규모 파악 불가 [미확인]. 현재 자금 조달 중 여부 불명확하고, Pre-Seed/Angels 라운드 목표 금액이나 사용 계획 부재 [미확인]. IR Deck 접근 불가로 재무 모델, 손익분기점 예측, 자금 런웨이 등 핵심 재무 정보 검토 불가능 [미확인]. 이전 투자 유치 이력이나 정부 지원금 수혜 여부도 확인되지 않아, 자금 운용 투명성 평가 불가.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>Steam for Vietnam, MakerViet, GaraStem, VinUni 등 베트남 주요 STEM 교육기관과 파트너십 확보 [확인]</li>
+<li>Arduino Day Vietnam 2025 참여 등 STEM 커뮤니티 내 활동 [확인]</li>
+<li>베트남 정부에 정식 등록된 법인(사업자번호: 0318945765) [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>창업팀 신원 및 전문성 정보 완전 부재로 투명성 극히 낮음 [미확인]</li>
+<li>매출 데이터의 통화 단위 및 기간 미명시로 실적 검증 불가 [미확인]</li>
+<li>IR Deck 접근 불가로 사업계획 및 전략 상세 확인 불가</li>
+<li>시장 규모(TAM/SAM/SOM), 경쟁 분석, 단위경제 등 핵심 비즈니스 데이터 전무 [미확인]</li>
+<li>온라인 프레즌스 매우 약함(소셜미디어 팔로워 179명, 웹사이트 접근 제한)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 STEM 교육 수요 증가 추세</li>
+<li>B2B2C 채널 다각화 가능성</li>
+<li>롯데 유통 계열사(백화점/마트/홈쇼핑)와 유통 협력 잠재력</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>글로벌 STEM 키트 브랜드(LEGO Education, Makeblock 등)와의 경쟁</li>
+<li>교육 시장의 정책 및 규제 변화 리스크</li>
+<li>팀 정보 부재로 인한 핵심 인력 의존도 파악 불가</li>
+<li>펀딩 이력 없음 — 재무 지속가능성 불확실</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">9</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Electroverse는 베트남 STEM 교육 분야에서 일부 파트너십을 확보한 초기 단계 스타트업이나, 투자 실사에 필수적인 핵심 정보가 대부분 결여되어 있다. 가장 심각한 문제는 창업팀 정보의 완전한 부재로, 창업자 신원, 경력, 전문성을 전혀 확인할 수 없다. 매출 50M이 언급되었으나 통화 단위와 기간이 명시되지 않아 검증 불가하며, 시장 규모, 비즈니스 모델 상세, 임팩트 측정 지표가 모두 미확인 상태다. IR Deck 부재로 주장을 뒷받침할 증거 자료가 없다. 가장 큰 미검증 가정은 '30개 학교 네트워크가 안정적 B2B 매출원으로 전환된다'는 것인데, 계약 형태, 거래 규모, 재구매 구조에 대한 정보가 전무하다. 롯데 PoC 연계 가능성도 제시되지 않아 L-Camp 적합성이 낮다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">1 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">9 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Electroverse · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-15 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

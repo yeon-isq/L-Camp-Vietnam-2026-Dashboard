@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CÔNG TY CỔ PHẦN THE MEAL VN — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">CÔNG TY CỔ PHẦN THE MEAL VN</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ha Noi</span>
+          <span class="etag et-ind">Lifestyle & Wellbeing</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">CÔNG TY CỔ PHẦN THE MEAL VN</div>
+        <div class="hero-sub">설립 2025년 3월 · themeal.vn</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">The Meal은 베트남 사용자를 위한 AI 영양 관리 앱으로, 개인화된 식단 추천, 사진 기반 식사 추적, AI 채팅 상담 기능을 제공한다. B2C 모바일 앱으로 운영되며 구체적인 수익 모델은 명시되지 않았다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          AI 식단 추천과 베트남 음식 데이터베이스의 정확도 및 의학적 신뢰성이 실제 사용자 건강 개선으로 이어진다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">9</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">27,000명</div><div class="kpi-desc">[부분 확인] IR 자료 명시, 검증 불가</div></div>
+<div class="kpi"><div class="kpi-val">3,800명</div><div class="kpi-desc">[부분 확인] 구체적 기간 미명시</div></div>
+<div class="kpi"><div class="kpi-val">77,000회</div><div class="kpi-desc">[부분 확인] 누적 기간 불명확</div></div>
+<div class="kpi"><div class="kpi-val">40%</div><div class="kpi-desc">[부분 확인] 측정 기준 및 기간 미명시</div></div>
+<div class="kpi"><div class="kpi-val">1M 뷰</div><div class="kpi-desc">[부분 확인] 소셜미디어 기준 추정</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[부분 확인] 베트남 영양/헬스케어 앱 시장의 구체적 규모(TAM/SAM/SOM)가 제시되지 않음. IR 자료는 '1억 베트남인의 건강 개선'이라는 비전만 언급하며 실제 시장 세분화나 경쟁 분석이 부재함. [미확인] 유사 서비스(MyFitnessPal, Lifesum 등 글로벌 앱)와의 차별점이 '베트남 음식 특화'로만 설명되나 데이터베이스 정확도, 커버리지에 대한 구체적 증거 없음. 100% organic growth 주장은 확장 전략의 지속가능성에 의문을 제기함.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 수익 모델이 전혀 명시되지 않음. B2C 앱이나 구독료, 프리미엄 기능, 제휴 수수료 등 어떤 수익화 방식도 설명되지 않음. [확인] 2024/2025 매출 0원. [미확인] 투자 유치 이력 없으며 target raise도 명시 안 됨. IR 자료의 '5 pillars' 생태계(의료 서비스, 트레이닝, 영양제, 식품, 기기)는 비전일 뿐 실제 파트너십이나 수익 연계 증거가 전무함. 투자 적합성 판단 불가능.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[확인] 건강한 식습관 개선이라는 사회적 가치 방향성은 명확함. 베트남인의 영양 불균형 및 건강 정보 접근성 문제 해결을 목표로 함. [부분 확인] Assoc. Prof. Dr. Nguyen Do Huy(국립영양연구소 전 교육센터장) 어드바이저 참여로 전문성 보완 시도. 그러나 [미확인] 실제 건강 개선 임팩트 측정 방법론이나 임상 데이터 없음. 단순 앱 사용 지표(스캔 횟수, 리텐션)만으로는 실질적 건강 효과 입증 불가.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인 — CRITICAL] Team Deep Research 결과, Trịnh Linh Đan(법적 대표)의 LinkedIn, 학력, 경력 정보가 일체 발견되지 않음. 영양학, 의료, 헬스테크 분야 경험 증거 전무. [미확인] IR 자료상 Nguyễn Bình Dương(10년 제품 경험), Nguyễn Thị Phấn(15년 재무 경험) 주장되나 독립 검증 불가. [Red Flag] 영양 관리 앱임에도 공인 영양사(RD) 또는 의료 전문가가 팀에 명시되지 않음. Advisor인 Dr. Nguyen Do Huy의 역할 범위 불명확. [Red Flag] 회사 등록일(2025년 3월)보다 앱 출시가 선행된 것으로 보이며, 팀 투명성 결여는 신뢰도에 심각한 타격.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[미확인] 롯데 사업 분야, 계열사, PoC 아이디어가 전혀 제시되지 않음. 지원서에 해당 항목 모두 공란. 영양/식품 앱이므로 롯데마트, 롯데푸드 등과 연계 가능성은 이론적으로 존재하나, 지원자가 이를 인지하거나 구체화한 흔적 없음. L-Camp 지원 동기도 명시 안 되어 프로그램 적합성 판단 불가.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 1</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">9</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데와의 구체적인 PoC 아이디어가 제시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">베트남인의 건강한 식습관 개선 및 영양 교육 접근성 향상을 목표로 함</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">Không đủ thông tin để đánh giá. Từ thông tin công khai, chỉ xác định được một thành viên (Giám đốc), nhưng không có dữ liệu về nền tảng chuyên môn. Một startup ứng dụng dinh dưỡng cần đội ngũ kết hợp: (1) chuyên gia dinh dưỡng có chứng chỉ, (2) kỹ sư phần mềm/AI, (3) chuyên gia sản phẩm số, (4) chuyên gia dữ liệu y tế. Hiện tại không tìm thấy bằng chứng về bất kỳ năng lực nào trong số này.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">Không đầy đủ và thiếu minh bạch nghiêm trọng. Chỉ công bố một người đại diện pháp luật mà không có thông tin về đồng sáng lập, CTO, chuyên gia dinh dưỡng trưởng, hoặc các vị trí then chốt khác. Website công ty đề cập 'đội ngũ kết hợp giữa dinh dưỡng, công nghệ và sản phẩm' nhưng không nêu tên hoặc tiểu sử bất kỳ thành viên nào. Điều này không bình thường đối với một startup công nghệ hiện đại.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">Mức độ tin cậy thấp do thiếu thông tin xác thực. Mặc dù sản phẩm (ứng dụng the Meal) đã được triển khai trên các nền tảng chính (App Store, Google Play) và có vẻ có tính năng AI tiên tiến, nhưng việc hoàn toàn không tiết lộ thông tin về đội ngũ sáng lập là dấu hiệu đáng lo ngại. Trong ngành healthtech, sự minh bạch về trình độ chuyên môn của đội ngũ là yếu tố quan trọng để xây dựng lòng tin với người dùng và nhà đầu tư. Sự vắng mặt của LinkedIn profiles, thông tin học vấn, hoặc kinh nghiệm làm việc trước đây làm giảm đáng kể độ tin cậy.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">Thiếu chuyên gia dinh dưỡng được chứng nhận và chuyên gia công nghệ AI/ML có thể xác minh. Đối với một ứng dụng tập trung vào AI nutrition tracking và personalized meal planning cho người Việt, điều cần thiết là phải có: (1) Chuyên gia dinh dưỡng lâm sàng đã đăng ký (RD hoặc tương đương Việt Nam) để đảm bảo tính chính xác y khoa, (2) Chuyên gia AI/Machine Learning với kinh nghiệm trong computer vision và NLP để phát triển tính năng nhận diện món ăn, (3) Chuyên gia cơ sở dữ liệu thực phẩm Việt Nam, (4) Chuyên gia bảo mật dữ liệu y tế để tuân thủ quy định. Hiện tại không có bằng chứng về bất kỳ năng lực nào trong số này, tạo ra khoảng cách lớn giữa tính năng sản phẩm được quảng cáo và năng lực đội ngũ có thể xác minh.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: The Meal VN themeal.vn founders · CÔNG TY CỔ PHẦN THE MEAL VN CEO founder · Trịnh Linh Đan LinkedIn · Trịnh Linh Đan the Meal VN · "Trịnh Linh Đan" CEO founder · site:linkedin.com "the meal" Vietnam nutrition</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Trịnh Linh Đan</div><div class="member-role">Giám đốc (Director/Legal Representative)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ Không tìm thấy hồ sơ LinkedIn hoặc bất kỳ thông tin công khai nào về nền tảng chuyên môn</span><span class='flag-item'>⑊ Không có bằng chứng về kinh nghiệm trong lĩnh vực dinh dưỡng, y tế, hoặc công nghệ sức khỏe</span><span class='flag-item'>⑊ Công ty mới được thành lập (tháng 3/2025) nhưng ứng dụng đã có mặt trên App Store và Google Play, cho thấy có thể hoạt động trước khi đăng ký chính thức</span><span class='flag-item'>⑊ Thiếu minh bạch hoàn toàn về đội ngũ sáng lập và cổ đông</span><span class='flag-item'>⑊ Không tìm thấy thông tin về các thành viên khác trong đội ngũ điều hành</span><span class='flag-item'>⑊ Vốn điều lệ không được công bố công khai</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>CÔNG TY CỔ PHẦN THE MEAL VN</td><td>Giám đốc (Director)</td><td>2025 - Hiện tại</td><td style="font-size:11px;">Đại diện pháp luật của công ty. Công ty được thành lập ngày 10/03/2025 theo giấy phép kinh doanh từ Sở Kế hoạch và Đầu tư Hà Nội.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> Không tìm thấy thông tin công khai về nền tảng giáo dục, kinh nghiệm làm việc trong lĩnh vực dinh dưỡng, công nghệ y tế, hoặc phát triển ứng dụng di động. Không có bằng chứng về chuyên môn dinh dưỡng học, khoa học thực phẩm, hoặc kinh nghiệm trong ngành healthtech/wellness technology. Đây là rủi ro đáng kể cho một startup trong lĩnh vực ứng dụng dinh dưỡng và sức khỏe.</div><div class="ma-overall"><strong>종합 평가:</strong> Mức độ rủi ro cao do thiếu thông tin minh bạch. Không thể xác minh năng lực chuyên môn của người đại diện pháp luật trong lĩnh vực dinh dưỡng và công nghệ sức khỏe. Sự vắng mặt hoàn toàn của thông tin công khai về nền tảng giáo dục và kinh nghiệm làm việc là dấu hiệu cảnh báo đáng lo ngại đối với một startup trong lĩnh vực đòi hỏi chuyên môn cao như nutrition technology.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>의학적 정확도 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] AI 영양 추천 및 식단 분석의 임상 검증 데이터 부재. 잘못된 영양 조언 제공 시 법적 책임 리스크.</td></tr>
+<tr><td>팀 투명성 및 전문성 결여</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 핵심 인력 배경 검증 불가. 헬스케어 앱에서 팀 신뢰도 부족은 치명적 약점.</td></tr>
+<tr><td>수익 모델 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 명확한 수익화 전략 없이 사용자만 확보 중. 자금 소진 시 지속 불가능.</td></tr>
+<tr><td>롯데 연계 전략 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] PoC 아이디어, 계열사 연계 전혀 제시 안 됨. L-Camp 적합성 의문.</td></tr>
+<tr><td>데이터 정확도 및 커버리지</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] 베트남 음식 데이터베이스의 완성도 및 영양 정보 출처 불명확.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — B2C 모바일 앱/헬스케어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">베트남 음식 특화 데이터베이스의 실제 품질과 정확성</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] IR 자료는 '베트남인을 위한 맞춤 앱'을 강조하나, 베트남 음식 데이터베이스의 커버리지(음식 수, 영양 정보 정확도)에 대한 구체적 수치가 전무합니다. [미확인] 글로벌 경쟁사(MyFitnessPal 등)가 이미 베트남어를 지원하는 상황에서, 차별화 요소인 '로컬 음식 특화'의 기술적 우위가 입증되지 않았습니다. [Red Flag] 77K 스캔 데이터 주장에도 불구하고, AI 영양 분석의 정확도 검증 방법론이나 제3자 테스트 결과가 제시되지 않아 제품 신뢰도 판단이 불가능합니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">100% organic growth 전략의 지속가능성과 확장 계획</span><span class="dvtag dv-r">우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 27K 사용자, 3.8K 활성 사용자를 100% organic으로 달성했다는 주장은 초기 견인력을 시사합니다. [미확인] 그러나 paid marketing 전략, CAC/LTV 분석, growth funnel 최적화 계획이 전혀 제시되지 않았습니다. [부분 확인] 창업자의 10.6만 팔로워 소셜 미디어(월 100만 뷰)는 초기 유저 획득 채널로 활용 가능하나, 이는 창업자 개인 브랜드에 의존하는 구조로 scalable한 growth engine으로 보기 어렵습니다. 베트남 1억 인구 대상 목표 대비 현재 성장 전략의 간극이 매우 큽니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">D1 리텐션 40% 수치의 의미와 코호트 건강도</span><span class="dvtag dv-a">부분 긍정</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] D1 리텐션 40%는 헬스케어 앱 벤치마크(일반적으로 20-30%) 대비 양호한 수준입니다. [미확인] 그러나 D7, D30, D90 등 장기 리텐션 데이터가 제시되지 않아 사용자 참여의 지속성을 판단할 수 없습니다. [미확인] 영양 관리 앱의 성공 지표인 '행동 변화'(식습관 개선, 건강 지표 향상)를 측정하는 메트릭이 없어, 단순 앱 사용과 실질적 가치 전달을 구분할 수 없습니다. 27K 사용자 중 3.8K 활성 사용자(14%)는 engagement depth에 대한 추가 설명이 필요합니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">'5 Pillars 생태계' 비전의 실행 가능성과 우선순위</span><span class="dvtag dv-r">과도한 확장</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인 — Critical] IR 자료의 '5 pillars'(의료 서비스, 트레이닝, 영양제, 식품, 기기)는 슈퍼앱 비전을 제시하나, 현재 제품은 식사 추적 앱에 불과합니다. [미확인] 각 pillar별 파트너십, 수익 모델, 개발 로드맵이 전혀 명시되지 않았으며, 이는 초기 스타트업에게 비현실적으로 광범위한 범위입니다. [Red Flag] 명확한 수익 모델 없이 복잡한 생태계를 제시하는 것은 전략적 초점 부재를 시사하며, 투자자 관점에서 실행 리스크가 매우 높습니다. 베트남 시장에서 이미 Vinmec, FPT Healthcare 등 자본력 있는 플레이어들이 헬스케어 생태계를 구축 중인 상황에서 차별화 전략이 불분명합니다.</div></div>
+<div class="deep-category-label">Category D — 창업팀 (헬스케어 특화)</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">법적 대표 Trịnh Linh Đan의 실체 및 헬스케어 역량</span><span class="dvtag dv-r">중대 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인 — Critical] Deep Research 결과, Trịnh Linh Đan의 LinkedIn, 학력, 경력 정보가 일체 발견되지 않았습니다. [Red Flag] IR 자료는 '10.6만 팔로워'를 강조하나, 소셜 미디어 계정이나 실명 확인이 불가능하여 마케팅 역량 주장을 검증할 수 없습니다. [Red Flag] 영양 관리 앱 창업자임에도 영양학, 의료, 헬스테크 분야 배경이 전혀 확인되지 않으며, 이는 제품의 전문성과 규제 대응 능력에 대한 심각한 의문을 제기합니다. 베트남 헬스케어 규제 환경에서 의료 조언 제공 시 법적 리스크가 높은데, 이에 대한 준비가 보이지 않습니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">공동 창업자들의 역량 검증 및 팀 완전성</span><span class="dvtag dv-r">불투명</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] Nguyễn Bình Dương(10년 제품 경험)과 Nguyễn Thị Phấn(15년 재무 경험)의 경력 주장이 독립적으로 검증되지 않았습니다. [Red Flag] 헬스케어 앱임에도 공인 영양사(Registered Dietitian), 의료 전문가, 또는 AI/ML 엔지니어가 핵심 팀에 명시되지 않았습니다. [부분 확인] Advisor로 Assoc. Prof. Dr. Nguyen Do Huy(국립영양연구소 전 교육센터장)가 참여하나, 역할이 자문에 그치는지 제품 개발에 직접 관여하는지 불분명합니다. 영양 정보의 정확성과 의료적 신뢰성이 핵심인 서비스에서 팀 구성이 매우 취약합니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">회사 설립 시기와 제품 출시 타임라인의 불일치</span><span class="dvtag dv-r">신뢰도 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 회사 등록일은 2025년 3월이나, IR 자료는 이미 27K 사용자와 77K 스캔 데이터를 보유했다고 주장합니다. [Red Flag] 이는 법인 설립 전에 앱이 운영되었거나, 데이터가 다른 엔티티에서 축적되었음을 시사하며, 법적/재무적 투명성에 의문을 제기합니다. [미확인] 지적재산권(AI 모델, 베트남 음식 DB)의 소유권 및 라이선스 구조가 명확하지 않습니다. [Red Flag] 'Founded Year: 1 year' 주장과 2025년 3월 등록 사이의 불일치는 지원서 작성의 부정확성 또는 의도적 모호함을 나타낼 수 있으며, 이는 due diligence에서 중대한 risk flag입니다.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[부분 확인] 27K 누적 사용자 및 40% D1 리텐션으로 초기 제품-시장 적합성 가능성 존재</li>
+<li>[확인] 베트남 음식 특화라는 명확한 차별화 포지셔닝</li>
+<li>[확인] 국립영양연구소 전문가 어드바이저 확보로 전문성 일부 보완</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인 — CRITICAL] 수익 모델 전무, 투자 계획 부재로 지속가능성 불명</li>
+<li>[미확인 — CRITICAL] 창업팀 배경 투명성 결여, 핵심 인력 검증 불가</li>
+<li>[미확인] AI 영양 추천의 의학적 정확도 검증 부재</li>
+<li>[미확인] 롯데와의 연계 전략 및 PoC 구체성 전무</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 중산층 증가 및 건강 관리 의식 상승 트렌드</li>
+<li>롯데마트·롯데푸드와의 건강 식품 추천 연계 가능성</li>
+<li>동남아 지역 확장 시 현지화 노하우 활용 가능</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>MyFitnessPal, Lifesum 등 글로벌 플레이어의 베트남 진출</li>
+<li>의료 데이터 및 영양 조언 관련 규제 리스크</li>
+<li>수익화 실패 시 투자 유치 불가 및 사업 지속 불가능</li>
+<li>팀 신뢰도 문제로 인한 파트너십 및 투자자 확보 난항</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">9</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">The Meal은 베트남 특화 AI 영양 앱으로 사회적 방향성은 있으나, 비즈니스로서의 검증이 거의 전무하다. [미확인] 가장 큰 가정은 AI 기반 식단 추천의 의학적 정확성과 베트남 음식 데이터베이스의 신뢰도인데, 이를 뒷받침할 임상 검증이나 전문 영양사의 감수 증거가 없다. [미확인] 팀 배경의 투명성 결여(대표 포함 핵심 인력의 학력·경력 일체 검증 불가)는 헬스케어 스타트업으로서 치명적이다. [미확인] 수익 모델 부재, 투자 계획 부재, 롯데 연계 전략 부재로 투자 적합성 및 PoC 가능성을 판단할 수 없다. 3,800명 활성 사용자는 긍정적이나, 이를 지속가능한 비즈니스로 전환할 경로가 보이지 않는다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">1 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">9 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>CÔNG TY CỔ PHẦN THE MEAL VN · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-15 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

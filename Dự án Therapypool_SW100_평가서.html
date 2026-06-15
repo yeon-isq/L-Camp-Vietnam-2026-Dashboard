@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dự án Therapypool (DBPOOLS) — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Dự án Therapypool (DBPOOLS)</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City</span>
+          <span class="etag et-ind">Healthcare & Life Sciences</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Dự án Therapypool (DBPOOLS)</div>
+        <div class="hero-sub">설립 2022 · N/A</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">DBPOOLS는 베트남 가정 및 커뮤니티를 위한 IoT 기반 역류 수영장(counter-current pool) 시스템이다. 수질 부담과 신체 건강 문제를 해결하며, 제품 판매 및 설치 서비스로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          역류 수영장 기술이 베트남 중산층 가정 또는 커뮤니티 시설의 실제 구매 결정으로 이어진다는 시장 검증이 아직 이루어지지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">10</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">데모 모델</div><div class="kpi-desc">2020년 데모, 2024년 업그레이드 모델 언급</div></div>
+<div class="kpi"><div class="kpi-val">100만 명</div><div class="kpi-desc">2030년까지 목표 (미검증 계획)</div></div>
+<div class="kpi"><div class="kpi-val">$1M</div><div class="kpi-desc">2027년 목표 (미검증 계획)</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] IR Deck은 베트남 국가 전략과 연계한 비전을 제시하나, 구체적인 시장 규모(TAM/SAM/SOM), 경쟁사 분석, 고객 세그먼트 검증이 전혀 없음. 역류 수영장 시장의 베트남 내 실제 수요, 가격 민감도, 구매 의사결정 프로세스에 대한 근거가 부재. 2030년 100만 사용자 목표는 시장 데이터 없이 제시된 희망사항에 불과함. [부분 확인] 수영 치료 및 건강 니즈는 존재하나, 가정용/커뮤니티용 고가 장비 시장으로의 전환 가능성은 검증되지 않음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 사업 모델은 '제품 판매 + 서비스'로 언급되나 구체적인 가격, 마진 구조, 판매 채널, 고객 획득 비용(CAC), 생애 가치(LTV)가 전혀 명시되지 않음. [미확인] 'Demo' 단계로 표기되어 있으나 실제 고객 거래, 계약, 매출 발생 여부가 불명확. IR Deck의 '$1M revenue in 2027'은 목표일 뿐 현재 검증된 수익 모델이 아님. [미확인] 투자 유치 이력 없음. 롯데벤처스 펀드 투자 적합성 판단 불가 — PoC 제안 자체가 부재하여 연계 가능성 제로.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 수질 안전(화학물질 무첨가 소독), 신체 건강 개선(수영 치료), 세대 간 유대 강화 등 사회적 가치 의도는 명확히 제시됨. 베트남 국가 건강 전략과의 연계 방향성도 언급. 그러나 [미확인] 실제 임팩트 규모, 깊이, 지속 가능성을 입증할 데이터(사용자 건강 개선 사례, 커뮤니티 채택률, 환경 영향 측정 등)가 전무. 문제 정의와 솔루션 간 논리적 연결은 있으나, 솔루션의 실제 사회적 효과는 검증되지 않음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 외부 검증 미수행(research_performed: false). 자체 보고된 팀 정보: Founder Bùi Nguyễn Thế Hanh의 도메인 전문성 및 경력이 구체적으로 제시되지 않음. [부분 확인] Co-founder/Mentor Hoàng Văn Quyền은 전 KOHLER Vietnam 대표 및 건강 커뮤니티 리더로 언급 — 위생/건강 관련 도메인 연관성은 있으나, 수영장 제조/IoT 기술 개발 경험과의 직접적 연결성은 불명확. 핵심 기술 개발 인력(IoT, 수처리, 하드웨어 엔지니어링) 구성 및 역할이 명시되지 않음. 실행 기반 자원(제조 파트너십, 기술 검증, 네트워크) 확인 불가. Key person dependency risk 높음.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[미확인] 주요 사업분야(식품·유통·건설·AI/첨단산업) 중 건설과 간접적 연관 가능성은 있으나, 지원서에 롯데 계열사 연계 방안 및 PoC 아이디어가 전혀 제시되지 않음. 'Relevant LOTTE Business Area', 'LOTTE Affiliate', 'Proposed PoC Idea' 항목 모두 공백. IR Deck에서도 롯데와의 협력 가능성 언급 전무. 현 단계에서 롯데 PoC 적합성 판단 불가능. 제품 특성상 롯데건설(주거 단지 내 커뮤니티 시설) 또는 롯데호텔(웰니스 시설)과의 잠재적 연계 가능성은 있으나, 구체적 제안 없이는 평가 불가.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 2 + E 1</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">10</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>시장 적합성(PMF) 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 실제 고객 거래, 계약, 매출이 없어 제품-시장 적합성 확인 불가. Demo 단계에서 상용화로의 전환 가능성 불투명.</td></tr>
+<tr><td>사업 모델 구체성 부족</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 가격, 마진, 판매 채널, CAC/LTV 등 단위 경제성 전혀 제시되지 않음. 수익성 달성 경로 불명확.</td></tr>
+<tr><td>팀 실행력 검증 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 핵심 기술팀(IoT, 수처리, 제조) 구성 및 도메인 전문성 외부 확인 불가. Founder 경력 불명확.</td></tr>
+<tr><td>제조 CAPEX 및 재고 부담</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 하드웨어 제품 특성상 초기 제조 투자 및 재고 리스크 높으나, 자금 조달 계획 및 제조 파트너십 불명확.</td></tr>
+<tr><td>롯데 PoC 연계성 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] PoC 제안이 전혀 없어 L-Camp 프로그램 목적과 불일치. 롯데 계열사와의 협력 가능성 검토조차 이루어지지 않음.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — 하드웨어/IoT</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">제조·공급망 역량 및 Unit Economics</span><span class="dvtag dv-r">심각한 검증 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] IR Deck은 2024년 업그레이드 모델과 4시간 설치 시간을 언급하나, 제조 파트너십, 생산 능력, 품질 관리 체계가 전혀 명시되지 않음. [미확인] 제품 원가, 판매가, 설치비, 유지보수 비용 등 Unit Economics 데이터 부재로 수익성 판단 불가. [미확인] 베트남 내 IoT 부품 조달, 역류 시스템 핵심 부품(모터, 센서, 수처리 장치) 공급망 안정성 검증 없음. 2027년 $1M 매출 목표는 제조·공급 실행력 없이는 달성 불가능한 수치.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">기술 차별성 및 IP 보호</span><span class="dvtag dv-r">주장만 존재, 검증 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 'Bernoulli effect 활용으로 30% 에너지 절감, 50% 흐름 효율 증가' 주장은 있으나, 기술 검증 데이터(제3자 테스트, 에너지 소비 비교 실험 결과)가 전무. [미확인] 특허 출원·등록, 기술 노하우 보호 전략이 명시되지 않아 모방 리스크 높음. [미확인] '화학물질 무첨가 소독' 방식의 구체적 기술(UV, 오존, 전기분해 등) 및 안전성 인증(베트남 보건부 승인 등) 확인 불가. 기술 우위 주장의 근거가 부족하여 경쟁 진입장벽 의문.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">초기 고객 검증 및 제품-시장 적합성(PMF)</span><span class="dvtag dv-r">Demo 단계, PMF 미달성</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 'Demo' 및 'B2C' 트랙션으로 기재되어 있으나, 실제 유료 고객, 설치 사례, 고객 피드백이 전혀 제시되지 않음. [미확인] 베트남 가정용 시장의 구매력(고가 장비 지불 의사), 커뮤니티 시설의 도입 의사결정 프로세스(관리 주체, 예산 승인) 검증 부재. [미확인] 타깃 고객 세그먼트(부유층 가정 / 아파트 단지 / 재활 센터 등)별 니즈 및 구매 전환율 데이터 없음. 현재 단계는 프로토타입 수준으로 시장 검증 이전 상태.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">자본 효율성 및 확장 시나리오</span><span class="dvtag dv-r">투자 유치 전무, 확장 전략 불명</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 'No funding raised yet' 상태에서 2027년 $1M 매출, 2030년 100만 사용자 목표는 자본 조달 계획 및 마일스톤 없이 제시된 비현실적 목표. [미확인] 확장 전략(직접 판매 vs. 유통 파트너십 vs. B2B2C 모델), 지역별 진출 우선순위, 고객 획득 비용(CAC) 대비 LTV 구조가 전혀 설계되지 않음. [미확인] 하드웨어 사업 특성상 높은 초기 자본(재고, 설치 인력, A/S 네트워크) 필요성에 대한 재무 계획 부재. 투자자 관점에서 자본 회수 경로 불투명.</div></div>
+<div class="deep-category-label">Category E — 헬스케어/라이프사이언스</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">임상적 효과성 및 의료 기기 규제 대응</span><span class="dvtag dv-r">치료 효과 주장, 근거 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 'Therapy Pool'이라는 명칭으로 수영 치료(hydrotherapy) 효과를 표방하나, 임상 연구, 사용자 건강 개선 데이터, 의료 전문가 협력 사례가 전무. [미확인] 베트남 의료 기기 규제(Ministry of Health 승인, medical device classification) 대응 여부 불명 — 치료 효과 마케팅 시 법적 리스크 존재. [부분 확인] 수영의 일반적 건강 효과는 알려져 있으나, DBPOOLS 제품의 특정 건강 개선 효과(재활, 만성 질환 관리 등)는 검증되지 않음. 헬스케어 솔루션으로서의 신뢰도 확보 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">헬스케어 생태계 파트너십 및 채널 전략</span><span class="dvtag dv-a">B2C 중심, 의료 연계 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 병원, 재활 센터, 물리치료사, 보험사 등 헬스케어 생태계 파트너십이 전혀 제시되지 않음. [미확인] B2C 직접 판매 모델로는 의료적 신뢰도 구축 및 대규모 확산이 어려움 — B2B2C 모델(의료기관 경유) 고려 필요성 높으나 전략 부재. [미확인] 의료보험 적용 가능성, 정부 건강 프로그램(National Strategy 언급) 연계 구체화 안 됨. 헬스케어 시장 특성상 채널 전략 재설계 필요하나 현재 접근법은 일반 소비재 수준.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-3</span><span class="deep-title">사회적 임팩트 측정 및 ESG 전략</span><span class="dvtag dv-a">의도는 명확, 측정 체계 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 수질 안전, 신체 건강, 세대 간 유대 강화 등 사회적 가치 방향성은 명확히 제시되어 있고, 베트남 국가 전략 연계 의도도 확인됨. [미확인] 임팩트 측정 지표(사용자 건강 개선율, 화학물질 저감 효과, 커뮤니티 참여율 등) 및 데이터 수집 체계가 전무. [미확인] ESG 투자자 또는 임팩트 펀드 유치를 위한 임팩트 리포팅 프레임워크(IRIS+, GIIRS 등) 준비 안 됨. 사회적 가치 실현 의지는 있으나, 투자 유치 및 지속 가능성 입증을 위한 정량적 근거 필요.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[부분 확인] 수영 치료 및 건강 니즈는 베트남에서 장기적으로 성장 가능성이 있음</li>
+<li>[부분 확인] Co-founder Hoàng Văn Quyền의 KOHLER Vietnam 경력은 B2B 판매 및 건강 커뮤니티 네트워크 활용에 도움 가능</li>
+<li>[확인] 2020년 데모 모델 이후 2024년 업그레이드 모델 개발로 기술 반복 개선 의지는 확인됨</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] 실제 고객 검증, 매출, 투자 유치 이력 전무 — 시장 적합성(PMF) 미검증</li>
+<li>[미확인] 제조 원가 구조, 판매 가격, 채널 전략 등 사업 모델의 구체성 부족</li>
+<li>[미확인] 핵심 기술팀 구성 및 도메인 전문성 외부 검증 불가 — 실행 위험 높음</li>
+<li>[미확인] 롯데 PoC 제안 부재로 L-Camp 프로그램과의 연계성 제로</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 중산층 성장에 따른 건강/웰니스 지출 증가 추세</li>
+<li>롯데건설(주거 단지 커뮤니티 시설) 또는 롯데호텔(웰니스 센터)과의 잠재적 협력 가능성</li>
+<li>화학물질 무첨가 소독 기술은 환경 규제 강화 시 차별화 요소 가능</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>고가 하드웨어 제품의 베트남 시장 수용성 불확실 — 가격 민감도 높음</li>
+<li>수영장 설치는 공간, 구조물 하중, 유지보수 부담이 크며 가정용 보급 장벽 높음</li>
+<li>기존 수영장 업체 대비 기술적 우위 및 원가 경쟁력 입증 필요</li>
+<li>자금 조달 이력 없는 상태에서 제조 CAPEX 및 재고 부담 감당 어려움</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">10</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Therapypool은 IoT 기반 역류 수영장 기술로 수영 치료 및 건강 증진이라는 사회적 가치를 추구하나, 핵심 검증 요소가 대부분 부재함. 가장 큰 미검증 가정은 '베트남 중산층 가정 또는 커뮤니티 시설이 고가 역류 수영장 시스템을 실제 구매할 의사와 능력이 있는가'임. 현재 Demo 단계로 실제 고객 거래, 매출, 시장 검증이 없으며, 사업 모델의 단위 경제성(제조 원가, 판매 가격, 마진)이 불명확함. 롯데 PoC 제안이 전무하여 L-Camp 프로그램 적합성이 낮음. 팀 전문성 및 실행 자원이 외부 검증되지 않아 기술 개발 및 상용화 실행력에 의구심이 있음.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">1 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">10 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Dự án Therapypool (DBPOOLS) · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-15 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

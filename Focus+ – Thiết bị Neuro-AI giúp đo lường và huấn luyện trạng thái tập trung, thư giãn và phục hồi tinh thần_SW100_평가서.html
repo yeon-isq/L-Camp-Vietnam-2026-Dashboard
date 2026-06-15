@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Focus+ (Brain-Life) — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Focus+ (Brain-Life)</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City</span>
+          <span class="etag et-ind">Lifestyle & Wellbeing</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Focus+ (Brain-Life)</div>
+        <div class="hero-sub">설립 2 years · </div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">Focus+는 실시간으로 집중도와 이완 상태를 측정하는 Neuro-AI 웨어러블 기기이다. 사용자가 겪는 집중력 저하 및 스트레스 문제를 해결하며, 하드웨어 판매($200 미만/대)와 앱 구독($7-10/월)으로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          뇌파 측정 기반 바이오피드백이 실제 집중력 및 업무 성과 향상으로 이어진다는 인과관계가 대규모로 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">13</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$60K+</div><div class="kpi-desc">부킹 매출 (확정 거래 여부 미확인)</div></div>
+<div class="kpi"><div class="kpi-val">400+ units</div><div class="kpi-desc">소비자 사전 판매 (결제 완료 여부 미확인)</div></div>
+<div class="kpi"><div class="kpi-val">2,500 units</div><div class="kpi-desc">B2B 파이프라인 (계약 단계 미확인)</div></div>
+<div class="kpi"><div class="kpi-val">$3M</div><div class="kpi-desc">Seed 라운드 목표 금액</div></div>
+<div class="kpi"><div class="kpi-val"><$200</div><div class="kpi-desc">하드웨어 판매 단가</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">TAM $33B, SAM $3.3B, SOM $330M over 5년으로 시장 규모를 제시했으나 [부분 확인] — 출처, 세그먼트 분해, 베트남/APAC 특화 데이터 없음. 디지털 멘탈헬스, 뉴로테크, AI 교차 시장이라는 포지셔닝은 설득력 있으나, 경쟁사(Muse, Neurable, NeuroSky 등) 대비 차별화 전략이 IR Deck에 구체적으로 제시되지 않음 [미확인]. 400+ 사전판매와 2,500 유닛 B2B 파이프라인은 잠재 수요를 시사하나, 실제 결제 완료 또는 계약 체결 여부가 불명확해 시장 검증 수준은 제한적 [부분 확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">문제(집중력 저하, 스트레스)-솔루션(뇌파 측정 웨어러블)-수익모델(하드웨어+구독+B2B 라이선스) 구조는 명확함 [확인]. $60K+ 부킹 매출과 30+ B2B 사전주문은 초기 트랙션을 나타내나, '부킹'이 실제 현금 수령인지 계약 단계인지 불명확 [부분 확인]. $3M Seed 목표는 제시되었으나, 기존 투자 유치 이력, 투자자 관심도, 밸류에이션 근거가 전혀 없음 [미확인]. 롯데벤처스 펀드 투자 적합성 판단에 필요한 베트남 시장 특화 전략, Exit 경로, 유사 딜 레퍼런스가 부재해 투자 연계 가능성은 제한적.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">집중력 저하 및 정신 건강 문제는 사회적으로 유의미한 문제이며, Focus+가 인지 기능 향상 및 스트레스 관리에 기여할 잠재력은 있음 [확인]. 그러나 솔루션의 실제 임팩트(예: 업무 생산성 X% 향상, 스트레스 지수 Y 감소 등)를 입증하는 임상 데이터나 사용자 연구 결과가 IR Deck에 전혀 제시되지 않음 [미확인]. 장기적으로 뇌 노화 및 뇌졸중 조기 발견 사례로 확장 가능성을 언급했으나, 현 단계에서는 계획 수준이며 사회적 가치 창출의 규모·깊이·지속성을 확인할 수 없음 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 구성원으로 Dr. Xuan Tran, Dr. Thanh Vi, Dr. Nguyen Dao, Ha Le, Didier Chenneveau, Celine Dinh가 명시되었으나, TEAM DEEP RESEARCH 결과 'Research not performed'로 외부 검증이 전혀 이루어지지 않음 [미확인]. 자기 보고된 박사 학위 및 전문성이 실제 신경과학, 하드웨어 개발, AI 모델링, 규제 인증 등 핵심 영역과 연결되는지 확인 불가 [미확인]. CES Eureka Park, Qualcomm Vietnam Top 15 등 수상 이력은 제시되었으나, 이는 초기 스타트업 지원 프로그램 참여로 팀 역량의 직접적 증거로 보기 어려움. 핵심 인물 의존도, 팀 완성도, 도메인 전문성 모두 검증되지 않아 실행 기반이 불명확함.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">지원서 및 IR Deck 모두에서 롯데와의 연계 가능한 사업 분야, 계열사, PoC 협력 아이디어가 전혀 명시되지 않음 [미확인]. Focus+의 웰빙·멘탈헬스 제품 특성상 롯데 호텔(임직원 웰니스 프로그램), 롯데 백화점/마트(B2C 유통 채널), 롯데 홈쇼핑(라이프스타일 제품 판매) 등과 간접 연계 가능성은 존재하나, 구체적 협력 방식이나 인프라 활용 계획이 부재해 PoC 실현 가능성을 판단할 수 없음. 식품·유통·건설·AI/첨단산업 주요 사업분야와의 직접 연관성도 낮아 롯데 PoC 적합성은 매우 제한적.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 3 + C 3 + D 2 + E 2</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">13</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데와의 협력 아이디어가 지원서에 명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>임상적 효능 검증 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>뇌파 바이오피드백이 실제 집중력 및 업무 성과 향상으로 이어진다는 과학적 근거가 IR Deck에 제시되지 않음 [미확인]. 효능 검증 실패 시 제품 차별화 및 B2B 확장 불가.</td></tr>
+<tr><td>팀 역량 불명확</td><td><span class="rpill-sm rp-h">높음</span></td><td>팀 구성원의 학력, 경력, 도메인 전문성이 외부에서 확인되지 않음 [미확인]. 핵심 인물 의존도 및 실행 기반 취약성 높음.</td></tr>
+<tr><td>롯데 PoC 적합성 낮음</td><td><span class="rpill-sm rp-h">높음</span></td><td>롯데 주요 사업 분야와의 연관성이 낮고, 계열사 연계 전략이 전혀 제시되지 않음 [미확인]. L-Camp 목표와의 정합성 부족.</td></tr>
+<tr><td>하드웨어 CAPEX 및 공급망 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>제조 원가, 공급망 안정성, 품질관리 체계가 IR Deck에 명시되지 않음 [미확인]. 대량 생산 단계에서 원가 상승 또는 품질 이슈 발생 가능.</td></tr>
+<tr><td>규제 불확실성</td><td><span class="rpill-sm rp-m">중간</span></td><td>Focus+가 의료기기로 분류될 경우 베트남 및 수출 시장의 인허가 획득 필요. 규제 경로 및 소요 시간이 불명확 [미확인].</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge active">✓ 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — 하드웨어 + SaaS 하이브리드</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">하드웨어 제조·공급망·품질 리스크</span><span class="dvtag dv-r">높은 불확실성</span><span class="deep-arrow">▾</span></div><div class="deep-body">$200 미만 단가의 뇌파 측정 웨어러블을 양산하려면 PCB, 센서, 배터리, 인증(CE/FDA) 등 복잡한 공급망과 품질 관리가 필수이나, IR Deck에 제조 파트너, 양산 계획, 인증 일정이 전혀 명시되지 않음 [미확인]. 400+ 사전판매 유닛을 실제 출하하기 위한 제조 역량과 자금(Seed $3M 중 35%만 제품개발)이 충분한지 검증 불가 [미확인]. 베트남 또는 중국 ODM/EMS 파트너 확보 여부, 불량률·AS 정책, 하드웨어 마진 구조 등 핵심 실행 요소가 부재해 양산 실패 리스크가 매우 높음 [미확인]. 하드웨어 스타트업 특유의 재고·현금흐름 리스크를 관리할 CFO 또는 운영 전문 인력이 팀 구성에 확인되지 않아 실행 기반이 취약함 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">SaaS 전환 및 구독 유지율(Retention) 검증</span><span class="dvtag dv-a">계획 단계</span><span class="deep-arrow">▾</span></div><div class="deep-body">$7-10/월 구독 모델은 제시되었으나, 실제 유료 전환율(Free-to-Paid), 월간 이탈률(Churn), LTV/CAC 등 SaaS 핵심 지표가 전혀 공개되지 않음 [미확인]. 하드웨어 구매 후 앱 구독을 지속할 인센티브(개인화 AI 피드백, 콘텐츠 업데이트 등)가 명확히 제시되지 않아, 일회성 디바이스 판매에 그칠 가능성이 높음 [부분 확인]. 뉴로피드백 및 종단 추적(longitudinal tracking) 기능은 언급되었으나, 사용자가 매일 헤드웨어를 착용하고 데이터를 쌓을 동기 부여 메커니즘(게이미피케이션, 커뮤니티, 임상 인사이트 등)이 구체화되지 않음 [미확인]. SaaS 비즈니스로서 반복 매출(recurring revenue)을 입증할 초기 데이터가 없어 투자 매력도가 제한적임 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">B2B/B2B2C 파이프라인의 실제 전환 가능성</span><span class="dvtag dv-a">파이프라인 단계</span><span class="deep-arrow">▾</span></div><div class="deep-body">30+ B2B 사전주문과 2,500+ 유닛 파이프라인은 제시되었으나, 구체적 기업명, 계약 조건(PoC vs. 정식 구매), 결제 일정이 전혀 공개되지 않아 파이프라인의 질과 전환 확률을 판단할 수 없음 [미확인]. B2B2C 채널(기업 복지, 교육기관, 웰니스 센터 등)이 언급되었으나, 실제 파트너십 체결 사례나 레퍼런스 고객이 없어 채널 검증 수준은 매우 낮음 [미확인]. 엔터프라이즈 라이선스 모델의 가격 구조, 배포 방식, ROI 제안(예: 직원 생산성 향상 X%) 등이 구체화되지 않아 B2B 확장 전략이 계획 단계에 머물러 있음 [미확인]. $60K+ '부킹' 매출이 실제 현금 수령인지, 계약 체결인지 불명확해 트랙션의 신뢰도가 낮음 [부분 확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">경쟁 우위 및 기술 해자(Moat) 부재</span><span class="dvtag dv-r">차별화 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">Muse(InteraXon), Neurable, NeuroSky 등 기존 뇌파 웨어러블 경쟁사 대비 Focus+만의 차별화된 기술적 우위(센서 정확도, AI 모델 성능, 사용 편의성 등)가 IR Deck에 전혀 제시되지 않음 [미확인]. '독점적 다중모달 뇌 데이터셋 및 AI 모델'을 언급했으나, 현 시점에서 수집된 데이터 규모, 모델 정확도, 임상 검증 결과 등 구체적 증거가 부재해 기술 해자는 미검증 상태 [미확인]. 장기 비전으로 '뇌 노화 및 조기 뇌졸중 발견'을 제시했으나, 이는 의료기기 인증(FDA Class II 이상)과 임상시험이 필수이며, 현 팀 역량과 자금으로 실현 가능성이 매우 낮음 [미확인]. 결과적으로 Focus+는 '또 하나의 EEG 헤드밴드'로 포지셔닝될 리스크가 높으며, 카테고리 리더십을 확보할 명확한 경로가 보이지 않음 [미확인].</div></div>
+<div class="deep-category-label">Category D — 뉴로테크/헬스케어 하드웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">신경과학·의료기기 전문성 및 임상 검증 부재</span><span class="dvtag dv-r">핵심 역량 미확인</span><span class="deep-arrow">▾</span></div><div class="deep-body">팀에 Dr. Xuan Tran, Dr. Thanh Vi, Dr. Nguyen Dao 등 박사급 인력이 명시되었으나, TEAM DEEP RESEARCH 결과 'Research not performed'로 학위, 경력, 신경과학·AI·하드웨어 전문성이 전혀 검증되지 않음 [미확인]. 뇌파 측정의 정확도와 신뢰도는 센서 배치, 신호 처리 알고리즘, 노이즈 제거 등 고도의 전문 지식을 요구하나, 팀의 실제 뉴로테크 R&D 경험이나 논문·특허 실적이 공개되지 않음 [미확인]. 집중도·이완 상태 측정의 임상적 타당성을 입증하는 사용자 연구, IRB 승인 임상시험, 또는 제3자 검증 데이터가 전혀 제시되지 않아 제품의 과학적 근거가 불명확함 [미확인]. 의료기기로 확장 시 필요한 규제 전문가(RA/QA)나 임상 파트너십도 확인되지 않아, 헬스케어 하드웨어로서 핵심 역량이 매우 취약함 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">규제 인증 및 컴플라이언스 리스크</span><span class="dvtag dv-r">높은 불확실성</span><span class="deep-arrow">▾</span></div><div class="deep-body">웨어러블 뇌파 측정 기기는 지역에 따라 의료기기(MDR/FDA) 또는 일반 웰니스 기기로 분류되며, Focus+의 규제 포지셔닝(웰니스 vs. 의료)이 명확하지 않음 [미확인]. 베트남, 미국, EU 등 주요 시장 진출을 위한 인증 계획(CE 마킹, FDA 510(k) 또는 General Wellness 면제 등)이 전혀 제시되지 않아, 제품 출시 및 판매 가능 여부가 불확실함 [미확인]. IR Deck에 법무·IP·파트너십 예산이 5%($150K)만 배정되어 있어, 복잡한 규제 대응과 지적재산권 확보에 필요한 자원이 매우 부족함 [부분 확인]. 규제 미준수 시 제품 리콜, 판매 중단, 법적 책임 등 치명적 리스크가 발생할 수 있으나, 이를 관리할 전문 인력이나 자문단이 팀 구성에 확인되지 않음 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">사용자 경험(UX) 및 일상 사용성(Usability) 검증 부족</span><span class="dvtag dv-a">사용자 검증 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">뇌파 헤드웨어는 착용 불편함, 센서 접촉 불량, 배터리 수명, 데이터 동기화 등 사용성 문제로 인해 사용자 이탈률이 높은 제품군이나, Focus+의 실제 사용자 피드백, 착용 시간, 재사용률 등 UX 지표가 전혀 공개되지 않음 [미확인]. '실시간 집중도 측정'을 내세웠으나, 사용자가 업무·공부 중 헤드웨어를 지속적으로 착용할 동기와 편의성이 검증되지 않아, 제품이 일회성 체험에 그칠 가능성이 높음 [부분 확인]. 400+ 사전판매 유저의 만족도, NPS(Net Promoter Score), 재구매 의향 등 정성·정량 데이터가 부재해 제품-시장 적합성(PMF)을 확인할 수 없음 [미확인]. 앱 UI/UX, 개인화 피드백 품질, 뉴로피드백 훈련 효과 등 핵심 사용자 가치가 구체적으로 제시되지 않아 제품 완성도가 불명확함 [미확인].</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>뇌파 측정 기반 웨어러블이라는 차별화된 제품 컨셉 [확인]</li>
+<li>하드웨어+구독+B2B 라이선스로 구성된 다층적 수익 모델 [확인]</li>
+<li>400+ 소비자 사전판매 및 2,500 유닛 B2B 파이프라인 확보 [부분 확인 — 결제/계약 단계 미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>뇌파 측정의 임상적 효능 및 인지 성과 향상 효과가 검증되지 않음 [미확인]</li>
+<li>팀 구성원의 전문성 및 실행 역량이 외부에서 확인되지 않음 [미확인]</li>
+<li>롯데 계열사 연계 전략 및 PoC 협력 아이디어 부재 [미확인]</li>
+<li>하드웨어 제조 원가, 공급망 안정성, 규제 인증 경로 불명확 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>디지털 멘탈헬스 및 뉴로테크 시장의 빠른 성장세</li>
+<li>B2B2C(기업 웰니스 프로그램) 및 교육 시장 확장 가능성</li>
+<li>장기적으로 뇌 노화, 뇌졸중 조기 발견 등 임상 응용 확대 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Muse, Neurable, NeuroSky 등 선발 뉴로테크 기업과의 경쟁</li>
+<li>하드웨어 사업의 높은 초기 자본 부담 및 재고 리스크</li>
+<li>의료기기 규제 적용 시 인허가 장벽 및 시장 진입 지연 가능성</li>
+<li>뇌파 측정의 정확도 및 사용자 신뢰 확보 실패 리스크</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">13</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Focus+는 뇌파 측정 웨어러블이라는 차별화된 제품과 $60K 부킹 매출, 400+ 사전판매 등 초기 트랙션을 보유하고 있으나, 핵심 가정인 '뇌파 바이오피드백이 실제 인지 성과 향상으로 이어진다'는 임상적 검증이 전혀 제시되지 않았다. 팀 구성원의 전문성이 외부에서 확인되지 않았고, 롯데와의 PoC 협력 아이디어가 부재해 L-Camp 적합성이 낮다. 하드웨어 중심 사업 모델의 CAPEX 부담, 제조 원가 구조, 규제 인증 경로(의료기기 여부)가 불명확하며, $3M Seed 유치 근거도 구체적이지 않아 투자 적합성 판단이 어렵다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">2 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">13 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Focus+ (Brain-Life) · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-15 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

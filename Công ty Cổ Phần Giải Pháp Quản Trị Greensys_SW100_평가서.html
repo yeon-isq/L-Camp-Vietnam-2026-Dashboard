@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Công ty Cổ Phần Giải Pháp Quản Trị Greensys — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Công ty Cổ Phần Giải Pháp Quản Trị Greensys</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City</span>
+          <span class="etag et-ind">Industry & Manufacturing</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Công ty Cổ Phần Giải Pháp Quản Trị Greensys</div>
+        <div class="hero-sub">설립 2019 (over 5 years) · www.greensys.vn</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Greensys는 건설업체를 위한 Oracle 기반 ERP 솔루션이다. 베트남 건설사가 겪는 높은 국제 ERP 도입 비용과 저가 ERP의 기능 부족 문제를 해결하며, 월 구독료 + 구축비 + 컨설팅 수수료로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          18개 기업 구축 및 20,000명 엔지니어 생태계가 실제 존재하며 검증 가능한 매출을 창출하고 있다는 가정이 사실이 아닐 경우 사업 전체가 무효화됨.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">6</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">18+</div><div class="kpi-desc">[미확인] 고객사명·계약 형태·구축 시점 구체적 명시 없음</div></div>
+<div class="kpi"><div class="kpi-val">30+</div><div class="kpi-desc">[미확인] 모듈명 목록만 제시, 실제 운영 데이터 없음</div></div>
+<div class="kpi"><div class="kpi-val">VND 10B</div><div class="kpi-desc">Startup Wheel 2026 목표. 현재 투자 유치 없음</div></div>
+<div class="kpi"><div class="kpi-val">VND 100B</div><div class="kpi-desc">[미확인] 근거 없이 제시된 Pre-money 가치평가</div></div>
+<div class="kpi"><div class="kpi-val">13,000개 기업</div><div class="kpi-desc">[부분 확인] 베트남 건설사 60,000개의 20%로 추정</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[부분 확인] 베트남 건설업체 60,000개 중 13,000개를 타겟으로 설정했으나 SAM/SOM 세분화 없이 단순 20% 곱셈으로 산출. [미확인] 시장 규모 VND 3,800B/년이라 주장하나 근거 자료 없음. [미확인] 경쟁사 대비 차별점으로 'Oracle 기반·AI 지향·End-to-End'를 제시하나 실제 기술 검증 데이터나 고객 사용 사례가 전혀 없어 차별성을 입증할 수 없음. 국제 ERP 대비 가격 우위, 저가 ERP 대비 기능 우위를 주장하나 구체적 비교 데이터나 고객 피드백 부재. 확장 가능성은 구조적으로는 있으나 현재 검증된 PMF 없이는 추정에 불과함.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 매출 데이터 전혀 없음. '18+ 기업 구축'이라 주장하나 고객사명·계약금액·구독 계약 유무가 일체 공개되지 않아 실제 매출 발생 여부 검증 불가. [미확인] 현재 가치평가 VND 100B는 아무 근거 없이 제시됨 (매출 없는 상태에서 100억동 가치평가는 비현실적). [미확인] 수익 모델은 '월 구독 + 구축비 + 컨설팅'이라 설명되나 단가·고객당 평균 계약 규모·해지율 등 구체적 수치가 전혀 없음. [미확인] 투자 유치 이력 없음을 명시했으나, 2019년 설립 후 6년간 외부 투자 없이 18개 기업에 구축했다는 주장의 자금 출처가 불명확. 롯데벤처스 펀드 투자 적합성을 판단할 근거 자체가 존재하지 않음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] IR 자료에 ESG 임팩트 또는 사회문제 해결 관련 언급이 전혀 없음. 신청서의 'ESG Impact & LOTTE Collaboration' 필드도 비어있음. 건설업 ERP 솔루션 자체는 운영 효율화를 통한 간접적 환경 기여 가능성이 있으나, 이에 대한 구체적 설명·측정 방식·임팩트 데이터가 일체 제시되지 않음. 문제 정의는 '베트남 건설사의 관리 시스템 부재'로 명확하나, 이것이 사회적 가치 창출과 어떻게 연결되는지에 대한 서술이 전무. L-Camp의 사회적 가치 평가 기준에 부합하는 요소를 찾을 수 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[확인] 법률정보 플랫폼 LawSoft 창업자 Bùi Tường Vũ가 2019년 Greensys 설립. 20년 법률·IT 경력 보유하나 ERP/제조/건설 도메인 경험 전무. [미확인] IR 자료는 '20년 이상 ERP 경험 보유 팀, 20,000명 엔지니어 생태계'를 주장하나 구체적 인물 정보가 일체 공개되지 않아 검증 불가. [심각한 Red Flag] (1) CTO·기술이사·제품책임자 등 핵심 기술진 정보 전무, (2) LinkedIn 프로필 부재로 현재 활동 검증 불가, (3) 회사 웹사이트에 경영진 정보 미공개, (4) Gia Cát Group 소속이라 주장하나 그룹 실체 불명확. [치명적 공백] ERP 시스템 개발·유지보수를 담당할 기술 리더십이 전혀 확인되지 않음. 팀 투명성 부족으로 실사 불가능.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[미확인] 신청서에 'LOTTE Business Area', 'LOTTE Affiliate', 'Proposed PoC Idea' 필드가 모두 비어있음. 건설업 ERP는 롯데건설과 연계 가능성이 이론적으로 존재하나, 신청자가 이를 전혀 고려하지 않았거나 의도적으로 작성하지 않음. PoC 협력 의지 자체가 확인되지 않으며, 롯데 주요 사업분야(식품·유통·건설·AI)와의 구체적 접점이 제시되지 않음. 현 상태로는 L-Camp의 핵심 목적인 '롯데 계열사와의 실질적 협력'을 기대할 수 없음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 1 + C 1 + D 1 + E 1</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">6</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">미기재</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미기재</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">미제시</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">미제시</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">심각하게 불충분함. 확인된 주요 인물은 법률/미디어 배경의 기업가 1명뿐이며, ERP 시스템 개발, 제조업 프로세스, 산업 관리 등 핵심 도메인에 대한 전문가가 공개되지 않음. 회사 자료에는 '15년 이상 ERP 경험을 가진 전문가팀'이라고 주장하나, 구체적인 인물이나 경력이 전혀 공개되지 않아 검증 불가능. CTO, 기술 책임자, 제품 책임자 등 핵심 역할에 대한 정보가 전무함.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">매우 불완전함. 정상적인 ERP 소프트웨어 회사라면 최소한 (1) CEO/대표이사, (2) CTO/기술이사, (3) 제품 책임자, (4) 영업/마케팅 책임자, (5) 주요 고객 성공 사례 등이 공개되어야 하나, 이 중 어떤 것도 확인되지 않음. 단 1명의 '책임자' 정보만 세무 등록 문서에서 확인됨. 이는 매우 비정상적이며, 실제 운영 중인 회사인지 의문이 제기됨.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">매우 낮음. 2019년 설립된 ERP 솔루션 회사임에도 (1) 경영진 정보 미공개, (2) LinkedIn 프로필 부재, (3) 확인 가능한 고객 사례나 레퍼런스 부족, (4) 기술팀 구성 불명확, (5) 웹사이트의 정보가 매우 일반적이고 구체성 부족. 회사가 주장하는 '15년 ERP 경험'과 2019년 설립 시점 간의 불일치도 설명되지 않음. Gia Cát Group 소속이라고 하나 이 그룹의 실체와 다른 포트폴리오 회사들도 확인되지 않음. 주의: 동일 이름의 다른 Greensys 회사(greensys.io - 물류 플랫폼, 창업자 Diep Nguyen/Duyên Lê)와 혼동 가능성 있음.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 공백은 (1) **기술 리더십의 완전한 부재**: CTO, 수석 개발자, 시스템 아키텍트 등 ERP 시스템을 실제로 개발하고 유지보수할 기술 책임자에 대한 정보가 전무함, (2) **도메인 전문성 결여**: 제조업, 건설업 등 타겟 산업의 프로세스를 이해하는 산업 전문가가 확인되지 않음, (3) **팀 구성의 불투명성**: 개발팀, 컨설팅팀, 지원팀 등의 규모나 구성에 대한 정보가 전혀 없음, (4) **검증 가능한 실적 부재**: 고객 사례, 구현 프로젝트, 파트너십 등 회사의 실제 활동을 증명할 수 있는 공개 정보가 거의 없음. 이는 투자 실사에서 매우 심각한 위험 신호(red flag)임.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Greensys Vietnam founding team · Công ty Cổ Phần Giải Pháp Quản Trị Greensys founders · greensys.vn CEO founder · Bùi Tường Vũ LinkedIn · Bùi Tường Vũ Greensys LinkedIn · Diep Nguyen LinkedIn Greensys Vietnam</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Bùi Tường Vũ</div><div class="member-role">책임자 (Person in Charge / 대표)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없어 현재 활동 및 네트워크 검증 불가</span><span class='flag-item'>⑊ ERP/제조업/산업 분야에 대한 직접적인 경력이나 기술 배경이 확인되지 않음</span><span class='flag-item'>⑊ Greensys 회사와의 구체적인 역할 및 지분 관계가 명확하지 않음 (등록 문서에만 '책임자'로 기재)</span><span class='flag-item'>⑊ 회사 웹사이트(greensys.vn)에 경영진 정보가 전혀 공개되지 않아 투명성 부족</span><span class='flag-item'>⑊ Gia Cát Group과의 관계 및 Greensys 설립 배경이 불명확함</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>학사/경제학</td><td>ĐH KINH TẾ TPHCM (호치민 경제대학교)</td><td>정보 없음</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr><tr><td>학위/법학</td><td>Đại học Luật Tp. Hồ Chí Minh (호치민 법과대학교)</td><td>정보 없음</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Báo Pháp Luật (법률신문) - 중앙</td><td>기자 (Journalist/Reporter)</td><td>2003년 이전</td><td style="font-size:11px;">법률 전문 기자로 경력 쌓음. 법률 문서 시스템의 복잡성을 인식하고 이를 해결하기 위한 아이디어 착안</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Pháp Luật TPHCM (호치민 법률신문)</td><td>기자</td><td>2003년 이전</td><td style="font-size:11px;">법률 미디어 분야에서 경력 지속</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>THƯ VIỆN PHÁP LUẬT (법률 도서관/LawSoft)</td><td>설립자 및 이사 (Founder & Director)</td><td>2003년 10월 - 현재</td><td style="font-size:11px;">법률 문서 온라인 검색 서비스 플랫폼 창업. 베트남 최초의 법률 데이터베이스 온라인 서비스 제공 업체</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>LawSoft Corp</td><td>회장 (Chairman)</td><td>2003년 10월 - 현재 (22년 이상)</td><td style="font-size:11px;">법률 정보 기술 솔루션 회사 경영</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Công ty Cổ Phần Giải Pháp Quản Trị Greensys</td><td>책임자 / 대표 이사급</td><td>2019년 5월 - 현재</td><td style="font-size:11px;">ERP 솔루션 회사. Gia Cát Group의 일원으로 기업 경영 시스템 컨설팅 및 구축 담당</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 법률 및 IT 분야에서 20년 이상의 경력을 보유하고 있으며, 법률 정보 기술 플랫폼(LawSoft/THƯ VIỆN PHÁP LUẬT)을 성공적으로 창업한 경험이 있음. 그러나 제조업 또는 산업 분야에 대한 직접적인 경험이나 ERP 시스템 개발/구현에 대한 기술적 배경은 확인되지 않음. 기업가 정신과 IT 솔루션 비즈니스 경험은 있으나, Greensys가 타겟하는 제조/산업 분야의 도메인 전문성은 제한적으로 보임. ERP는 법률 정보 시스템과는 완전히 다른 기술 스택과 도메인 지식을 요구함.</div><div class="ma-overall"><strong>종합 평가:</strong> 법률 및 IT 분야의 성공적인 기업가이지만, Greensys가 영위하는 ERP/제조업 솔루션 분야와의 직접적 연관성이 약함. 온라인 정보 확인이 매우 제한적이어서 실제 역할과 전문성을 검증하기 어려움. 과거 LawSoft 창업 성공 경험은 긍정적이나, 완전히 다른 산업 영역(ERP/제조)으로의 전환에 대한 근거나 팀 구성이 불투명함.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 실체 및 기술 역량 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] CTO·기술이사 등 핵심 인력 정보 전무. IR 주장과 실제 팀 구성 간 불일치 가능성 높음. 투자 실사 시 치명적 장애 요인.</td></tr>
+<tr><td>매출 및 고객 트랙션 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] '18개 기업 구축'이라는 주장의 구체적 증거 없음. 고객사명·계약금액·구독 계약 유무 일체 비공개. 실제 매출 발생 여부 확인 불가.</td></tr>
+<tr><td>창업자 도메인 미스매치</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 법률 IT 배경 창업자가 ERP/건설 분야로 전환. 해당 산업 전문성 부재 시 제품-시장 적합성 달성 어려움.</td></tr>
+<tr><td>가치평가 근거 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 매출 없는 상태에서 Pre-money VND 100B 제시. 투자자 관점에서 비현실적이며 협상 시작점으로도 부적절.</td></tr>
+<tr><td>롯데 PoC 의지 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 신청서 PoC 관련 필드 전부 비어있음. L-Camp의 핵심 가치인 롯데 계열사 협력에 대한 이해 또는 관심이 없는 것으로 판단됨.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">MVP 검증 및 초기 고객 확보 현황</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] '18+ 기업 구축'을 주장하나 고객사명·계약금액·구독 계약 유무가 일체 공개되지 않아 실제 구축 여부 검증 불가능. [미확인] '200+ 모듈, 30+ 프로세스'를 강조하나 실제 고객 사용 사례나 피드백 데이터가 전혀 없음. [미확인] Oracle 기반 ERP라는 기술적 차별성을 주장하나 실제 시스템 스크린샷, 기술 검증 자료, 고객 만족도 등 구체적 증거가 부재. [심각] 2019년 설립 후 6년간 운영했으나 검증 가능한 PMF 데이터가 전무하여 제품 시장 적합성을 판단할 수 없음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">구독 경제 모델의 실현 가능성</span><span class="dvtag dv-r">근거 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] '월 구독료 + 구축비 + 컨설팅 수수료' 3단계 수익 모델을 제시하나 단가·고객당 평균 계약 규모·MRR·ARR 등 구체적 수치가 전혀 없음. [미확인] 건설업 ERP 특성상 구축비 중심 모델일 가능성이 높으나 반복 매출(recurring revenue) 비중이 불명확. [미확인] 고객 해지율(churn rate), LTV, CAC 등 SaaS 핵심 지표가 일체 공개되지 않아 비즈니스 지속가능성 평가 불가. [우려] IR 자료에 매출 데이터가 전혀 없어 실제 수익 모델이 작동하는지 검증할 수 없음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">경쟁 우위 및 기술적 해자</span><span class="dvtag dv-r">차별성 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] '국제 ERP 대비 가격 우위, 저가 ERP 대비 기능 우위'라는 포지셔닝은 명확하나 구체적 가격 비교 데이터나 기능 벤치마크가 부재. [미확인] 'AI 지향·Oracle 기반·End-to-End' 차별점을 주장하나 실제 AI 기능 구현 수준, Oracle 라이선스 전략, 타 경쟁사 대비 우위를 증명할 자료가 없음. [미확인] 베트남 건설업 특화 워크플로우 커스터마이징 능력을 강조하나 실제 구현 사례나 고객 검증이 없음. [심각] 기술적 해자를 뒷받침할 특허, 독점 데이터, 핵심 기술진 정보가 전무하여 진입장벽이 낮을 것으로 판단됨.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">시장 규모 추정의 타당성</span><span class="dvtag dv-a">과대 추정 의심</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 베트남 건설업체 60,000개 존재는 합리적이나, 13,000개를 타겟으로 설정한 근거가 단순 20% 곱셈에 불과. [미확인] 시장 규모 VND 3,800B/년(약 $158M) 주장하나 출처나 산정 방식이 전혀 제시되지 않음. [미확인] SAM/SOM 세분화 없이 TAM에서 직접 매출 목표를 도출하여 실현 가능성 평가 불가. [우려] 베트남 건설업 수익 VND 760,000B를 언급하나 이 중 ERP 시장 규모로의 전환 논리가 부재하여 시장 기회의 실질성을 확인할 수 없음.</div></div>
+<div class="deep-category-label">Category E — 제조/산업</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">산업 특화 도메인 전문성</span><span class="dvtag dv-r">핵심 역량 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 창업자 Bùi Tường Vũ는 법률정보 플랫폼 LawSoft 출신으로 20년 법률·IT 경력 보유. [미확인] 그러나 ERP/제조/건설 도메인 경험은 전무하며, 건설업 특화 ERP 개발에 필요한 산업 지식 보유 여부 불명. [심각] IR 자료는 '20년 이상 ERP 경험 보유 팀, 20,000명 엔지니어 생태계'를 주장하나 구체적 인물 정보가 일체 공개되지 않아 검증 불가. [치명적] CTO·기술이사·제품책임자 등 핵심 기술진 정보가 전무하여 Oracle 기반 ERP 시스템을 누가 개발·유지보수하는지 확인 불가능.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-3</span><span class="deep-title">운영 효율화 및 확장성</span><span class="dvtag dv-r">실행 증거 없음</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] '99% 자동화된 회계 처리, 50+ 관리 대시보드' 등 효율화 주장이 있으나 실제 고객사에서의 운영 데이터나 효율 개선 사례가 전혀 없음. [미확인] 'End-to-End 통합'을 강조하나 기존 건설사 레거시 시스템과의 통합 능력, 구축 기간, 커스터마이징 범위 등 실행 세부사항 부재. [미확인] Oracle 기반 아키텍처의 확장성은 이론적으로 타당하나, 18개 기업 구축 경험에서 도출된 베스트 프랙티스나 표준화 수준을 확인할 수 없음. [우려] 2019년 설립 후 6년간 외부 투자 없이 18개 기업 구축 주장의 자금 출처가 불명확하여 실제 운영 규모에 의문.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-4</span><span class="deep-title">롯데 건설/제조 사업부와의 시너지</span><span class="dvtag dv-r">협력 의지 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 신청서의 'LOTTE Business Area', 'LOTTE Affiliate', 'Proposed PoC Idea' 필드가 모두 비어있어 롯데와의 협력 의지 자체가 확인되지 않음. [미확인] 롯데건설과의 잠재적 연계 가능성이 이론적으로 존재하나 신청자가 이를 전혀 고려하지 않았거나 의도적으로 작성하지 않음. [우려] 건설업 ERP 솔루션임에도 불구하고 롯데 계열사와의 PoC 계획이 없어 L-Camp 핵심 목적인 '실질적 협력 창출'을 기대할 수 없음. [심각] PoC 협력 의지 부재는 프로그램 참여 동기의 진정성에 대한 의문을 제기함.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[부분 확인] 베트남 건설업 ERP 시장의 구조적 공백(국제 ERP 고비용·저가 ERP 기능 부족)을 정확히 식별함</li>
+<li>[확인] 창업자 Bùi Tường Vũ는 LawSoft 플랫폼 성공 경험 보유 (법률 IT 분야 20년)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[확인] 팀 투명성 치명적 부족: CTO·기술이사·제품책임자 등 핵심 인력 정보 전무, LinkedIn 프로필 부재</li>
+<li>[미확인] 매출·고객사·계약 데이터가 일체 공개되지 않아 실제 사업 운영 여부 검증 불가</li>
+<li>[확인] 창업자의 ERP/건설 도메인 경험 부재 — 법률 IT와 ERP는 완전히 다른 기술 스택</li>
+<li>[미확인] 2019년 설립 후 6년간 외부 투자 없이 운영되었다는 자금 조달 경로 불명확</li>
+<li>[미확인] 롯데 PoC 의지 전무 — 신청서 관련 필드 모두 비어있음</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 건설업 디지털화 수요 증가 (정부 정책 지원, 산업 성장률 8%/년)</li>
+<li>Oracle 기반 기술 스택은 대기업 고객 확장 시 신뢰도 제공 가능성</li>
+<li>롯데건설·롯데글로벌로지스와의 PoC 연계 가능성 (단, 현재 미제시)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>SAP, Oracle NetSuite 등 글로벌 ERP 벤더의 베트남 시장 공략 강화</li>
+<li>로컬 경쟁사 (Misa, Fast, Bravo 등)의 시장 점유율 확대</li>
+<li>팀 검증 불가로 인한 투자자 신뢰 확보 실패 위험</li>
+<li>고객사 정보 미공개로 레퍼런스 세일즈 불가능</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">6</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">검증 가능한 트랙션과 팀 투명성이 치명적으로 부족한 사례. 가장 큰 미검증 가정은 '18개 기업 구축 및 20,000명 엔지니어 생태계'라는 주장이 실제 존재하며 매출을 창출하고 있다는 것인데, 고객사명·계약금액·기술팀 구성·경영진 신원이 일체 공개되지 않아 사실상 검증 불가능하다. 2019년 설립 후 6년간 외부 투자 없이 운영되었다는 점과 법률 IT 배경 창업자가 ERP 사업을 영위한다는 점의 정합성도 의문이다. 현재 가치평가 VND 100B는 근거 없는 수치이며, 롯데와의 PoC 의지도 전혀 확인되지 않아 L-Camp 적합성이 매우 낮다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">1 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">6 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Công ty Cổ Phần Giải Pháp Quản Trị Greensys · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-15 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

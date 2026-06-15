@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BioWraps Solutions JSC — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">BioWraps Solutions JSC</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City</span>
+          <span class="etag et-ind">Social Impact & Sustainability</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">BioWraps Solutions JSC</div>
+        <div class="hero-sub">설립 2025년 10월 (법인 설립 기준) · https://biowrapsvietnam.com/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">BioWraps는 오렌지 껍질 등 농업 폐기물을 원료로 생분해성 포장재를 제조하는 회사이다. B2B 고객이 겪는 플라스틱 포장재의 환경 오염 문제를 해결하며, 포장재 판매 수익으로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          과일 껍질 기반 바이오필름이 실제 산업용 포장재로서 내구성·경제성·공급 안정성을 갖춘다는 가정이 아직 고객 재구매 데이터로 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">10</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$90K</div><div class="kpi-desc">2025년 1~5월 자체 보고, 법인 설립 이전이라 검증 불가 [미확인]</div></div>
+<div class="kpi"><div class="kpi-val">11개국</div><div class="kpi-desc">유럽·아시아 등 협상 중 언급, 실제 거래액 미확인 [부분 확인]</div></div>
+<div class="kpi"><div class="kpi-val">5개</div><div class="kpi-desc">EVSDA 2025, Startup Express Top 10 등 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">$1.6M</div><div class="kpi-desc">진행 중 (Seed 라운드) [부분 확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">시장 규모 및 타겟 세그먼트가 명확하지 않음 [미확인]. IR에서 '플라스틱 대체' 시장이라는 광범위한 TAM만 제시하고, 베트남 또는 APAC 내 생분해성 포장재의 구체적 SAM/SOM, 고객 세그먼트(식품·유통·화장품 등 어느 산업인지), 단가 및 목표 점유율 데이터가 전혀 없음. '11개국 진출' 주장은 있으나 각국 매출 규모·계약 건수·재구매 고객 수가 없어 실제 시장 견인력 검증 불가 [미확인]. 경쟁사 분석 부재 - 생분해성 플라스틱·종이 포장재·전분 기반 필름 등 기존 대체재와의 차별화 근거가 '오렌지 껍질 활용'뿐이며, 가격 경쟁력·내구성 비교 데이터 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">비즈니스 모델의 핵심 수익성 지표가 검증되지 않음 [미확인]. IR에서 $90K 매출을 주장하나 법인 설립이 2025년 10월이므로 해당 매출이 어떤 법적 주체에서 발생했는지 불명확. 매출 구성(제품별·고객별·국가별), 객단가, 재구매율, 총이익률, 단위 경제 데이터 전혀 없음. '6개 지역 12개 고객' 언급도 고객명·계약 규모·재구매 여부 미확인으로 신뢰도 낮음 [미확인]. 생산 원가 구조 부재 - 오렌지 껍질 조달 비용, 셀룰로오스 추출 수율, 포장재 제조 단가, 마진 구조 전혀 설명 없어 수익성 판단 불가. 투자 적합성: Seed $1.6M 목표이나 사용처·마일스톤·밸류에이션 근거 없음 [부분 확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">사회적 가치는 명확하게 정의됨 [확인]. '농업 폐기물(과일 껍질) → 생분해성 포장재'라는 순환경제 모델이 구체적이며, 플라스틱 오염 감소 + 농업 부산물 활용이라는 이중 임팩트가 확인됨. 제품 스펙(6~12개월 생분해, 20MPa 인장 강도, 57kg 하중)이 명시되어 기술적 진정성이 있음 [확인]. EVSDA 2025 수상은 독립적 기관의 ESG 인정 신호 [확인]. 그러나 임팩트 규모·깊이·지속성에 대한 정량 데이터 부족 - 현재까지 대체한 플라스틱 총량(톤), CO2 감축량, 폐기물 재활용량 등 측정 지표 없음 [미확인]. 장기 지속성도 불확실 - 대규모 공급망 확보, 가격 경쟁력, 고객 채택률이 검증되지 않아 임팩트 확장 가능성 제한적.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 전문성과 투명성에 심각한 공백 [미확인]. 외부 조사 결과, CEO Trịnh Công Qui는 약학 학사 출신으로 생물학 기초는 있으나 재료공학·화학공학·포장재 산업 경력 전혀 없음. LinkedIn 부재로 경력 검증 불가 [미확인]. Co-Founder Trần Thị Thanh Thuý는 법학 전공 학생으로 기술 및 제조업과 무관하며 실무 경험 전무 [확인]. IR에 언급된 'Senior Technical Advisor PhD. Le Thi Hong Thuy'와 'R&D Engineers'는 이름·배경·LinkedIn 등 검증 가능 정보 전혀 없음 [미확인]. 핵심 기술 인력(CTO, 재료공학 박사, 생산 엔지니어)의 존재 자체가 불명확하여 제품 개발 주체 의문. 수상 실적은 있으나 이는 창업 경진대회 중심이며 실제 산업 경험·기술 전문성을 대체하지 못함. 팀 투명성 부족은 투자 적합성에 치명적 리스크.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">롯데 PoC 연계성 전혀 없음 [미확인]. Application에서 'Relevant LOTTE Business Area', 'LOTTE Affiliate', 'Proposed PoC Idea' 모두 미기재. IR에도 롯데 관련 언급 전혀 없음. 식품·유통 포장재로서 롯데마트·롯데백화점·롯데GRS 등과 협력 가능성은 이론적으로 있으나, 구체적 활용 시나리오(어느 계열사의 어떤 제품군에 어떻게 적용할지)가 전혀 제시되지 않음. 생분해성 포장재가 롯데 식품·유통 계열사의 실제 운영 환경(온도·습도·물류 조건)과 경제성 요구를 충족하는지 검증 불가. PoC 실행 가능성 낮음 - 롯데 파트너십에 대한 사전 이해나 준비 없이 지원한 것으로 판단됨.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 4 + D 1 + E 1</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">10</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">미기재</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미기재</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">미기재</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">팀의 도메인 커버리지는 불완전함. 약학 배경의 CEO와 법학 배경의 공동창업자로 구성되어 있으나, 생분해성 포장재 산업의 핵심 역량인 재료공학, 화학공학, 생산/제조 엔지니어링, 공급망 관리, 영업/마케팅 전문가가 부재함. 천연 소재 추출에 대한 기초 지식은 있으나 산업화 및 대량 생산에 필요한 기술 전문성이 크게 부족. 웹사이트에서 CTO, 국제협력 담당자, 물류 담당자 등을 언급하나 구체적 정보 없음.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">팀 구성이 매우 불완전함. 공개된 정보로는 두 명의 공동 창업자만 확인 가능하며, 둘 다 포장재 산업의 핵심 기술 분야와 직접적 관련이 없는 배경 보유. 기술 개발을 주도할 CTO나 엔지니어링 팀, 생산 및 품질 관리 전문가, 영업 및 비즈니스 개발 리더 등 핵심 인력에 대한 정보가 전혀 없음. 웹사이트에서 팀원을 언급하지만 이름이나 배경 정보 미공개. 실제 기술 개발 및 사업 실행을 누가 담당하는지 불명확하여 신뢰성 저하.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">수상 실적과 국제적 인지도는 인상적이나 팀 투명성과 검증 가능성은 매우 낮음. LinkedIn 프로필 부재로 경력 확인 불가, 구체적인 업무 경험이나 기술적 전문성 검증 어려움. 창업자들의 실제 역량보다는 대학 인큐베이터 지원과 컴피티션 수상에 크게 의존한 것으로 보임. 2025년 10월 법인 설립로 극초기 단계이며, 실제 매출이나 고객 검증 데이터 부재. 기술적 타당성과 상업적 실행력에 대한 독립적 검증 필요.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 공백은 핵심 기술 전문성과 산업 실행 경험의 부재임. 생분해성 바이오필름 개발, 대규모 생산 공정 설계, 품질 관리, 공급망 구축 등 포장재 산업의 핵심 역량을 보유한 인력이 확인되지 않음. 또한 팀의 투명성 부족 - LinkedIn 프로필 없음, 핵심 팀원 정보 미공개, 검증 가능한 경력 부재 - 이 심각한 우려사항임. 학계 또는 산업계의 기술 자문위원, 경험 많은 COO나 CTO, 포장재 산업 전문가의 영입이 시급함.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: BioWraps Solutions JSC founding team · biowrapsvietnam.com founders · Trịnh Công Qui LinkedIn · Trần Thị Thanh Thuý LinkedIn · Trịnh Công Qui BioWraps Nguyen Tat Thanh University · Trần Thị Thanh Thuý BioWraps Nguyen Tat Thanh University</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Trịnh Công Qui</div><div class="member-role">Founder & CEO (법적 대표이사 겸 총괄 책임자)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없어 전문 경력 검증 불가</span><span class='flag-item'>⑊ 약학 전공에서 포장재 산업으로의 전환 - 도메인 관련성 제한적</span><span class='flag-item'>⑊ 이전 업무 경력이나 관련 산업 경험에 대한 정보 부재</span><span class='flag-item'>⑊ 회사가 2025년 10월에 설립되어 매우 초기 단계 (6개월 미만)</span><span class='flag-item'>⑊ 수상 실적은 우수하나 실제 매출이나 시장 견인력에 대한 구체적 정보 없음</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>약학 학사/약학 (Pharmacy)</td><td>Nguyen Tat Thanh University (NTTU)</td><td>졸업년도 미확인</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Q Green Trading Company Ltd.</td><td>CEO 겸 설립자</td><td>2023년 이전부터</td><td style="font-size:11px;">BioWraps 프로젝트의 전신인 'Startup Q GREEN'을 2023년에 창업했으며, 이후 BioWraps Solution JSC로 법인 전환 (2025년 10월 설립)</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 약학 학위 보유로 생물학적 소재 및 화학 공정에 대한 기초 지식은 있으나, 생분해성 포장재나 재료 공학 분야의 직접적인 전문성은 확인되지 않음. 오렌지 껍질에서 에센셜 오일을 추출하는 초기 연구에서 생분해성 포장재 개발로 전환한 점에서 도메인 전환이 있었음. 약학 배경은 천연 화합물 추출 및 항균 특성 이해에 일부 도움이 될 수 있으나, 포장재 산업의 핵심 역량(재료 공학, 산업 생산, 공급망)과는 거리가 있음.</div><div class="ma-overall"><strong>종합 평가:</strong> 높은 수상 실적과 국제적 인지도를 확보한 창업가이나, 전문 경력 및 도메인 전문성 검증이 제한적임. 약학 배경은 바이오 소재에 대한 이해를 제공하지만 포장재 제조 및 상업화에 필요한 엔지니어링, 생산, 공급망 관리 경험이 부족해 보임. 수상 경력은 인상적이나 실제 비즈니스 실행력과 기술적 깊이는 추가 검증 필요. LinkedIn 부재로 경력 투명성이 낮음.</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Trần Thị Thanh Thuý</div><div class="member-role">Co-Founder (공동 창업자)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없어 전문 경력 검증 불가</span><span class='flag-item'>⑊ 법학 전공으로 기술 및 제조 산업과 관련성 매우 낮음</span><span class='flag-item'>⑊ 학생 신분이거나 졸업 직후로 추정되어 실무 경력 거의 없음</span><span class='flag-item'>⑊ 구체적인 역할이나 기여 내용에 대한 정보 부재</span><span class='flag-item'>⑊ 이전 업무 경험이나 창업 경험 확인 불가</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>법학 재학 또는 학사/법학 (Law)</td><td>Nguyen Tat Thanh University (NTTU)</td><td>졸업 여부 미확인 (학생으로 언급됨)</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>BioWraps Solution JSC</td><td>공동 창업자</td><td>2023년~현재</td><td style="font-size:11px;">Trịnh Công Qui와 함께 2023년에 'Startup Q GREEN' 공동 창업. 법학 전공 배경으로 법률, 규제, 파트너십 관련 역할 추정</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 법학 전공으로 기술, 제조, 지속가능성 포장재 산업과의 직접적 연관성은 매우 낮음. 법률 및 규제 준수, 지적재산권, 파트너십 계약 등 법무 영역에서 기여 가능하나 제품 개발, 생산, 기술 혁신의 핵심 영역과는 거리가 멂. 아직 학생이거나 졸업 직후로 보여 실무 경험이 극히 제한적일 것으로 판단됨.</div><div class="ma-overall"><strong>종합 평가:</strong> 법학 전공 배경의 공동 창업자로, 기술 중심 스타트업에서 법무 및 규제 지원 역할로 추정됨. 그러나 실무 경력, 전문성, 구체적 기여 내용이 전혀 확인되지 않아 실질적 역량 평가 불가능. 학생 신분으로 창업한 것으로 보이며, 핵심 기술 개발이나 사업 운영보다는 보조적 역할을 수행하고 있을 가능성이 높음. 추가 검증 필요.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>매출 및 트랙션 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>$90K 매출 주장이 법인 설립 시점(2025년 10월)과 맞지 않으며, 고객명·계약서·재구매 데이터 전혀 없음. '11개국 진출'도 구체적 거래 내역 없이 협상 수준으로 추정됨 [미확인].</td></tr>
+<tr><td>팀 전문성 및 투명성 부족</td><td><span class="rpill-sm rp-h">높음</span></td><td>CEO는 약학 배경으로 포장재 산업 경험 없고, 기술 책임자·CTO 정보 전혀 검증 안 됨. LinkedIn 부재로 경력 확인 불가. 제품 개발을 실제로 누가 주도하는지 불명확 [미확인].</td></tr>
+<tr><td>수익성 및 단위 경제 불명확</td><td><span class="rpill-sm rp-h">높음</span></td><td>생산 원가, 재료 수율, 제조 단가, 객단가, 총이익률 등 경제성 데이터 전혀 없음. 대량 생산 시 가격 경쟁력 확보 가능 여부 검증 불가 [미확인].</td></tr>
+<tr><td>공급망 안정성</td><td><span class="rpill-sm rp-m">중간</span></td><td>오렌지 껍질 등 농업 폐기물의 안정적 대량 확보, 품질 균일성 유지 방법 설명 없음. 계절성, 지역 편차 관리 전략 부재 [미확인].</td></tr>
+<tr><td>롯데 PoC 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>Application에서 롯데 관련 항목 전혀 미기재. IR에도 롯데 언급 없음. L-Camp 지원 목적 및 적합성 불분명 [미확인].</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category C — Social Impact & Sustainability Ventures</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-1</span><span class="deep-title">Impact Measurement & Verification Rigor</span><span class="dvtag dv-a">Product exists but impact unproven</span><span class="deep-arrow">▾</span></div><div class="deep-body">BioWraps의 사회적 가치 명제는 명확하다 - 농업 폐기물을 생분해성 포장재로 전환하는 순환경제 모델 [확인]. 제품 스펙(6~12개월 생분해, 20MPa 인장강도)도 명시되어 있다 [확인]. 그러나 실제 임팩트 규모를 증명하는 정량 데이터가 전혀 없다 - 지금까지 대체한 플라스틱 총량(톤), CO2 감축량, 재활용 폐기물량 등 측정 지표 부재 [미확인]. $90K 매출 주장에도 불구하고 법인 설립이 2025년 10월이라 매출 발생 주체와 시기가 불명확하며, '11개국 진출' 주장도 국가별 매출·계약 건수 등 검증 가능한 근거 없음 [미확인]. EVSDA 2025 수상은 긍정적이나 실제 시장 채택률과 임팩트 확장성은 아직 입증되지 않았다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-3</span><span class="deep-title">Supply Chain & Production Scalability for Impact</span><span class="dvtag dv-r">Critical supply chain gaps</span><span class="deep-arrow">▾</span></div><div class="deep-body">순환경제 모델의 핵심인 원료 공급망 확보 현황이 전혀 제시되지 않았다 [미확인]. IR에서 '농민·공급업체로부터 오렌지 껍질 수집'이라는 프로세스만 도식화했을 뿐, 실제 확보된 공급처 수, 월간 원료 조달량, 계약 조건, 수율(껍질 → 셀룰로오스 → 포장재 전환률)이 전혀 없다. 제조 단가 구조와 총이익률도 미공개로 가격 경쟁력 판단 불가 [미확인]. '6개 지역 12개 고객' 언급은 있으나 고객명, 계약 규모, 재구매율이 없어 실제 공급 능력 검증 안 됨 [미확인]. 생산 설비 현황(자체 공장 vs 위탁생산), 연간 생산 캐파시티, 품질 관리 시스템(QC process) 관련 정보 전무로 스케일업 가능성 매우 불투명하다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-4</span><span class="deep-title">Price Competitiveness & Market Adoption Barriers</span><span class="dvtag dv-r">No evidence of commercial viability</span><span class="deep-arrow">▾</span></div><div class="deep-body">생분해성 포장재 시장에서 가장 중요한 가격 경쟁력 데이터가 전혀 없다 [미확인]. 기존 플라스틱 포장재 대비 가격 프리미엄, 종이·전분 기반 필름 등 기존 친환경 대체재와의 가격 비교, 고객의 WTP(willingness to pay) 분석이 부재하다. '국제 표준 품질'과 'Higher elasticity and water resistance' 주장은 있으나 구체적 성능 벤치마킹 데이터와 제3자 인증서가 없어 신뢰성 낮음 [부분 확인]. B2B 고객이 플라스틱에서 전환하기 위해서는 (1) 동등 이상 성능, (2) 경제성, (3) 공급 안정성이 필수인데, 셋 모두 검증되지 않았다. '11개국 진출' 주장도 각국 매출 규모·재구매 고객 수가 없어 실제 시장 채택률을 알 수 없다 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-5</span><span class="deep-title">Long-term Viability & Exit Strategy for Impact Ventures</span><span class="dvtag dv-r">Sustainability model unclear</span><span class="deep-arrow">▾</span></div><div class="deep-body">Seed $1.6M 조달 목표를 제시했으나 자금 사용처, 마일스톤, 밸류에이션 근거가 전혀 없다 [부분 확인]. 임팩트 벤처가 장기 지속하려면 (1) 수익성 있는 비즈니스 모델, (2) 명확한 성장 경로, (3) 임팩트와 재무수익 균형이 필요한데 모두 불명확하다. 매출 구성(제품별·고객별·국가별), 객단가, 재구매율, 총이익률 등 핵심 경제성 지표가 전무하여 자생 가능성 판단 불가 [미확인]. Exit 시나리오도 없다 - 생분해성 포장재 시장의 M&A 트렌드, 잠재 acquirer(대형 패키징 업체, 화학 기업), IPO 가능성 등 투자 회수 경로가 제시되지 않았다. 사회적 가치만으로는 벤처캐피털 투자 매력도가 낮으며, 지속가능한 임팩트 창출을 위한 재무적 기반이 취약하다.</div></div>
+<div class="deep-category-label">Category E — Manufacturing & Hardware / Deep-Tech</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">Technology Validation & IP Ownership</span><span class="dvtag dv-r">Unverified technology claims</span><span class="deep-arrow">▾</span></div><div class="deep-body">IR에서 'Cellulose extraction and processing'이라는 기술을 언급하지만 구체적인 공정 설명, 수율 데이터, 독자 개발 여부가 전혀 없다 [미확인]. 'Senior Technical Advisor PhD. Le Thi Hong Thuy'와 'R&D Engineers'를 언급하나 LinkedIn, 논문, 경력 등 검증 가능한 정보가 전혀 없어 실존 여부조차 불확실하다 [미확인]. 특허 출원·등록 현황, 영업비밀 보호 전략, 기술 라이선스 계약 등 IP 관련 정보 부재 [미확인]. 외부 조사 결과 CEO는 약학 학사 출신으로 재료공학·화학공학 경력이 없고, Co-Founder는 법학 전공 학생으로 기술 개발과 무관하다 [확인]. 핵심 기술 인력(CTO, 재료공학 박사, 생산 엔지니어)의 존재가 불명확하여 제품 개발 주체에 심각한 의문이 제기된다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">Manufacturing Readiness & Capital Efficiency</span><span class="dvtag dv-r">Production capability unproven</span><span class="deep-arrow">▾</span></div><div class="deep-body">생산 설비 현황이 전혀 공개되지 않았다 - 자체 공장 보유 여부, 위탁생산 파트너, 생산 라인 수, 연간 생산 캐파시티, 설비 투자액 등 모든 정보 부재 [미확인]. IR의 비즈니스 모델 도식은 '수집 → 추출 → 제조 → QC → 포장 → 출하'라는 이론적 프로세스만 보여주며 실제 운영 현황은 알 수 없다. $90K 매출 주장에도 월 생산량, 재고 수준, 생산 리드타임, 가동률 등 운영 지표가 없어 실제 생산 역량 검증 불가 [미확인]. 제조업 스타트업에 필수적인 CapEx 효율성(단위 생산량당 설비 투자), OpEx 구조(인건비, 원료비, 유틸리티 비용), 손익분기점(BEP) 분석이 전무하다. Seed $1.6M 조달 목표를 제시했으나 자금 중 생산 확장에 얼마를 배분할지, 목표 캐파시티가 무엇인지 전혀 명시되지 않아 투자금 사용 계획의 합리성을 판단할 수 없다 [부분 확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-4</span><span class="deep-title">Technical Team Depth & Execution Track Record</span><span class="dvtag dv-r">Critical team gaps</span><span class="deep-arrow">▾</span></div><div class="deep-body">기술 중심 벤처임에도 핵심 기술 인력 구성이 극히 취약하다 [확인]. CEO Trịnh Công Qui는 약학 학사 출신으로 재료공학·화학공학·포장재 산업 경력 전무, LinkedIn 부재로 경력 검증 불가 [미확인]. Co-Founder Trần Thị Thanh Thuý는 법학 전공 학생으로 기술 및 제조업과 완전히 무관 [확인]. IR에 'PhD. Le Thi Hong Thuy'와 'R&D Engineers'가 언급되나 이름, 학위, 소속, LinkedIn 등 검증 가능한 정보가 전혀 없어 실존 여부조차 불명확하다 [미확인]. EVSDA 2025 등 수상 실적은 있으나 이는 창업 경진대회 중심으로 실제 기술 개발·양산 경험을 대체하지 못한다. CTO급 인재, 생산 공정 엔지니어, QC 전문가 등 제조업 핵심 직군이 팀에 존재하는지 전혀 알 수 없으며, 이는 제품 개발 및 스케일업 실행 가능성에 치명적 리스크다.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>순환경제 기반 ESG 임팩트가 명확하며, EVSDA 2025 등 독립 기관 수상으로 일부 검증됨 [확인]</li>
+<li>Startup Express Top 10, EWC Top 250 등 국제 경진대회 실적으로 초기 인지도 확보 [확인]</li>
+<li>제품 스펙(생분해 6~12개월, 20MPa 인장강도)이 명시되어 기술적 진정성 시도 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>핵심 팀원의 포장재 산업 전문성 전혀 없으며, 기술 책임자 정보 미검증으로 제품 개발 주체 불명 [미확인]</li>
+<li>매출 $90K 주장이 법인 설립 시점과 불일치, 고객·계약 데이터 없어 트랙션 검증 불가 [미확인]</li>
+<li>생산 원가·마진·단위 경제 데이터 전혀 없어 수익성 판단 불가능 [미확인]</li>
+<li>시장 규모(SAM/SOM), 타겟 고객 세그먼트, 경쟁사 대비 가격 경쟁력 데이터 부재 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>글로벌 생분해성 포장재 시장 성장 추세 - 규제 강화로 수요 증가</li>
+<li>베트남 내 농업 폐기물 풍부 - 원료 조달 잠재력</li>
+<li>롯데 식품·유통 계열사와 파일럿 협력 가능성 (단, 현재 구체성 없음)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>전분·종이 기반 생분해성 포장재 등 기존 대체재와의 가격·성능 경쟁</li>
+<li>대규모 공급망 구축 실패 시 원료 조달 불안정 리스크</li>
+<li>산업용 포장재 고객의 높은 품질·내구성 기준 충족 실패 가능성</li>
+<li>팀 전문성 부족으로 기술 개발 지연 또는 품질 문제 발생 리스크</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">10</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">BioWraps는 순환경제 기반 ESG 가치는 명확하나 상업적 실행 가능성이 매우 불확실하다. 가장 큰 미검증 가정은 '과일 껍질 기반 포장재가 실제 산업 고객의 내구성·경제성·공급 안정성 요구를 충족한다'는 점이다 [미확인]. $90K 매출 주장은 법인 설립 시점(2025년 10월)과 불일치하여 신뢰도 낮으며, 고객명·계약서·재구매 데이터 없음 [미확인]. 팀 구성의 투명성 부족이 치명적 - CEO는 약학 배경으로 포장재 산업 경험 없고, 기술 책임자 정보가 전혀 검증되지 않아 제품 개발 주체 불명확 [미확인]. 롯데 PoC 연계성 전무로 L-Camp 적합성 낮음.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">1 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">10 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>BioWraps Solutions JSC · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-15 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MLink (M Technology Co., Ltd) — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">MLink (M Technology Co., Ltd)</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City, Vietnam</span>
+          <span class="etag et-ind">산업 제조 / B2B 공급망</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">MLink (M Technology Co., Ltd)</div>
+        <div class="hero-sub">설립 2011 (M Technology), MLink 출시 시기 미확인 · https://mlink.vn/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">MLink는 베트남 제조 공장을 위한 장비·부품·기술 서비스 통합 공급 플랫폼이다. 공장들이 겪는 긴급 부품 부족으로 인한 다운타임 문제를 해결하며, 거래 마진과 긴급 수리 서비스로 수익을 창출한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          통합 플랫폼을 통한 긴급 공급이 실제로 제조 공장의 다운타임을 유의미하게 감소시킨다는 인과관계가 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">8</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">50억 VND</div><div class="kpi-desc">[미확인] 2024년 매출 주장, 검증 불가</div></div>
+<div class="kpi"><div class="kpi-val">$2B+</div><div class="kpi-desc">[미확인] 베트남 산업 공급 시장, 근거 미제시</div></div>
+<div class="kpi"><div class="kpi-val">Roll out</div><div class="kpi-desc">[부분 확인] 웹사이트 운영 중이나 고객 수 미공개</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] TAM $2B 주장에 대한 근거 자료 없음. SAM/SOM 분석 부재. 시장을 '베트남 산업 공급 시장 전체'로만 설명하며 실제 타겟 고객군(공장 규모, 산업 분야)이 불명확함. 경쟁사 분석 없음 - 기존 산업 유통업체, B2B 마켓플레이스와의 차별점이 선언적 수준('통합', '빠른 대응')에 그침. 확장 전략은 '동남아시아 진출'이라는 비전만 제시되고 구체적 실행 계획 부재. [미확인] 실제 시장 검증 데이터(설문, 파일럿 고객 피드백 등) 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 50억 VND 매출 주장이나 검증 불가 - 거래처명, 계약서, 결제 증빙 없음. 수익 모델(거래 마진, 긴급 서비스, 인프라 서비스)은 설명되나 실제 거래 건수, 평균 주문액, 고객 재구매율 등 운영 지표 전무. [부분 확인] M Technology가 2011년 설립된 기존 유통업체라는 점은 확인되나, MLink가 별도 스타트업인지 기존 사업의 확장인지 불명확 - 이는 투자 구조와 자산 분리에 직접 영향. 플랫폼 기술 수준(API Gateway, ERP 통합 주장)에 대한 실제 구현 증거 없음. 투자 유치 이력 없음, 시드 라운드 목표 금액 미명시로 투자 적합성 평가 불가.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 제조 공장 다운타임 감소라는 사회문제는 정의되나, MLink가 실제로 이를 해결한 사례나 측정 가능한 임팩트 지표(다운타임 감소율, 긴급 대응 시간 단축 등) 전무. ESG 관련 내용 미제출. 사회적 가치와 경제적 가치의 연결성이 선언적 수준에 그침 - '공장 생산성 향상'이라는 결과가 실제로 발생했는지 검증 불가. 지속 가능한 임팩트 창출 메커니즘(예: 중소 공장의 접근성 개선, 자원 효율성 향상) 설명 부재.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 리서치 결과: Le Van Thuong이 M Technology 연락 담당자로만 확인됨. LinkedIn 프로필 없음, 교육 배경 없음, 경력 검증 불가. 20년 B2B 경험 주장은 근거 없음. 공동 창업자, CTO, 제품 책임자 등 핵심 팀원에 대한 정보 전무. 웹사이트에 팀 소개 페이지 부재 - 현대 B2B 기술 기업에서 비정상적. M Technology가 TESCAN 등 유통업체로 15년 운영된 점은 확인되나, 이것이 Le Van Thuong 개인의 역량인지, 플랫폼 구축 역량으로 전환 가능한지 불명확. Key person dependency 매우 높음. 제조/공급망 도메인 전문성 검증 불가. 기술 팀 존재 여부 미확인. 투자 실사에 치명적 수준의 투명성 부족.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[미확인] 지원서에 롯데 사업 분야 미명시, 계열사 미명시, PoC 아이디어 미제출. IR Deck에도 롯데 연관성 언급 없음. 산업 제조 공급망 사업이 롯데의 주요 분야(식품·유통·건설·AI/첨단산업)와 어떻게 연결되는지 설명 부재. 롯데건설 또는 롯데케미칼의 공장 운영 효율화 가능성은 이론적으로 존재하나, 지원자가 이를 전혀 제시하지 않았으므로 평가 불가. PoC 협력 가능성 매우 낮음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 2 + D 1 + E 1</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">8</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">미명시</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미명시</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">지원서에 PoC 아이디어 미제출</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">지원서에 ESG 임팩트 관련 내용 미제출</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">M Technology Co., Ltd는 TESCAN(체코), Bruker Alicona, 및 기타 국제 브랜드의 공인 유통업체로 확인되었습니다. 회사는 반도체, 재료 과학, 산업 자동화, 의료 기기, 교육 및 장비 구조(MLink) 등 6개 솔루션 그룹을 통해 운영됩니다. MLink는 제조 다운타임을 최소화하기 위해 긴급 수요를 가용 자원과 빠르게 매칭하는 장비 및 예비 부품 구조 플랫폼으로 설명됩니다. 그러나 이것이 기존 유통 사업의 한 부문인지 독립적인 스타트업인지는 불명확합니다. 15년 이상의 경험을 가진 엔지니어 팀을 보유하고 있다고 주장하지만 구체적인 팀원은 확인되지 않았습니다.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">심각한 불완전성: 확인된 창업 팀이 없습니다. 한 명의 연락 담당자(Le Van Thuong)만 확인되었으며, 그의 역할과 자격은 검증되지 않았습니다. 기술 공동 창업자, 제품 책임자, 또는 산업 전문가의 증거가 없습니다. 제조 다운타임 감소를 위한 플랫폼에는 일반적으로 공급망 전문성, 소프트웨어 개발, 산업 파트너십이 필요하지만 이러한 역량을 가진 팀원에 대한 증거가 없습니다.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">낮음 - 주요 우려사항: (1) 확인 가능한 창업 팀 없음, (2) LinkedIn 또는 전문 플랫폼에서 팀원 프로필 부재, (3) 회사가 기존 유통업체(2011년 설립)인지 신규 스타트업인지 불명확, (4) MLink가 별도의 벤처인지 M Technology의 제품 라인인지 불명확, (5) 창업자 배경, 이전 성과 또는 도메인 전문성에 대한 공개 정보 없음. 회사는 합법적인 유통 사업으로 보이지만 스타트업으로서의 포지셔닝은 검증되지 않았습니다.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 격차는 확인 가능한 창업 팀의 완전한 부재입니다. 투자 실사를 위해 중요한 사항: (1) 창업자가 누구인가? (2) 제조/공급망에 대한 그들의 배경은 무엇인가? (3) 이전 관련 경험이나 성공이 있는가? (4) 기술 팀이 있는가? (5) 산업 네트워크와 신뢰성이 있는가? MLink가 신규 스타트업 벤처인지 2011년부터 운영되어온 기존 유통 회사의 확장인지도 불명확합니다. 공개 정보의 부재와 전문 프로필의 부재(LinkedIn 등)는 베트남 기술 생태계에서 비정상적이며 중대한 우려사항을 제기합니다.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: MLink Vietnam founding team · mlink.vn founders CEO · "mlink.vn" Vietnam manufacturing downtime · MLink Vietnam supply chain factory · mtechnology.vn MLink founder CEO team · "Công ty TNHH Công nghệ M" MLink founder</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Le Van Thuong (Lê Văn Thương)</div><div class="member-role">연락 담당자 / 가능한 창업자 또는 경영진 (역할 미확인)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없음 - 현대 B2B 기술 비즈니스에서는 비정상적</span><span class='flag-item'>⑊ 공개적으로 이용 가능한 창업자 정보 부족</span><span class='flag-item'>⑊ 팀 배경, 자격 또는 이전 성과에 대한 투명성 없음</span><span class='flag-item'>⑊ 회사 웹사이트(mtechnology.vn 및 mlink.vn)에 팀 프로필이나 '우리에 대하여' 섹션 없음</span><span class='flag-item'>⑊ 경영진 또는 창업 팀에 대한 확인 가능한 정보 없음</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>M Technology Co., Ltd (Công ty TNHH Công nghệ M)</td><td>연락 담당자 (Contact Person) - 정확한 직책 미확인</td><td>2011년 설립 이후 (회사는 2011년 설립됨)</td><td style="font-size:11px;">Yellow Pages 및 TESCAN 유통업체 목록에 연락처로 등재됨. 이메일: levanthuong@mtechnology.vn, 전화: +84 988 248 156</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> Le Van Thuong이 M Technology와 연관되어 있다는 것은 확인되었으나, 그의 교육 배경, 이전 경력, 또는 제조/산업 자동화 분야에서의 전문성에 대한 정보를 찾을 수 없었습니다. 그가 창업자인지 직원인지 명확하지 않으며, 제조 다운타임 감소 및 공급망 통합이라는 MLink의 핵심 가치 제안과 관련된 도메인 전문성을 검증할 수 없습니다.</div><div class="ma-overall"><strong>종합 평가:</strong> Le Van Thuong이 M Technology/MLink와 연관되어 있다는 기본 연락처 정보만 확인할 수 있었습니다. 그의 역할, 자격, 또는 제조 산업에 대한 관련성을 검증하기에는 정보가 불충분합니다. 공개 정보의 부재는 초기 단계 스타트업이나 전통적인 유통 비즈니스를 시사할 수 있으나, 투자자에게는 우려사항입니다.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 투명성 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] LinkedIn 프로필, 팀 페이지, 창업자 배경 정보 전무. 현대 기술 스타트업으로서 비정상적이며 투자 실사 불가능 수준.</td></tr>
+<tr><td>매출 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 50억 VND 매출 주장에 대한 근거 자료 없음. 거래처명, 계약서, 결제 증빙 부재로 실제 시장 견인력 평가 불가.</td></tr>
+<tr><td>사업 구조 불명확</td><td><span class="rpill-sm rp-h">높음</span></td><td>[부분 확인] M Technology(2011)가 모회사인지, MLink가 별도 법인인지 불명확. 투자금 사용처와 자산 소유권 구조 리스크.</td></tr>
+<tr><td>기술 역량 미검증</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] API Gateway, ERP 통합 주장이나 실제 코드베이스, 기술팀, 구현 사례 증거 없음. CTO 또는 개발팀 존재 여부 불명.</td></tr>
+<tr><td>롯데 연관성 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 지원서에 롯데 계열사, PoC 아이디어 미제출. L-Camp 프로그램 적합성 매우 낮음.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — B2B 마켓플레이스/플랫폼</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">거래 건수·객단가·재구매율 등 Unit Economics 검증</span><span class="dvtag dv-r">핵심 지표 미확인</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 50억 VND(약 $200K USD) 매출 주장이나 검증 불가 - 거래 건수, 평균 주문액(AOV), 고객 재구매율(Retention Rate), Take Rate(거래 수수료율) 등 B2B 플랫폼 핵심 지표 전무. [미확인] '거래 마진과 긴급 수리 서비스' 수익 모델이 설명되나 실제 거래당 마진율, 긴급 서비스 프리미엄 가격, 고객 LTV/CAC 비율 등 경제성 입증 자료 없음. [미확인] 공급자(Supplier) 측 수수료 구조, 플랫폼 Lock-in 메커니즘 부재로 양면 시장(Two-sided Marketplace) 지속 가능성 평가 불가. 거래처명, 결제 증빙, PO(Purchase Order) 샘플 등 실거래 증거 없어 매출 신뢰도 매우 낮음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">기존 사업(M Technology) vs. 신규 법인 분리 여부 및 자산 구조</span><span class="dvtag dv-r">법인 구조 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] M Technology가 2011년부터 TESCAN 등 장비 유통업체로 15년 운영된 점은 확인되나, MLink가 별도 법인(C-Corp/LLC)인지 기존 사업부 확장인지 불명확 - 이는 투자 구조, 주식 배분, 자산 분리에 직접 영향. [미확인] 기존 유통 재고·고객 관계·공급망 네트워크를 플랫폼에 어떻게 전환했는지 설명 부재 - Asset-light 주장과 모순 가능성. [미확인] 창업자 Le Van Thuong의 지분율, 공동 창업자 존재 여부, 스톡옵션 풀(ESOP) 설정 여부 등 Cap Table 정보 전무로 투자 실사 불가. '20년 B2B 경험'이 개인 경력인지 회사 연혁인지 혼재되어 Key Person Dependency 리스크 매우 높음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">플랫폼 기술 스택 실제 구현 수준 및 API 통합 검증</span><span class="dvtag dv-r">기술 역량 미입증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] IR Deck에서 'API Gateway', 'CRM/ERP 통합', 'Sub-website layer' 등 기술 아키텍처 제시하나 실제 구현 증거 전무 - GitHub repo, 기술 문서, 통합 완료된 고객사 시스템 목록 없음. [미확인] 'Digitized & standardized data layer'(부품 DB, 공급자 DB)의 실제 데이터 규모(SKU 수, 공급자 수, 데이터 정확도) 미공개로 플랫폼 깊이 평가 불가. [미확인] CTO 또는 기술 팀 존재 여부 불명 - 웹사이트 팀 소개 부재, LinkedIn 프로필 없어 현대 B2B SaaS 기업으로서 비정상적. 경쟁사(Moglix India, Zyod 등 산업 공급망 플랫폼) 대비 기술 격차 분석 없음. '디지털 인프라' 주장은 선언적이며 실제 엔지니어링 역량 검증 불가.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">고객 Lock-in 메커니즘 및 Network Effect 형성 전략</span><span class="dvtag dv-a">방어 가능성 낮음</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] B2B 마켓플레이스의 핵심인 Network Effect(공급자↔수요자 상호 증강) 형성 전략 부재 - 초기 유치 인센티브, 독점 공급 계약, 데이터 기반 추천 엔진 등 차별화 요소 설명 없음. [미확인] '우리는 mlink.vn의 판매자'라는 문구로 1P(First-party) 모델 시사하나, 이는 마켓플레이스가 아닌 전통 유통업 - 비즈니스 모델 일관성 결여. [미확인] 고객사가 플랫폼을 떠나기 어렵게 만드는 Switching Cost(예: 재고 관리 통합, 결제 약정, 과거 거래 데이터 축적) 전략 부재. 경쟁사가 동일 공급자·수요자를 쉽게 유치할 수 있는 구조로 경쟁 우위(Moat) 매우 약함.</div></div>
+<div class="deep-category-label">Category F — 제조·산업 Supply Chain Tech</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">F-1</span><span class="deep-title">다운타임 감소 임팩트 정량 측정 및 고객 사례 검증</span><span class="dvtag dv-r">임팩트 미입증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] '긴급 부품 부족으로 인한 다운타임 문제 해결' 주장이나 실제 측정 가능한 임팩트 지표(다운타임 감소율, 긴급 대응 시간 단축, 생산 손실 절감액 등) 전무. [미확인] 파일럿 고객사(Pilot Customer) 사례 연구(Case Study) 없음 - Before/After 비교, 고객 증언(Testimonial), 계약서 등 검증 자료 부재. [미확인] 'QA/QC 장비 미공급으로 신규 주문 손실' 문제가 MLink를 통해 실제 해결된 사례 0건 확인. IR Deck의 스토리는 Pain Point 정의에 그치고 Solution Validation(솔루션 검증) 단계 미도달. 제조 공장의 의사결정 프로세스(구매 승인, 예산 배정, 공급자 검증) 복잡성을 고려한 세일즈 사이클 분석 없음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">F-2</span><span class="deep-title">베트남 산업 공급망 시장 구조 및 기존 유통업체와의 경쟁 구도</span><span class="dvtag dv-a">경쟁 분석 부실</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] TAM $2B 주장에 대한 근거 자료(시장 조사 보고서, 정부 통계, 산업 협회 데이터 등) 전무. [미확인] 베트남 산업 부품 유통 시장의 기존 플레이어(대형 상사, 로컬 대리점, 직수입 공장 등)와의 경쟁 우위 분석 없음 - '통합', '빠른 대응'은 선언적 수준. [부분 확인] IR Deck에서 'Orange marketplace, Black marketplace, B2B Listings'를 경쟁자로 언급하나 구체적 업체명·점유율·가격 비교 부재. [미확인] M Technology가 기존에 보유한 공급망 네트워크(TESCAN 등)를 플랫폼에 독점 제공하는지, 아니면 오픈 마켓플레이스인지 불명확 - 이는 공급자 측 참여 동기에 직접 영향. 시장 침투 전략(Penetration Strategy) 및 초기 고객 획득 채널(CAC) 설명 부재.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">F-3</span><span class="deep-title">긴급 수리 서비스(Emergency Repair) 운영 모델 및 SLA 보증 체계</span><span class="dvtag dv-a">운영 실행력 불투명</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] '긴급 수리 서비스'가 수익 모델의 한 축이나 실제 운영 구조(기술자 네트워크, 출동 시간, 지역 커버리지, 부품 재고 위치) 전무. [미확인] SLA(Service Level Agreement) 보증 수준(예: 2시간 내 현장 도착, 24시간 내 부품 공급 등) 및 위약 시 보상 체계 미명시로 B2B 신뢰도 확보 어려움. [미확인] Asset-light 주장과 긴급 서비스의 모순 - 긴급 대응은 재고·물류·기술 인력 등 Heavy Asset 필요 - 실제 파트너십 구조(3PL, 계약 기술자 등) 설명 없음. [미확인] 베트남 전역의 공장 분포(북부·중부·남부)에 대한 지역별 대응 전략 부재. 공장 고객사가 긴급 서비스 비용을 지불할 의향(Willingness to Pay) 검증 안 됨.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[부분 확인] M Technology가 TESCAN 등 산업 장비 유통업체로 15년 운영 - 기존 공급망 네트워크 보유 가능성</li>
+<li>[확인] 제조 다운타임이라는 실재하는 산업 문제를 타겟팅</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] 창업팀 배경 전무 - LinkedIn 프로필, 학력, 경력 검증 불가로 투자 실사 불가능</li>
+<li>[미확인] 매출 50억 VND 주장에 대한 검증 자료 없음 - 고객명, 계약서, 거래 내역 부재</li>
+<li>[미확인] 플랫폼 기술(API Gateway, ERP 통합) 실제 구현 여부 불명확</li>
+<li>MLink가 독립 스타트업인지 기존 유통 사업의 한 부문인지 불명확 - 투자 구조 리스크</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 제조업 성장에 따른 산업 공급망 디지털화 수요 증가</li>
+<li>롯데건설·케미칼 공장 운영 효율화 연계 가능성 (미개척)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>기존 산업 유통업체들의 디지털 전환으로 경쟁 심화</li>
+<li>B2B 마켓플레이스(Alibaba, 로컬 플레이어)의 산업재 카테고리 확장</li>
+<li>고객(공장) 입장에서 신규 플랫폼으로의 전환 장벽 높음 - 기존 공급처와의 신뢰 관계</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">8</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">MLink는 제조 공장 다운타임 감소라는 명확한 문제를 타겟하나, 핵심 가정인 '통합 플랫폼을 통한 긴급 공급이 실제로 다운타임을 유의미하게 줄인다'는 점이 검증되지 않았다. 50억 VND 매출 주장, 팀 배경, 기술 수준 모두 근거 자료 부재로 [미확인] 상태. M Technology(2011년 설립)가 기존 유통업체인지 MLink가 독립 스타트업인지 불명확하며, 이는 투자 구조와 자산 소유권에 직접 영향을 미치는 치명적 불확실성이다. 창업자 정보 투명성 부재는 현대 기술 스타트업으로서 심각한 신뢰성 문제를 야기한다. 롯데와의 연관성 미제시로 L-Camp 적합성 매우 낮음.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">1 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">8 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>MLink (M Technology Co., Ltd) · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-15 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

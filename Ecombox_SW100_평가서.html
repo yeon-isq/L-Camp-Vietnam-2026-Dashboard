@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecombox — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Ecombox</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City</span>
+          <span class="etag et-ind">Digital Services</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Ecombox</div>
+        <div class="hero-sub">설립 2023 · ecombox.vn</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">Ecombox는 베트남 이커머스 셀러를 위한 창고관리 및 멀티채널 운영 최적화 SaaS이다. 베트남 셀러들이 겪는 수작업 재고관리 및 멀티플랫폼 주문 처리 비효율 문제를 해결하며, 월 구독 SaaS 모델로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          90%의 창고가 스프레드시트로 운영된다는 시장 전제와 TAM 50만 셀러 중 SAM 15만이 유료 WMS를 도입할 의사가 있다는 가정이 아직 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">10</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">150개</div><div class="kpi-desc">현재 활성 셀러 수 (검증 필요)</div></div>
+<div class="kpi"><div class="kpi-val">100만 건</div><div class="kpi-desc">플랫폼 전체 처리 주문량 (기간 미명시)</div></div>
+<div class="kpi"><div class="kpi-val">400M+ VND</div><div class="kpi-desc">연간 반복 매출 추정치 (2025 목표인지 실적인지 불명확)</div></div>
+<div class="kpi"><div class="kpi-val"><5%</div><div class="kpi-desc">고객 이탈률 (측정 기간 미명시)</div></div>
+<div class="kpi"><div class="kpi-val">5B VND</div><div class="kpi-desc">2026년 목표 매출 (SAM 2% 달성 가정)</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] TAM 50만 셀러, SAM 15만은 언급되나 출처 및 구체적 세분화 근거가 없음. 베트남 이커머스 시장 규모 148.6조 VND는 플랫폼 전체 거래액으로 보이나 WMS SaaS 시장 규모로의 전환 논리가 부족함. [미확인] 경쟁사 분석 없음 — 기존 POS/retail SaaS와의 차별점은 설명되나 실제 베트남 WMS 시장 내 경쟁 강도 및 대체재 분석 부재. 확장 가능성은 제품 모듈(Tracking, WMS, Omni, AI) 구성으로 제시되나 각 모듈의 시장 수용도 및 고객 니즈 검증 자료 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 비즈니스 모델은 SaaS 구독형으로 명확하나 가격 정책, ARPU, 고객군별 요금 체계가 전혀 제시되지 않음. ARR 400M+ VND가 실제 매출인지 목표치인지 불분명하며 달성 시점 및 고객사 150개와의 연결성(150개 × ARPU = 400M 검산 불가) 부족. [미확인] 투자 유치 이력 없음 — '아직 펀딩을 받지 않았다'고 명시. 파트너사 로고(Shopee, Lazada 등)는 있으나 공식 파트너십 계약 여부 및 파트너를 통한 매출 발생 여부 미확인. 롯데벤처스 투자 적합성은 PoC 제안 부재로 판단 불가.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 사회적 가치 창출 근거가 전혀 제시되지 않음. 문제 정의는 '셀러들이 엑셀과 Zalo로 창고를 운영하며 낙오된다'로 되어 있으나 이는 운영 효율성 문제이지 사회문제로 연결되지 않음. ESG Impact 섹션이 지원서에 누락되어 있어 환경·사회적 임팩트 의도 자체를 확인할 수 없음. 수상 이력에 'Sustainable Business Model Award' 언급이 있으나 어떤 지속가능성 요소로 수상했는지 설명 없음. 임팩트의 규모·깊이·지속성 모두 불명확.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 역량 정보 전무. IR Deck에 팀원 이름, 학력, 경력, 역할 분담이 일체 제시되지 않음. 외부 검증 결과 역시 'Research not performed'로 팀 구성의 실체를 확인할 수 없음. [미확인] 창업자의 도메인 전문성(이커머스 운영, WMS 개발, B2B SaaS 세일즈 등) 및 기술팀의 풀스택 개발 역량, GraphQL/API 아키텍처 구현 경험 등 핵심 실행 기반이 일절 설명되지 않음. 팀 부재는 본 지원서의 가장 큰 리스크 요인.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[미확인] 롯데 연계 제안 전무. 'Relevant LOTTE Business Area', 'LOTTE Affiliate', 'Proposed PoC Idea' 모두 공란. 베트남 이커머스 운영 최적화라는 사업 분야는 롯데 유통(마트, 백화점, 홈쇼핑) 또는 물류(글로벌로지스)와 연결 가능성이 있으나 지원자가 이를 전혀 제안하지 않음. 식품·유통·건설·AI/첨단산업 중 어느 영역에 해당하는지 명시되지 않아 PoC 협력 가능성 판단 불가. L-Camp Vietnam 지원 동기조차 작성되지 않아 프로그램 이해도 및 참여 의지 자체에 의문.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 3 + C 2 + D 1 + E 1</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">10</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">미작성</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미작성</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">미작성 (지원서에 롯데 계열사 연계 아이디어 없음)</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 역량 불투명</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] IR Deck 및 지원서 모두에서 팀 정보 부재. 창업자의 도메인 경험, 기술팀의 개발 역량, 세일즈 조직 존재 여부 모두 불명. 실행 가능성 평가 불가.</td></tr>
+<tr><td>매출 실체 검증 필요</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] ARR 400M+ VND가 실제 달성 매출인지 목표치인지 불명확. 150개 고객사 주장과 ARPU 역산 시 정합성 부족. 재무제표 또는 계약서 증빙 필요.</td></tr>
+<tr><td>시장 가정 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] SAM 15만 셀러가 유료 WMS를 도입할 의사가 있다는 전제의 근거 부족. 실제 TAM→SAM→SOM 전환율 검증 자료 없음.</td></tr>
+<tr><td>롯데 연계성 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] PoC 제안 누락으로 본 프로그램 참여 목적 불명. 베트남 유통·물류 사업과의 접점 가능성은 있으나 지원자가 전혀 제시하지 않음.</td></tr>
+<tr><td>경쟁 환경 분석 부족</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 베트남 내 기존 WMS/POS SaaS 플레이어 대비 차별점 주장만 있고 실제 경쟁사 명단, 시장점유율, 가격 비교 자료 부재.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">베트남 WMS SaaS 시장 규모 및 경쟁 환경 검증</span><span class="dvtag dv-r">시장 추정 근거 불충분</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] TAM 50만 셀러, SAM 15만 등 시장 규모 수치는 제시되었으나 출처가 없고 검증 불가능하다. 베트남 이커머스 전체 거래액 148.6조 VND를 WMS SaaS 시장 규모로 전환하는 논리가 부재하며, ARR 목표 5B VND(2026)의 달성 가능성을 판단할 근거가 없다. [미확인] 베트남 내 기존 WMS 경쟁사(로컬/글로벌) 분석이 전무하며, '기존 SaaS는 POS용'이라는 차별화 주장만 있을 뿐 실제 경쟁 강도 및 시장 점유율 데이터가 제시되지 않았다. 외국 WMS가 $50K+/년이라는 언급은 있으나 해당 솔루션 대비 Ecombox의 가격 경쟁력 및 기능 우위에 대한 구체적 비교가 없다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">SaaS 비즈니스 모델 및 Unit Economics 투명성</span><span class="dvtag dv-r">수익 구조 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 월 구독 SaaS 모델이라 명시되었으나 가격 정책(티어별 요금), ARPU, 고객군별(소형/중형/기업) 요금 체계가 일체 제시되지 않았다. ARR 400M+ VND 달성 주장과 고객사 150개 언급은 있으나 둘 간의 정합성(150 × ARPU = 400M 검산)을 확인할 수 없으며, 이 수치가 실제 매출인지 목표치인지 불분명하다. [부분 확인] Shopee, Lazada 등 주요 플랫폼 로고가 파트너사로 제시되었으나 공식 파트너십 계약 여부, 이를 통한 실제 매출 발생 여부, API 연동 수준 등이 검증되지 않았다. CAC, LTV, Churn Rate 등 SaaS 핵심 지표가 전무하여 사업 건전성 판단 불가능하다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">제품 완성도 및 기술 스택 실행력</span><span class="dvtag dv-a">모듈 구현 수준 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 4가지 제품 모듈(Tracking, WMS, Omni, AI)이 소개되었으나 각 모듈의 개발 완성도(베타/정식 출시), 실사용 고객 수, 기능별 채택률이 명시되지 않았다. AI 에러 감지, 자동 패킹 비디오 녹화 등 기술적 차별화 요소가 언급되었으나 알고리즘 정확도, 처리 속도, 인프라 안정성 등 구체적 성능 지표가 부재하다. [미확인] 기술팀 구성 및 GraphQL/API 아키텍처 구현 경험, 멀티 플랫폼 실시간 연동 역량 등 핵심 실행 기반에 대한 정보가 전혀 제공되지 않아 제품 로드맵 실행 가능성을 판단할 수 없다. 창업 2년차임에도 불구하고 펀딩 이력이 없어 제품 개발 자금 조달 경로 및 지속 가능성에 의문이 남는다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">고객 획득 및 확장 전략의 실행 가능성</span><span class="dvtag dv-r">GTM 전략 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 고객 150개 확보 주장은 있으나 획득 채널(직접 영업/파트너/마케팅), 고객 프로필(업종/규모/지역), 온보딩 프로세스가 설명되지 않았다. SOM 30,000 셀러 중 2026년 2% 달성 목표(600개 고객, ARR 5B VND)는 제시되었으나 이를 달성하기 위한 구체적 Go-to-Market 전략, 세일즈 조직 구성, 마케팅 예산 배분이 전무하다. [미확인] '플랫폼이 아마추어 셀러를 밀어내고 있다(-80K 신규 셀러, Q1/2026)'는 시장 트렌드 속에서 어떻게 고객 기반을 확장할지에 대한 전략이 없으며, 기업 고객 대상 업셀링 및 크로스셀링 계획도 제시되지 않았다.</div></div>
+<div class="deep-category-label">Category E — 해외 진출 스타트업</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">롯데 계열사 연계 및 PoC 구체성</span><span class="dvtag dv-r">제안 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 'Relevant LOTTE Business Area', 'LOTTE Affiliate', 'Proposed PoC Idea' 모두 공란으로, 롯데와의 협력 가능성에 대한 어떠한 제안도 없다. 베트남 이커머스 운영 최적화 솔루션은 롯데마트(베트남 내 유통망), 롯데글로벌로지스(물류 인프라), 롯데홈쇼핑(온라인 판매 채널)과 시너지 가능성이 있으나 지원자가 이를 전혀 인지하거나 제안하지 않았다. [미확인] L-Camp Vietnam 지원 동기조차 작성되지 않아 프로그램 이해도 및 롯데 네트워크 활용 의지를 확인할 수 없다. PoC 아이디어 부재로 프로그램 참여 시 실질적 성과 창출 가능성을 판단하기 어렵다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">베트남 시장 내 현지화 및 규제 대응 역량</span><span class="dvtag dv-a">현지 실행력 검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 호치민 소재 창업 2년차로 베트남 시장 내 활동 중이나, 현지 법인 설립 여부, 베트남 이커머스 규제(세금 정책, 플랫폼 수수료 변화 등) 대응 역량, 현지 언어 지원 수준이 명시되지 않았다. '플랫폼이 세금·수수료 정책을 강화하며 셀러를 압박한다'는 문제 인식은 있으나, Ecombox가 이를 해결하기 위한 컴플라이언스 기능(자동 세금 계산, 신고 지원 등)을 제공하는지 불명확하다. [미확인] 베트남 내 파트너십 네트워크(물류사, 결제사, 회계법인 등)의 실체 및 이를 통한 고객 확보 경로가 검증되지 않았다. 창업팀의 베트남 현지 경험 및 네트워크에 대한 정보가 전무하여 시장 실행력을 평가할 수 없다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-3</span><span class="deep-title">국제 확장 가능성 및 글로벌 시장 적용성</span><span class="dvtag dv-a">확장성 불투명</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 베트남 특화 WMS로 포지셔닝되어 있으나 동남아 다른 시장(태국, 인도네시아 등) 진출 계획, 글로벌 이커머스 플랫폼(Amazon, eBay 등) 연동 로드맵이 전혀 제시되지 않았다. 제품이 '베트남 고유 도전 과제(멀티 플랫폼 주문, 배치/유통기한 추적)' 해결에 특화되어 있다는 주장은 있으나, 이러한 니즈가 타 시장에도 존재하는지, 제품 아키텍처가 다국어·다통화·다국 규제에 대응 가능한지 불명확하다. [미확인] 롯데의 글로벌 네트워크(일본, 인도네시아 등)와 연계한 확장 전략이 전무하여 L-Camp 참여를 통한 국제화 가속 효과를 기대하기 어렵다.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[부분 확인] 베트남 이커머스 셀러의 실제 pain point(수작업 재고관리, 멀티플랫폼 주문 처리)를 타겟팅하며 제품 모듈(Tracking, WMS, Omni, AI) 구성이 체계적임</li>
+<li>[부분 확인] Shopee, Lazada 등 주요 플랫폼과의 파트너 로고 보유 (공식 계약 여부는 미확인)</li>
+<li>[확인] Churn rate <5%, NPS 45 등 고객 유지 지표 언급 (측정 방법론은 미제공)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] 팀 구성 정보 전무 — 창업자 배경, 기술팀 역량, 도메인 전문성 일체 불명</li>
+<li>[미확인] ARR 400M+ VND의 실체 불명확 — 150개 고객사 × ARPU 산식 불일치, 매출 세부내역 부재</li>
+<li>[미확인] 투자 유치 이력 없고 목표 금액도 미공개 — 자금 조달 계획 및 burn rate 불투명</li>
+<li>롯데 PoC 제안 전무 — 본 프로그램 지원 동기 및 연계 방안 부재로 적합성 판단 불가</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 이커머스 시장 연 30% 성장 및 플랫폼의 셀러 전문화 압박으로 WMS 수요 증가 가능성</li>
+<li>대기업 셀러(Shop Mall)의 점유율 확대 추세 → B2B Enterprise급 WMS 수요 발생 가능</li>
+<li>AI Agent 기반 자동화 수요 증가 시 Ecombox Studio/Copilot의 차별화 포인트 부각 가능</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>베트남 내 저가 또는 무료 대체재(엑셀, Zalo, 플랫폼 자체 툴) 사용 관행 지속 시 유료 전환 저항</li>
+<li>글로벌 WMS 플레이어(ShipBob, Extensiv 등)의 베트남 시장 진출 시 가격 및 기능 경쟁 심화</li>
+<li>주요 파트너 플랫폼(Shopee, Lazada)의 자체 SaaS 툴 강화 시 Ecombox의 입지 약화</li>
+<li>팀 정보 부재로 인한 투자자 신뢰 결여 및 펀딩 난항 가능성</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">10</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Ecombox는 베트남 이커머스 셀러 대상 창고관리 SaaS로서 제품 컨셉은 명확하나, 핵심 가정의 검증 부족과 정보 누락이 심각함. 가장 큰 미검증 가정은 'TAM 50만 중 SAM 15만 셀러가 유료 WMS를 도입할 의사가 있다'는 전제로, 이를 뒷받침하는 고객 인터뷰, 시장조사, 또는 대체재 분석이 전혀 없음. ARR 400M+ VND는 실적인지 목표인지 불분명하고, 150개 고객사와의 정합성도 확인 불가. 팀 정보 부재는 실행 가능성 평가를 원천적으로 불가능하게 하며, 롯데 PoC 제안 누락은 본 프로그램 지원 적합성 자체를 의심케 함.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">1 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">10 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Ecombox · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-15 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

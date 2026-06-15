@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Công Ty TNHH Omedic — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Công Ty TNHH Omedic</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City</span>
+          <span class="etag et-ind">Healthcare & Life Sciences</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Công Ty TNHH Omedic</div>
+        <div class="hero-sub">설립 1 year · </div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Omedic은 베트남 소비자를 위한 헬스케어·의약품 e커머스 마켓플레이스이다. 약국, 병원, 검사센터, 홈케어 제공자를 연결하나, [미확인] 현재 실제 거래 파트너 수나 매출 데이터가 전혀 제시되지 않아 운영 여부가 불투명하다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          베트남 약국·병원·홈케어 제공자들이 Omedic 플랫폼에 실제로 참여하여 지속 가능한 거래가 발생할 것이라는 가정이 전혀 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">7</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">앱 등록 완료</div><div class="kpi-desc">Google Play 등록 확인됨 (2025년 10월)</div></div>
+<div class="kpi"><div class="kpi-val">Demo</div><div class="kpi-desc">실사용자·매출 정보 전무 [미확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">베트남 헬스케어 시장의 잠재력은 인정되나 [미확인] 타겟 시장 규모에 대한 구체적 데이터(SAM/SOM)가 전혀 제시되지 않았다. IR 덱에서 '많은 현재 솔루션들이 단편적'이라는 일반적 진단만 있을 뿐, 실제 경쟁사 분석·차별화 전략·시장 검증 근거가 부재하다. '대형 디지털 헬스케어 플랫폼'이라는 비전만 반복될 뿐 확장 전략의 구체성이 전혀 없다.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 문제-솔루션 연결은 서술되어 있으나 실제 고객 검증이나 매출 데이터가 전무하다. 수익 구조에 대한 언급이 IR 덱에 일절 없으며, 투자 유치 이력·목표 금액·매출 계획이 모두 미공개이다. 'Demo' 트랙션은 상용화 이전 단계를 의미하며, 현재로서는 투자 적합성을 판단할 객관적 근거가 존재하지 않는다. 비즈니스 모델의 실행 가능성이 검증되지 않았다.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">헬스케어 접근성 개선이라는 사회문제는 명확하나 [미확인] Omedic의 솔루션이 실제로 사회적 가치를 창출하고 있다는 증거가 없다. IR 덱에 '신뢰할 수 있는 디지털 헬스 생태계'를 강조하지만, 실제 사용자 수·서비스 이용 사례·임팩트 측정 지표가 전무하다. 규모·깊이·지속성을 확인할 수 없으며, 현재로서는 아이디어 단계의 사회문제 인식 수준에 불과하다.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 딥 리서치 결과, 창업자 및 핵심 팀원의 신원·경력·전문성이 전혀 확인되지 않았다. LinkedIn 프로필, 언론 보도, 공개 경력 정보가 일절 존재하지 않으며, IR 덱에도 '운영·기술·실행 담당 멤버'라는 역할 구분만 있을 뿐 구체적 인물 정보나 도메인 경험이 부재하다. 헬스케어는 규제·의료 전문성·공급망 네트워크가 필수인 영역임에도 관련 배경을 검증할 수 없다는 점은 치명적 레드 플래그이다. 팀 정보 투명성 부재는 투자 실사의 근본적 장애 요인이다.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[미확인] 지원서에 롯데 관련 사업분야·계열사·PoC 아이디어가 전혀 기재되지 않았다. IR 덱에도 롯데와의 협력 가능성에 대한 언급이 일절 없다. 헬스케어 e커머스가 롯데의 주요 사업분야(식품·유통·건설·AI/첨단산업)와 직접적 연관성을 찾기 어렵고, 연계 가능 계열사(GRS·마트·홈쇼핑 등)와의 구체적 협력 방안이 부재하다. 현재로서는 L-Camp의 PoC 적합성이 매우 낮다.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 1 + C 2 + D 1 + E 1</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">7</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">미기재</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미기재</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데와의 PoC 아이디어가 전혀 제시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">정보 없음 - 창업팀에 대한 공개 정보를 찾을 수 없었습니다. 회사는 베트남 호치민시에 위치하며 개인 및 가족 건강관리 서비스를 제공하는 헬스케어 플랫폼 앱을 운영하는 것으로 확인되었으나, 창업자나 경영진에 대한 구체적인 정보는 공개되어 있지 않습니다.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">평가 불가 - 팀 구성원 정보가 공개되어 있지 않아 팀의 완전성을 평가할 수 없습니다. 이는 초기 단계 스타트업이거나 의도적으로 팀 정보를 비공개로 유지하고 있을 가능성이 있습니다.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">검증 불가 - LinkedIn 프로필, 회사 웹사이트, 언론 보도 등을 통한 창업팀 정보가 전혀 공개되지 않아 신뢰성 평가가 불가능합니다. Google Play 스토어에 Omedic 앱이 등록되어 있고(2025년 10월 업데이트), 연락처 정보(support@omedic.io, +84 918 552 628)와 주소(22/39 Lu Gia, Ho Chi Minh)가 제공되고 있으나, 이는 회사의 존재만을 확인할 뿐 팀의 전문성이나 경력을 검증하기에는 불충분합니다.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 문제는 창업팀에 대한 정보의 완전한 부재입니다. 투자 실사 관점에서 다음 사항들이 심각한 우려로 작용합니다: (1) 창업자 및 핵심 팀원의 신원 미확인, (2) 관련 산업 경험 및 전문성 검증 불가, (3) 과거 창업 이력이나 경력 추적 불가능, (4) LinkedIn 등 전문 네트워크 상 존재감 부재, (5) 언론 보도나 업계 인지도 부족. 헬스케어 분야는 규제가 엄격하고 전문성이 요구되는 영역인 만큼, 팀 정보의 투명성 부족은 중대한 레드 플래그입니다. 추가 실사를 위해 직접 회사와 컨택하여 팀 정보를 요청하거나, 베트남 기업 등록 정보를 통해 법적 대표자를 확인하는 것이 필요합니다.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Công Ty TNHH Omedic healthcare · Omedic Vietnam startup · "Công Ty TNHH Omedic" founder CEO · Omedic app Vietnam team founder · "Công Ty TNHH Omedic" "22/39 Lu Gia" founder · Omedic Vietnam Ho Chi Minh 22/39 Lu Gia LinkedIn</div>
+</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>창업팀 정보 전면 비공개</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 공개 정보 일절 없음. 투자 실사의 근본적 장애 요인</td></tr>
+<tr><td>트랙션 부재 (Demo 단계)</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 실사용자·매출·파트너 확보 현황 전무. 시장 검증 안 됨</td></tr>
+<tr><td>비즈니스 모델 불명확</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 수익 구조·단위 경제 설명 부재. 지속가능성 평가 불가</td></tr>
+<tr><td>롯데 PoC 적합성 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>지원서에 관련 내용 전혀 없음. L-Camp 취지와 부합하지 않음</td></tr>
+<tr><td>베트남 의료 규제 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>의약품·의료 서비스 중개 플랫폼에 대한 인허가 요건 불명확</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — 헬스케어/의료 플랫폼</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">공급 네트워크 확보 및 의료 규제 대응</span><span class="dvtag dv-r">심각한 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 베트남 헬스케어는 약국 허가, 의료인 자격, 처방전 관리 등 엄격한 규제가 적용되는 영역이나 Omedic의 라이선스·인허가 현황이 전혀 제시되지 않았다. [미확인] IR 덱에서 '약국·병원·검사센터 연결'을 표방하지만 실제 파트너십 계약 건수, MOU, 공급사 온보딩 현황이 부재하다. 'Demo' 단계에서 의료 공급망 없이 플랫폼만 구축한 상태는 사업 실행 가능성에 치명적이다. [미확인] 베트남 보건부(Ministry of Health) 규정 준수 여부 및 e-pharmacy 허가 취득 계획도 확인되지 않는다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">수익 모델 및 단위경제학 검증</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] IR 덱 전체에서 수익 구조(커미션율, 광고비, 구독 모델 등)에 대한 언급이 전무하다. 헬스케어 마켓플레이스는 통상 공급사 수수료 10~20%, 배송비, 프리미엄 서비스로 수익화하나 Omedic의 monetization 전략이 부재하다. [미확인] 고객획득비용(CAC), 생애가치(LTV), 거래당 마진 등 단위경제학 지표가 일절 공개되지 않았으며, 현재 매출 '0'이고 투자 유치 목표액도 미기재이다. 'Demo' 트랙션은 상용화 이전 단계로, 비즈니스 모델의 경제적 타당성을 입증할 근거가 존재하지 않는다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">경쟁 환경 및 시장 포지셔닝</span><span class="dvtag dv-r">차별화 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 베트nam 헬스케어 e커머스는 Thuocsi.vn(약국 B2B), Pharmacity(O2O), MedEx(의약품 유통) 등 자금력 있는 경쟁사들이 이미 시장을 점유하고 있으나 경쟁 분석이 전무하다. IR 덱에서 '단편적 솔루션'을 비판하며 '종합 마켓플레이스'를 표방하지만, [미확인] 실제 차별화 요소(독점 공급사, 진단 AI, 배송 인프라 등)에 대한 구체적 설명이나 검증 데이터가 없다. [부분 확인] 'AI와 Big Data 결합'이라는 비전은 제시되었으나 현재 기술 개발 수준, 데이터셋 확보 현황, 알고리즘 성능 지표가 부재하여 공허한 주장에 그친다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">초기 사용자 확보 및 성장 전략</span><span class="dvtag dv-r">실행 계획 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 'Demo' 단계임에도 실제 사용자 수, 앱 다운로드 수, 월간 활성 사용자(MAU), 거래 건수 등 트랙션 지표가 일절 공개되지 않았다. [미확인] 고객 획득 전략(디지털 마케팅, 파트너십, 인플루언서 등)과 예산 배분 계획이 IR 덱에 없으며, '시장 테스트 준비 중'이라는 모호한 표현만 존재한다. [미확인] 베트남 소비자의 온라인 약품 구매 행태, 신뢰도 장벽, 결제 선호도 등에 대한 시장 조사나 사용자 인터뷰 결과도 부재하다. 성장 로드맵 없이 플랫폼만 구축한 상태는 투자 리스크가 매우 높다.</div></div>
+<div class="deep-category-label">Category A — 마켓플레이스/플랫폼</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">양면 시장 구축 및 닭-달걀 문제 해결</span><span class="dvtag dv-r">전략 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 마켓플레이스 성공의 핵심인 공급(약국·병원)과 수요(사용자) 동시 확보 전략이 전혀 제시되지 않았다. 통상 초기 마켓플레이스는 한쪽을 먼저 lock-in(예: 공급사 독점 계약)하거나 보조금으로 cold-start 문제를 해결하나, Omedic의 접근법이 부재하다. [미확인] 파트너 약국·병원에 대한 인센티브 구조(수수료율, 마케팅 지원, 결제 조건 등)가 공개되지 않았으며, 공급사 유인책이 없다. [미확인] 사용자 측에도 가입 혜택, 첫 구매 할인, 로열티 프로그램 등 네트워크 효과 촉발 메커니즘이 확인되지 않는다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">플랫폼 기술 완성도 및 확장성</span><span class="dvtag dv-a">미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] IR 덱에서 '사용자 앱, 웹, 관리자 시스템, 판매자 웹, iOS/Android 앱' 개발 완료를 언급했으나, [미확인] 실제 기능 데모, 사용자 리뷰, 앱스토어 등록 여부가 확인되지 않는다. 'Demo' 단계는 보통 제한된 기능의 프로토타입을 의미하며, 상용화 수준의 안정성·보안·결제 시스템을 갖추었는지 불명확하다. [미확인] 베트남어 외 다국어 지원, 모바일 최적화, 서버 인프라(AWS/GCP), 데이터 보안(개인정보 보호법 준수) 등 기술 스펙이 부재하다. 향후 거래량 증가 시 시스템 확장성(scalability)에 대한 계획도 없다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">물류·배송 인프라 및 품질 관리</span><span class="dvtag dv-r">핵심 역량 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 의약품은 온도 관리, 유통기한 추적, 위변조 방지가 필수이나 Omedic의 물류 파트너십, 콜드체인, 품질 관리 체계가 전혀 언급되지 않았다. [미확인] 베트남 주요 도시(하노이, 호치민, 다낭) 외 지방 배송 커버리지, 배송 소요시간(1일 배송 vs 3일 이상), 배송비 부담 주체 등 운영 디테일이 부재하다. [미확인] 반품·교환 정책, 의약품 부작용 발생 시 책임 소재, 고객 클레임 처리 프로세스도 확인되지 않는다. 물류는 헬스케어 마켓플레이스의 신뢰도를 좌우하는 핵심 역량인데 전혀 준비되지 않은 것으로 보인다.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>Google Play 앱 등록 완료 — 기술적으로 앱 개발은 진행된 것으로 확인됨 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] 창업팀 정보 전면 비공개 — 도메인 전문성·경력·네트워크 검증 불가능</li>
+<li>[미확인] 실제 트랙션 부재 — 파트너 수·사용자 수·거래액·매출 모두 미공개</li>
+<li>[미확인] 비즈니스 모델 불명확 — 수익 구조·단위 경제·마진 전략 전혀 설명 없음</li>
+<li>롯데 PoC 연계성 부재 — 지원서에 관련 내용 전혀 기재되지 않음</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 헬스케어 디지털화 트렌드 — Covid 이후 온라인 의료 수요 증가 가능성</li>
+<li>플랫폼 모델의 확장 가능성 — 다양한 헬스케어 서비스를 한 곳에서 제공할 수 있는 구조</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>베트남 의료 규제 리스크 — 약국·병원 연결 플랫폼에 대한 인허가 요건 불명확</li>
+<li>경쟁 심화 — 베트남에 이미 다수의 헬스케어 앱 존재 (예: Thuocsi, MedGo 등)</li>
+<li>공급망 확보 난이도 — 약국·병원의 플랫폼 참여 동기 부족 가능성</li>
+<li>팀 투명성 부족으로 인한 신뢰도 저하 — 투자자 유치 및 파트너 확보에 장애 요인</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">7</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Omedic은 베트남 헬스케어 마켓플레이스 아이디어를 제시하고 있으나, 현재 단계에서 검증 가능한 사업 실행 근거가 거의 전무하다. 가장 큰 미검증 가정은 '약국·병원·홈케어 제공자들이 Omedic 플랫폼에 실제로 참여하여 거래가 발생할 것'이라는 점이다. [미확인] 파트너 확보 현황, 실사용자 수, 거래액, 수익 모델이 모두 공개되지 않았으며, 'Demo' 트랙션은 상용화 이전 단계를 의미한다. 더 심각한 것은 창업팀 정보가 완전히 비공개되어 있어 헬스케어 도메인 전문성·네트워크·실행 역량을 전혀 평가할 수 없다는 점이다. 롯데와의 PoC 연계 가능성도 부재하며, 투자 적합성을 판단할 객관적 근거가 존재하지 않는다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">1 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">7 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Công Ty TNHH Omedic · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-15 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>
