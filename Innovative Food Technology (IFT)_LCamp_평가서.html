@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Innovative Food Technology (IFT) / Lemit Foods — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Innovative Food Technology (IFT) / Lemit Foods</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam, Can Tho province</span>
+          <span class="etag et-ind">FoodTech</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Innovative Food Technology (IFT) / Lemit Foods</div>
+        <div class="hero-sub">설립 2023 · https://lemitfoods.com</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Lemit Foods는 식품 제조사, 외식업체, 소매 채널을 위한 저탄소 식물성/하이브리드 육류 대체 식재료이다. 메콩 델타 영잭프루트를 섬유질 구조화 원료로 전환하며, B2C 제품 판매($40K 매출, 2024) 및 B2B 공급 전환을 목표로 연 구독 또는 주문 기반 원료 공급 모델로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          영잭프루트 기반 식재료가 기존 육류 대체재 대비 질감·원가·조리 호환성에서 실제 B2B 고객(제조사·외식 체인)의 대량 채택으로 이어질 것이라는 가정이 아직 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">19</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$40K</div><div class="kpi-desc">B2C 제품 판매 실적 (확인)</div></div>
+<div class="kpi"><div class="kpi-val">$85.2K</div><div class="kpi-desc">추정치 — 계약 근거 미확인</div></div>
+<div class="kpi"><div class="kpi-val">10,000+</div><div class="kpi-desc">최종 사용자 (검증 미확인)</div></div>
+<div class="kpi"><div class="kpi-val">30개</div><div class="kpi-desc">주요 거래처 수 (세부 미확인)</div></div>
+<div class="kpi"><div class="kpi-val">30가구</div><div class="kpi-desc">영잭프루트 구매, 시장가 대비 20-25% 고가 지급 (부분 확인)</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 식물성 육류 대체 시장은 글로벌 성장세이나, 베트남/APAC 내 SAM/SOM 구체화 없음. 잭프루트 기반 식재료의 차별성(질감, 섬유질 구조)은 서술되었으나, 기존 대두/완두 기반 대체육 대비 원가·조리 호환성·대량 생산 경쟁력 데이터 부재. 타겟 고객(제조사·외식 체인)의 실제 채택 레퍼런스 없음. B2C 매출 $40K(2024)는 소규모 시장 검증이나, B2B 전환 경로 불명확. 확장 가능성은 B2B 고객 확보 여부에 전적 의존.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 문제(육류 환경 부담, 대체육 접근성)는 명확하나, 솔루션(잭프루트 구조화 원료)의 고객 가치 전환 검증 부족. B2C 매출 $40K(2024) 존재하나 고객 세그먼트·채널·재구매 구조 불명확. B2B 모델(OEM/원료 공급)은 계획 단계이며 계약 레퍼런스 없음. 수상 이력 다수(Hau Giang 1위, Forest Ecopreneur 1위, LIF Global Top 9 등)는 인지도 신호이나, 기관 투자 유치 또는 검증된 수익 구조 부재. $500K 목표 라운드의 투자 적합성은 B2B 고객 확보 및 단위경제 검증 후 판단 가능.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">[확인] 사회문제 정의 명확: 육류 생산의 탄소 배출, 농업 부산물 저활용, 농가 수익 불안정. 솔루션 직접 연계: 영잭프루트 활용으로 저탄소 식재료 전환, 30가구 농가와 시장가 대비 20-25% 고가 구매 계약 확인. 임팩트의 지속성: 추적 가능한 공급망, 향후 MRV/LCA 기반 탄소 측정 경로 제시. 규모 확장 가능성은 B2B 고객 확보 및 농가 네트워크 확대에 의존하나, 현재 30가구 협력은 초기 검증 단계로 평가 가능.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 심층 조사 미수행 — 외부 검증 불가. 자체 보고에서는 식품 과학, R&D, ESG 전략, B2B 개발 경험 언급하나, 구체적 경력(근무 이력, 프로젝트 레퍼런스, 학위 전공)이 명시되지 않음. 창업 2023년 기준 2년 미만 운영으로 도메인 실행 경험 축적 제한적. B2C 매출 $40K 달성은 최소 운영 능력 시사하나, B2B 전환을 위한 기업 영업·OEM 계약·대량 생산 관리 역량 검증 없음. 핵심 인력 의존도 리스크 및 팀 완성도 불명확.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">7<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">[부분 확인] 주요 사업분야(식품·유통) 부합. PoC 아이디어는 구체적: 롯데마트(소매 검증), 롯데리아(메뉴 개발), 롯데호텔(ESG 다이닝). 각 계열사별 테스트 항목(고객 수용도, 주방 호환성, ESG 스토리텔링) 명확히 제시. 그러나 PoC 실행 전제 조건 불명확 — 롯데 측 주방·유통 인프라 활용 방식, 샘플 공급 규모, 품질관리 기준, 계약 조건 구체화 부족. 롯데 계열사의 기존 식물성 제품 정책 또는 ESG 식품 조달 우선순위와의 연계성 서술 없음. PoC 협력 가능성은 높으나, 운영 실행 계획의 구체성 보완 필요.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 3 + C 4 + D 2 + E 7</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">19</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통(롯데마트), 외식(롯데리아), 호텔/관광(롯데호텔), 물류(롯데글로벌로지스)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">롯데마트, 롯데리아, 롯데호텔, 롯데글로벌로지스</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데 × Lemit: 저탄소 잭프루트 식품 혁신 PoC (3–6개월)
+
+1. 롯데마트 — 소매 검증: 잭프루트 기반 즉석 조리/즉석 섭취 제품(스프링롤, 만두, 파테, 냉동 식사) 일부 매장 테스트. 고객 수용도, 가격, 진열 성과, 재구매율, '저탄소 식물성 식품 코너' 가능성 검증.
+
+2. 롯데리아 — 메뉴 혁신: 잭프루트 기반 미트볼, 버거 패티, 너겟, 볼 메뉴 또는 블렌디드 육류 응용 메뉴 1-2개 공동 개발. 맛 수용도, 주방 호환성, 조리 시간, 원가 구조, 고객 시도율, SNS 반응 테스트.
+
+3. 롯데호텔 — 지속가능 다이닝: '메콩 저탄소 다이닝' 또는 ESG 이벤트 메뉴 개발. 투숙객 피드백, 프리미엄 스토리텔링 가치, ESG 커뮤니케이션, MICE 고객 및 해외 투숙객 적합성 검증.
+
+PoC 종료 시 매장 확대, 롯데리아 한정 메뉴 출시, 공동 브랜드 소매 제품 런칭, B2B 원료 공급 또는 전략적 투자 여부 결정.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">ESG impact addressed by Lemit
+Lemit addresses ESG impact by transforming underutilized Mekong young jackfruit into low-carbon plant-based and blended/hybrid meat ingredients. Environmentally, our solution supports meat-reduction pathways, circular use of agricultural biomass, lower food waste, and future product-level carbon measurement through traceability and MRV/LCA.
+Socially, Lemit creates new value for local jackfruit farmers and rural supply chains by turning an underused crop into higher-value food ingredients. Lemit currently works with more than 30 farming households and purchases young jackfruit at approximately 20–25% higher than the prevailing market price, helping improve farmer income, create more stable demand, and reduce the risk of agricultural waste.
+From a governance perspective, Lemit aims to build a more transparent and measurable supply chain through traceability, food safety standards, ESG data, and responsible sourcing.
+
+How a PoC with LOTTE can help create impact
+A PoC collaboration with LOTTE can turn this ESG potential into measurable business evidence. Through LOTTE Mart, LOTTERIA, LOTTE Hotel and/or LOTTE Global Logistics, Lemit can test real customer acceptance, operational feasibility, sustainable menu or retail concepts, and supply-chain traceability in a corporate environment.
+If successful, the PoC can create a practical model for low-carbon food innovation in Vietnam: young jackfruit sourced from more than 30 local farming households at fairer prices, processed into structured ingredients, tested through LOTTE’s retail, foodservice and hospitality channels, and potentially scaled into wider B2B supply. This would support LOTTE’s ESG goals by offering healthier, lower-carbon, locally sourced food options while creating rural value and a traceable circular food supply chain.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>B2B 고객 채택률 불확실성</td><td><span class="rpill-sm rp-h">높음</span></td><td>제조사·외식 체인의 실제 계약 레퍼런스 부재. 잭프루트 원료의 조리 호환성·맛·질감이 대량 주문으로 이어질지 검증 필요 [미확인]</td></tr>
+<tr><td>단위경제 및 원가 경쟁력 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>대량 생산 시 원가 구조, 기존 대체육 대비 가격 경쟁력 데이터 없음. 농가 고가 구매(+20-25%)가 최종 제품 가격에 미치는 영향 불명확 [미확인]</td></tr>
+<tr><td>팀 역량 및 핵심 인력 의존도</td><td><span class="rpill-sm rp-m">중간</span></td><td>외부 검증 불가. 자체 보고 경력의 구체성 부족. B2B 전환을 위한 기업 영업·대량 생산 관리 경험 불명확 [미확인]</td></tr>
+<tr><td>농가 공급망 안정성</td><td><span class="rpill-sm rp-m">중간</span></td><td>30가구 협력은 초기 검증이나, 계절성·품질 편차·가격 변동성이 대량 B2B 주문 이행에 미치는 리스크 평가 필요 [부분 확인]</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — FoodTech / Food Ingredients</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">원료 경쟁력: 잭프루트 vs. 기존 식물성 단백질 원료</span><span class="dvtag dv-a">부분 검증, 차별성 불완전</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 잭프루트의 섬유질 구조와 질감 유사성은 문헌상 이점이나, 대두·완두 단백질 대비 단백질 함량, kg당 원가, 가공 수율, 유통 안정성 데이터 부재. [미확인] 메콩 델타 영잭프루트의 계절 공급 변동성, 원료 표준화(크기·성숙도) 프로토콜 및 품질 일관성 보증 체계 불명확. [부분 확인] '30가구 계약'은 소규모 공급망 시작점이나, B2B 대량 주문 대응 시 농가 확장 속도 및 원가 예측 가능성 검증 없음. 기존 육류 대체 원료 시장 내 포지셔닝 모호.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">B2B 전환 실행 계획 및 고객 파이프라인</span><span class="dvtag dv-r">계획 단계, 실행 레퍼런스 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] B2C 매출 $40K(2024)에서 B2B 모델(OEM 원료 공급, 연 구독)로의 전환 경로가 구체화되지 않음. 식품 제조사·외식 체인 타겟 명시되었으나 실제 테스트 고객, LOI(Letter of Intent), 샘플 평가 피드백 없음. [부분 확인] LOTTE 계열사 PoC 제안은 명확하나, 롯데마트·롯데리아·롯데호텔의 기존 식물성 제품 조달 정책, ESG 식자재 우선순위, 주방 규격 적합성 사전 조율 여부 불명. [미확인] 원료 단위가격, MOQ(최소주문량), 납품 리드타임, 품질보증(QA) 체계 등 B2B 거래 필수 조건 서술 없음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">생산 스케일업 및 식품 안전 인증</span><span class="dvtag dv-r">초기 수준, 상업 인증 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] B2C 제품 판매($40K)는 최소 생산·유통 경험 시사하나, 대량 생산(톤 단위) 설비, HACCP·ISO 22000·GMP 등 B2B 필수 인증 보유 여부 명시 없음. [미확인] 영잭프루트 원료의 잔류농약, 미생물 안전성, 알레르겐 관리 프로토콜 및 배치 추적성(traceability) 시스템 구축 상태 불명. [부분 확인] '추적 가능한 공급망' 언급되었으나 블록체인/MRV 기반 탄소 측정은 향후 계획 단계. 대형 유통·외식 체인 납품 위한 식품 안전 컴플라이언스 준비도 검증 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">단위경제 및 매출 예측 신뢰도</span><span class="dvtag dv-r">근거 불충분, 검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 2024년 $40K → 2025년 $85.2K(+113%) → 2026년 $120K 성장 예측의 가정 근거(고객 수, 객단가, 채널 믹스) 부재. B2C 재구매율, B2B 계약 규모, 월별 캐시 플로우 분석 없음. [부분 확인] '시장가 대비 20-25% 고가 구매'는 농가 지급 조건이나, 최종 제품 가격 경쟁력(대두 기반 대체육 대비)과 원가율 구조 불명확. [미확인] $500K 투자 목표의 사용처(생산 설비 증설, 인증 취득, 영업팀 확충 등) 및 마일스톤 구체화 없음. 수익화 경로 불투명으로 투자 회수 시나리오 평가 곤란.</div></div>
+<div class="deep-category-label">Category C — Impact/Sustainability</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-1</span><span class="deep-title">탄소 저감 효과 측정 및 입증</span><span class="dvtag dv-a">방향성 명확, 정량 데이터 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 육류 생산 대비 식물성 원료의 탄소 배출 절감 논리는 학술적으로 지지됨. 잭프루트 활용은 저투입 작물로 환경 부담 낮음. [부분 확인] 'MRV/LCA 기반 탄소 측정 경로 제시'되었으나 실제 LCA(Life Cycle Assessment) 수행 결과 또는 제3자 검증 데이터 없음. [미확인] 잭프루트 원료 1kg당 탄소 배출량, 기존 대두/소고기 대비 절감량(tCO₂e), 제품 단위당 환경 영향 비교 부재. Forest Ecopreneur 1위 수상은 임팩트 잠재력 인정이나, 정량 임팩트 리포트 없이 B2B 고객 ESG 조달 기준 충족 어려움.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-2</span><span class="deep-title">농가 파트너십 및 지역 경제 기여</span><span class="dvtag dv-a">초기 모델 검증, 확장성 미흡</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 30가구 농가와 시장가 대비 20-25% 고가 구매 계약은 소득 향상 기여 입증. 메콩 델타 농업 부산물(미성숙 잭프루트) 활용은 자원 효율성 제고. [부분 확인] 30가구 규모는 초기 공급망 검증이나, B2B 대량 수요(연 수백 톤) 충족 위한 농가 네트워크 확장 계획 불명확. [미확인] 농가 교육 프로그램, 품질 기준 전달 체계, 계약 재배(contract farming) 안정성 보증 메커니즘 부재. 농가 소득 증대의 지속성은 IFT의 주문량 성장에 전적 의존하므로, B2B 고객 확보 없이 농가 계약 유지 위험.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-3</span><span class="deep-title">임팩트 측정 및 보고 체계</span><span class="dvtag dv-r">프레임워크 부족, 투자 적격성 제한</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] IRIS+, SDG 기여도, Theory of Change 등 임팩트 측정 프레임워크 미적용. 탄소 저감, 농가 소득, 식품 접근성 개선 등 주요 임팩트 지표의 베이스라인 및 추적 시스템 부재. [부분 확인] 'Top 30 Social Business Creation(HEC)' 선정은 임팩트 논리 인정이나, 정기 임팩트 리포트 발행 또는 제3자 검증 사례 없음. [미확인] 투자자 대상 ESG 실사(Due Diligence) 대응 준비 불명확. 임팩트 투자 유치($500K 목표)에 필수적인 정량 데이터 및 보고 역량 검증 필요.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>30가구 농가와 시장가 대비 20-25% 고가 구매 계약 체결 — 공급망 사회적 가치 검증 가능 [확인]</li>
+<li>다수 수상 이력(Hau Giang 1위, Forest Ecopreneur 1위, LIF Global Top 9) — 혁신성 외부 인정 [확인]</li>
+<li>B2C 매출 $40K(2024) — 최소 시장 검증 및 제품 생산 능력 보유 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>B2B 모델 레퍼런스 부재 — 제조사·외식 체인과의 계약 또는 파일럿 실적 없음 [미확인]</li>
+<li>팀 역량 외부 검증 불가 — 자체 보고 경력의 구체성 및 도메인 실행 경험 불명확 [미확인]</li>
+<li>단위경제 및 원가 경쟁력 데이터 부재 — 잭프루트 원료의 대량 생산 시 원가 구조, 기존 대체육 대비 가격 경쟁력 검증 없음 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>롯데 PoC를 통한 B2B 레퍼런스 확보 — 롯데마트/롯데리아/롯데호텔 실증으로 고객 채택률 및 운영 적합성 검증 가능</li>
+<li>아시아 식물성 식품 시장 성장 — 육류 소비 감축 트렌드 및 ESG 조달 정책 확대</li>
+<li>메콩 델타 농업 네트워크 확장 — 30가구에서 100+ 가구로 공급망 확대 시 임팩트 규모 증대 가능</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>기존 대두/완두 기반 대체육 제조사의 원가·생산 규모 우위 — 잭프루트 차별성이 가격 경쟁력으로 전환되지 않을 위험</li>
+<li>B2B 고객의 레시피 변경 저항 — 기존 조리 프로세스 호환성 부족 시 채택 지연</li>
+<li>농가 공급 안정성 리스크 — 계절성, 품질 편차, 가격 변동성이 대량 공급 계약 이행에 영향</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">19</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">Lemit Foods는 메콩 델타 영잭프루트를 저탄소 식물성 육류 대체 식재료로 전환하는 순환경제 모델이다. 사회적 가치(농가 소득 증대, 탄소 저감)는 명확하고 30가구와의 고가 구매 계약은 검증 가능하나, 핵심 가정 — 잭프루트 기반 식재료가 기존 대두/완두 대체육 대비 질감·원가·조리 호환성에서 B2B 고객(제조사·외식 체인)의 대량 채택으로 이어질 것 — 은 검증되지 않았다. B2C 매출 $40K(2024)는 소규모 시장 검증이나, B2B 전환 레퍼런스 및 팀의 기업 영업·대량 생산 관리 경험은 외부 확인 불가. PoC는 롯데 인프라를 활용한 실증 기회이나, 상용화 경로는 고객 채택률 및 단위경제 검증에 전적 의존한다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">7 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">19 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Innovative Food Technology (IFT) / Lemit Foods · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-17 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>
