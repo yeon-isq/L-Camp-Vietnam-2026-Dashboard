@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LEXengine Jsc. — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">LEXengine Jsc.</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam, Hanoi</span>
+          <span class="etag et-ind">AI / LegalTech</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">LEXengine Jsc.</div>
+        <div class="hero-sub">설립 2023 · https://lexcentra.ai/en/home</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">LEXengine은 기업의 법무·컴플라이언스·계약 관리를 통합 운영하는 Legal OS인 LEXcentra를 제공한다. Baker McKenzie, VNG, THACO 등 20개 이상의 로펌과 대기업을 고객으로 확보하였으며, 계약당 평균 $180k의 ARR을 기록하고 있고, SaaS 구독 및 온프레미스 라이선스로 수익을 창출한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          대형 로펌과 금융권 고객 기반이 일반 제조·유통 기업(롯데 계열사 포함)의 반복적 법무 워크플로우에도 동일하게 적합하다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">19</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">20개 이상</div><div class="kpi-desc">로펌 및 대기업 (Baker McKenzie, VNG, THACO 등) [확인]</div></div>
+<div class="kpi"><div class="kpi-val">20,000+</div><div class="kpi-desc">법률 전문가 및 공무원 [부분 확인 — 정부 포털 배포로 추정]</div></div>
+<div class="kpi"><div class="kpi-val">$180k</div><div class="kpi-desc">고객당 평균 계약 금액 (ARR 추정) [확인]</div></div>
+<div class="kpi"><div class="kpi-val">$2M</div><div class="kpi-desc">Seed 라운드 목표 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">베트남 국가 법률 포털</div><div class="kpi-desc">정부 법률 AI 파트너 선정 [확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">베트남 법률서비스 시장 $1B 및 SEA $4.6B 규모 제시 [확인]. 기존 고객은 로펌·금융·대기업 중심이며, 유통·F&B·건설 등 롯데 주력 업종으로의 확장 가능성은 [미확인]. IR에서 'large SMEs and corporates where legal becomes a business-operating bottleneck' 언급했으나 이 세그먼트의 구체적 TAM/SAM 분해 없음 [부분 확인]. 국가 법률 포털 파트너십은 sovereign AI 수요 검증의 강력한 신호이나, 민간 기업 시장으로의 전환 경로는 제시되지 않음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">문제-솔루션-고객-수익 구조 명확 [확인]. 계약당 $180k ARR, 20개 이상 유료 고객 확보 [확인]. SaaS 및 온프레미스 라이선스 BM 운영 중 [확인]. $2M Seed 라운드 유치 중 [확인]. 롯데벤처스 투자 적합성: LegalTech는 전통적 AI/IT 투자 영역이나, 현재 고객 프로필(로펌·금융·정부)과 롯데 주력 업종(유통·F&B·건설) 간 핏은 [미확인]. PoC 성공 시 그룹 법무 인프라로 확장 가능성 있으나, 초기 워크플로우 적합성 검증 필수.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">ESG 중 Governance 기여는 명확: 법률·컴플라이언스 투명성, 리스크 통제, 감사 추적 강화 [확인]. Social 측면은 간접적: 법무 접근성 개선을 통한 직원 지원, 소비자 보호 강화 주장 [부분 확인 — 실제 영향 데이터 없음]. Environmental 측면은 종이 사용 감소를 언급했으나 이는 부차적이며 측정 가능한 환경 성과는 제시되지 않음 [미확인]. 문제 정의는 명확하나 사회적 임팩트의 규모·깊이는 제한적.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 배경은 'Law, Tech, AI, Entrepreneurship'로 자체 신고되었으나, 외부 검증 결과 팀원 정보 확인 불가 [미확인]. 창업자 이름, 이전 경력, 학력, 도메인 전문성 등 구체적 정보 부재. IR Deck에도 팀 소개 페이지 없음. 제품 완성도와 고객 확보 실적은 팀 실행력을 간접적으로 시사하나, 핵심 인물 의존도 리스크 및 조직 완성도는 평가 불가. 투자 의사결정을 위한 팀 실사 필수.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">6<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">주요 사업분야(유통·F&B·건설·AI/IT) 해당 [확인]. PoC 아이디어는 구체적: (1) 유통·F&B 컴플라이언스 AI, (2) 계약서 검토 플레이북, (3) 법무 요청 관리 시스템 [확인]. 롯데 마트·백화점·호텔·시네마·롯데리아 등 다수 계열사 명시 [확인]. 그러나 롯데 계열사 특유의 인프라·데이터·고객 기반을 활용하는 방식은 제시되지 않음 [미확인]. 제안된 유스케이스는 대부분 일반적 법무 워크플로우 개선으로, 롯데 고유의 전략적 가치 창출 경로는 불명확. 기존 고객 프로필(로펌·금융·정부)과 유통·F&B 업종 간 워크플로우 적합성 검증 필요 [미확인].</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 4 + B 4 + C 3 + D 2 + E 6</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">19</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail, Hospitality, Logistics, Smart City/PropTech, F&B, AI/IT</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시 안 됨</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데 계열사를 위한 3~6개월 Legal OS 파일럿: (1) 유통·F&B 컴플라이언스 AI 어시스턴트 (마트, 백화점, 롯데리아 대상), (2) 공급업체·임차인 계약서 검토 자동화 (마트, 몰, 호텔, 시네마, 롯데리아 대상), (3) 법무 요청 접수 및 사안 관리 시스템 구축 (그룹 법무팀 및 전 계열사 대상). 목표는 법무·컴플라이언스 응답 시간 단축, 계약 리스크 감소 및 운영 효율 개선.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">LEXcentra primarily addresses the Governance and Social dimensions of ESG, with a secondary but measurable contribution to the Environmental dimension through digitization and paperless legal operations:
+1. Governance impact: stronger compliance, transparency, and risk control. LEXcentra helps create a more structured legal and compliance governance layer across LOTTE affiliates by centralizing legal requests, contracts, policies, legal knowledge, and compliance guidance in one operating system. For example: Provides standardized guidance based on approved policies, templates, and legal playbooks; Uses AI-assisted review against approved clause positions, red-flag checklists, and approval rules..
+2. Social impact: safer operations, better employee support, and consumer protection. LEXcentra can support LOTTE employees by making legal and compliance guidance more accessible to non-legal teams in retail, F&B, hospitality, logistics, and construction. For example: Business teams can ask questions and receive first-level guidance based on approved LOTTE materials; Staff receive practical guidance on promotions, food safety, consumer protection, supplier obligations, data privacy, and internal approvals; Routine questions are handled more efficiently, allowing legal teams to focus on high-risk matters..
+3. Environmental impact: digitized legal operations and reduced paper-heavy workflows. LEXcentra’s Environmental impact is more indirect, but still relevant. Legal and compliance functions often rely on paper-based documents, manual contract circulation, repeated printing, and fragmented document storage. By digitizing legal request intake, contract review, document management, and approval records, the PoC can reduce unnecessary printing and manual document circulation.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>고객 세그먼트 전환 리스크</td><td><span class="rpill-sm rp-h">높음</span></td><td>로펌·금융 중심 제품을 유통·F&B 운영 법무에 적용 시 워크플로우·의사결정 구조 차이로 인한 제품 재설계 필요 가능성 [미확인 — PoC 필수]</td></tr>
+<tr><td>팀 검증 불가 리스크</td><td><span class="rpill-sm rp-h">높음</span></td><td>창업자 및 핵심 인력 배경 외부 확인 불가. 키맨 의존도, 조직 완성도, 도메인 전문성 실사 필수 [미확인]</td></tr>
+<tr><td>매출 투명성 부족</td><td><span class="rpill-sm rp-m">중간</span></td><td>계약 단가는 확인되나 총 ARR, 고객 수 증가율, churn, CAC 등 SaaS 핵심 지표 미공개로 성장 지속성 판단 어려움 [부분 확인]</td></tr>
+<tr><td>정부 의존도</td><td><span class="rpill-sm rp-m">중간</span></td><td>국가 법률 포털 파트너십은 검증 신호이나, 정부 프로젝트 중심 매출 구조일 경우 민간 B2B 확장 속도 제약 가능성 [미확인]</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">제품 완성도 및 기술 차별성</span><span class="dvtag dv-a">검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">LEXcentra는 베트남 국가 법률 포털(lexcentra.phapluat.gov.vn)을 운영하며 정부 Legal AI 파트너로 선정되었다는 점은 [확인]. 그러나 베트남어 법률 데이터 처리를 위한 자체 NLP/LLM 기술 스택의 구체적 차별성(vs. 글로벌 LegalTech 솔루션)은 IR Deck에서 확인되지 않음 [미확인]. 계약당 $180k ARR은 높은 객단가를 시사하나, 이것이 기술 우위 때문인지 온프레미스 커스터마이징 비용 때문인지 불명확 [미확인]. 20개 이상 유료 고객 확보는 시장 검증의 신호이나, 제품의 핵심 IP(특허, 독점 데이터셋, 알고리즘)에 대한 설명 부재 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">수익 모델 확장성</span><span class="dvtag dv-a">부분 확인</span><span class="deep-arrow">▾</span></div><div class="deep-body">SaaS 구독과 온프레미스 라이선스 병행 모델은 [확인]. 계약당 평균 $180k ARR은 엔터프라이즈 중심의 고객단가를 입증 [확인]. 그러나 현재 고객 프로필(Baker McKenzie 등 글로벌 로펌, VNG·THACO 등 대기업, 정부)은 초기 시장 검증에는 강력하나, 대다수 베트남 SME로의 확장 시 필요한 저가형 패키지, 셀프서비스 온보딩, 현지화 지원 전략은 제시되지 않음 [미확인]. 온프레미스 의존도가 높을 경우 SaaS 특유의 마진율·확장성 실현이 제한될 위험 존재 [부분 확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">고객 유지 및 확장 매출(NRR)</span><span class="dvtag dv-r">데이터 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">20개 이상의 유료 고객 확보는 [확인]되었으나, 고객 이탈률(Churn), 갱신율(Renewal Rate), 순수익유지율(Net Revenue Retention) 등 SaaS 핵심 지표는 IR 자료에 전혀 제시되지 않음 [미확인]. 계약당 $180k ARR이 초기 계약 기준인지, 연간 반복 수익인지 불명확 [미확인]. 기존 고객 내 추가 모듈 판매, 사용자 수 확대, 부서 간 확산 등 Land-and-Expand 전략의 실행 근거 및 성과 데이터 부재 [미확인]. 정부 계약의 경우 장기 계약 안정성은 높으나 확장 매출 가능성은 제한적일 수 있음 [부분 확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">경쟁 환경 및 시장 포지셔닝</span><span class="dvtag dv-a">분석 불충분</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 법률서비스 시장 $1B, SEA $4.6B 규모는 [확인]. 그러나 글로벌 LegalTech 플레이어(Ironclad, LinkSquares, Juro, Clio 등) 대비 베트남 특화 포지셔닝의 방어 가능성(언어·법체계·로컬 규제 적합성)은 주장만 있고 실증 데이터 없음 [부분 확인]. 베트남 내 경쟁사(예: 로컬 법률 소프트웨어 업체, 글로벌 업체의 현지 진출) 분석 부재 [미확인]. '베트남 정부 파트너'라는 포지셔닝은 강력한 진입장벽이나, 이것이 민간 기업 시장에서도 차별화 요소로 작용하는지 불분명 [미확인].</div></div>
+<div class="deep-category-label">Category E — 롯데 주력 사업 부문 연계성</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">롯데 계열사 워크플로우 적합성</span><span class="dvtag dv-a">검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">제안된 3가지 PoC 유스케이스(유통·F&B 컴플라이언스 AI, 계약서 검토, 법무 요청 관리)는 롯데 마트·백화점·호텔·시네마·롯데리아 등 다수 계열사에 적용 가능하다고 주장 [확인]. 그러나 현재 고객 프로필(로펌·금융·정부)과 유통·F&B 업종 간 법무 워크플로우는 본질적으로 다름 — 로펌은 사건 중심, 유통은 반복적 운영 컴플라이언스 중심 [부분 확인]. 롯데 계열사별 기존 법무 시스템(ERP, 계약 관리 툴, 내부 승인 프로세스)과의 통합 가능성, 데이터 마이그레이션 복잡도, 다국어 지원(한국어·베트남어) 필요성 등은 제시되지 않음 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">롯데 고유 자산 활용 가능성</span><span class="dvtag dv-r">불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">제안서는 롯데의 다수 계열사를 나열했으나, 롯데 특유의 인프라·데이터·고객 기반을 LEXcentra가 어떻게 활용할지 구체적 경로 제시 없음 [미확인]. 예를 들어, 롯데 계열사 간 공통 계약 템플릿, 그룹 차원의 컴플라이언스 정책 DB, 통합 법무 지식 허브 등 시너지 창출 방안은 언급되지 않음 [미확인]. 제안된 유스케이스는 대부분 일반적 법무 워크플로우 개선으로, 타 대기업에도 동일하게 적용 가능한 수준 [확인]. 롯데만의 전략적 가치(예: 아시아 다국적 법무 네트워크, 한-베 법률 통합 플랫폼 등)를 창출할 차별화 요소는 부재 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-3</span><span class="deep-title">PoC 성공 후 확장 경로</span><span class="dvtag dv-a">부분 정의</span><span class="deep-arrow">▾</span></div><div class="deep-body">3~6개월 파일럿을 통해 법무/컴플라이언스 응답 시간 단축, 계약 리스크 감소, 운영 마찰 완화를 목표로 제시 [확인]. PoC 성공 시 롯데 그룹 전체 법무 인프라로 확장 가능성은 논리적으로 타당 [부분 확인]. 그러나 파일럿 성공 기준(KPI, 측정 방법, 목표 수치), 확장 단계별 투자 소요, 그룹 차원의 의사결정 프로세스(법무팀·IT팀·경영진 승인 경로) 등은 명시되지 않음 [미확인]. 롯데 베트남 외 한국 본사 및 아시아 타 지역(인도네시아, 인도 등) 계열사로의 확장 전략은 전혀 언급되지 않음 [미확인].</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>계약당 $180k ARR 및 20개 이상 유료 고객 확보 (Baker McKenzie, VNG, THACO 등 대형 로펌·기업 포함) [확인]</li>
+<li>베트남 정부 국가 법률 포털 공식 파트너 선정 — sovereign AI 수요 검증 [확인]</li>
+<li>Legal OS 아키텍처로 단순 챗봇 대비 워크플로우·거버넌스·감사 기능 통합 제공 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>팀 배경 외부 검증 불가 — 창업자·핵심 인력 정보 부재로 키맨 리스크 및 조직 완성도 평가 불가 [미확인]</li>
+<li>매출 규모 및 성장률 미공개 — 계약 단가는 확인되나 전체 ARR, MRR, churn rate 등 SaaS 핵심 지표 부재 [미확인]</li>
+<li>기존 고객(로펌·금융·정부)과 롯데 주력 업종(유통·F&B·건설) 간 워크플로우 적합성 미검증 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>SEA 법률서비스 시장 $4.6B 규모 및 Legal AI/OS 초기 시장 선점 가능성</li>
+<li>롯데 계열사 그룹 법무 인프라로 확장 시 다수 계열사 동시 확보 가능</li>
+<li>정부 포털 레퍼런스를 활용한 규제 산업(금융·건설·유통) B2B 확장</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>글로벌 LegalTech 플레이어(Ironclad, Kira Systems, LawGeex 등)의 SEA 진출 가능성</li>
+<li>각국 법률 데이터 주권 규제 강화 시 cross-border 확장 제약</li>
+<li>대기업 법무팀의 레거시 시스템 및 수작업 프로세스 변경 저항</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">19</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">LEXengine은 법무·컴플라이언스 운영 AI 플랫폼으로 로펌·금융·정부 고객 20개 이상 확보 및 계약당 $180k ARR 달성 등 명확한 견인력을 보유한다 [확인]. 베트남 국가 법률 포털 파트너 선정은 sovereign AI 수요 검증의 강력한 신호이나 [확인], 민간 B2B 확장 경로는 제시되지 않았다 [미확인]. 가장 큰 미검증 가정은 '로펌·금융권 중심의 Legal OS가 유통·F&B·건설 등 롯데 주력 업종의 반복적 운영 법무에도 동일하게 적합하다'는 점이다 — 이는 고객 세그먼트 간 워크플로우 복잡도, 의사결정 구조, 구매 주체가 상이하므로 PoC를 통한 검증이 필수적이다. 팀 배경은 외부 검증 불가로 투자 실사 시 리스크 요인이다 [미확인].</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">6 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">19 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>LEXengine Jsc. · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-17 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

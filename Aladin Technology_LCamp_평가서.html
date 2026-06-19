@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aladin Technology — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Aladin Technology</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City</span>
+          <span class="etag et-ind">E-commerce & Retail</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Aladin Technology</div>
+        <div class="hero-sub">설립 2025 · https://www.aladin.it.com/</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">Aladin은 베트남의 140만 영세 소매점(mom-and-pop shop)을 위한 AI 기반 B2B 유통 플랫폼이다. 영세 소매점들이 겪는 중개인 의존 구조와 비효율적 재고 발주 문제를 음성/사진 주문 AI로 해결하며, 브랜드-유통사-소매점 간 거래 수수료 및 유통사 구독료로 수익을 창출한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          중개인(broker) 제거가 실제로 소매점의 마진 개선과 재주문율 지속으로 이어지며, 유통사들이 기존 중개 네트워크를 포기하고 Aladin 플랫폼으로 전환할 유인이 충분하다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">18</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$110K</div><div class="kpi-desc">2025.04~2026.03, 월 평균 $10K [확인]</div></div>
+<div class="kpi"><div class="kpi-val">300개</div><div class="kpi-desc">유료 고객, 월평균 GMV $10K/점포 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">80%</div><div class="kpi-desc">주간 기준, 평균 월 유지율 70.3% [부분 확인]</div></div>
+<div class="kpi"><div class="kpi-val">MoM 25%</div><div class="kpi-desc">2025.04 → 2026.03, CAGR 기준 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">$136K</div><div class="kpi-desc">Pre-seed/Seed 단계 [확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">베트남 140만 영세 소매점 시장은 규모가 크지만, IR에서 제시한 TAM/SAM 세분화 근거가 없음 [미확인]. 경쟁사로 Kiot Viet(100만+ 소매점 POS), Telio/Vinshop(B2B 앱), ViettelPost(국영 DMS)가 명시되었으나, Aladin의 '유통사 우회 없이 협력' 차별화 전략이 실제 시장에서 수용될지 검증 부족 [부분 확인]. 인도네시아 Baskit 유사 모델 언급은 있으나 베트남 내 실행 가능성 구체적 근거 없음. 확장 가능성은 있으나 경쟁 분석이 피상적.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">문제(중개인 의존)-솔루션(AI 주문)-고객(소매점)-수익 구조(거래 수수료+유통사 구독료)는 명확함 [확인]. GMV $110K, 300개 유료 고객, 80% 재주문율은 초기 트랙션으로 의미 있음 [확인]. 그러나 단위 경제(unit economics) 데이터 없음 — 고객 획득 비용(CAC), 고객 생애 가치(LTV), 유통사당 수익성 구조 전혀 제시 안 됨 [미확인]. 투자 유치 이력 없고 목표 $136K는 seed 규모로 적정하나, 롯데벤처스 펀드 투자 적합성 판단 근거 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">문제 정의 명확: 영세 소매점(특히 여성 운영)의 불투명한 가격 결정, 중개인 마진 전가, 디지털 접근성 부족 [확인]. 솔루션의 사회적 가치 연결성 구체적: 음성/사진 주문으로 디지털 장벽 제거, 중개인 제거로 소매점 마진 개선, 여성 경제적 자립 지원 [확인]. ESG 임팩트 측정 가능성 제시(배송 통합으로 탄소 절감, 거래 투명성 확보) [부분 확인]. 300개 고객 중 다수가 여성 운영 가구라는 주장은 있으나 구체적 비율 데이터 없음 [부분 확인]. 임팩트 규모·깊이는 확인되나 지속성은 사업 모델 검증 후 판단 가능.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 외부 검증 전혀 이루어지지 않음 [미확인]. 자가 보고에 따르면 CEO는 15년+ B2B 영업 경력 및 가족 소매점 배경, CTO는 2개 스타트업 CTO 경력 보유 주장. 자문 Peter X. Nguyen(BuyMed 회장)의 존재는 긍정적이나, 실제 관여 수준 불명 [부분 확인]. 핵심 멤버의 학력·경력·도메인 전문성이 외부 출처(LinkedIn, 언론 등)로 확인되지 않아 신뢰성 평가 불가. 팀 구성의 완전성(마케팅, 재무, 운영 전문가 등) 정보 없음. 키 퍼슨 의존도 리스크 높음.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">6<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">PoC 아이디어는 구체적: 롯데칠성/롯데푸드 SKU를 Aladin 플랫폼에 온보딩, 빈증(Bình Dương) 지역 200~300개 소매점 대상 6개월 파일럿, 롯데 물류창고를 마이크로 허브로 활용 [확인]. 식품 유통 및 물류/공급망 분야에 해당하며 롯데글로벌로지스, 롯데이노베이트 연계 가능성 있음 [확인]. 그러나 롯데 측 입장에서 실행 유인이 불분명 — 기존 롯데 유통망(대형마트, 도매 계약)을 우회하여 영세 소매점 직접 공략 시 내부 채널 갈등 가능성 [미확인]. PoC 성과 측정 지표(재주문율, GMV 상승, 배송 효율)는 명시되었으나, 롯데가 얻는 구체적 편익(매출 증가, 데이터 가치, ESG 보고 개선)의 정량화 부족 [부분 확인]. 협력 가능성은 중간 수준.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 3 + C 4 + D 2 + E 6</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">18</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">물류/공급망(롯데글로벌로지스), AI/IT(롯데이노베이트)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">롯데칠성, 롯데푸드, 롯데마트</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데 유통 FMCG 브랜드(롯데칠성, 롯데푸드 등)를 Aladin 공급자 포털에 온보딩하여, 200~300개 소매점 대상 6개월 파일럿 진행. 롯데 물류창고를 마이크로 허브로 활용해 익일 배송 테스트하며, 재주문율·GMV 상승·소매점 만족도를 기존 중개 채널 대비 측정. 이후 Aladin 구매 데이터 기반 타겟 프로모션 캠페인 실행 및 롯데 브랜드의 전통 유통 채널 판매 데이터 가시성 확보.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">1. Environmental Impact
+The traditional restocking model is environmentally wasteful by design. Every broker trip — riding from shop to distributor to warehouse and back — is a separate, uncoordinated journey. With 1.5 million shops each placing orders through fragmented broker networks, the cumulative carbon footprint is enormous and largely invisible.
+Aladin's AI-driven, consolidated ordering model addresses this directly. By aggregating demand from clusters of nearby retailers and fulfilling through a single micro-hub delivery run, we meaningfully reduce the number of vehicle trips per unit of goods delivered. A PoC with LOTTE's existing warehouse and distribution infrastructure would let us measure this reduction concretely for the first time — tracking trips eliminated, fuel saved, and emissions avoided per 100 orders fulfilled. This data becomes the foundation for a credible carbon impact claim.
+
+2. Social Impact
+This is where I believe Aladin's impact is deepest and most defensible.
+Vietnam's 1.5 million mom-and-pop shops are overwhelmingly run by women — often family matriarchs like the CEO's own mother — operating on thin margins, with no access to data, no negotiating power with suppliers, and no visibility into whether they are being fairly priced. They are the last mile of the economy and the first to be squeezed.
+Aladin directly addresses three social dimensions:
+Financial inclusion for micro-retailers. By connecting shops directly to suppliers and eliminating broker markups, retailers access fairer prices and a wider product range — improving margins for some of Vietnam's most economically vulnerable small business owners.
+Digital empowerment. Our voice and photo ordering interface removes the literacy and tech-barrier that has historically excluded traditional shopkeepers from the digital economy. A 50-year-old shop owner in Bình Dương does not need to learn an app — she speaks her order.
+Women's economic agency. The majority of our current 300 paying customers are women-led households. Helping them run a more efficient, data-informed business is a direct contribution to women's economic empowerment at the grassroots level.
+A LOTTE PoC amplifies this social impact by bringing authentic, fairly-priced FMCG products from a trusted brand directly to these retailers — reducing their exposure to counterfeit or gray-market goods that currently flow through unregulated broker channels.
+
+3. Governance Impact
+Vietnam's traditional trade channel operates almost entirely in cash, off-receipt, and outside any formal reporting system. Brokers set prices verbally. Retailers have no invoice, no recourse, and no record. This opacity enables price manipulation and makes it nearly impossible for brands to understand what actually happens to their products after leaving the warehouse.
+Aladin introduces transactional transparency into this opaque system. Every order is digitally recorded. Every price is visible. Every delivery is logged. For the first time, both the retailer and the brand have a shared, auditable record of what was ordered, at what price, and when it arrived.
+From a governance standpoint, a PoC with LOTTE is particularly meaningful. LOTTE Group operates under rigorous Korean ESG reporting standards and is increasingly accountable to institutional investors on supply chain governance. By piloting with Aladin, LOTTE gains verified sell-out data from the traditional trade channel — something that simply does not exist today — which directly strengthens their Scope 3 supply chain reporting and ESG disclosures.
+
+The PoC as an ESG Proof Point
+What makes the LOTTE collaboration uniquely valuable from an ESG lens is that it creates a measurable, time-bound pilot across all three dimensions simultaneously:
+
+E: Quantify delivery consolidation and emissions reduction vs. broker baseline
+S: Track income improvement and digital adoption among women-led micro-retailers in Tier 2 cities
+G: Generate the first auditable sell-out dataset from Vietnam's traditional trade channel, shared between Aladin, LOTTE, and their brand partners.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>중개인 네트워크 의존도 — 유통사가 기존 중개 구조를 유지하려는 유인이 Aladin 채택 유인보다 클 가능성</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 유통사 전환 동기에 대한 구체적 검증 데이터 없음. 중개인 제거가 유통사 수익성에 미치는 영향 불명확.</td></tr>
+<tr><td>단위 경제 불확실성 — CAC, LTV, 유통사당 수익성이 제시되지 않아 규모 확장 시 수익성 달성 가능성 불투명</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 현재 GMV는 확인되나, 고객 획득 비용 대비 생애 가치 및 유통사 구독료 지속 가능성 미검증.</td></tr>
+<tr><td>팀 검증 불가 — 핵심 멤버의 경력, 학력, 도메인 전문성이 외부 출처로 확인되지 않아 실행 역량 평가 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 연구 결과 팀 정보 검증 미수행. 자가 보고 내용만으로는 신뢰성 판단 불가능.</td></tr>
+<tr><td>롯데 PoC 내부 채널 갈등 — 롯데마트/도매 채널과 영세 소매점 직접 공략 간 이해관계 충돌 가능성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] PoC 설계는 구체적이나, 롯데 내부 승인 및 기존 유통망과의 조율 방안 불명확.</td></tr>
+<tr><td>현금 거래 관성 — 베트남 전통 유통의 95%가 오프라인 현금 거래 의존, 디지털 전환 속도 느릴 가능성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[확인] 시장 구조적 리스크. 80% 재주문율은 긍정적이나, 확장 시 채택 속도 불확실.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — B2B 플랫폼/마켓플레이스</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">공급(SKU)·수요(소매점) 양면 확보 전략</span><span class="dvtag dv-a">초기 검증 단계, 확장성 불확실</span><span class="deep-arrow">▾</span></div><div class="deep-body">300개 유료 소매점 확보는 초기 수요 측면에서 긍정적 신호 [확인]. 그러나 공급 측(FMCG 브랜드, 유통사) 온보딩 현황이 전혀 제시되지 않음 — 몇 개 브랜드가 파트너인지, SKU 수는 몇 개인지, 독점 공급 계약 여부 등 핵심 정보 누락 [미확인]. 80% 재주문율은 고무적이나, 이것이 특정 소수 브랜드에 집중된 것인지 다양한 카테고리에 분산된 것인지 불명확 [부분 확인]. B2B 마켓플레이스의 핵심인 양면 네트워크 효과(network effect) 달성 여부를 판단할 근거 부족. 수요 측 확보는 진행 중이나 공급 측 전략 투명성 결여로 확장성 리스크 존재.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">단위 경제(Unit Economics) 건전성</span><span class="dvtag dv-r">핵심 지표 전면 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">GMV $110K/월 달성은 의미 있으나, 이것이 수익으로 연결되는 구조가 전혀 입증되지 않음 [미확인]. 고객 획득 비용(CAC), 고객 생애 가치(LTV), take rate(거래당 수수료율), 유통사 구독료 ARPU, 배송 비용 구조 등 B2B 마켓플레이스의 필수 지표가 모두 누락 [미확인]. 4개월 평균 고객 수명과 70.3% 월간 리텐션은 제시되었으나, 이를 LTV로 환산한 분석 없음 [부분 확인]. 베트남 영세 소매점 대상 B2B 모델의 특성상 낮은 객단가와 높은 서비스 비용으로 인해 수익성 달성이 어려울 수 있는데, 이에 대한 경제성 분석이 전무하여 투자 판단 불가능.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">기존 유통 구조 대비 실질적 가치 증명</span><span class="dvtag dv-a">주장만 존재, 정량적 입증 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">Aladin의 핵심 가치 제안은 '중개인 제거를 통한 소매점 마진 개선 + AI 주문 편의성'인데, 실제로 기존 브로커/유통사 대비 소매점이 얼마나 저렴하게 구매하는지 정량 데이터 없음 [미확인]. 자료에는 '불투명한 가격 결정' 문제를 해결한다고 주장하나, Aladin 플랫폼에서 제공되는 가격이 시장 대비 X% 저렴하다는 비교 분석 전무 [미확인]. 또한 음성/사진 주문 AI의 실제 사용률 및 만족도 데이터가 없어, 이 기능이 진짜 차별화 요소인지 검증 불가 [부분 확인]. 300개 고객의 높은 재주문율이 가격 경쟁력 때문인지, AI 편의성 때문인지, 아니면 단순히 영업 관계 때문인지 인과 관계 불명확. 가치 제안의 타당성은 이론적으로 설득력 있으나 현장 검증 부족.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">경쟁 환경 및 방어 가능성(Defensibility)</span><span class="dvtag dv-a">경쟁 포지셔닝 모호</span><span class="deep-arrow">▾</span></div><div class="deep-body">경쟁사로 Kiot Viet(100만+ POS 네트워크), Telio/Vinshop(B2B 주문 앱), ViettelPost(국영 유통)가 명시되었으나, Aladin의 차별화 전략인 '유통사와 협력하되 중개인 마진 제거' 접근이 실제로 작동하는지 근거 없음 [미확인]. 특히 Telio는 2021년 Series B $50M 유치한 강력한 경쟁자인데, Aladin이 이들 대비 어떤 독점적 우위(예: 독점 브랜드 파트너십, 우월한 AI 기술, 지역 밀착 물류망)를 보유했는지 전혀 설명 없음 [미확인]. AI 음성/사진 주문 기능은 기술적으로 복제 가능하여 방어벽으로 약함 [부분 확인]. 초기 트랙션은 있으나, 자본력 있는 경쟁자가 동일 모델을 더 큰 규모로 실행 시 차별화 포인트 불명확. 경쟁 우위 확보 전략 재검토 필요.</div></div>
+<div class="deep-category-label">Category C — 사회적 임팩트/ESG</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-1</span><span class="deep-title">여성 소매점 운영자 경제적 임파워먼트</span><span class="dvtag dv-a">임팩트 방향성 명확, 측정 기준 미흡</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 영세 소매점 다수가 여성 운영이라는 맥락은 타당하며, 중개인 제거를 통한 마진 개선 + 디지털 접근성 제고는 여성 경제적 자립에 기여 가능 [확인]. 그러나 300개 고객 중 실제 여성 운영 비율, 평균 소득 개선폭, 재무 자립도 변화 등 정량 지표가 전혀 제시되지 않음 [미확인]. '음성/사진 주문으로 디지털 장벽 제거'는 논리적으로 설득력 있으나, 실제 사용자 만족도 조사나 전후 비교 데이터 없어 임팩트 깊이 검증 불가 [부분 확인]. 임팩트 의도는 명확하나, 임팩트 측정(impact measurement) 체계가 부재하여 ESG 투자 관점에서 보고 가능한 수준으로 발전 필요. 향후 성별 분리 데이터 수집 및 소득 추적 시스템 도입 권장.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-2</span><span class="deep-title">공급망 투명성 및 공정 거래 실현</span><span class="dvtag dv-a">이론적 잠재력 높음, 실행 검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">전통 유통 구조의 불투명한 가격 결정 및 중개인 마진 전가 문제를 플랫폼 기반 직거래로 해결한다는 아이디어는 구조적으로 타당 [확인]. 그러나 실제 Aladin 플랫폼에서 거래 투명성이 어떻게 구현되는지(예: 가격 공시, 거래 이력 추적, 정산 투명성) 구체적 메커니즘 설명 없음 [미확인]. 또한 유통사 구독료 모델이 유통사에 추가 비용 부담을 주면서도 소매점에 실질적 가격 인하를 제공할 수 있는 경제적 논리가 명확하지 않음 [부분 확인]. 공정 거래 실현을 주장하려면, 브랜드-유통사-소매점 간 가격 구조 비교 데이터와 마진 분배 투명성 증빙 필요. 임팩트 잠재력은 크나 현 단계에서는 검증 부족.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-3</span><span class="deep-title">환경 임팩트(배송 통합 및 탄소 절감)</span><span class="dvtag dv-a">부차적 임팩트, 근거 희박</span><span class="deep-arrow">▾</span></div><div class="deep-body">IR 자료에서 '배송 통합으로 탄소 절감' 언급은 있으나, 구체적 배송 최적화 메커니즘이나 탄소 배출 감축량 추정치 전혀 제시 안 됨 [미확인]. Micro-hub(마이크로 허브) 개념이 도입되었다고 하나, 이것이 기존 유통망 대비 실제로 배송 효율을 개선하는지, 통합 배송으로 차량 운행 횟수가 줄어드는지 등 운영 데이터 없음 [미확인]. 환경 임팩트는 사업 모델의 부수적 효과로 보이며, 핵심 가치 제안이 아님 [부분 확인]. ESG 보고 목적으로 환경 임팩트를 강조하려면, 배송 루트 최적화 알고리즘, 차량당 평균 배송 건수 증가율, CO2 절감 추정치 등 정량 근거 마련 필요. 현재로서는 부차적이고 검증되지 않은 주장.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>초기 트랙션 확인: GMV $110K, 300개 유료 고객, 80% 주간 재주문율, MoM 25% 성장 [확인]</li>
+<li>명확한 사회적 가치: 여성 운영 영세 소매점의 디지털 포용 및 마진 개선, 거래 투명성 확보 [확인]</li>
+<li>강력한 자문진: BuyMed 회장 Peter X. Nguyen(유사 B2B 유통 플랫폼 경험, HBS 동문) 보유 [부분 확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>팀 역량 외부 검증 전무 — CEO/CTO 경력, 학력, 도메인 전문성이 제3자 출처로 확인 불가 [미확인]</li>
+<li>단위 경제 데이터 부재 — CAC, LTV, 유통사당 수익성, 고객 유지 비용 등 핵심 지표 제시 없음 [미확인]</li>
+<li>중개인 제거 모델의 지속 가능성 미검증 — 유통사가 기존 중개 네트워크를 포기할 유인 불충분 [미확인]</li>
+<li>투자 이력 없음 — 기관 투자 유치 전무, Bootstrap 단계 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 140만 영세 소매점 시장 규모는 크며, 디지털화 여지 충분</li>
+<li>롯데 PoC 성공 시 FMCG 브랜드 대상 SaaS/데이터 수익 모델 확장 가능</li>
+<li>ESG 임팩트 정량화 시(탄소 절감, 거래 투명성) 기관 투자자 유인 증대 가능</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Kiot Viet(100만+ 소매점 POS), Telio/Vinshop(B2B 앱) 등 자금력 있는 경쟁사 존재</li>
+<li>베트남 전통 유통의 현금 거래·비공식 네트워크 관성이 매우 강함 — 디지털 전환 저항 가능성 높음</li>
+<li>롯데 PoC 실행 시 내부 채널 갈등(대형마트 vs. 영세 소매점 직접 공략) 및 유통사 반발 리스크</li>
+<li>키 퍼슨(CEO) 의존도 높음 — 팀 확장 및 역할 분산 필요</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">18</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">Aladin은 베트남 전통 유통의 실재하는 비효율(중개인 의존, 불투명한 가격)을 AI로 해결하려는 명확한 문제 정의와 초기 트랙션(GMV $110K, 300개 유료 고객, 80% 재주문율)을 보유하고 있다 [확인]. 사회적 가치(여성 소매점 경제적 자립, 디지털 포용)도 구체적이다 [확인]. 그러나 가장 큰 미검증 가정은, 중개인 제거가 실제로 유통사와 소매점 모두에게 지속 가능한 편익을 제공하며 기존 네트워크 효과를 극복할 수 있는가이다 [미확인]. 단위 경제 데이터 전무, 팀 외부 검증 불가, 롯데 PoC의 내부 채널 갈등 리스크 미해결로 인해 투자 적합성 판단이 제한적이다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">6 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">18 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Aladin Technology · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-17 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

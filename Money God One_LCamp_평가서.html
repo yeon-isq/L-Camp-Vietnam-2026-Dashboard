@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Money God One (ElysiaAI) — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Money God One (ElysiaAI)</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">USA, Washington, DC / Estonia, Narva</span>
+          <span class="etag et-ind">AI</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Money God One (ElysiaAI)</div>
+        <div class="hero-sub">설립 2025 · https://elysiaai.net</div>
+        <span class="hero-stage">Idea</span>
+        <p class="hero-desc">ElysiaAI는 채팅, 음성, 비디오 기능을 제공하는 AI 가상 동반자 서비스이다. 감정적 애착을 형성한 사용자로부터 월 $29~$199의 구독료와 아바타 스킨/애니메이션 등 부가 판매로 수익을 창출하며, 현재 유료 고객은 없다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          AI 기술 개발 전문성이 전혀 없는 단일 창업자가 '고급 독자적 AI 아키텍처'를 실제로 구축할 수 있다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">6</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$0</div><div class="kpi-desc">2024-2025 매출 없음 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">0명</div><div class="kpi-desc">유료 사용자 없음, 기초 단계 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">$20M</div><div class="kpi-desc">목표 총 라운드 규모 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">$29-199/월</div><div class="kpi-desc">3단계 구독 SaaS 모델 [확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">시장 규모에 대한 구체적 분석이 전혀 없음 [미확인]. 'AI 가상 동반자' 시장의 TAM/SAM/SOM 제시 없음. 경쟁사 분석 부재 — Character.AI, Replika 등 기존 대형 플레이어 대비 차별화 전략 불명확 [미확인]. '베트남에 독자 AI 보유 기업이 7개뿐'이라는 주장은 근거 없으며, 베트남 시장 진출 전략 자체가 없음 [미확인]. 확장 가능성을 뒷받침할 어떠한 데이터도 제시되지 않음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">문제 정의가 모호함 ('내면의 성장과 명확성 촉진'은 구체적 고객 페인포인트가 아님) [미확인]. 수익 모델은 제시되었으나 ($29-199/월 구독) 실제 고객 검증이 전무함 [미확인]. 매출 $0, 유료 고객 0명 상태에서 $20M 밸류에이션은 근거 없음 [확인]. 'Epic Games와의 전략적 파트너십'은 별도 법인의 것으로 본 사업과 무관 [부분 확인]. 클라우드 크레딧 보유는 기술 역량이나 시장 검증의 증거가 아님 [미확인]. 투자 적합성 극히 낮음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">사회문제 정의가 불명확함 — '감정적 성장'은 구체적 사회문제가 아님 [미확인]. AI 동반자가 창출하는 사회적 가치의 규모·깊이·지속성에 대한 근거 없음 [미확인]. ESG 임팩트 설명이 기술 우수성 주장으로 대체되어 있으며, 실제 사회적 가치 창출 메커니즘 부재 [미확인]. 'AI 교회' 콘셉트는 오히려 사회적 신뢰성에 부정적 영향 가능.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">🚨 심각한 전문성 불일치 확인: 창업자는 '글로벌 인정 AI 슈퍼 전문가'를 자칭하나 독립 조사 결과 AI/컴퓨터과학 학위 없음, AI 개발 경력 없음, 관련 논문/특허 없음 [확인]. 실제 배경은 작가(16권 출판), 암호화폐 규정준수 담당자로 AI 기술 개발과 무관 [확인]. 'SDO' 교육기관은 확인 불가 [미확인]. 공개 확인된 기술팀원 0명 — CTO, AI 엔지니어, 데이터과학자 등 필수 인력 전무 [확인]. 이전 법인 BBCO OÜ는 2년간 영업활동 없음, 순손실 상태 [확인]. Money God One 프로젝트는 '크립토 교회'로 마케팅되어 평판 리스크 높음 [확인]. 팀 역량 및 실행 기반 극히 부족.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">PoC 아이디어가 'AI 및 스마트시티 혁신'이라는 일반론에 불과함 [미확인]. 롯데건설 또는 롯데이노베이트의 구체적 인프라, 데이터, 고객기반을 활용하는 방안 전무 [미확인]. AI 가상 동반자 서비스가 롯데 주력 사업(식품·유통·건설)과의 연관성 없음 [확인]. 협력 가능한 계열사 명시조차 안 됨. PoC 실행 가능성 극히 낮음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 1 + B 1 + C 2 + D 1 + E 1</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">6</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Smart City/PropTech (롯데건설), AI/IT (롯데이노베이트)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">AI 및 스마트시티 분야의 혁신 협력 (구체적 내용 없음)</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">We are only one company or maybe among only few companies in Vietnam that have proprietary AI like we do. As we know in Vietnam there are only 7 companies that could have own AI, maybe not. We can provide you with a list of companies but maybe they do not have own AI as we do. So our system is proprietary + architecture + ecosystem. Not a wrapper. We know maybe 10 companies in China that do similiar things that we do (that are really popular (but in China only) and maybe 20 companies in USA that do same as we do). Global companies.
+
+Our proprietary AI isn't just a technology; it's the foundation for future innovation. Having our own architecture and ecosystem, rather than just a "wrapper," gives us unique flexibility and depth. By investing in Elysia, you're not just supporting the project; you're gaining direct access to cutting-edge AI solutions that are already setting new standards in the global market. This is your step toward staying ahead, creating a sustainable future through breakthrough technologies.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">심각하게 불충분함. 단일 창립자 구조이며 검증 가능한 AI 기술 전문성을 갖춘 팀원이 확인되지 않음. 성공적인 AI 기업에 필수적인 핵심 역할 부재: CTO/기술 리드(검증된 AI/ML 배경), 수석 AI/ML 엔지니어, 데이터 과학자, 연구 책임자, 제품 관리자(AI 제품 경험). 이는 ElysiaAI와 Money God One 프로젝트의 기술적 실행 가능성에 대한 심각한 의문을 제기함. AI 개발을 주장하는 프로젝트에 대해 확인 가능한 기술 팀이 없다는 것은 주요 위험 신호임.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">매우 불완전함. 본질적으로 단일 창립자 운영으로, 공개적으로 확인된 핵심 팀원이 없음. AI 기업에 필수적인 기능 전문성의 중요한 격차: (1) 기술 리더십 - 검증된 AI/ML 전문성을 갖춘 CTO 또는 기술 공동 창립자 없음, (2) 엔지니어링 팀 - 공개적으로 확인된 AI/ML 엔지니어 또는 개발자 없음, (3) 연구 역량 - AI 연구자 또는 학술 고문 없음, (4) 제품/디자인 - AI 제품 전문가 없음, (5) 비즈니스 개발 - 구조화된 비즈니스 팀의 증거 없음. 이러한 팀 구성의 부재는 주장된 '고급 AI 시스템' 개발 능력에 대한 심각한 의문을 제기함.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">낮음. 중요한 신뢰성 문제: (1) 주장과 증거 간의 검증 격차 - AI 전문성 주장이 검증 가능한 자격, 출판물 또는 기술적 기여로 뒷받침되지 않음, (2) 불투명한 교육 배경 - 'SDO'는 인정된 기관이 아니며 AI/CS 학위 증거 없음, (3) 논란의 여지가 있는 프로젝트 포지셔닝 - '크립토 교회' 및 '크립토 신앙'으로 마케팅되어 심각한 규제 및 평판 리스크 제기, (4) 재무 적신호 - BBCO OÜ는 2년간 사업 활동 없고 순손실 상태, (5) 검증 가능한 기술 팀 부재 - 공개적으로 확인된 AI 전문가, 엔지니어 또는 연구자 없음, (6) 과도한 마케팅 주장 - 엄밀한 기술적 증거 없이 'AI 혁명', '최고의 세계 프로젝트'와 같은 과장된 언어 사용. 전반적으로, 진지한 AI 기업보다는 프로모션 중심, 투기적 벤처의 특징을 나타냄.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">검증 가능한 AI 기술 전문성의 완전한 부재. 이는 가장 중요한 격차임. 회사는 '고급 AI 시스템' 개발을 주장하지만: (1) 증명된 AI/ML 배경을 가진 팀원이 공개적으로 확인되지 않음, (2) 창립자는 AI 또는 컴퓨터 과학에 대한 검증 가능한 공식 교육이 없음, (3) 기술 문서, 연구 논문, 오픈소스 기여 또는 특허 없음, (4) AI 개발 능력에 대한 독립적 기술 검증 없음, (5) 명확한 기술 아키텍처 또는 방법론 문서 없음. 이러한 기본적 기술 기반의 부재는 프로젝트의 실행 가능성에 대한 근본적인 의문을 제기하며, 투자자들에게 극도로 높은 위험을 나타냄. 2차 격차는 팀 구성의 부재와 이전 기술 벤처의 검증 가능한 성공 실적 부재를 포함함.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Oleg Siryi LinkedIn · Oleg Siryi Money God One · Oleg Siryi elysiaai · Oleg Siryi education university · Oleg Seriy author books Estonia · "Oleg Siryi" CEO work experience</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Oleg Siryi (also known as Oleg Seriy)</div><div class="member-role">President / Founder</div></div>
+    <div class="member-meta"><a href="https://www.linkedin.com/in/olegseriy/" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 🚨 주요 우려: AI 전문성 주장과 검증 가능한 자격 간의 심각한 불일치. '글로벌 인정 AI 슈퍼 전문가'라는 주장이 근거 자료나 독립적 검증 없음</span><span class='flag-item'>⑊ 🚨 모호한 교육 배경: 'SDO'는 알려진 대학이나 기관이 아니며, AI 또는 컴퓨터 과학 관련 학위 증거 없음</span><span class='flag-item'>⑊ ⚠️ 논란의 여지가 있는 프로젝트 포지셔닝: Money God One은 '크립토 신앙' 및 '암호화폐 교회'로 마케팅되며, 이는 투자자들에게 심각한 규제 및 평판 리스크를 제시함</span><span class='flag-item'>⑊ ⚠️ 과장된 주장: '세계 최초 크립토 교회', 영적/물질적 성장 통합에 대한 주장은 진지한 AI 기술 기업보다는 투기적/유사종교 벤처의 특징을 나타냄</span><span class='flag-item'>⑊ ⚠️ 검증 불가능한 기술적 역량: ElysiaAI의 '고급 아키텍처' 및 '최첨단 연구'에 대한 주장이 있으나 기술 문서, 연구 논문, GitHub 레포지토리 또는 독립적 기술 검증 부재</span><span class='flag-item'>⑊ ⚠️ 재무적 불안정성: BBCO OÜ는 2년간 사업 활동 없음, 순손실 €5,690, 단기 부채를 커버할 자산 부족 (2025년 기준)</span><span class='flag-item'>⑊ ⚠️ 혼재된 직업적 초점: 저술가, CEO, 기업가로서의 역할이 진지한 AI 기술 개발보다는 마케팅/프로모션 활동에 더 집중된 것으로 보임</span><span class='flag-item'>⑊ ⚠️ 검증 격차: 공개적으로 이용 가능한 기술 자격증, AI 관련 출판물, 특허 또는 학술적 기여 없음</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>고등학교 졸업 (High School)/명시되지 않음</td><td>SDO</td><td>명시되지 않음</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>ElysiaAI</td><td>Founder</td><td>2025년 11월 - 현재 (LinkedIn 기준)</td><td style="font-size:11px;">AI 및 Web3 기술 기반 프로젝트로 ElysiaAI 창립. Money God One 생태계의 일부로 포지셔닝됨</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>BBCO OÜ (Estonia)</td><td>CEO / KYC-AML Compliance Officer</td><td>추정 17년 경력 (명확한 기간 미상)</td><td style="font-size:11px;">에스토니아 나르바 소재. 스타트업 크라우드펀딩 플랫폼 및 발트해 지역 비즈니스 협력 프로젝트 운영. 가상화폐 서비스 제공</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>저작 활동</td><td>작가 (Published Author)</td><td>2010년대 초반부터</td><td style="font-size:11px;">다양한 언어로 약 16권의 책 출판. 철학적, 난해한, 영적 주제 및 성공에 관한 책. 대표작: 'The World of Unicellular' (2010), '2012-2013 세계 종말로부터의 구원의 책' (2010)</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> AI 산업에 대한 검증된 기술적 전문성이 부족함. 배경은 주로 출판, 스토리텔링, 재무/행정, 암호화폐 준수에 집중되어 있음. AI 시스템 개발, 머신러닝, 컴퓨터 과학 또는 관련 기술 분야에 대한 공식 교육이나 경력이 확인되지 않음. '글로벌 인정 AI 시스템 슈퍼 전문가'라는 자체 주장에 대한 독립적 검증 자료 없음. 'SDO'로 표기된 교육 배경은 명확하지 않으며 AI 관련 고등 교육 증거가 없음. 주요 경험은 사업 운영, 콘텐츠 제작, 암호화폐 규정 준수에 있으며, AI 기술 개발과는 거리가 멀음.</div><div class="ma-overall"><strong>종합 평가:</strong> Oleg Siryi는 출판, 사업 운영 및 암호화폐 분야의 다각적인 기업가이지만, AI 산업을 위한 핵심 기술 자격이 심각하게 부족함. 그의 배경은 '글로벌 인정 AI 슈퍼 전문가'라는 주장을 뒷받침하지 못함. 대신, 콘텐츠 제작, 스토리텔링, 암호화폐 규정 준수의 패턴을 보여줌. 심각한 우려사항: (1) AI/CS 공식 교육 부재, (2) 검증 가능한 AI 개발 경험 없음, (3) 기술적 주장에 대한 독립적 검증 부재, (4) Money God One 프로젝트의 투기적/유사종교적 성격, (5) 이전 벤처(BBCO)의 재무적 어려움. 전체 프로필은 기술 혁신가보다는 프로모터/마케터의 특성을 시사함. 진지한 AI 기업에 대한 투자자들은 극도의 주의가 필요하며, 독립적인 기술 실사 및 검증 가능한 AI 전문성을 갖춘 리더십 평가가 필요함.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>기술 개발 실행 불가능성</td><td><span class="rpill-sm rp-h">높음</span></td><td>AI 전문성을 가진 팀원이 존재하지 않아 주장하는 독자 AI 아키텍처 개발 자체가 불가능할 가능성 높음 [확인]</td></tr>
+<tr><td>창업자 자격 허위 과장</td><td><span class="rpill-sm rp-h">높음</span></td><td>'글로벌 인정 AI 슈퍼 전문가' 주장과 실제 경력(작가, 규정준수) 간 심각한 불일치 확인됨 [확인]</td></tr>
+<tr><td>시장 검증 전무</td><td><span class="rpill-sm rp-h">높음</span></td><td>유료 고객 0명, LOI 없음, 베타 사용자 수치 미제시 — 시장 수요 미검증 [확인]</td></tr>
+<tr><td>평판 리스크</td><td><span class="rpill-sm rp-h">높음</span></td><td>Money God One '크립토 교회' 프로젝트와의 연계로 인한 투자자 평판 리스크 [확인]</td></tr>
+<tr><td>재무 건전성</td><td><span class="rpill-sm rp-m">중간</span></td><td>이전 법인 BBCO OÜ가 2년간 영업활동 없음, 순손실 상태로 재무 실행력 의문 [확인]</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — AI/소프트웨어 서비스</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">PMF 검증 — 유료 전환 및 리텐션</span><span class="dvtag dv-r">고객 검증 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">유료 고객 0명, 매출 $0 상태로 Product-Market Fit 검증이 완전히 부재함 [확인]. $29~$199/월 구독 모델은 제시되었으나 실제 고객 지불 의사 검증 없음 [미확인]. Character.AI(월 1억+ 방문), Replika(200만+ 유료 구독자) 등 검증된 경쟁사 대비 차별화 전략 부재 [미확인]. AI 가상 동반자 시장의 높은 이탈률(90일 리텐션 <20%)을 극복할 메커니즘 제시 없음 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">비즈니스 모델 — 단위경제 및 CAC/LTV</span><span class="dvtag dv-r">경제성 분석 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">고객 획득 비용(CAC), 생애 가치(LTV), 페이백 기간 등 핵심 단위경제 지표 전무 [미확인]. AI 동반자 서비스의 일반적 CAC($50-150)와 이탈률(월 15-25%)을 고려 시 $29 최저가 플랜의 수익성 의문 [미확인]. '아바타 스킨/애니메이션' 부가 판매는 언급되나 ARPU 상승 효과 데이터 없음 [미확인]. 클라우드 인프라 비용(GPU 사용료)이 마진에 미치는 영향 분석 부재 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">밸류에이션 근거 — $20M 평가의 정당성</span><span class="dvtag dv-r">근거 없는 과대평가</span><span class="deep-arrow">▾</span></div><div class="deep-body">$20M 밸류에이션에 대한 어떠한 객관적 근거도 제시되지 않음 [확인]. 매출 $0, 고객 0명 상태의 프리시드 단계 AI 스타트업의 일반적 밸류에이션($1-3M)을 10배 초과 [확인]. '멀티빌리언달러 클라우드 크레딧 보유'는 밸류에이션 근거가 아님 [부분 확인]. Epic Games 파트너십은 별도 법인의 것으로 본 사업 가치와 무관 [확인]. 투자 조건($100K-700K로 1-7% 지분)은 시장 표준에서 크게 이탈함 [확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">기술 차별성 — 'Proprietary AI' 주장 검증</span><span class="dvtag dv-r">차별성 미입증</span><span class="deep-arrow">▾</span></div><div class="deep-body">'독자 AI 아키텍처' 주장에 대한 기술 문서, 논문, 특허 등 객관적 증거 전무 [미확인]. '래퍼가 아닌 자체 생태계'라는 주장의 구체적 내용 부재 — 자체 LLM 학습 여부, 모델 아키텍처, 데이터셋 등 핵심 요소 설명 없음 [미확인]. '베트남 내 독자 AI 보유 기업 7개뿐' 주장은 검증 불가하며 베트남 시장 진출 전략 자체가 없음 [미확인]. AI 심리학자 특화 기능의 임상적 검증이나 효과성 데이터 부재 [미확인].</div></div>
+<div class="deep-category-label">Category D — 팀 구성 및 실행력</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업자 전문성 — AI 분야 적합성</span><span class="dvtag dv-r">🚨 심각한 불일치</span><span class="deep-arrow">▾</span></div><div class="deep-body">창업자는 '글로벌 인정 AI 슈퍼 전문가'를 자칭하나 AI/컴퓨터과학 학위, AI 개발 경력, 관련 논문/특허가 전무함 [확인]. 실제 배경은 작가(16권 출판), 암호화폐 규정준수 담당자로 AI 기술 개발과 직접적 연관 없음 [확인]. 'SDO' 교육기관은 독립적으로 확인 불가 [미확인]. CV에 명시된 'AI 시스템 전문성'을 뒷받침할 프로젝트 이력, GitHub 저장소, 기술 커뮤니티 활동 등 객관적 증거 부재 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">핵심 기술팀 구성</span><span class="dvtag dv-r">필수 인력 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">CTO, AI 엔지니어, 데이터 사이언티스트, ML 엔지니어 등 AI 제품 개발 필수 인력이 전무함 [확인]. 채팅/음성/비디오 기능 구현에 필요한 풀스택 개발자, 백엔드 엔지니어 존재 여부 불명 [미확인]. '독자 AI 아키텍처' 개발을 주장하나 이를 실행할 기술 인력 부재로 실현 가능성 극히 낮음 [확인]. 외주 개발 또는 오픈소스 활용 여부조차 명시되지 않음 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">이전 실행 이력 — BBCO OÜ 법인 성과</span><span class="dvtag dv-r">부정적 트랙레코드</span><span class="deep-arrow">▾</span></div><div class="deep-body">이전 법인 BBCO OÜ(에스토니아)는 2년간 실질적 영업활동 없음, 재무제표상 순손실 상태 [확인]. Epic Games 파트너십 및 CEX/DEX 상장은 해당 법인의 것으로 현재 ElysiaAI와 법적·재무적 연결고리 불명확 [부분 확인]. '멀티빌리언달러 클라우드 크레딧'의 실제 가치와 사용 현황 검증 불가 [미확인]. Money God One 프로젝트가 '크립토 교회'로 마케팅되어 평판 리스크 존재 [확인].</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>구독 기반 SaaS 수익 모델이 명확하게 설계됨 (3단계 티어 + 부가 판매) [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>🚨 AI 기술 개발 전문성 완전 부재 — 창업자 및 팀원 중 검증된 AI 배경 0명 [확인]</li>
+<li>🚨 매출·고객·MVP 전무 상태에서 $20M 밸류에이션 주장은 시장 검증 없는 과대평가 [확인]</li>
+<li>단일 창업자 의존도 극단적 — 핵심인력 리스크 최고 수준 [확인]</li>
+<li>'크립토 교회' 포지셔닝은 규제·평판 리스크 야기 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>AI 동반자 시장 자체는 Character.AI, Replika 등이 검증한 수요 존재 (단, 본 스타트업의 진입 경로는 불명확)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Character.AI (a16z 투자), Replika 등 자금력·기술력·사용자 기반을 갖춘 글로벌 경쟁사 존재</li>
+<li>AI 안전성·윤리 규제 강화 시 감정 조작 우려로 인한 규제 리스크</li>
+<li>기술 개발 실패 시 제품 출시 자체 불가능 (팀 역량 부재로 가능성 높음)</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">6</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">ElysiaAI는 AI 기술 전문성이 전혀 검증되지 않은 단일 창업자가 '고급 독자 AI 아키텍처'를 개발한다고 주장하나, 실제 창업자는 작가/암호화폐 규정준수 경력만 보유하며 AI 학위·경력·논문이 전무함이 확인되었다. 매출 $0, 고객 0명 상태에서 $20M 밸류에이션과 독자 AI 보유를 주장하는 것은 근거 없는 과장이며, 기술팀 부재·시장 검증 부재·롯데와의 구체적 협력안 부재로 투자 부적합 판정. 가장 큰 미검증 가정은 AI 개발 능력 자체의 실존 여부이다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">1 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">6 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Money God One (ElysiaAI) · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-17 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>
