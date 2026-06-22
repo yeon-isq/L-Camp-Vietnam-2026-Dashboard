@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PHUCLONG POOL GROUP COMPANY LIMITED — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">PHUCLONG POOL GROUP COMPANY LIMITED</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam, Hanoi</span>
+          <span class="etag et-ind">Sports Education and Entertainment</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">PHUCLONG POOL GROUP COMPANY LIMITED</div>
+        <div class="hero-sub">설립 2020 · https://plpgr.com/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">PLP는 당구 선수 양성 및 클럽 운영을 위한 CuePath OS 통합 플랫폼이다. 당구 교육, 클럽, 대회, 커머스, 미디어를 하나의 데이터 기반 시스템으로 연결하며, 현재는 초기 개발 단계로 수익은 없고 베트남 내 1,000명 이상의 학생을 교육한 실적을 주장하고 있다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          당구 교육의 과학적 표준화가 실제 유료 고객 확보 및 지속 가능한 수익 모델로 전환될 수 있다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">1,000+명</div><div class="kpi-desc">[미확인] 자체 주장, 구체적 기간·계약 형태 불명</div></div>
+<div class="kpi"><div class="kpi-val">$500K</div><div class="kpi-desc">Pre-seed 라운드 목표</div></div>
+<div class="kpi"><div class="kpi-val">1,000+ 과제</div><div class="kpi-desc">[미확인] 검증된 교육 성과 데이터 없음</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 시장 규모에 대한 구체적 데이터(베트남 당구 시장 TAM/SAM/SOM)가 전혀 제시되지 않음. IR Deck은 '2030년까지 동남아 1위, 500개 파트너 클럽, 10,000명 선수 육성'이라는 비전만 나열하나 현재 시장 점유율, 경쟁사 분석, 달성 경로가 부재함. 당구는 틈새 스포츠로 글로벌 확장성 검증 필요하나 근거 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 현재 매출 Zero, 수익 모델이 전혀 명시되지 않음. 1,000명 교육생 주장은 유료 고객 수, 계약 형태, 재구매율 등 구체적 근거가 없어 검증 불가. 투자 유치 이력도 없으며, $500K 목표의 용도와 Unit Economics 설명 부재. 롯데벤처스 펀드 투자 적합성은 수익성 및 확장성 입증 전까지 매우 낮음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] '건강한 스포츠 문화 촉진, 체계적 교육 제공, 커뮤니티 개발'이라는 사회적 가치는 방향성은 있으나, 실제 임팩트 측정 지표(교육 전후 선수 실력 향상률, 클럽 고용 창출 수, 지역 커뮤니티 참여도 등)가 제시되지 않음. ESG 임팩트는 주장만 있고 검증 가능한 데이터 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 외부 팀 검증 결과: 리서치 미수행. 창업자의 SEA Games 금메달(2009), WPA Top 16(2011) 경력은 개인 선수 성과이나, 이를 기술 플랫폼 개발 및 비즈니스 운영 역량으로 전환한 증거가 없음. 팀 구성(CTO, 개발자, 운영 인력)에 대한 정보가 전무하며, 기술 개발 실행 기반이 불명확. 핵심인물 의존도 매우 높음.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[미확인] 롯데 계열사 연계는 '호스피탤리티·리테일 공간에서 당구 체험 프로그램 런칭'이라는 매우 일반적 제안으로, 구체적 계열사명, 공간 활용 방안, PoC 실행 계획이 부재. 롯데의 핵심 사업(식품·유통·건설·AI)과의 직접 연관성이 낮으며, 단순 공간 대여 수준의 협력은 PoC 적합성이 낮음. 롯데 데이터·인프라 활용 방안 불명.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 1 + C 3 + D 2 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce, Hospitality/Hotel/Tourism, AI/IT</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">Not specified</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데 호스피탤리티 및 리테일 공간에서 당구 체험 프로그램 런칭, 디지털 플레이어 관리 시스템 개발, 당구 이벤트 및 커뮤니티 활동 조직을 통해 확장 가능한 스포츠 엔터테인먼트 모델 검증</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">PLP contributes to ESG by promoting healthy sports culture, structured education and community development.
+Our platform helps standardize billiards training, provide equal access to sports knowledge and create a professional ecosystem for players, coaches and clubs.
+A collaboration with LOTTE can expand sports engagement programs and build sustainable community-based experiences.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>수익 모델 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 현재 매출 Zero이며, 교육비·구독료·커머스 등 어떤 수익원도 명시되지 않아 사업 지속 불가능</td></tr>
+<tr><td>팀 실행 역량 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 외부 팀 검증 미수행, 기술 개발 및 운영 인력 정보 부재로 플랫폼 구축 실행 가능성 매우 낮음</td></tr>
+<tr><td>고객 검증 부족</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 1,000명 교육생 주장에 대한 유료 고객 비율, 계약 형태, 지속성 데이터 없어 시장 수요 입증 불가</td></tr>
+<tr><td>시장 규모 불명확</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 베트남 당구 시장 TAM/SAM/SOM 데이터 부재, 틈새 시장의 확장 가능성 검증 필요</td></tr>
+<tr><td>롯데 PoC 실현 가능성 낮음</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 제안이 일반적이며 구체적 계열사명·공간·실행 계획 없어 협력 성사 가능성 낮음</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category D — 스포츠·엔터테인먼트 비즈니스</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업자의 도메인 전문성이 실제 시장 견인력(traction)으로 전환되었는가?</span><span class="dvtag dv-r">미확인 — 선수 경력과 비즈니스 실행력 간 격차</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 창업자는 SEA Games 금메달(2009), WPA Top 16(2011) 등 개인 선수로서의 화려한 경력을 보유하고 있으나, 이를 기술 플랫폼 구축 및 비즈니스 운영 역량으로 전환한 증거가 전무함. 1,000명 교육생 주장은 유료 전환율, 재구매율, LTV 등 검증 가능한 KPI가 제시되지 않아 신뢰도가 낮음. [미확인] CTO, 개발팀, 운영 인력 등 핵심 팀 구성에 대한 정보가 전혀 없으며, 2020년 설립 후 5년간 매출 Zero 상태는 실행력 부재를 시사함. [미확인] '25년 경험'과 '자체 방법론 개발'은 주장에 그치며, 이를 디지털 플랫폼으로 체계화한 MVP나 PoC 결과가 부재함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">플랫폼의 기술적 구현 가능성 및 차별화 요소가 검증되었는가?</span><span class="dvtag dv-r">미확인 — 기술 개발 단계 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 'CuePath OS'라는 통합 플랫폼을 주장하나, 현재 개발 단계(기획/프로토타입/베타)가 명시되지 않으며, 기술 스택, 데이터 수집 방식, AI 활용 여부 등 구체적 정보가 전무함. [미확인] '교육-클럽-대회-커머스-미디어 연결'이라는 비전은 포괄적이나, 각 모듈의 개발 우선순위, 통합 로직, 데이터 흐름도 등 실행 계획이 부재함. [미확인] 경쟁사 대비 차별화 요소(예: 자체 측정 센서, AI 코칭 알고리즘, 독자적 플레이어 레이팅 시스템 등)가 기술적으로 입증되지 않았으며, 단순 관리 도구 수준인지 혁신 플랫폼인지 판단 불가능함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">수익 모델 및 단위 경제학(Unit Economics)이 명확히 설계되었는가?</span><span class="dvtag dv-r">미확인 — 매출 Zero, 수익 모델 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 현재 매출이 전혀 없으며, IR 자료에서 구체적 수익 모델(B2C 구독/레슨비, B2B 클럽 SaaS, 대회 참가비, 커머스 수수료, 광고 등)이 명시되지 않음. [미확인] 1,000명 교육생 주장에도 불구하고 유료 전환율, ARPU, CAC, LTV 등 Unit Economics 지표가 전혀 제시되지 않아 비즈니스 실행 가능성 검증 불가. [미확인] $500K 투자 목표의 구체적 사용 계획(개발 인력 채용, 마케팅, 클럽 파트너십 확보 등)과 마일스톤(예: 6개월 내 유료 사용자 X명, 파트너 클럽 Y개 확보)이 부재하며, 투자 효율성을 판단할 근거가 없음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-4</span><span class="deep-title">베트남 및 동남아 시장에서의 당구 산업 확장성이 검증되었는가?</span><span class="dvtag dv-r">미확인 — 시장 데이터 및 경쟁 분석 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 베트남 당구 시장의 TAM/SAM/SOM, 성장률, 경쟁 환경(기존 클럽 수, 교육 시장 규모, 디지털화 수준) 등 정량적 시장 데이터가 전혀 제시되지 않음. [미확인] '2030년 동남아 1위, 500개 파트너 클럽, 10,000명 선수 육성'이라는 비전은 현재 시장 점유율, 경쟁사(예: 기존 당구 체인, 스포츠 교육 플랫폼) 대비 우위 전략, 단계별 달성 계획 없이 제시된 목표치에 불과함. [부분 확인] 당구는 동남아(특히 베트남)에서 인기 있는 레저 스포츠이나, 글로벌 스케일 가능성(예: 볼링, 탁구 등 다른 실내 스포츠 대비)은 제한적이며, 디지털 플랫폼 수요 검증이 필요함.</div></div>
+<div class="deep-category-label">Category F — PoC 파트너십 (롯데 연계 사업)</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">F-1</span><span class="deep-title">롯데 계열사와의 연계 제안이 구체적이고 실행 가능한가?</span><span class="dvtag dv-r">미확인 — 일반론적 제안, 구체성 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] '롯데 호스피탤리티·리테일 공간에서 당구 체험 프로그램 런칭'이라는 제안은 지나치게 추상적이며, 구체적 계열사명(예: 롯데월드, 롯데백화점 특정 지점), 공간 활용 방식(체험존 설치, 기존 시설 개조 등), 예상 투자 규모, 수익 분배 구조가 전혀 명시되지 않음. [미확인] '디지털 플레이어/커뮤니티 관리 시스템 개발'과 '당구 이벤트 조직'은 롯데의 기존 고객 관리 인프라(L.POINT, 롯데멤버스)나 이벤트 운영 경험과 어떻게 결합될지 설명이 없어, 단순 공간 대여 이상의 가치 창출이 불명확함. [미확인] 롯데의 핵심 사업 영역(식품·유통·화학·건설·AI)과의 직접적 시너지가 약하며, 당구 프로그램이 롯데 고객 유입 및 매출 증대에 기여할 정량적 근거가 부재함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">F-2</span><span class="deep-title">PoC를 통한 상호 학습 및 확장 가능성이 명확히 제시되었는가?</span><span class="dvtag dv-r">미확인 — PoC 성과 지표 및 확장 계획 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] PoC의 구체적 목표(예: 3개월 내 X명 체험 참여, 유료 전환율 Y%, 고객 만족도 Z점 이상)와 성공 기준이 설정되지 않아, PoC 종료 후 확장 여부를 판단할 근거가 없음. [미확인] 롯데 측이 PoC를 통해 얻을 수 있는 구체적 혜택(신규 고객층 유입, 공간 활용률 제고, 브랜드 이미지 향상 등)과 PLP가 얻을 혜택(롯데 인프라 활용, 고객 데이터 수집, 브랜드 신뢰도 제고)의 균형이 불명확함. [미확인] PoC 이후 베트남 내 다른 롯데 시설로의 수평 확장(예: 하노이→호치민→다낭) 또는 동남아 다른 국가(태국, 인도네시아 등)로의 수직 확장 계획이 전혀 제시되지 않아, 단발성 프로젝트로 끝날 가능성이 높음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">F-3</span><span class="deep-title">롯데 데이터·AI 인프라와의 결합 가능성이 탐색되었는가?</span><span class="dvtag dv-a">미확인 — 기술 협력 방안 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 롯데이노베이트(AI/IT 부문)와의 협력 가능성이 언급되었으나, 구체적 협력 내용(예: 당구 플레이 데이터 분석 AI 개발, 롯데멤버스 연동 개인화 추천 시스템, 매장 내 IoT 센서 설치 등)이 전혀 제시되지 않음. [부분 확인] 롯데는 유통·호텔 등에서 방대한 고객 데이터를 보유하고 있으나, PLP가 이를 활용해 당구 관심층을 타겟팅하거나 크로스셀링을 실현할 방안이 구체화되지 않음. [미확인] CuePath OS의 데이터 수집·분석 역량이 검증되지 않은 상태에서 롯데 인프라와의 통합을 논하는 것은 시기상조이며, 최소한 자체 플랫폼의 MVP 검증이 선행되어야 함.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[확인] 창업자의 국제급 당구 선수 경력 (SEA Games 금메달, WPA Top 16)은 도메인 신뢰도 확보에 기여</li>
+<li>[부분 확인] 당구 교육의 과학적 표준화(CuePath 방법론)는 차별화 요소로 작용 가능하나 검증 부족</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[확인] 현재 매출 Zero, 수익 모델 미명시로 사업 지속 가능성 검증 불가</li>
+<li>[미확인] 팀 구성(기술, 운영 인력) 정보 부재로 실행 기반 취약</li>
+<li>[미확인] 1,000명 교육생 주장에 대한 구체적 증빙(유료 고객 비율, 계약 형태, 재구매율) 없음</li>
+<li>[미확인] 시장 규모 및 경쟁 분석 데이터 부재로 확장 가능성 판단 불가</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 내 스포츠 교육 수요 증가 및 디지털 전환 트렌드 활용 가능성</li>
+<li>롯데 호텔·몰 등 공간을 활용한 체험형 스포츠 프로그램 확장 가능성 (구체화 필요)</li>
+<li>동남아 지역으로의 표준화된 당구 교육 프랜차이즈 모델 확장 (장기적)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>당구 시장의 틈새성 및 제한된 고객층으로 인한 확장성 한계</li>
+<li>수익 모델 부재 상태에서의 자금 소진 리스크 (현재 투자 유치 없음)</li>
+<li>기술 플랫폼 개발 역량 미검증으로 인한 실행 실패 가능성</li>
+<li>롯데 PoC 구체성 부족으로 협력 실현 가능성 낮음</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">PLP는 당구 교육의 과학적 표준화라는 차별화된 접근을 시도하나, 현재 매출 Zero이며 수익 모델, 고객 검증, 시장 규모 근거가 전혀 제시되지 않아 비즈니스 실행 가능성이 매우 낮음. 창업자의 선수 경력은 확인되나, 이를 기술 플랫폼 및 사업 운영 역량으로 전환한 증거가 없으며 팀 구성이 불명확하여 핵심인물 의존도가 극히 높음. 롯데와의 PoC는 구체성이 결여된 일반적 제안 수준으로, 롯데 핵심 사업과의 연계성이 낮음. 가장 큰 미검증 가정은 '과학적 당구 교육 표준화'가 실제 유료 고객 확보 및 지속 가능한 수익으로 전환될 수 있는가임.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>PHUCLONG POOL GROUP COMPANY LIMITED · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>
