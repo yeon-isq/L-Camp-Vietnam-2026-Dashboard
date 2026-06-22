@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CÔNG TY TNHH CÔNG NGHỆ PHẦN MỀM FORWARDX — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">CÔNG TY TNHH CÔNG NGHỆ PHẦN MỀM FORWARDX</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City</span>
+          <span class="etag et-ind">Transportation & Logistics</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">CÔNG TY TNHH CÔNG NGHỆ PHẦN MỀM FORWARDX</div>
+        <div class="hero-sub">설립 1 year · forwardx.vn</div>
+        <span class="hero-stage"></span>
+        <p class="hero-desc">ForwardX는 베트남 화물운송주선업체(Freight Forwarder)를 위한 통합 물류 관리 소프트웨어이다. 견적, 예약, 서류, 채무, 회계를 하나의 플랫폼에서 처리하며, SaaS 구독 모델로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">8</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">15+</div><div class="kpi-desc">회사 발표 기준, 독립 검증 안됨</div></div>
+<div class="kpi"><div class="kpi-val">400+</div><div class="kpi-desc">IR Deck 기준, 검증 필요</div></div>
+<div class="kpi"><div class="kpi-val">Sao Khue 2026</div><div class="kpi-desc">물류 분야, 공식 수상 확인됨</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[부분 확인] 베트남 화물운송주선업체 시장은 GDP 대비 물류 비용이 16-18%로 높아 디지털 전환 수요가 존재함은 확인됨. 그러나 TAM/SAM/SOM 세분화가 전무하며, 경쟁사 분석(예: Logivan, CargoX, WinSoft 등 기존 물류 SaaS)이 누락됨. 시장 규모 추정치가 없고, 차별화 요소가 "맞춤형 Vertical ERP"라는 주장만 있을 뿐 기술적/기능적 우위 근거가 제시되지 않음 [미확인]. 국제 확장 가능성 언급 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 문제(데이터 파편화, 높은 물류 비용)는 서술되었으나 수익 구조가 구체적이지 않음 — SaaS 구독인지, 거래당 수수료인지, 연간 라이선스인지 불명확함. 매출 실적이 0원이며, 투자 유치 이력도 없음 [확인]. "Roll out" 단계라는 표현과 "15+ 고객, 400+ 사용자" 주장이 상충 — 실제 유료 고객인지, 무료 파일럿인지 불분명함 [미확인]. 롯데벤처스 펀드 투자 적합성 판단 불가.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 사회적 가치 주장이 전무함. IR Deck에서 "물류 비용 절감"과 "업무 효율 2배 향상"을 언급하나, 이는 기업 운영 효율성 개선이지 사회문제 해결과 직접 연결되지 않음. ESG Impact 필드가 공백 상태 [확인]. 환경, 노동안전, 경제적 포용 등 사회적 가치 창출 요소가 식별되지 않음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 조사 결과, 창립자 NGUYEN DUY PHONG 외 팀원 정보가 일체 공개되지 않음 [확인]. LinkedIn, 공개 데이터베이스에서 창립자 프로필 미발견 — 학력, 경력, 물류/소프트웨어 도메인 경험 검증 불가 [미확인]. 팀 구성(기술팀, 영업팀)이 불명확하며, 핵심 인력 의존도 리스크가 매우 높음 [확인]. SIHUB 인큐베이션 선정은 제품 검증이지 팀 역량 검증은 아님. 투명성 부재로 실사 수행 불가능.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[미확인] 롯데 주요 사업분야(식품·유통·건설·AI/첨단산업) 중 해당 분야가 명시되지 않음 [확인]. 롯데 계열사 연계 가능성이 전혀 언급되지 않음 — 롯데글로벌로지스와의 협력 가능성이 이론적으로 존재하나, PoC 아이디어가 공백 상태 [확인]. 물류 소프트웨어라는 카테고리만으로는 구체적 연계성을 확인할 수 없음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 2 + D 1 + E 1</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">8</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">미기재</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미기재</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">미기재</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">미기재</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">정보 부족: 팀 정보를 확인할 수 없어 도메인 역량을 평가할 수 없음. 회사는 베트남 물류 및 화물 운송(Freight Forwarder) 업계를 위한 소프트웨어 솔루션을 제공하며, 2026년 5월 호치민시 과학기술국 산하 SIHUB(Saigon Innovation Hub) 인큐베이션 프로그램에 선정되었음. 이는 제품의 실용성과 시장 적합성이 인정받았음을 의미하지만, 창립팀의 배경과 역량에 대한 공개 정보는 확인되지 않음.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">평가 불가: 창립팀 구성원에 대한 정보가 공개되지 않아 팀 완전성을 평가할 수 없음. 회사는 물류 관리 소프트웨어(ForwardX)를 개발 및 제공하고 있으며, 100개 이상의 사용자 기업을 확보했다고 주장하나, 기술팀, 영업팀, 운영팀 등의 구성에 대한 세부 정보는 확인되지 않음.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">[부분적 검증] 회사는 법인등록번호(MST: 0318875081)를 보유한 정식 등록 법인이며, 호치민시 3군 Điện Biên Phủ 162B번지 HSC Building 1층에 위치. 웹사이트(forwardx.vn)가 운영 중이며, SCL, ANT Logistics, CIMC 등의 고객 사례가 웹사이트에 공개되어 있음. 2026년 5월 SIHUB 인큐베이션 프로그램에 선정되어 정부 기관의 검증을 받았음. 그러나 창립자 및 경영진의 신원, 학력, 경력 등 검증 가능한 정보가 공개되지 않아 팀의 신뢰성을 직접 평가하기 어려움.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">투명성 부족이 가장 큰 문제: 창립팀의 신원, 배경, LinkedIn 프로필 등 공개 정보가 전무하여 실사(due diligence)를 수행할 수 없음. 투자자 관점에서 이는 중대한 위험 요소임. 물류 소프트웨어 시장은 도메인 전문성과 기술 역량이 모두 요구되는 영역이므로, 팀의 이전 경력, 학력, 업계 경험 등이 필수적으로 확인되어야 함. 현재 상태에서는 제품이 시장에 존재하고 일부 고객을 확보했다는 사실만 확인 가능하며, 팀의 실행 능력, 확장 가능성, 기술 깊이를 판단할 근거가 부족함.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: ForwardX Vietnam founding team · CÔNG TY TNHH CÔNG NGHỆ PHẦN MỀM FORWARDX · forwardx.vn company founders · ForwardX Vietnam 0318875081 founder CEO · "forwardx.vn" team founder management · ForwardX phần mềm logistics Vietnam leadership team</div>
+</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>고객 주장 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 15+ 고객, 400+ 사용자 주장이 매출 0원과 모순. 실제 유료 계약 여부 확인 필요.</td></tr>
+<tr><td>팀 투명성 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 창립자 배경 일체 공개 안됨. 도메인 전문성, 기술 역량 검증 불가능.</td></tr>
+<tr><td>수익 모델 불명확</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] SaaS 구독인지, 거래 수수료인지, 가격 구조가 무엇인지 제시 안됨.</td></tr>
+<tr><td>시장 차별화 근거 부족</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] '맞춤형 Vertical ERP'라는 주장만 있고 경쟁사 대비 기술적 우위 불명확.</td></tr>
+<tr><td>롯데 연계성 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] PoC 아이디어, 롯데 계열사 지정, 협력 방안이 전혀 제시되지 않음.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge active">✓ 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">시장 규모 및 TAM/SAM/SOM 검증</span><span class="dvtag dv-r">시장 존재성만 확인, 규모 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 베트남 물류 비용이 GDP 대비 16-18%로 높아 디지털화 수요는 존재함이 확인됨. 그러나 화물운송주선업체 수, 시장 규모(TAM), 실제 공략 가능 시장(SAM), 단기 목표 시장(SOM) 등 구체적 수치가 전무함 [미확인]. 경쟁사(Logivan, CargoX, WinSoft 등 기존 베트남 물류 SaaS) 분석이 누락되어 시장 포지셔닝 검증 불가 [미확인]. IR Deck의 "Tailor-made Vertical ERP"라는 차별화 주장만으로는 기술적/기능적 우위를 입증할 수 없음 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">SaaS 메트릭 및 Unit Economics</span><span class="dvtag dv-r">핵심 지표 전면 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] "15+ 고객, 400+ 사용자"라는 주장이 있으나 유료 고객인지 무료 파일럿인지 불명확함. MRR/ARR, CAC, LTV, Churn Rate 등 SaaS 핵심 지표가 일체 제시되지 않음 [미확인]. 매출 실적이 0원이며 "Roll out" 단계라는 표현과 고객 수 주장이 상충됨 [확인]. 수익 모델이 구독형인지, 거래당 수수료인지, 연간 라이선스인지조차 명시되지 않아 비즈니스 모델 검증 불가 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">제품 완성도 및 기술 차별성</span><span class="dvtag dv-a">기능 범위만 확인, 기술 우위 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] IR Deck에서 견적·예약·서류·채무·회계를 통합한다는 기능 범위는 확인되나, API 연동, 실시간 데이터 동기화, 모바일 지원 등 기술 스펙이 누락됨 [미확인]. "Data blind spots 제거"와 "효율성 2배 향상" 주장에 대한 정량적 근거(A/B 테스트, 고객 사례)가 없음 [미확인]. Sao Khue Award 2026(물류 부문) 수상은 제품 품질을 일부 입증하나 [확인], 기술 경쟁력 자체를 보증하지는 않음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">투자 이력 및 펀딩 레디니스</span><span class="dvtag dv-r">투자 유치 전무, 재무 투명성 제로</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 투자 유치 이력이 전무하며("No funding raised yet"), 현재 모금 중 여부도 불명확함. 재무제표, 손익계산서, 현금흐름 등 재무 데이터가 일체 공개되지 않음 [미확인]. SIHUB 인큐베이션 선정은 제품 검증이지 투자 적격성 검증은 아님 [확인]. 롯데벤처스와 같은 기관투자자 입장에서 Due Diligence 수행에 필요한 최소 자료조차 부재하여 투자 판단 불가능 [미확인].</div></div>
+<div class="deep-category-label">Category D — 팀 역량</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창립자 및 핵심 팀 검증</span><span class="dvtag dv-r">팀 정보 전면 부재, 검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 창립자 NGUYEN DUY PHONG의 학력, 경력, 물류/SaaS 도메인 경험이 일체 공개되지 않음. LinkedIn, Crunchbase, 베트남 기업 데이터베이스 등 공개 채널에서 프로필 미발견 [확인]. IR Deck에 팀 슬라이드가 부재하며, CTO·CPO 등 핵심 인력 존재 여부조차 알 수 없음 [미확인]. 기술팀 규모, 개발 역량, 영업팀 구성 등 팀 완성도를 평가할 수 있는 정보가 제로 상태로, 실사 수행 자체가 불가능함 [확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">핵심 인력 의존도 리스크</span><span class="dvtag dv-r">Single Point of Failure 리스크 극대</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 창립자 1인 외 팀원 정보가 전무하여 Key Person Dependency 리스크가 매우 높음. Co-founder 부재 시 의사결정 구조의 견제·균형 메커니즘이 작동하지 않을 가능성 높음 [부분 확인]. 베트남 스타트업 생태계에서 창립자 공개는 관행이나, ForwardX는 이를 준수하지 않아 투명성 우려 발생 [확인]. 팀 완성도를 평가할 수 없어 실행 리스크 판단 불가 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">도메인 전문성 및 Track Record</span><span class="dvtag dv-r">물류·SaaS 경험 검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 창립자가 화물운송주선업(Freight Forwarding) 또는 물류 업계 경험을 보유했는지 확인 불가. SaaS 제품 개발·운영 경험(이전 스타트업, 기업 재직 등)도 검증되지 않음 [미확인]. "Tailor-made Vertical ERP"를 구축하려면 도메인 깊이가 필수적이나, 팀의 산업 이해도를 입증할 자료가 전무함 [미확인]. SIHUB 선정은 제품 완성도를 일부 인정받았음을 의미하나 [확인], 팀의 장기 실행 능력을 보증하지는 않음.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[확인] Sao Khue 2026 수상 — 베트남 정부 기관의 공식 인정</li>
+<li>[확인] SIHUB 인큐베이션 프로그램 선정 — 제품의 시장 적합성 검증</li>
+<li>[부분 확인] 베트남 물류 시장의 높은 디지털화 수요 — GDP 대비 물류 비용 16-18%는 사실</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[확인] 매출 0원 — 수익 모델 작동 여부 불명확</li>
+<li>[확인] 팀 정보 전무 — 창립자 배경, 경력, 도메인 전문성 검증 불가</li>
+<li>[미확인] 고객 주장(15+ 기업, 400+ 사용자)이 유료 계약인지 파일럿인지 불분명</li>
+<li>[확인] 투자 유치 이력 없음 — 외부 검증 부재</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>롯데글로벌로지스의 베트남 물류 네트워크와 연계 가능성</li>
+<li>베트남 정부의 물류 디지털화 정책 수혜 가능</li>
+<li>ASEAN 역내 물류 시장으로의 확장 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Logivan, CargoX 등 자금력 있는 경쟁사의 시장 선점</li>
+<li>화물운송주선업체의 낮은 IT 도입 의지 및 가격 민감도</li>
+<li>팀 투명성 부재로 인한 투자자 신뢰 확보 실패 리스크</li>
+<li>단일 시장(베트남) 의존도 — 글로벌 확장 전략 부재</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">8</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">ForwardX는 베트남 화물운송주선업체를 위한 통합 관리 소프트웨어로, Sao Khue 2026 수상 등 일부 시장 검증을 받았으나, 핵심 사업 요소의 대부분이 미확인 상태임. 가장 큰 검증되지 않은 가정은 "15+ 고객, 400+ 사용자"가 실제 유료 계약 고객이며 지속 가능한 수익 모델이 작동한다는 전제인데, 매출 0원 상태와 모순됨. 창립팀의 배경이 일체 공개되지 않아 도메인 전문성, 기술 역량, 실행 능력을 평가할 수 없으며, 롯데와의 연계 가능성도 제시되지 않음. 투명성 부재로 인해 투자 적합성 판단 불가.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">1 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">8 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>CÔNG TY TNHH CÔNG NGHỆ PHẦN MỀM FORWARDX · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>
