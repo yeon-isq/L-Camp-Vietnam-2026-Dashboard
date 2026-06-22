@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acie — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Acie</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Boston, USA</span>
+          <span class="etag et-ind">E-commerce & Retail</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Acie</div>
+        <div class="hero-sub">설립 2023 · https://acie.skin/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Acie는 AI 피부 센서 기기와 앱을 결합한 개인 맞춤형 스킨케어 솔루션이다. 소비자가 잘못된 제품을 구매해 낭비하는 문제를 피부 데이터 기반 제품 추천으로 해결하며, B2C 기기 판매와 B2B 리테일 솔루션 라이선스로 수익을 창출한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          피부 센서 데이터가 실제 제품 구매 전환과 재구매로 이어지며, 소비자가 하드웨어 구매 비용을 기꺼이 지불할 만큼 높은 가치를 느낀다는 가정이 아직 매출로 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">19</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">6,000명</div><div class="kpi-desc">미국 기반 개인 고객 (기간 미명시)</div></div>
+<div class="kpi"><div class="kpi-val">7개</div><div class="kpi-desc">Dermstore, Avocate Health(미국), Rilastil(베트남 롱쩌우·하사키), Beauty Glossy 클리닉 등</div></div>
+<div class="kpi"><div class="kpi-val">$200만 목표</div><div class="kpi-desc">현재 시드 라운드 진행 중 (Jumpstart Foundry 등 일부 참여 확인)</div></div>
+<div class="kpi"><div class="kpi-val">1,000+ 세션</div><div class="kpi-desc">미국 피부과 전문의 협력 피부 체크 세션 (검증 완료)</div></div>
+<div class="kpi"><div class="kpi-val">5개</div><div class="kpi-desc">World AI Cannes 우승, Collision Toronto 등 국제 테크 어워드</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">글로벌 스킨케어 시장 규모는 크나 실제 타겟 시장(하드웨어 구매 + 구독 SaaS)의 SAM/SOM 분석 부재 [미확인]. 경쟁사 대비 차별화 요소(미국 특허, 바이오센서 정밀도)는 언급되나 실제 제품 성능 벤치마크 데이터 없음 [부분 확인]. B2B 리테일 솔루션 시장 확장 가능성은 제시되었으나 장기 라이선스 계약이나 파일럿 이후 전환율 검증 없음 [미확인]. 피부 분석 하드웨어 시장은 성장 중이나 소비자가 기기 구매 비용을 지불할 의지에 대한 시장 검증 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">문제(잘못된 제품 구매로 인한 낭비)-솔루션(데이터 기반 추천)-수익 구조(B2C 기기 판매 + B2B 라이선스)는 명확함 [확인]. 그러나 2023년 설립 후 현재까지 매출 없음 [확인]. 6,000명 사용자와 7개 B2B 파트너 확보는 초기 트랙션으로 인정되나, 유료 전환율이나 파트너사로부터의 실제 거래액 미공개 [미확인]. 투자 적합성: Jumpstart Foundry, Right Side Capital 등 미국 기관 투자 일부 확인되나 총 유치액 및 밸류에이션 미공개 [부분 확인]. $200만 목표 라운드는 제품 양산 및 B2B 확장에 적합한 규모이나, 현재 수익 없는 상태에서 unit economics 검증 없이 대규모 자금 조달은 리스크.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">사회문제(소비자의 잘못된 스킨케어 제품 선택으로 인한 환경 낭비 및 피부 건강 악화) 정의 명확 [확인]. 솔루션(객관적 피부 데이터 제공)이 문제 해결에 직접 기여하며, ESG 측면에서 환경(제로 웨이스트), 사회(피부 건강 접근성 민주화), 거버넌스(데이터 투명성) 가치 창출 논리 구체적 [확인]. 1,000회 이상 임상 세션을 통해 미국 피부과 전문의와 협력한 검증 프로세스 존재 [확인]. 장기적 임팩트 측정 가능성(사용자별 피부 지표 변화 추적)도 확보. 다만 실제 환경 임팩트(플라스틱 폐기물 감소량) 정량화는 아직 초기 단계 [부분 확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 외부 검증 미수행 [미확인]. 자체 신고 배경은 강력: Flora Bui(전 Edumall CEO, 전기공학 박사과정, 미국 특허 2건), David Botequim(MIT 바이오테크 박사, 피부과 17년), Kenny Trinh(UPenn 석사, 2회 엑싯), 디자인·AI·하드웨어 전문가 포함. 그러나 TEAM DEEP RESEARCH가 수행되지 않아 학력·경력·특허 보유 여부 등 핵심 주장 검증 불가 [미확인]. 특히 Flora Bui의 Edumall 운영 규모('수백만 사용자 서비스'), Dubai/Qatar/Malaysia 클리닉 체인(20개 지점) 주장은 외부 확인 없이는 신뢰도 낮음. 팀 구성은 포괄적이나 실제 도메인 관련성 및 핵심 인물 의존도 리스크 평가 불가. 검증 부재로 인해 하 등급 부여.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">7<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">주요 사업분야(뷰티 리테일·호텔) 부합 [확인]. 롯데마트·백화점·호텔 3개 계열사 연계 PoC 시나리오 구체적(스마트 미러, VIP 라운지, 호텔 웰니스 패키지) [확인]. 그러나 PoC 실행 가능성에 중대한 제약: (1) 하드웨어 양산 및 재고 조달 계획 미명시 — 파일럿용 기기 수량·납품 일정 불명확 [미확인], (2) 롯데 POS 시스템과의 API 연동 및 재고 매칭 로직이 '1개월 내 완료 가능'하다는 근거 없음 [미확인], (3) KPI 측정 방식(전환율·재방문율 증가) 제시되었으나 베이스라인 설정 및 A/B 테스트 설계 구체성 부족 [부분 확인]. 롯데 인프라 활용 논리는 타당하나 실무 실행 계획이 다소 간접적이어서 중 등급.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 3 + C 4 + D 2 + E 7</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">19</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce (LOTTE Department Store, Mall, Mart), Hospitality (LOTTE Hotel), AI/IT (LOTTE Innovate)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">롯데마트, 롯데백화점, 롯데호텔</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데 뷰티 매장과 호텔에 Acie 피부 측정 스테이션을 설치해 고객에게 데이터 기반 제품 추천을 제공하고, 구매 전환율과 재방문율 증가를 측정하는 3~6개월 파일럿. 롯데마트 뷰티 코너에 '스마트 미러' 설치, 백화점 VIP 라운지에서 프리미엄 고객 대상 '피부 컨시어지' 서비스 제공, 호텔 스위트룸에 웰니스 패키지로 기기 제공 등 3가지 시나리오 테스트.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">1. Environmental (E): Zero-Waste Skincare
+* The Problem: Consumers guess their skincare needs, leading to millions of half-used plastic bottles discarded yearly.
+* The Acie + LOTTE Solution: Acie’s AI skin sensor eliminates guesswork so customers buy only what works. Integrating this into LOTTE Mart creates a "Zero-Waste Retail" model.
+
+2. Social (S): Democratizing Skin Health
+* The Problem: High-end skin analysis and dermatological insights are expensive and inaccessible to the everyday consumer.
+* The Acie + LOTTE Solution: Placing Acie stations in LOTTE Malls or Hotels transforms retail spaces into accessible wellness hubs. It provides objective, data-backed skin education for all skin types, free from marketing bias.
+
+3. Governance (G): Empirical Trust & Data Security
+* The Problem: The beauty industry relies heavily on unverified marketing claims ("miracle creams") and loose data tracking.
+* The Acie + LOTTE Solution: Acie gives LOTTE customers empirical proof of product efficacy, setting a new corporate standard for marketing transparency.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>매출 부재 — 제품-시장 적합성 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>2023년 설립 후 현재까지 매출 없음 [확인]. 6,000 사용자 중 유료 전환율 미공개로 B2C 기기 판매 및 B2B 라이선스 모델의 실제 시장 수요 검증 안 됨 [미확인].</td></tr>
+<tr><td>팀 배경 검증 불가 — 핵심 주장 신뢰도 불확실</td><td><span class="rpill-sm rp-h">높음</span></td><td>외부 검증 미수행으로 CEO의 Edumall 운영 규모, 클리닉 체인 경험, 특허 보유 여부 등 확인 불가 [미확인]. 핵심 인물 의존도 및 팀 완성도 평가 불가.</td></tr>
+<tr><td>하드웨어 양산 및 CAPEX 부담</td><td><span class="rpill-sm rp-h">높음</span></td><td>기기 제조 파트너, 양산 일정, 단위 원가 구조 미명시 [미확인]. 롯데 PoC용 기기 조달 계획 불명확하며, $200만 조달 목표에서 제조 자금 비중 불명.</td></tr>
+<tr><td>의료기기 규제 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>FDA/CE 인증 여부 미명시 [미확인]. '피부 건강 측정' 주장 시 각국 의료기기 규제 대상 가능성 있으나 인허가 전략 부재.</td></tr>
+<tr><td>롯데 PoC 실행 가능성 제약</td><td><span class="rpill-sm rp-m">중간</span></td><td>POS API 연동, 재고 매칭 로직, 기기 설치 일정 등 실무 계획 구체성 부족 [부분 확인]. 3~6개월 내 완료 가능 여부 불확실.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — E-commerce & Retail / 하드웨어 + SaaS 하이브리드</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">하드웨어 + 구독 결합 모델의 시장 규모 및 Unit Economics 검증</span><span class="dvtag dv-r">시장 검증 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">글로벌 스킨케어 시장 규모는 크나, 실제 타겟 시장(소비자가 $200~300 하드웨어 구매 + 월 $9.99 구독)의 SAM/SOM 분석 부재 [미확인]. 유사 모델(NuFACE, Foreo) 대비 소비자 구매 의지 데이터 없음 [미확인]. 2023년 설립 후 현재까지 매출 없으며 [확인], 6,000명 사용자 중 유료 전환율 미공개 [미확인]. B2C 기기 판매와 B2B 라이선스의 unit economics(CAC, LTV, payback period) 검증 없이 $2M 조달은 고위험 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">B2B 리테일 솔루션 확장성 및 장기 계약 전환율</span><span class="dvtag dv-a">초기 트랙션, 검증 미완료</span><span class="deep-arrow">▾</span></div><div class="deep-body">7개 B2B 파트너(Dermstore US, Rilastil VN 등) 확보는 초기 트랙션으로 인정 [확인]. 그러나 파트너사로부터의 실제 거래액, 라이선스 계약 규모, 파일럿 이후 유료 전환율 미공개 [미확인]. 롯데 3개 계열사 PoC 시나리오(스마트 미러, VIP 라운지, 호텔 웰니스)는 구체적이나 [확인], 하드웨어 양산 계획·재고 조달 일정·POS 시스템 API 연동 '1개월 완료' 근거 없음 [미확인]. B2B 확장성 논리는 타당하나 실행 계획 구체성 부족.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">기술 차별화 및 경쟁 우위 벤치마크</span><span class="dvtag dv-a">특허 보유, 성능 검증 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">미국 특허 2건 보유 및 바이오센서 정밀도 강조 [부분 확인 — 특허 번호 미공개]. 그러나 경쟁사(SkinCeuticals SkinScope, Neutrogena Skin360, Foreo) 대비 실제 제품 성능 벤치마크 데이터 없음 [미확인]. 1,000회 이상 임상 세션 및 미국 피부과 전문의 협력 검증 프로세스 존재 [확인]. FDA 승인 여부, 센서 정확도 임상 시험 결과(sensitivity/specificity) 미공개 [미확인]. 기술 우위 주장은 있으나 객관적 검증 부재.</div></div>
+<div class="deep-category-label">Category D — 팀 검증 / 하드웨어 + AI + 바이오 융합</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">CEO Flora Bui의 전 사업 및 학력 검증</span><span class="dvtag dv-r">외부 검증 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">자체 신고 배경은 강력: PhD 후보(CU Denver 전기공학), Edumall 전 CEO('수백만 사용자 서비스'), Dubai/Qatar/Malaysia 클리닉 체인(20개 지점), Founders Fund·Samsung Ventures 투자 경험 [모두 미확인 — TEAM DEEP RESEARCH 미수행]. 특히 '20개 지점 클리닉 체인' 및 'Edumall 수백만 사용자' 주장은 외부 확인 없이는 신뢰도 낮음. 미국 특허 2건 보유 주장도 USPTO 검색 미실시 [미확인]. 핵심 인물 의존도가 높은 만큼 검증 필수.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">핵심 기술 인력(CMO David Botequim, CTO Kenny Trinh) 검증</span><span class="dvtag dv-a">경력 주장, 검증 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">David Botequim(PhD in Biotech, MIT, 피부과 17년)와 Kenny Trinh(UPenn 석사, 2회 엑싯) 배경은 사업에 핵심적이나 외부 검증 없음 [미확인]. 특히 Botequim의 MIT 학위, Trinh의 엑싯 기업명·밸류에이션 미공개 [미확인]. AI·하드웨어 팀(John Vu, Son Phan)도 PhD 학위 및 전직 주장(Viettel AI, Amanotes AI lead) 미검증 [미확인]. 팀 구성은 포괄적이나 실제 도메인 관련성 및 핵심 인물 의존도 리스크 평가 불가.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">기관 투자사 검증 및 밸류에이션 투명성</span><span class="dvtag dv-a">일부 확인, 세부 미공개</span><span class="deep-arrow">▾</span></div><div class="deep-body">Jumpstart Foundry, Right Side Capital Management, Iris Ventures(Beauty focused) 투자 일부 확인 [부분 확인 — 금액·밸류에이션 미공개]. Google for Startups Deep Tech Program 선정 및 수상 이력(WAICF 2024 Winner, Collision Toronto Featured Innovation) 존재 [확인]. 그러나 총 유치액, 현재 밸류에이션, 기관 투자 비율 미공개 [미확인]. $2M 목표 라운드 대비 기존 투자금 규모 불명으로 희석률·지분 구조 평가 불가 [미확인].</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>미국 특허 보유 및 1,000+ 임상 세션 검증으로 기술 신뢰도 확보 [확인]</li>
+<li>Jumpstart Foundry, Right Side Capital 등 미국 기관 투자 유치 [확인]</li>
+<li>사회적 가치(제로 웨이스트, 피부 건강 접근성) 논리 명확하고 ESG 임팩트 측정 가능 구조 [확인]</li>
+<li>World AI Cannes 우승 등 국제 어워드 5개로 브랜드 공신력 확보 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>2023년 설립 후 현재까지 매출 없음 — B2C 기기 판매 및 B2B 라이선스 모두 유료 전환 미검증 [확인]</li>
+<li>팀 배경 외부 검증 미수행으로 핵심 주장(Edumall CEO, 클리닉 체인 20개 운영 등) 신뢰도 불확실 [미확인]</li>
+<li>하드웨어 중심 비즈니스로 양산 CAPEX 부담 및 공급망 리스크 존재하나 구체적 제조 계획 부재 [미확인]</li>
+<li>타겟 시장의 SAM/SOM 분석 없이 글로벌 TAM만 제시 — 실제 도달 가능 시장 규모 불명확 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>글로벌 뷰티테크 시장 성장세 및 AI 피부 분석 수요 증가</li>
+<li>롯데 뷰티 리테일·호텔 네트워크를 통한 아시아 시장 진출 가능성</li>
+<li>B2B 파트너(Dermstore, Rilastil 등) 확대 시 라이선스 수익 모델 확장 잠재력</li>
+<li>피부 데이터 축적 시 개인 맞춤형 제품 개발 및 데이터 비즈니스 전환 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>L'Oréal, P&G 등 글로벌 뷰티 대기업의 자체 AI 피부 분석 솔루션 출시 경쟁 심화</li>
+<li>소비자가 하드웨어 구매 비용($100~200 추정) 지불 의지 낮을 경우 B2C 모델 실패 위험</li>
+<li>하드웨어 품질 이슈 발생 시 A/S 부담 및 브랜드 신뢰도 급락 가능성</li>
+<li>규제: FDA/CE 인증 없이 '피부 건강 측정' 주장 시 의료기기 규제 리스크 (인증 여부 미명시)</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">19</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">Acie는 AI 피부 센서 하드웨어와 데이터 기반 제품 추천 소프트웨어를 결합한 뷰티테크로, 사회적 가치(제로 웨이스트·피부 건강 민주화) 논리가 명확하고 미국 시장에서 초기 트랙션(6,000 사용자, 7개 B2B 파트너)을 확보했다. 그러나 가장 큰 미검증 가정은 '소비자가 하드웨어 구매 비용을 지불하고, 피부 데이터가 실제 제품 구매 전환 및 재구매로 이어진다'는 점이며, 이는 2023년 설립 후 현재까지 매출 부재로 입증되지 않았다. 팀 배경은 자체 신고상 강력하나 외부 검증 미수행으로 신뢰도 확인 불가하며, 롯데 PoC는 시나리오는 구체적이나 하드웨어 양산·API 연동 등 실무 실행 계획의 구체성이 부족하다. 하드웨어 중심 비즈니스의 CAPEX 부담과 unit economics 검증 없이 $200만 조달 목표는 리스크 요인이다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">7 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">19 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Acie · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

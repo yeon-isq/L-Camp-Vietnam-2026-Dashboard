@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V-indoorCARE — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">V-indoorCARE</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Hanoi, Vietnam</span>
+          <span class="etag et-ind">AI</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">V-indoorCARE</div>
+        <div class="hero-sub">설립 2026 · https://2ngnhan.github.io/v-indoorcare/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">V-indoorCARE는 기존 건물 HVAC 시스템 위에 비침습적으로 설치되는 AI 기반 에너지 최적화 플랫폼이다. 상업용 건물(쇼핑몰, 호텔, 오피스)의 냉난방 에너지 낭비 문제를 해결하며, 물리학 기반 신경망(PINN)과 3D CFD 시뮬레이션을 활용해 HVAC 에너지를 최대 25% 절감하고 PM2.5를 30~50% 감소시키는 것을 목표로 하고, SaaS + 설치비 모델로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          PINN 기반 최적화 모델이 실험실 환경(129,000 데이터포인트)에서의 90% 예측 정확도를 실제 상업용 건물 운영 환경에서도 재현하며, 이것이 검증 가능한 에너지 절감으로 이어진다는 인과관계가 아직 실증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">17</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">90%</div><div class="kpi-desc">129,000개 측정 데이터 기준 (연구실 환경)</div></div>
+<div class="kpi"><div class="kpi-val">최대 25%</div><div class="kpi-desc">HVAC 에너지 사용량 대비 (미검증)</div></div>
+<div class="kpi"><div class="kpi-val">2건</div><div class="kpi-desc">하노이 토목대(HUCE), VinUniversity Open Lab</div></div>
+<div class="kpi"><div class="kpi-val">$500K</div><div class="kpi-desc">Pre-seed 라운드</div></div>
+<div class="kpi"><div class="kpi-val">$1.5M</div><div class="kpi-desc">25개 건물, 600,000㎡ 기준 (미검증)</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] TAM $3.91B(베트남 HVAC 시장)은 외부 출처 인용이나 구체적 출처 미명시. SAM $280M(BMS 소프트웨어)는 산정 근거 불명확. SOM $1.5M ARR(3년, 25개 건물)은 순수 추정치이며 고객 획득 경로, 영업 사이클, 계약 단가에 대한 근거 없음. 타겟 세그먼트(Grade-A 오피스, 국제학교, 의료시설, 그린산업단지, 유통/호텔)는 명확하나 각 세그먼트별 시장 규모 및 진입 우선순위 불명확. 경쟁사 분석 전무 — 기존 BMS 공급사(Honeywell, Siemens, Johnson Controls) 대비 차별점이 '물리학 기반 AI'라는 기술적 주장에만 의존하며 상업적 비교우위 근거 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 문제-솔루션 구조는 명확하나 비즈니스 모델의 핵심 가정이 검증되지 않음. SaaS + 설치비 모델 제시되었으나 설치비 규모, SaaS 구독 단가, 계약 기간, 갱신율 등 구체적 수치 전무. LTV/CAC >3:1 목표는 제시되었으나 CAC 산정 근거(영업 인력, 마케팅 비용, 세일즈 사이클) 및 LTV 산정 근거(연간 구독료, 계약 기간, churn rate) 모두 부재. 매출 이력 없음, 투자 유치 이력 없음(VinIF 연구 펀딩은 연구비이지 사업 투자가 아님). 롯데벤처스 펀드 투자 적합성: Pre-seed 단계에서 기술 검증은 있으나 시장 검증(paying customer) 전무로 투자 리스크 높음. Hợp Phát 유통 파트너십은 언급되었으나 구체적 계약 조건, 역할 분담, 매출 발생 여부 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">[확인] 문제 정의 명확: 상업용 건물 HVAC는 가장 큰 제어 가능 에너지 부하이나 실시간 가시성 부족으로 에너지 낭비 발생. 솔루션의 사회적 가치 직접 연결: Scope 2 배출 최대 25% 감축(롯데 Net-Zero 2040 목표 기여), PM2.5 30~50% 감소(쇼핑객/직원 건강), IPMVP M&V 기반 감사 가능한 데이터 제공(ESG 공시 품질 향상). 임팩트 규모 및 지속성: 단일 건물 검증 후 포트폴리오 확장 가능, 베트남 상업용 건물 전반으로 확산 가능성. 기후변화 완화 및 실내 공기질 개선이라는 두 가지 사회적 가치를 동시 창출하는 구조 명확.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 심층 조사 미수행(research_performed: false). 신청서 자기보고: Dr. Lê Duy Dũng(Chief Scientist, VinUniversity Living Lab Director)가 PINN+CFD 기술 원천 보유, VinUniversity eLab 지원. 그러나 외부 검증 불가 — LinkedIn, 학술 출판, 특허 출원 등 독립적 확인 없음. 팀 구성 불명확: CEO Nhan Nguyen 외 구체적 팀원 명단, 역할 분담, HVAC 산업 경력, B2B 세일즈 경험, 시설관리(FM) 도메인 전문성 전무. VinUniversity 연구 스핀오프로 기술 역량은 추정 가능하나 상업화 실행 기반(영업, 제품화, 고객 관리) 전혀 확인 안 됨. Key-person dependency 리스크 높음 — Dr. Dũng 1인에게 기술 및 신뢰성 의존.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">7<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">[부분 확인] 주요 사업분야 부합: 유통(롯데몰, 롯데마트, 롯데백화점), 호텔(롯데호텔), 건설(롯데건설) 모두 HVAC 에너지 비중 높은 자산 보유. PoC 제안 구체성: 롯데몰 웨스트레이크 하노이 지정, 3단계 90일 파일럿, IPMVP M&V 기준 명시, 롯데 필요 자원(BMS 데이터, 시설팀 협조, 전력계량) 명확 — 실행 가능성 높음. 롯데 계열사 구체성 부족: 신청서에 계열사명 미기재, IR에서 'LOTTE Properties / Retail' 언급되었으나 베트남 법인 중 실제 협력 주체(롯데몰 하노이, 롯데호텔 하노이 등) 특정 안 됨. PoC 성공 기준 명확(M&V 검증 에너지 절감)하나 롯데 입장의 전략적 가치(예: 롯데건설 신축 프로젝트 통합, 롯데 베트남 전체 Net-Zero 로드맵 기여도) 정량화 부족. 확장성: PoC 성공 시 포트폴리오 확산 경로는 논리적이나 롯데 측 인센티브 구조(절감액 공유, ESG 크레딧 활용 등) 구체화 필요.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 2 + C 4 + D 1 + E 7</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">17</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통/커머스(롯데백화점, 롯데몰, 롯데마트), 호텔/관광(롯데호텔, 롯데시네마, 롯데월드), 스마트시티/프롭테크(롯데건설)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시 안 됨</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데몰 웨스트레이크 하노이 등 롯데 주요 자산에서 3개월(계절 확장 시 6개월) 파일럿 제안. 1단계(1~4주): 3D CFD 디지털 트윈 구축 및 냉방 에너지 낭비 지점 파악, 2단계(5~10주): 기존 HVAC/BMS에 PINN 최적화 적용하여 25% 에너지 절감 목표, 3단계(11~12주): IPMVP Option C 기준 검증된 절감량 및 CO2 감축량 정량화. 롯데 측 필요 자원: BMS/HVAC 데이터 접근, 시설팀 협조, 전력계량 기준점. 하드웨어 교체 및 자본 지출 없음. 성공 시 롯데 베트남 전체 건물 포트폴리오 확장 가능.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Environmental: Our platform cuts HVAC electricity use by up to 25%, directly reducing a building's Scope 2 emissions — the largest controllable energy load in retail and hospitality assets. This advances LOTTE's stated Net-Zero 2040 commitment and its Carbon Neutral Roadmap target to reduce site emissions, turning a sustainability pledge into a measured outcome.
+Social: The same physics-AI engine optimizes indoor air quality, targeting up to 30–50% reduction in PM2.5 — healthier air for the millions of shoppers, hotel guests, and employees across LOTTE's Vietnam facilities.
+Governance: Every result is quantified under IPMVP Option C measurement and verification, giving LOTTE auditable, disclosure-grade data rather than estimates.
+How the PoC creates the impact: a single LOTTE asset becomes a verified decarbonization case study — a measured tonnes-CO2-avoided figure plus a fully-loaded savings P&L. That proof converts into a replicable playbook LOTTE can roll out across its building portfolio, compounding both carbon reduction and operating savings.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>실증 환경 vs. 상업 환경 갭</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 129,000 데이터포인트는 통제된 연구 환경. 실제 쇼핑몰/호텔의 가변적 사용 패턴, 설비 노후도, 외부 기상 조건에서 동일 성능 재현 여부 불확실.</td></tr>
+<tr><td>팀 상업화 역량 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 외부 검증 불가. B2B 세일즈, 시설관리(FM) 도메인, 엔터프라이즈 계약 협상 경험 확인 안 됨. Pre-seed에서 사업화 전환 실패 가능성 높음.</td></tr>
+<tr><td>단위경제 불명확</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] LTV/CAC >3:1 목표는 제시되었으나 CAC 산정(세일즈 사이클, 영업 인력 비용), LTV 산정(구독료, 계약 기간, churn) 근거 전무. 수익성 경로 검증 필요.</td></tr>
+<tr><td>LOI의 상업적 전환 불확실성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] HUCE, VinUniversity는 학술 파트너십 — paying customer로 전환 여부 불확실. Hợp Phát 유통 파트너십은 역할 및 매출 조건 미명시.</td></tr>
+<tr><td>BMS 기존 공급사 잠식 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>[확인] Honeywell, Siemens 등 기존 BMS 공급사가 AI 최적화 기능 자체 통합 시 V-indoorCARE의 '레이어온' 포지셔닝 약화 가능. 경쟁 분석 부재로 대응 전략 불명확.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">SaaS 모델 핵심 지표 검증 부재</span><span class="dvtag dv-r">구조만 제시, 실행 근거 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] SaaS + 설치비 하이브리드 모델을 제시했으나 **구독 단가, 계약 기간, 갱신율(churn rate) 등 핵심 지표가 완전히 부재**하다. LTV/CAC >3:1 목표는 언급되었으나 **CAC 산정 근거(영업 인력 구성, 세일즈 사이클, 고객 획득 채널)와 LTV 산정 근거(연간 ARR, 평균 계약 기간, expansion revenue 가능성)가 모두 없다**. SOM $1.5M ARR(3년, 25개 건물)은 순수 추정치이며, **첫 paying customer조차 확보되지 않은 Pre-seed 단계에서 이 수치는 투자 의사결정 근거로 불충분**하다. 매출 이력 전무 상태에서 SaaS 모델의 상업적 실행 가능성은 검증되지 않았다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">BMS 기존 강자 대비 시장 진입 전략 불명확</span><span class="dvtag dv-r">기술 차별화만 주장, 영업 전략 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 상업용 건물 BMS 시장은 Honeywell, Siemens, Johnson Controls 같은 글로벌 강자들이 지배하며, **이들은 이미 AI/ML 기반 에너지 최적화 기능을 자사 BMS에 통합 중**이다. V-indoorCARE는 '물리학 기반 AI(PINN)'라는 기술적 차별성만 강조하나, **고객 입장의 switching cost(기존 BMS 교체/통합 비용, 시설팀 재교육, 데이터 마이그레이션)를 극복할 상업적 우위 근거가 전무**하다. '비침습 설치'는 장점이나, **기존 BMS 공급사와의 협력 모델인지 경쟁 모델인지조차 불명확**하며, **channel partner Hợp Phát의 역할과 계약 조건은 공개되지 않았다**. 시장 진입 전략의 구체성이 매우 낮다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">TAM/SAM/SOM 산정 근거의 신뢰성 부족</span><span class="dvtag dv-a">외부 출처 불명, 하향식 추정만 존재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] TAM $3.91B(베트남 HVAC 시장)는 외부 출처를 인용했다고 하나 **구체적 리포트명, 발행 기관, 발행 연도가 명시되지 않아 검증 불가**하다. SAM $280M(BMS 소프트웨어)는 **산정 방법론과 가정이 제시되지 않아 신뢰성 평가 불가**하다. SOM $1.5M ARR(3년, 25개 건물)은 **고객 획득 경로, 영업 사이클 가정, 건물당 계약 단가에 대한 근거가 전혀 없어 순수 희망치**로 보인다. 타겟 세그먼트(Grade-A 오피스, 국제학교, 의료시설 등)는 나열되었으나 **세그먼트별 시장 규모, 진입 우선순위, 각 세그먼트의 구매 의사결정 프로세스 차이는 분석되지 않았다**. 하향식(top-down) 시장 추정만 존재하고 상향식(bottom-up) 검증이 부재하다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">paying customer 부재로 인한 PMF 검증 리스크</span><span class="dvtag dv-r">기술 검증만 완료, 시장 검증 미달</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] VinUniversity와 HUCE로부터 **LoI(Letter of Intent)는 확보**했으나, **이는 상업 계약이 아니며 실제 구매 의사를 증명하지 못한다**. 129,000개 데이터 포인트 기반 90% 예측 정확도는 **기술적 feasibility를 입증**하나, **고객이 '지불 의사'를 갖는지는 별개 문제**다. 매출 이력 전무, 투자 유치 이력 전무(VinIF는 연구 펀딩이지 equity 투자가 아님) 상태에서, **Product-Market Fit은 검증되지 않았다**. Hợp Phát 파트너십도 **구체적 계약 조건, 매출 발생 여부, 역할 분담이 [미확인]** 상태다. **롯데벤처스 투자 관점에서, Pre-seed 단계의 기술 리스크는 낮으나 상업화 실행 리스크는 매우 높다**.</div></div>
+<div class="deep-category-label">Category E — 롯데 연계 전략</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">PoC 설계의 실행 가능성과 명확성</span><span class="dvtag dv-g">구조 우수, 롯데 측 인센티브 보완 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] **롯데몰 웨스트레이크 하노이를 타겟으로 지정**하고, **3단계 90일 파일럿 구조(디지털 트윈 구축 → PINN 최적화 실행 → IPMVP M&V 검증)**를 명확히 제시했다. **필요 롯데 자원(BMS 데이터 접근, 시설팀 협조, 전력계량 데이터)**도 구체적으로 명시되어 **실무 실행 가능성이 높다**. IPMVP(International Performance Measurement & Verification Protocol) 기준 명시는 **에너지 절감의 감사 가능성을 보장**하여 ESG 공시 품질에 기여한다. 다만 **롯데 입장의 전략적 가치(예: 롯데건설 신축 프로젝트 통합, 롯데 베트남 전체 Net-Zero 로드맵 기여도, 절감액 공유 인센티브 구조)가 정량화되지 않아** 롯데 측 승인 동기 강화가 필요하다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">롯데 계열사 포트폴리오 확장 경로</span><span class="dvtag dv-a">논리적이나 인센티브 구조 미흡</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 롯데 유통(몰, 마트, 백화점), 호텔, 건설은 **모두 HVAC 에너지 비중이 높은 자산군**으로, **PoC 성공 시 포트폴리오 확산 경로는 논리적**이다. 롯데몰 웨스트레이크 하노이 1개 점포 검증 후 **롯데 베트남 전체 자산(호텔, 리테일, 오피스) 확장 가능성**이 존재한다. 그러나 **신청서에 협력 롯데 계열사명이 미기재**되고, IR 자료에서도 'LOTTE Properties / Retail'로만 언급되어 **실제 베트남 법인(롯데몰 하노이, 롯데호텔 하노이 등) 중 협력 주체 특정이 안 됨**. **롯데 측 인센티브 구조(절감액 분배 모델, ESG 크레딧 활용, 롯데건설 신축 프로젝트 통합 방안)**가 구체화되지 않아 **계열사 확산의 제도적 동력이 불명확**하다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-3</span><span class="deep-title">롯데 Net-Zero 2040 목표 기여도</span><span class="dvtag dv-g">Scope 2 배출 감축 효과 명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] HVAC는 상업용 건물 **Scope 2 배출(전력 사용)의 가장 큰 단일 부하**이며, **V-indoorCARE의 최대 25% 에너지 절감은 롯데 Net-Zero 2040 로드맵에 직접 기여**한다. **IPMVP M&V 기반 감사 가능 데이터는 ESG 공시 품질을 향상**시키고, **PM2.5 30~50% 감소는 쇼핑객/직원 건강 개선으로 사회적 가치 창출**과 연결된다. 롯데 베트남 자산 포트폴리오 전반(몰, 호텔, 오피스)에 적용 시 **탄소 배출 절감 규모와 지속성이 크다**. 다만 **롯데 측이 이 임팩트를 정량화하여 내부 의사결정(예: PoC 승인, 계열사 확산)에 활용할 수 있도록 '롯데 Net-Zero 기여도 시뮬레이션'이 사전 제공되면** 전략적 fit이 더욱 강화될 것이다.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>VinUniversity 연구 기반 PINN+CFD 기술 — worldwide exclusive license 보유로 모방 장벽 높음 (자체 주장)</li>
+<li>129,000 데이터포인트 기반 90% 예측 정확도 — 연구실 수준 기술 검증 완료 (IR 명시)</li>
+<li>IPMVP M&V 기반 검증 방법론 제시 — ESG 공시 요구 증가 추세와 부합하는 감사 가능한 데이터 제공 구조</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>매출 이력 전무, paying customer 없음 — LOI 2건(HUCE, VinUniversity)은 모두 학술/연구 기관으로 상업적 검증 아님</li>
+<li>팀 구성 및 상업화 역량 외부 검증 불가 — Dr. Dũng 외 팀원 정보 부재, B2B 세일즈/FM 도메인 경험 미확인</li>
+<li>비즈니스 모델 핵심 수치 부재 — 설치비, SaaS 구독료, CAC, LTV, churn rate 등 단위경제 산정 근거 전무</li>
+<li>경쟁사 분석 부재 — 기존 BMS 공급사(Honeywell, Siemens 등) 대비 상업적 차별점 불명확</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 정부 에너지 효율 정책 강화 및 기업 ESG 공시 압력 증가 — HVAC 최적화는 가장 빠르고 저렴한 Scope 2 감축 수단</li>
+<li>롯데 그룹 Net-Zero 2040 목표 — 베트남 내 대규모 건물 포트폴리오(몰, 호텔, 백화점) 보유로 PoC 성공 시 빠른 확산 가능</li>
+<li>동남아 상업용 건물 시장 확장 — 베트남 검증 후 태국, 인도네시아 등 유사 기후·정책 환경 국가로 복제 가능</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>실증 실패 리스크 — 연구실 정확도가 실제 건물 운영 환경(다양한 사용 패턴, 설비 노후도, 기상 변동)에서 재현되지 않을 가능성</li>
+<li>긴 세일즈 사이클 — B2B 시설관리 의사결정은 보수적이며, 검증되지 않은 스타트업 솔루션 도입에 높은 리스크 회피 성향</li>
+<li>기존 BMS 공급사의 기능 추가 — Honeywell, Siemens 등이 AI 최적화 모듈을 자체 플랫폼에 통합 시 경쟁우위 상실</li>
+<li>Key-person dependency — Dr. Dũng 1인에게 기술 및 신뢰성 의존, 팀 확장 전까지 scalability 제한</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">17</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">V-indoorCARE는 VinUniversity 연구 스핀오프로 물리학 기반 AI(PINN+CFD) 기술 차별성과 명확한 사회적 가치(에너지 절감 + 공기질 개선)를 보유하고 있으나, 핵심 가정인 '실험실 환경(129,000 데이터포인트)에서의 90% 예측 정확도가 실제 상업용 건물 운영 환경에서 검증 가능한 에너지 절감으로 재현된다'는 점이 아직 입증되지 않았다. 매출 이력 없음, paying customer 없음, 팀 구성 및 상업화 실행 역량 외부 검증 불가라는 Pre-seed 단계의 전형적 리스크를 안고 있다. 롯데와의 PoC는 구체적이고 실행 가능하나, 기술 검증에서 사업 검증으로의 전환 가능성이 최대 불확실성 요인이다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">7 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">17 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>V-indoorCARE · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

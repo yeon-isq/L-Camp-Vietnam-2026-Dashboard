@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PONYZO COMPANY LIMITED — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">PONYZO COMPANY LIMITED</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">HoChiMinh City, Viet Nam</span>
+          <span class="etag et-ind">Hospitality</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">PONYZO COMPANY LIMITED</div>
+        <div class="hero-sub">설립 2026 · https://ponyzo.com</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">PONYZO는 호텔과 리조트를 위한 자전거 전기화 및 배터리 교환 인프라 솔루션이다. 기존 자전거 자산을 교체하지 않고 전기 모빌리티 네트워크로 전환하며, 연 구독 SaaS와 하드웨어 판매로 수익을 창출한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          호텔이 기존 셔틀 운영 대신 자전거 전기화에 투자할 의향이 있으며, 투숙객이 실제로 e-bike를 선호한다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-fail">📄 IR Deck 읽기 실패</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$11,300</div><div class="kpi-desc">2026년 2월 출시 후 4개월간 전환 키트 60대 판매 (확인)</div></div>
+<div class="kpi"><div class="kpi-val">4개 딜러</div><div class="kpi-desc">초기 유통망 확보 (확인)</div></div>
+<div class="kpi"><div class="kpi-val">$200K-500K</div><div class="kpi-desc">Pre-seed 라운드 목표 (진행 중)</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[부분 확인] 베트남 호스피탈리티 시장 규모나 SAM/SOM 데이터가 전혀 제시되지 않음. 자전거 전기화 솔루션의 시장 수요를 뒷받침하는 고객 조사, 설문, 호텔 업계 니즈 검증 자료 없음. [미확인] "호텔들이 기존 셔틀 대신 e-bike 투자를 선호한다"는 핵심 가정에 대한 검증 부재. 경쟁사 분석 없음 (전기 자전거 대여, 공유 모빌리티 플랫폼 등). 확장 전략이 "파일럿 성공 후"라는 일반론에 그침.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[확인] 하드웨어 매출 $11.3K (4개월) 확인됨. 그러나 이는 B2C 전환 키트 판매이며, 호스피탈리티 B2B 모델과는 전혀 다름. [미확인] B2B SaaS 수익 모델이 "예정"일 뿐 검증 안 됨. 호텔 고객 없음, LOI 없음, 파일럿 계약 없음. 단위 경제 (호텔당 설치 비용, 월 구독료, 회수 기간) 전혀 제시 안 됨. [미확인] 투자 유치 이력 없음 - 현재 raising 단계지만 committed 금액 없음. 비즈니스 모델이 B2C 제품 판매에서 B2B 플릿 관리 SaaS로 전환하려는 피벗 단계로 보이나, B2B 모델 검증 제로 상태.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 기존 자전거 재활용을 통한 자원 절약 및 탄소 배출 감소 논리는 타당함. 그러나 정량적 임팩트 측정 방법론 (탄소 감축량 계산식, 자산 수명 연장 지표)이 제시되지 않음. [미확인] "셔틀 운영 감소"를 통한 배출 절감 주장은 호텔들이 실제로 셔틀을 줄일지에 대한 근거 부족. PoC를 통해 측정하겠다는 계획은 있으나 아직 검증 전. ESG 기여 방향성은 명확하나 규모·깊이·지속성에 대한 구체적 증거 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 배경 조사 결과, 두 창업자 모두 LinkedIn 프로필이나 공개 검증 가능한 경력 정보가 전혀 없음. 자체 보고된 "농업 IoT CTO", "AmpUp EV 개발자" 경력을 뒷받침할 제3자 증거, 추천인, 포트폴리오 부재. [심각한 Red Flag] PONYZO 웹사이트에도 팀 정보 없음 - 초기 스타트업에서 비정상적. 호스피탈리티 산업 경험 전무. 영업/BD, 운영, 재무 인력 없음 - 2명의 검증 불가 기술자만 존재. 투자 전 광범위한 배경 조사 필수. 현 상태에서는 팀 신뢰성에 심각한 의문.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[부분 확인] 롯데호텔/리조트 대상 PoC 제안은 호스피탈리티 영역과 부합함. 그러나 제안 내용이 지나치게 일반적 - "15-20대 자전거 전환, 배터리 스테이션 1개"는 어느 호텔에나 적용 가능한 범용 파일럿이며 롯데 특유의 인프라, 고객층, 운영 특성을 활용한 차별화된 설계 없음. [미확인] 롯데 측의 실제 협력 의향이나 사전 논의 내역 전혀 없음. PoC 실행을 위한 구체적 예산, 인력 배치, KPI 측정 방식 부재. "룸카드 연동" 등 기술 통합 실행 가능성도 검증 필요.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Hospitality/Hotel/Tourism, Smart City/PropTech</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">LOTTE Hotel, LOTTE Properties, LOTTE Engineering & Construction</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">3-6개월간 베트남 소재 롯데 호텔/리조트에서 배터리 교환 스테이션 1개소와 기존 자전거 15-20대를 전기 자전거로 전환. LoRa 기반 플릿 추적 및 호텔 룸카드 연동을 통해 배터리 관리 인건비 절감, 플릿 가동률, 투숙객 만족도를 측정.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Ponyzo contributes to ESG goals by extending the lifecycle of existing bicycle assets rather than requiring complete fleet replacement, reducing material waste and lowering the carbon footprint associated with manufacturing new vehicles.
+
+The platform also encourages low-emission mobility within hospitality environments, reducing reliance on motorized shuttle transportation for short-distance travel.
+
+Through the proposed PoC with LOTTE, we aim to quantify:
+
+- Carbon emissions avoided through bicycle electrification and reduced shuttle usage
+- Asset utilization improvements from smart fleet management
+- Reduction in operational labor associated with charging and fleet handling
+- Guest adoption of sustainable transportation alternatives
+
+The pilot would provide LOTTE with measurable sustainability data while supporting broader smart-property and ESG initiatives across its hospitality ecosystem.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">팀이 자체 보고한 배경(IoT 인프라, 농업 기술, EV 충전 관리)은 이론적으로 호스피탈리티 모빌리티 솔루션 구축에 관련성이 있으나, 공개적으로 검증 가능한 정보의 부재로 인해 실제 전문성을 확인할 수 없음. 호스피탈리티 산업 경험이 보고되지 않았으며, 팀 구성이 2명만 공개되어 영업, 운영, 호스피탈리티 도메인 전문성 등 핵심 기능의 공백이 우려됨</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">팀 구성이 불완전함. 2명의 기술 중심 창업자만 확인되었으며 다음 역할이 부족함: 호스피탈리티 산업 전문가, 영업/비즈니스 개발 리더, 운영 책임자, 재무 관리자. 검증 가능한 공개 프로필의 부재는 인재 채용, 파트너십 구축, 투자자 신뢰 확보에 심각한 도전 과제를 제시함</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">심각한 우려 사항: 두 창업자 모두 검증 가능한 LinkedIn 프로필이나 공개 전문 이력이 없음. 자체 보고된 경력 주장을 뒷받침할 제3자 검증, 추천인, 또는 공개 기록이 부재함. PONYZO 웹사이트(https://ponyzo.com)에 팀 정보가 없음. 이는 초기 단계 스타트업에서는 비정상적이며 투명성과 신뢰성에 대한 심각한 의문을 제기함. 실사 진행 전 직접적인 배경 확인이 필수적임</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 공백: (1) 창업자 경력에 대한 검증 가능한 증거 부재 - LinkedIn 프로필, 공개 포트폴리오, 또는 제3자 확인 자료 없음, (2) 호스피탈리티 산업 전문성 부족 - 기술 배경은 있으나 호텔, 리조트, 또는 게스트 서비스 운영 경험이 없음, (3) 불완전한 경영진 구성 - 비즈니스 개발, 영업, 운영, 재무 리더십 부재, (4) 공개 신뢰성 부족 - 전문 온라인 프레즌스, 이전 성과 증거, 또는 업계 인지도 없음. 투자 전 광범위한 배경 조사와 추천인 확인이 강력히 권장됨</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Thân Đức Nghĩa LinkedIn · Nghĩa Thân LinkedIn · Khôi Nguyễn LinkedIn · Nguyễn Khôi LinkedIn · Nghĩa Thân PONYZO · Thân Đức Nghĩa CTO agriculture IoT</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Thân Đức Nghĩa (Nghĩa Thân)</div><div class="member-role">Founder / CTO</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 공개된 LinkedIn 프로필을 찾을 수 없음</span><span class='flag-item'>⑊ 이전 고용주나 구체적인 회사명이 공개되지 않음</span><span class='flag-item'>⑊ 경력 주장을 뒷받침할 검증 가능한 공개 정보 부재</span><span class='flag-item'>⑊ PONYZO 웹사이트나 공개 자료에 팀 정보 없음</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>고급 기술 농업 회사 (미확인)</td><td>CTO</td><td>미상</td><td style="font-size:11px;">팀이 자체 보고한 바에 따르면 LoRa 기반 IoT 플랫폼을 개발했으며, 관개 시스템, 비료 자동화, 워크플로우 조정, 대규모 농장의 분산 센서 네트워크를 관리했다고 함</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 팀이 자체 보고한 경력이 사실이라면 IoT 인프라와 농업 기술 분야에서 관련 경험을 보유하고 있으나, 공개적으로 검증 가능한 정보가 없어 호스피탈리티 모빌리티 산업으로의 전환에 대한 직접적 연관성을 확인할 수 없음. LinkedIn 프로필을 찾을 수 없어 경력, 학력, 전문성을 독립적으로 검증할 수 없음</div><div class="ma-overall"><strong>종합 평가:</strong> 창업자의 배경을 독립적으로 검증할 수 없음. 자체 보고된 IoT 및 농업 기술 경험은 관련성이 있어 보이나 공개 기록, LinkedIn 프로필, 또는 제3자 검증이 없어 실사 목적으로는 우려스러움. 투자 전 직접적인 경력 확인과 추천인 확인이 필수적임</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Khôi Nguyễn</div><div class="member-role">Co-founder</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 확인 가능한 LinkedIn 프로필 없음 (AmpUp의 다른 Khoi Nguyen 발견되었으나 동일 인물 확인 불가)</span><span class='flag-item'>⑊ AmpUp 공개 자료에서 팀원으로 확인되지 않음</span><span class='flag-item'>⑊ 구체적인 직책이나 재직 기간 정보 없음</span><span class='flag-item'>⑊ 경력 주장을 뒷받침할 검증 가능한 정보 부재</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>AmpUp</td><td>Developer (역할 미상)</td><td>미상</td><td style="font-size:11px;">팀이 자체 보고한 바에 따르면 AmpUp에서 지능형 EV 충전 관리 솔루션을 개발하며 플릿 연결성, 충전 인프라, 에너지 관리, 기업 모빌리티 플랫폼에 대한 실무 경험을 쌓았다고 함. AmpUp의 한 Senior Technical Lead 'Khoi Nguyen'의 LinkedIn 프로필을 발견했으나 동일 인물인지 확인 불가</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 자체 보고된 AmpUp 경험이 사실이라면 EV 충전 인프라 및 플릿 관리 분야에서 직접적으로 관련된 경험을 보유하고 있으며 이는 호스피탈리티 모빌리티 솔루션에 적용 가능함. 그러나 공개 프로필이 없어 실제 역할, 기여도, 재직 기간을 확인할 수 없음. AmpUp 웹사이트나 공개 자료에서 이 이름의 직원을 확인할 수 없음</div><div class="ma-overall"><strong>종합 평가:</strong> 공동 창업자의 배경을 독립적으로 검증할 수 없음. AmpUp 경험 주장은 PONYZO의 비즈니스 모델과 매우 관련성이 높으나 공개 검증이 없어 우려스러움. 투자 결정 전 AmpUp에서의 실제 고용 여부, 역할, 재직 기간에 대한 직접 확인이 필수적임</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>창업자 배경 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] LinkedIn, 공개 경력, 제3자 추천 전무. 투자 전 직접 배경 조사 필수</td></tr>
+<tr><td>B2B 모델 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 호텔 고객 없음, LOI 없음, 단위 경제 부재. B2C→B2B 피벗의 실행 가능성 불명확</td></tr>
+<tr><td>호스피탈리티 도메인 경험 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 팀에 호텔 운영, 게스트 서비스 경험 전무. 고객 니즈 이해도 의문</td></tr>
+<tr><td>단일 제품 의존도</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] 하드웨어 판매에만 매출 집중. SaaS 수익 모델은 계획 단계</td></tr>
+<tr><td>시장 수요 가정 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 호텔들이 셔틀 대신 e-bike 투자를 선호한다는 핵심 가정에 대한 고객 검증 부재</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — 하드웨어 + SaaS 하이브리드 모델</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">비즈니스 모델 피벗의 실행 가능성</span><span class="dvtag dv-r">전환 검증 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 현재 B2C 전환 키트 판매($11.3K/4개월)에서 B2B 호스피탈리티 SaaS로의 전환은 완전히 다른 사업 모델임. 고객 획득 방식(개인 → 호텔 구매 담당), 판매 주기(즉시 구매 → 6-12개월 엔터프라이즈 영업), 가치 제안(개인 모빌리티 → ROI/ESG 보고서), 서비스 모델(일회성 판매 → 지속적 플릿 관리) 모두 상이함. [미확인] B2B 단위 경제 전혀 제시 안 됨 - 호텔당 초기 설치 비용, 월 구독료, CAC, 회수 기간, churn rate 예측 부재. [부분 확인] 하드웨어 개발 역량은 입증되었으나, SaaS 플랫폼 개발·운영 경험이나 호스피탈리티 B2B 영업 역량은 검증되지 않음. 피벗 실행을 위한 구체적 로드맵과 자원 계획 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">초기 고객 확보 및 시장 검증 전략</span><span class="dvtag dv-r">파이프라인 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 호스피탈리티 고객 파이프라인 전무 - LOI, MOU, 파일럿 논의 중인 호텔 제로. 롯데 PoC 제안은 일방적 아웃리치로 보이며 실제 협의 진행 증거 없음. [미확인] 호텔 의사결정자 접근 채널 불명확 - GM, 운영 이사, 구매 담당자 중 누구를 타겟하는지, 어떤 pain point로 접근하는지 전략 부재. [Red Flag] "파일럿 파트너 모집 중"이라는 현 상황은 시장 검증이 전혀 이루어지지 않았음을 의미. 일반적으로 B2B 하드웨어 SaaS는 최소 2-3개 디자인 파트너와 6개월 이상 공동 개발 필요. [미확인] 호텔 업계가 자전거 전기화에 실제 예산을 배정할 의향이 있는지, 셔틀 대체 가능성이 있는지에 대한 시장 조사 부재.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">기술 스택의 엔터프라이즈 준비도</span><span class="dvtag dv-a">개발 중</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] LoRa 기반 IoT 플랫폼 개발 중이나 MVP 단계로 상용 배포 검증 전. 호스피탈리티 환경의 특수성 - 넓은 부지에서의 LoRa 커버리지, 건물 내 신호 감쇠, 다수 자산 동시 추적, 실시간 배터리 상태 모니터링, 게스트 앱 연동 - 에 대한 실증 데이터 부재. [미확인] "룸카드 연동" 등 PMS(Property Management System) 통합 실행 가능성 불명확 - 대부분 호텔은 Opera, Mews 등 레거시 시스템 사용하며 API 연동에 긴 검증 과정 필요. [부분 확인] 창업자의 농업 IoT 경험은 관련성 있으나, 호스피탈리티 산업의 데이터 보안 요구사항(GDPR, PCI-DSS), uptime SLA(99.9%+), 다국어 지원 등 엔터프라이즈급 요건 충족 여부 미검증.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">하드웨어 공급망 및 유지보수 인프라</span><span class="dvtag dv-a">스케일 위험</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 60대 판매 및 4개 딜러 온보딩은 초기 견인력이나, B2B 플릿 배포(호텔당 15-20대 × 다수 사이트)로 확장 시 공급망 복잡도 급증. [미확인] 배터리 수급 전략 부재 - 대량 주문 시 조달 리드타임, 재고 관리, 결함률 대응 계획 없음. 호텔 배포 특성상 현장 설치·유지보수 인력 필요하나 서비스 네트워크 계획 전무. [미확인] 호텔이 베트남 전역에 분산될 경우 현장 대응 시간(4시간 이내 등) 보장 방안 불명확. [부분 확인] 모듈형 설계는 유지보수성 개선 가능하나, 호텔 환경에서의 내구성(염분, 습기, 집중 사용) 장기 테스트 부재. 확장 시 하드웨어 품질 일관성 유지 및 A/S 체계 구축 필수.</div></div>
+<div class="deep-category-label">Category E — 신생 시장·미검증 수요</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">베트남 호스피탈리티 시장의 e-mobility 니즈 검증</span><span class="dvtag dv-r">수요 근거 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 베트남 호텔·리조트가 게스트 모빌리티를 실제 pain point로 인식하는지 검증 부재. 많은 리조트가 이미 셔틀, 골프 카트, 무료 자전거를 운영 중이며, 전기화 필요성을 느끼는지 고객 인터뷰나 설문 결과 없음. [미확인] "셔틀 운영 감소"로 비용 절감 가능하다는 가정이 핵심인데, 호텔들이 실제로 셔틀을 줄일 의향이 있는지 불명확 - 게스트는 짐을 들고 이동하므로 자전거로 대체 불가능한 경우 많음. [Red Flag] SAM/SOM 추정 전무 - 베트남 내 몇 개 호텔이 타겟인지, 각 호텔의 연간 모빌리티 예산이 얼마인지 데이터 없음. [미확인] 경쟁 대안(전기 자전거 렌탈 업체와의 제휴, Grab/Be 연동 등) 대비 자체 플릿 운영의 우위 불명확.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">비용 대비 ROI 증명 가능성</span><span class="dvtag dv-r">가치 제안 모호</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 호텔 입장에서의 투자 회수 논리 부재. 초기 설치비(자전거 15-20대 전환 + 배터리 스테이션 + 소프트웨어) + 연간 구독료가 기존 셔틀 운영비나 무료 자전거 유지비보다 저렴한지 비교 분석 없음. [미확인] 게스트 만족도·체류 시간 증가·재방문율 향상 등 무형 가치의 정량화 방법론 부재. "ESG 보고서 개선"이 호텔 매출이나 브랜드 가치에 미치는 영향을 측정할 메트릭 없음. [부분 확인] 배터리 교환 인프라는 차별화 요소이나, 게스트가 실제로 사용할지(배터리 교환 번거로움), 호텔 스태프가 관리 부담을 감수할지 행동 가정 검증 필요. [미확인] PoC 후 "성공" 기준 불명확 - 이용률 몇 %면 성공인지, 비용 절감 목표가 무엇인지 KPI 미설정.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-3</span><span class="deep-title">시장 진입 타이밍 및 경쟁 환경</span><span class="dvtag dv-a">포지셔닝 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 글로벌 또는 베트남 내 유사 솔루션 경쟁사 분석 전무. 전기 자전거 공유 플랫폼(예: Beam, Neuron 등 마이크로모빌리티 업체)이나 호텔 전용 e-mobility 제공업체와의 차별점 제시 없음. [부분 확인] "기존 자산 재활용"은 장점이나, 많은 호텔이 자전거를 보유하지 않거나 노후화되어 전환 가치가 낮을 수 있음 - 타겟 호텔 세그먼트(고급 리조트 vs. 도심 비즈니스 호텔) 명확화 필요. [미확인] 시장 성숙도 - 베트남 호스피탈리티 업계의 디지털 전환 수준, ESG 우선순위, 신기술 도입 의지에 대한 산업 분석 부재. [미확인] 진입 장벽 - 대형 EV 충전 인프라 업체(ChargePoint, AmpUp 등)가 호스피탈리티로 확장할 경우 PONYZO의 방어 가능성 불명확.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[확인] 4개월간 하드웨어 60대 판매 및 4개 딜러 확보로 B2C 제품 상용화 능력 입증</li>
+<li>[확인] 모듈형 전환 키트 설계로 다양한 자전거 모델 적용 가능성 확보</li>
+<li>[부분 확인] 자전거 재활용을 통한 자원 절약 및 ESG 기여 논리는 타당</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] B2B 호스피탈리티 모델 전환에 대한 검증 제로 - 호텔 고객 없음, LOI 없음, 파일럿 계약 없음</li>
+<li>[미확인] 창업자 배경 공개 검증 불가 - LinkedIn 없음, 경력 확인 불가, 호스피탈리티 경험 전무</li>
+<li>[미확인] 영업/BD, 운영, 재무 인력 부재로 B2B 사업 실행 기반 취약</li>
+<li>[미확인] 단위 경제, 고객 확보 비용, 회수 기간 등 재무 모델 전혀 제시 안 됨</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 관광 산업 성장 및 친환경 모빌리티 수요 증가 가능성</li>
+<li>롯데 PoC 성공 시 아시아 호텔 체인으로 레퍼런스 확장 가능</li>
+<li>배터리 교환 인프라를 호텔 외 리조트, 테마파크로 확대 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>호텔들이 자체 e-bike 구매 또는 공유 모빌리티 제휴로 직접 해결 가능 - 플랫폼 중개 필요성 낮음</li>
+<li>전기 자전거 공유 플랫폼 (Lime, Grab 등)이 호텔 제휴로 동일 니즈 충족 가능</li>
+<li>B2C에서 B2B 피벗 실패 시 하드웨어 판매 사업으로 축소될 리스크</li>
+<li>팀 신뢰성 문제로 인한 투자자 및 파트너 유치 어려움</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">PONYZO는 자전거 전기화 하드웨어에서 B2C 견인력($11.3K/4개월)을 확보했으나, 호스피탈리티 B2B 플릿 관리 모델로의 전환은 완전히 미검증 상태다. 가장 큰 문제는 두 창업자 모두 공개 검증 가능한 경력 정보가 전무하며, 호스피탈리티 산업 경험이 없고, 영업/운영 인력 부재로 B2B 사업 실행 기반이 취약하다는 점이다. 롯데 PoC 제안은 범용적이며 롯데 특유 인프라 활용이 부족하고, 호텔들이 셔틀 대신 e-bike 투자를 선호한다는 핵심 가정이 검증되지 않았다. 투자 전 팀 배경 확인과 호텔 고객 니즈 검증이 필수적이다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>PONYZO COMPANY LIMITED · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

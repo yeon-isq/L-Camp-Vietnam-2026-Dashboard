@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gold Edu Co., Ltd. — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Gold Edu Co., Ltd.</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Hồ Chí Minh - Việt Nam</span>
+          <span class="etag et-ind">Prop-tech / EdTech</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Gold Edu Co., Ltd.</div>
+        <div class="hero-sub">설립 2026 · https://www.facebook.com/profile.php?id=61583569973981</div>
+        <span class="hero-stage">Idea</span>
+        <p class="hero-desc">Gold Edu(UXer)는 베트남 학생/학부모를 위한 가정교사 매칭 플랫폼이다. 학생들이 겪는 양질의 과외 교사 발굴 어려움을 해결하며, 수업당 10-15% 수수료 및 구독료로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          플랫폼 없이도 직접 거래가 일반적인 베트남 과외 시장에서 10-15% 수수료를 지불할 만큼의 차별화된 가치를 제공할 수 있다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">10</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">0원</div><div class="kpi-desc">2024-2025 실적 없음</div></div>
+<div class="kpi"><div class="kpi-val">베타 테스트</div><div class="kpi-desc">앱 출시 전 시험 단계</div></div>
+<div class="kpi"><div class="kpi-val">$50K</div><div class="kpi-desc">Seed 라운드 유치 목표</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 베트남 전체 2,500만 학생 중 70%가 과외 참여한다는 시장 규모 주장은 출처 없이 IR에만 기재됨. TAM만 제시되고 SAM/SOM 세분화 없음. 경쟁사(Akadon, Marathon Education, NativeX 등 자금력 있는 기존 플레이어) 대비 차별화 전략이 '데이터 기반 학생 평가'와 '개인화 학습 경로'로 제시되나 구체적 기술 구현 방식이나 독점 데이터 확보 경로가 없음. [미확인] 확장 가능성 근거 부족 — 1년 차 10,000명, 3년 차 200,000명 목표는 근거 없는 희망 수치.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 수익 모델(거래당 10-15% 수수료 + 구독료)은 명시되나 실제 거래 데이터, 시범 고객, 테스트 가격 검증 결과 없음. 매출 실적 0원. [미확인] 베트남 과외 시장은 전통적으로 직접 거래 관행이 강하며, 수수료 지불 의향에 대한 검증 부재. 투자 유치 내역 없음. 롯데벤처스 펀드 적합성 — Prop-tech 분류이나 실제 사업은 EdTech이며, 롯데 사업 영역(유통/건설/IT)과의 시너지가 불명확. PoC 제안이 '롯데마트 고객 접근'이나 왜 과외 플랫폼 사용자가 마트 채널에서 발굴되는지 논리 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 사회문제 정의는 명확 — 학부모의 신뢰할 수 있는 가정교사 발굴 어려움, 학생의 비효율적 과외 학습. 솔루션(투명한 교사 평가, 맞춤형 학습 경로)이 문제 해결에 기여할 가능성 있음. [미확인] 그러나 실제 임팩트 규모·깊이·지속성을 입증할 데이터 없음. 교사 소득 창출 기회 제공은 긍정적이나 플랫폼 수수료가 교사에게 부담이 될 가능성(기존 직거래 대비 수익 감소) 고려 필요. 사회적 가치 창출 의도는 있으나 검증 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 연구 결과에 따르면 창업자 Nguyen Van Xuan의 LinkedIn 프로필, 교육 배경, 경력 이력 전혀 확인 불가. Gold Edu Co., Ltd.의 공식 기업 등록 정보 미발견. 제공된 Facebook 페이지 접근 불가 또는 공개 색인 없음. UXer 플랫폼의 온라인 존재 증거 없음. 자가 보고된 '기술·UX 디자인·플랫폼 운영 핵심 역량'은 검증 불가. EdTech 도메인 전문성 증거 부재. 팀 구성 불명확 — 단 1명 창업자만 언급되고 공동 창업자, 기술 리더, 운영 전문가 정보 없음. 베트남 EdTech 경쟁 시장($400M+ 투자, 2023)에서 검증된 팀 없이 경쟁 불가능. 실사 필수 — 대면 미팅, 법인 등록 서류, 제품 데모, 팀 증명서 요구.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[미확인] 주요 사업분야 연계성 낮음 — 'Prop-tech'로 분류되나 실제는 EdTech. 롯데 유통/건설/IT 영역과의 직접 연결성 불명확. PoC 제안이 매우 일반적 — '롯데마트/몰에서 학부모 고객 접근'은 단순 마케팅 채널 활용에 불과하며, 롯데 특정 인프라(고객 데이터, 물류, 결제 시스템 등) 활용 방안 없음. 왜 과외 플랫폼 사용자가 오프라인 유통 채널에서 효과적으로 확보되는지 논리 부족. 연계 가능 계열사 미지정. 협력 실행 가능성 낮음 — 제품 미출시 상태에서 PoC 가치 제안 불명확.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 2</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">10</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통/커머스(롯데백화점, 롯데마트 등), 스마트시티/프롭테크(롯데건설), AI/IT(롯데이노베이트)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미지정</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데마트/롯데몰 매장 및 내부 고객 채널을 통해 학생-가정교사 매칭 플랫폼 시범 운영. 3-6개월간 사용자 확보, 예약-수업 완료율 측정, EdTech 모델 확장 가능성 검증 목표. 롯데는 고객 접근 채널 및 시범 장소 제공, Gold Edu는 플랫폼 기술 및 운영 담당.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">UXer tạo tác động xã hội bằng cách giúp học viên tiếp cận gia sư phù hợp, linh hoạt và minh bạch hơn, đặc biệt với các nhóm có nhu cầu học cá nhân hóa nhưng khó tìm được người dạy đáng tin cậy. Nền tảng cũng tạo thêm cơ hội việc làm và thu nhập cho sinh viên, giáo viên tự do và gia sư cá nhân thông qua quy trình kết nối, đặt lịch và quản lý lớp học rõ ràng.
+Về quản trị, UXer hướng tới mô hình vận hành minh bạch với thông tin gia sư, lịch học, học phí, đánh giá và giao dịch được quản lý trên nền tảng số. Hợp tác PoC với LOTTE có thể giúp mở rộng tác động này thông qua hệ sinh thái khách hàng và kênh truyền thông của LOTTE, từ đó tiếp cận nhiều học viên/phụ huynh hơn, thu thập phản hồi thực tế và xây dựng mô hình EdTech có khả năng mở rộng, an toàn và có trách nhiệm.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">평가 불가. 팀 구성원 정보가 전혀 확인되지 않아 도메인 전문성, 기술 역량, 또는 EdTech/가정교사 매칭 플랫폼 운영에 필요한 역량을 평가할 수 없습니다. 자체 보고된 'UXer 팀의 핵심 역량'(기술, UX 디자인, 플랫폼 운영, 개인화된 학습 요구 이해)은 검증되지 않았습니다.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">평가 불가. 단 한 명의 창업자만 식별되었으며, 그에 대한 검증 가능한 정보도 없습니다. 완전한 스타트업 팀은 일반적으로 기술 공동 창업자, 제품/UX 리더, 비즈니스 개발 또는 운영 전문가를 포함합니다. 베트남의 EdTech 시장(2024년 ~10억 달러, 2029년까지 CAGR 11-13%)은 경쟁이 치열하며, Akadon, Marathon Education, NativeX 등 자금이 풍부하고 경험 많은 팀들이 경쟁하고 있습니다. 검증된 팀이 없으면 이 회사가 경쟁할 수 있는 능력에 심각한 의문이 제기됩니다.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">매우 낮음 [Unverified]. 온라인에서 회사 또는 창업자에 대한 검증 가능한 증거를 찾을 수 없었습니다. 표준 실사 절차(LinkedIn 검색, 회사 등록 확인, 뉴스 검색, 제품 확인)에서 모두 결과가 나오지 않았습니다. 제공된 Facebook 페이지 링크는 접근이 불가능하거나 공개적으로 색인되지 않았습니다. 이는 심각한 신뢰성 문제를 나타냅니다.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">근본적인 검증 가능성의 부재. 가장 큰 격차는 특정 기술 또는 비즈니스 역량이 아니라, 창업자, 팀, 또는 회사 자체의 실체에 대한 기본적인 검증 가능한 증거가 전혀 없다는 것입니다. 투자 고려 전에 다음이 필수적입니다: (1) 대면 미팅 및 신원 확인, (2) 법적 회사 등록 서류, (3) 작동하는 제품 데모, (4) 고객 또는 파일럿 파트너의 추천서, (5) 팀 구성원의 교육 및 경력 증명서. 베트nam의 활발한 EdTech 시장($400M+ 투자, 2023)을 고려할 때, 합법적인 스타트업은 일반적으로 일부 공개 발자취를 가지고 있습니다.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Nguyễn Văn Xuân LinkedIn · Nguyễn Văn Xuân Gold Edu · Gold Edu Co Ltd Vietnam founder · "Gold Edu" UXer Vietnam tutor platform · UXer Vietnam tutoring platform founders · Nguyen Van Xuan founder LinkedIn Vietnam</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Nguyễn Văn Xuân</div><div class="member-role">Founder</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 공개적으로 확인 가능한 LinkedIn 프로필이 없음</span><span class='flag-item'>⑊ 교육 배경 정보 부재</span><span class='flag-item'>⑊ 이전 직장 경력 검증 불가</span><span class='flag-item'>⑊ Gold Edu Co., Ltd.에 대한 공식 기업 등록 정보 미확인</span><span class='flag-item'>⑊ 제공된 Facebook 페이지 ID가 검색 결과에 나타나지 않음</span><span class='flag-item'>⑊ UXer 플랫폼에 대한 온라인 존재감 또는 제품 증거 없음</span><span class='flag-item'>⑊ EdTech 또는 Prop-tech 산업에서의 이전 경험 증거 없음</span><span class='flag-item'>⑊ 팀 구성원 또는 공동 창업자에 대한 정보 없음</span></div><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 검색 결과에서 창업자의 배경 정보를 전혀 확인할 수 없었습니다. LinkedIn 프로필, 교육 이력, 업무 경험, 또는 EdTech/Prop-tech 분야에서의 전문성을 입증할 수 있는 공개 정보가 존재하지 않습니다. 베트남에는 동일한 이름을 가진 여러 명의 Nguyen Van Xuan이 있으나 Gold Edu와 연결된 사람을 특정할 수 없었습니다.</div><div class="ma-overall"><strong>종합 평가:</strong> 매우 높은 위험. 창업자에 대한 검증 가능한 정보가 전혀 없으며, 회사 자체의 실체도 확인할 수 없습니다. 일반적으로 합법적인 스타트업 창업자는 LinkedIn 프로필, 회사 웹사이트, 제품 데모, 언론 보도, 또는 최소한 검색 가능한 디지털 발자취를 가지고 있습니다. 이 경우 어떤 것도 발견되지 않았으며, 이는 회사가 매우 초기 단계이거나, 존재하지 않거나, 의도적으로 온라인 존재감을 숨기고 있을 가능성을 시사합니다. 투자 전 직접 대면 실사와 법적 서류 검증이 필수적입니다.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>창업자 및 팀 실체 미확인</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] LinkedIn, 회사 등록, 온라인 제품 증거 전무. 투자 전 대면 실사 및 법인 서류 확인 필수</td></tr>
+<tr><td>시장 검증 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 수수료 지불 의향, 고객 확보 비용, 유지율 등 핵심 단위 경제 미검증</td></tr>
+<tr><td>제품 미완성</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 베타 테스트 단계로 작동 제품 없음. 기술 구현 능력 불명</td></tr>
+<tr><td>롯데 PoC 적합성 낮음</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] PoC 제안이 일반적 마케팅 채널 활용에 그침. 롯데 인프라 특정 활용 방안 없음</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — 마켓플레이스 / 플랫폼</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">공급자(교사) 확보 전략과 품질 관리 체계</span><span class="dvtag dv-r">핵심 전략 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 베트남 과외 시장은 직거래 관행이 강한 전통 시장이며, 교사들이 10-15% 수수료를 지불하며 플랫폼으로 이동할 유인이 불명확합니다. IR 자료에서 교사 모집 전략, 초기 공급자 확보 계획, 품질 검증 프로세스가 전혀 제시되지 않았습니다. [미확인] 경쟁사(Akadon, Marathon Education)는 이미 대규모 교사 풀을 확보한 상태이며, 후발주자가 차별화된 공급자 확보 전략 없이 양면 시장을 구축하기는 극히 어렵습니다. [미확인] 교사 평가·인증 시스템, 분쟁 해결 메커니즘 등 신뢰 구축 장치가 부재하여 플랫폼 가치 제안이 불완전합니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">수요자(학생/학부모) 획득 비용과 단위경제학</span><span class="dvtag dv-r">경제성 검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 베트남 EdTech 시장의 평균 CAC(고객획득비용)는 $30-50 수준이나, Gold Edu의 고객 획득 전략과 예상 비용이 전혀 제시되지 않았습니다. [미확인] 거래당 10-15% 수수료 모델에서 평균 거래액(AOV), 재구매율, LTV 추정이 없어 단위경제학 검증 불가능합니다. [미확인] 제안된 PoC가 '롯데마트 고객 접근'인데, 오프라인 유통 채널이 EdTech 서비스 획득 채널로 효과적인지에 대한 근거가 전무합니다. 일반적으로 교육 서비스는 온라인 마케팅, 학교 네트워크, 커뮤니티 기반 확산이 효과적이며, 마트 접점이 유의미한 전환을 만들 가능성은 매우 낮습니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">플랫폼 냉시동 문제(Cold Start Problem) 해결 방안</span><span class="dvtag dv-r">해결 전략 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 양면 시장 플랫폼의 가장 큰 난제인 초기 공급-수요 균형 확보 전략이 IR에서 완전히 누락되었습니다. 교사가 없으면 학생이 오지 않고, 학생이 없으면 교사가 참여하지 않는 순환 문제를 어떻게 돌파할지 구체적 계획이 없습니다. [미확인] 경쟁사들은 초기에 자체 콘텐츠 제공, 대규모 마케팅 투자, 특정 지역/과목 집중 등의 전략을 사용했으나, Gold Edu는 이러한 전략적 선택이 보이지 않습니다. [미확인] '1년 차 10,000명 사용자' 목표는 냉시동 해결 없이 달성 불가능한 희망 수치입니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-7</span><span class="deep-title">신뢰·안전·지불 인프라 구축 수준</span><span class="dvtag dv-r">핵심 인프라 미확인</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 교육 플랫폼의 핵심인 신원 검증, 배경 조회, 보험, 에스크로 결제, 환불 정책 등 신뢰 인프라가 IR에서 전혀 언급되지 않았습니다. 베트남에서 가정교사-학생 간 직접 만남이 이루어지는 만큼 안전 장치가 필수이나, 이에 대한 고려가 부재합니다. [미확인] 베트남 결제 환경(은행 계좌 보급률 31%, 모바일 지갑 선호)에서 수수료 징수 및 교사 정산 시스템을 어떻게 구축할지 불명확합니다. [미확인] 경쟁사들은 이미 VNPay, MoMo 등 현지 결제 인프라와 통합되어 있으며, 후발주자가 이를 단기간에 구축하기는 자원 제약이 큽니다.</div></div>
+<div class="deep-category-label">Category D — 팀·실행력 검증</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업자 및 팀 실존 여부와 경력 검증</span><span class="dvtag dv-r">실사 불가 상태</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 독립 팀 리서치 결과, 창업자 Nguyen Van Xuan의 LinkedIn, Facebook, 베트남 기업 등록 DB(Business Registration Certificate) 어디에서도 확인되지 않았습니다. 제공된 Facebook 페이지는 비공개이거나 실제 사업 활동 흔적이 없습니다. [미확인] UXer 제품의 온라인 존재(웹사이트, 앱스토어, 사용자 리뷰, 언론 보도)가 전혀 발견되지 않아 실제 개발 여부 확인 불가입니다. [미확인] 'EdTech 도메인 전문성'을 주장하나, 창업자의 교육 배경, 이전 프로젝트, 기술 역량을 입증할 어떠한 증거도 없습니다. 투자 실사 진행 시 대면 미팅, 법인 등록증, 제품 데모, 팀원 신원 확인이 필수입니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">기술 개발 및 제품 실행 능력</span><span class="dvtag dv-r">실행 증거 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] IR에서 '데이터 기반 학생 평가', '개인화 학습 경로', 'AI 기반 교사 매칭' 등 기술 기능을 언급하나, 실제 개발 현황(GitHub, 기술 스택, MVP 스크린샷)이 전혀 제시되지 않았습니다. [미확인] 제품이 '테스트 단계'라고 하나, 테스트 사용자 수, 피드백 데이터, 기능 완성도 등 구체적 증거가 없습니다. [미확인] 베트남 스타트업 생태계에서 $400M+ 투자가 집중된 EdTech 경쟁 시장에서, 검증된 기술팀 없이 AI 기반 플랫폼을 구축한다는 것은 현실성이 낮습니다. CTO급 기술 리더의 존재 여부조차 불명확합니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">시장 이해도와 현지 실행 경험</span><span class="dvtag dv-r">도메인 전문성 미확인</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 베트남 교육 시장의 특수성(부모의 교육열 높으나 플랫폼 신뢰도 낮음, 현금 거래 선호, 개인정보 민감도 높음)에 대한 이해가 IR에서 드러나지 않습니다. [미확인] 경쟁사 분석이 표면적이며(Akadon, Marathon Education의 실제 강점, 시장 점유율, 차별화 전략에 대한 깊은 분석 없음), 왜 후발주자가 승리할 수 있는지 논리가 부족합니다. [미확인] 베트남에서 EdTech 사업 경험이 있는 팀원, 현지 네트워크, 파트너십 등 실행력을 뒷받침할 자산이 전혀 확인되지 않습니다. 창업자가 실제 호치민에 거주하며 사업을 운영 중인지조차 불명확합니다.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>명확한 사회문제 정의 — 학부모의 신뢰할 가정교사 발굴 어려움은 실재하는 pain point</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] 창업자 및 팀 배경 전혀 검증 불가 — LinkedIn, 회사 등록, 제품 증거 없음</li>
+<li>[미확인] 수수료 지불 의향 미검증 — 베트남 과외 시장의 직거래 관행 고려 시 10-15% 수수료 수용 여부 불명</li>
+<li>매출 0원, 제품 베타 단계로 시장 검증 전무</li>
+<li>경쟁사 대비 명확한 기술적/운영적 차별화 없음 — '데이터 기반 평가'의 구체적 구현 방식 부재</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 교육 시장 성장세 — EdTech 시장 CAGR 11-13% 예상(2024-2029)</li>
+<li>디지털 결제 및 모바일 앱 사용 증가로 온라인 과외 매칭 수용도 상승 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>강력한 기존 경쟁사(Akadon, Marathon Education, NativeX) — 자금력 및 시장 점유율 우위</li>
+<li>직거래 문화 — 플랫폼 없이 학부모-교사 직접 연결 선호로 수수료 모델 저항 가능성</li>
+<li>팀 검증 불가로 인한 실행 리스크 — 제품 개발 및 시장 진입 능력 의문</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">10</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Gold Edu는 베트남 과외 시장 문제를 다루는 EdTech 플랫폼이나, 가장 큰 미검증 가정은 직거래 관행이 강한 시장에서 10-15% 수수료 지불 의향이다. 창업자 및 팀의 배경이 전혀 검증되지 않았고(LinkedIn 미발견, 회사 등록 정보 부재, 제품 온라인 존재 없음), 매출 0원에 제품도 베타 단계로 Idea 스테이지에 해당한다. PoC 제안은 롯데 유통 채널 활용에 그치며 롯데 특정 인프라 연계성이 없어 협력 가치가 불명확하다. 투자 전 창업자 신원 확인, 법인 서류, 작동 제품 데모가 필수적이다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">2 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">10 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Gold Edu Co., Ltd. · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

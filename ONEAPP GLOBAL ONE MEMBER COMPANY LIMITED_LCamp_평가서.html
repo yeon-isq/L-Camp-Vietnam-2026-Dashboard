@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ONEAPP GLOBAL ONE MEMBER COMPANY LIMITED — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">ONEAPP GLOBAL ONE MEMBER COMPANY LIMITED</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Đà Nẵng - Việt Nam</span>
+          <span class="etag et-ind">AI</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">ONEAPP GLOBAL ONE MEMBER COMPANY LIMITED</div>
+        <div class="hero-sub">설립 2018 · https://onigroup.vn/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">ONEAPP GLOBAL은 LGBTQ+ 커뮤니티를 위한 데이팅 및 소셜 네트워킹 앱 'Lover Dating'을 제공한다. LGBTQ+ 사용자들이 겪는 안전한 만남 공간 부족 문제를 해결하며, 구체적인 수익 모델은 명시되지 않았다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          10만 사용자가 실제 활성 유저이며 유료 전환 또는 광고 수익으로 이어진다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-fail">📄 IR Deck 읽기 실패</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">10만</div><div class="kpi-desc">총 사용자 수 (활성도 미검증)</div></div>
+<div class="kpi"><div class="kpi-val">2018</div><div class="kpi-desc">7년차 운영 (2018년 설립)</div></div>
+<div class="kpi"><div class="kpi-val">있음</div><div class="kpi-desc">구체적 금액 미공개</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">LGBTQ+ 데이팅 시장은 존재하나 베트남 시장 규모, 경쟁 현황, TAM/SAM/SOM 분석이 전혀 제시되지 않음 [미확인]. 글로벌 LGBTQ+ 데이팅 앱 시장은 Grindr, Blued 등 강력한 경쟁자가 존재하며, Lover Dating만의 차별화 전략이나 시장 포지셔닝이 불명확함 [미확인]. 베트남은 LGBTQ+ 권리에 대한 사회적 수용도가 제한적이며, 사용자 10만 명의 지역 분포, 활성도, 시장 침투율에 대한 근거가 없음 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">수익 모델이 전혀 명시되지 않음 [미확인]. 'Has Revenue: Yes'로 표기되었으나 2024/2025/2026 매출액 필드가 모두 공백이며, 구독형인지 광고형인지 수수료형인지 불명확함 [미확인]. 투자 유치 여부, 기존 투자자, 목표 투자 금액 모두 미공개 [미확인]. 사용자 10만 명 주장에 대한 검증 불가 (MAU/DAU, 유료 전환율, ARPU 등 핵심 지표 부재) [미확인]. 롯데벤처스 펀드 투자 적합성을 판단할 근거 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">LGBTQ+ 커뮤니티의 안전한 만남 및 관계 형성 공간 부족이라는 사회문제는 명확히 정의됨 [확인]. 그러나 솔루션이 이 문제를 어떻게 해결하는지에 대한 구체적 기능, 안전 장치, 커뮤니티 관리 정책 등이 설명되지 않음 [미확인]. ESG Impact 필드가 'No'로 표기되어 사회적 가치 창출 의지가 불명확하며, 임팩트 측정 방법론이나 실제 성과 지표가 제시되지 않음 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 리서치 결과, CEO Huỳnh Ngọc Hiệp의 모바일 앱 개발 기초 경력은 확인되나 (2015년 App Store 앱 출시) [부분 확인], 교육 배경 및 이전 경력에 대한 공개 정보가 전무함 [미확인]. 신청서에서 주장한 'growth marketing, SEO, performance advertising, data-driven optimization' 전문성에 대한 검증 불가 [미확인]. 공동창업자, CTO, 기술팀 구성원에 대한 정보가 전혀 없으며 [미확인], AI/IT 섹터 기업임에도 AI 전문 인력 보유 여부 불명 [미확인]. 핵심 인력 의존도 리스크 매우 높음. 리서치 결과 '신뢰도 낮음-중간, 투명성 극히 제한적'으로 평가됨.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">제안된 PoC 아이디어가 '100만 사용자 확보'로만 기술되어 있어 롯데 계열사와의 구체적 협력 방안이 전혀 없음 [미확인]. Smart City/PropTech (롯데건설) 및 AI/IT (롯데이노베이트) 영역 선택의 근거 불명확 — 데이팅 앱과 건설/부동산 또는 AI 인프라 간 연계성이 설명되지 않음 [미확인]. Motivation이 'Joint commercialization linkage with LOTTE Group affiliates'로 되어 있으나 어떤 계열사의 어떤 자산/데이터/인프라를 활용할지 구체성 전무 [미확인]. 현재 형태로는 롯데 PoC 적합성 판단 불가.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 2 + E 2</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Smart City/PropTech(롯데건설), AI/IT(롯데이노베이트)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미명시</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">100만 사용자 확보</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">No</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">Phạm vi chuyên môn của đội ngũ không được xác minh đầy đủ. Mặc dù công ty tuyên bố có kinh nghiệm trong phát triển ứng dụng di động, growth marketing, SEO, performance advertising và tối ưu hóa sản phẩm dựa trên dữ liệu, nhưng chỉ có bằng chứng công khai về phát triển ứng dụng cơ bản. Thiếu thông tin về các thành viên khác trong đội ngũ sáng lập và chuyên môn cụ thể của họ trong AI, data science, hoặc các lĩnh vực kỹ thuật chuyên sâu.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">Không đầy đủ - chỉ xác định được một người sáng lập chính. Không có thông tin công khai về CTO, Head of AI, Head of Marketing, Head of Product, hoặc các vị trí lãnh đạo kỹ thuật/kinh doanh khác. Đối với một công ty công nghệ AI tuyên bố xây dựng và mở rộng quy mô ứng dụng người tiêu dùng, việc thiếu đội ngũ lãnh đạo đa dạng và công khai là một rủi ro đáng kể.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">Mức độ tin cậy thấp đến trung bình. Công ty tồn tại và có sản phẩm thực tế trên App Store, cho thấy năng lực thực hiện cơ bản. Tuy nhiên, mức độ minh bạch công khai cực kỳ hạn chế. Không có hồ sơ về funding, không có thông tin về advisory board, không có số liệu người dùng được xác minh, và không có bài viết báo chí hoặc sự công nhận từ bên thứ ba. Website thiếu nội dung chuyên sâu về công nghệ hoặc case studies. Cần thẩm định trực tiếp và xác minh tài liệu pháp lý để đánh giá đầy đủ.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">Thiếu minh bạch nghiêm trọng về đội ngũ sáng lập và năng lực kỹ thuật. Các khoảng trống quan trọng nhất bao gồm: (1) Không có thông tin về nền tảng giáo dục và kinh nghiệm chuyên môn được xác minh của CEO, (2) Không xác định được các đồng sáng lập hoặc thành viên đội ngũ lãnh đạo khác, (3) Thiếu bằng chứng về chuyên môn AI mặc dù công ty tự định vị trong ngành AI, (4) Không có track record về việc mở rộng quy mô ứng dụng hoặc đạt được các chỉ số tăng trưởng đáng kể, (5) Không có thông tin về cơ cấu vốn, nhà đầu tư, hoặc cố vấn. Những khoảng trống này tạo ra rủi ro đáng kể cho nhà đầu tư tiềm năng.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Huỳnh Ngọc Hiệp LinkedIn · ONEAPP GLOBAL ONE MEMBER COMPANY LIMITED Huỳnh Ngọc Hiệp · onigroup.vn founding team · "Huỳnh Ngọc Hiệp" ONEAPP CEO · ONEAPP GLOBAL Vietnam team members · onigroup.vn team leadership Vietnam</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Huỳnh Ngọc Hiệp</div><div class="member-role">Giám Đốc (CEO)</div></div>
+    <div class="member-meta"><a href="https://vn.linkedin.com/in/hiephuynhngoc" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ Thiếu thông tin công khai về nền tảng giáo dục và bằng cấp</span><span class='flag-item'>⑊ LinkedIn profile không thể truy cập chi tiết (chỉ hiển thị tiêu đề)</span><span class='flag-item'>⑊ Không có thông tin xác minh về kinh nghiệm làm việc trước đây</span><span class='flag-item'>⑊ Website onigroup.vn cung cấp thông tin rất hạn chế về đội ngũ sáng lập</span><span class='flag-item'>⑊ Không tìm thấy thông tin về các startup trước đây hoặc thành tích kinh doanh đáng chú ý</span><span class='flag-item'>⑊ Thiếu minh bạch về quy mô công ty, nguồn vốn, hoặc số liệu người dùng</span><span class='flag-item'>⑊ Sự nhầm lẫn tiềm năng giữa OniGroup Vietnam (công ty nhỏ tại Đà Nẵng) và OniGroup Global (Google Premier Partner có trụ sở tại Australia với văn phòng toàn cầu) - đây là hai tổ chức hoàn toàn khác nhau</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>OneApp Global Company Limited</td><td>CEO</td><td>Unknown</td><td style="font-size:11px;">Được xác định qua LinkedIn profile và danh sách ứng dụng trên App Store. Công ty phát triển ứng dụng di động.</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> Có bằng chứng về kinh nghiệm phát triển ứng dụng di động qua các sản phẩm đã xuất bản trên App Store từ năm 2015. Tuy nhiên, thiếu thông tin chi tiết về nền tảng giáo dục, kinh nghiệm cụ thể trong AI, growth marketing, hoặc các lĩnh vực chuyên môn khác mà công ty tuyên bố. Không có bằng chứng công khai về chuyên môn SEO, performance advertising, hoặc tối ưu hóa sản phẩm dựa trên dữ liệu.</div><div class="ma-overall"><strong>종합 평가:</strong> Người sáng lập có kinh nghiệm cơ bản trong phát triển ứng dụng di động được chứng minh qua các sản phẩm đã xuất bản. Tuy nhiên, mức độ minh bạch rất thấp và thiếu bằng chứng xác thực về năng lực chuyên môn sâu trong các lĩnh vực then chốt mà công ty tuyên bố (AI, growth marketing, SEO, performance advertising, data analytics). Không có hồ sơ công khai về thành tích khởi nghiệp trước đây, quy mô tăng trưởng người dùng, hoặc vòng gọi vốn. Cần thẩm định sâu hơn để xác minh năng lực thực tế và track record.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>사용자 수 및 매출 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 10만 사용자 주장 및 매출 존재 표기에 대한 구체적 증빙 자료 부재. 실제 활성 사용자 규모, 유료 전환율, 매출액 불명.</td></tr>
+<tr><td>팀 역량 및 투명성</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] CEO 외 팀 구성원 정보 전무. 교육 배경, 이전 경력, AI/마케팅 전문성 검증 불가. 핵심 인력 의존도 매우 높음.</td></tr>
+<tr><td>수익 모델 미확립</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 구독/광고/수수료 등 수익 구조가 전혀 설명되지 않음. 단위경제 및 수익성 경로 불명확.</td></tr>
+<tr><td>롯데 PoC 실행 가능성</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 제안된 PoC가 '100만 사용자 확보'로만 기술되어 있어 롯데 계열사 연계 방식, 필요 자원, 기대 성과 등 구체성 전무.</td></tr>
+<tr><td>시장 경쟁력</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 글로벌 선도 앱 대비 차별화 전략, 기술적 우위, 현지화 역량에 대한 근거 부족.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — 플랫폼/마켓플레이스 (Consumer App)</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">수익 모델의 현실성</span><span class="dvtag dv-r">수익 모델 미공개, 검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">'Has Revenue: Yes'로 표기되었으나 2024/2025/2026 매출액 필드가 모두 공백이며, 구체적 수익 모델(구독/광고/수수료)이 전혀 명시되지 않음 [미확인]. LGBTQ+ 데이팅 앱 시장의 주요 수익 모델인 프리미엄 구독, 부스트 기능, 광고 중 어떤 방식을 채택했는지 불명확함 [미확인]. 사용자 10만 명 주장에 대한 MAU/DAU, 유료 전환율, ARPU 등 핵심 지표가 전혀 제시되지 않아 실제 수익 창출 능력 검증 불가 [미확인]. 경쟁사 대비 수익성 벤치마크 부재로 투자 적합성 판단 근거 없음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">사용자 확보 및 성장 전략</span><span class="dvtag dv-r">사용자 수 근거 없음, 성장 계획 미흡</span><span class="deep-arrow">▾</span></div><div class="deep-body">10만 사용자 주장에 대한 검증 가능한 근거가 전혀 제시되지 않음 [미확인]. 제안된 PoC가 '100만 사용자 확보'로만 기술되어 있어 구체적 획득 채널, 마케팅 전략, CAC/LTV 분석이 부재함 [미확인]. 베트남 LGBTQ+ 커뮤니티의 사회적 제약을 고려할 때 사용자 신뢰 구축 및 네트워크 효과 창출 방안이 설명되지 않음 [미확인]. Grindr, Blued 등 글로벌 경쟁자 대비 차별화된 사용자 획득 전략 없이 10배 성장 목표는 비현실적임.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">제품 차별화 및 경쟁력</span><span class="dvtag dv-r">차별화 요소 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">'안전하고 포용적인 커뮤니티'라는 일반적 가치 제안만 제시되었을 뿐, 구체적인 안전 장치, 검증 시스템, 커뮤니티 관리 정책이 전혀 설명되지 않음 [미확인]. 기존 LGBTQ+ 데이팅 앱들이 이미 제공하는 기능(매칭 알고리즘, 프로필 검증, 신고 시스템) 대비 기술적/경험적 차별화 요소 부재 [미확인]. AI/IT 섹터로 분류되었으나 AI 기술 활용 방안(개인화 추천, 안전성 모니터링 등)에 대한 언급 전무 [미확인]. IR Deck 텍스트 추출 불가로 추가 제품 정보 확인 불가능.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-8</span><span class="deep-title">Unit Economics 및 확장성</span><span class="dvtag dv-r">핵심 지표 전무, 확장성 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">CAC, LTV, Churn Rate, ARPU 등 플랫폼 비즈니스의 핵심 Unit Economics 지표가 전혀 제시되지 않음 [미확인]. 베트남에서 10만 사용자를 확보했다는 주장의 지역별 분포, 활성도, 리텐션율에 대한 데이터 부재로 실제 시장 침투력 검증 불가 [미확인]. 글로벌 확장 계획이나 다른 동남아시아 시장 진출 전략 없이 100만 사용자 목표는 베트남 시장만으로 달성 가능 여부 의문 [미확인]. 현재 정보로는 지속 가능한 성장 모델 판단 불가능.</div></div>
+<div class="deep-category-label">Category D — 팀 역량 (Founding Team)</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업자 역량 및 경험</span><span class="dvtag dv-a">기초 앱 개발 경력만 확인, 전문성 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">CEO Huỳnh Ngọc Hiệp의 2015년 App Store 앱(Truyện Ngắn) 출시 경력을 통해 기본적인 모바일 앱 개발 경험은 확인됨 [부분 확인]. 그러나 신청서에서 주장한 'growth marketing, SEO, performance advertising, data-driven optimization' 전문성에 대한 구체적 근거나 성과 지표가 전혀 제시되지 않음 [미확인]. LinkedIn 프로필에 교육 배경 및 이전 경력 정보가 없어 데이팅 앱 운영, LGBTQ+ 커뮤니티 이해, 사용자 안전 관리 등 핵심 도메인 전문성 검증 불가 [미확인]. 리서치 결과 '도메인 관련성 중간, 신뢰도 낮음-중간'으로 평가됨.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">팀 구성 및 완결성</span><span class="dvtag dv-r">팀 구성 정보 전무, 원맨팀 리스크</span><span class="deep-arrow">▾</span></div><div class="deep-body">공동창업자, CTO, 개발팀, 마케팅팀 등 핵심 조직 구성원에 대한 정보가 전혀 제시되지 않음 [미확인]. AI/IT 섹터 기업으로 분류되었으나 AI/ML 전문 인력, 데이터 사이언티스트, 보안 전문가 보유 여부 불명 [미확인]. LGBTQ+ 커뮤니티 안전 관리를 위한 커뮤니티 매니저, 정책 전문가, 법률 자문 등 필수 인력 구성 언급 없음 [미확인]. 사용자 10만 명 플랫폼을 운영하기 위한 최소 팀 규모 및 역량이 갖춰지지 않은 것으로 보이며, CEO 1인 의존도가 극히 높아 지속가능성 리스크 매우 큼.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-4</span><span class="deep-title">투명성 및 신뢰성</span><span class="dvtag dv-r">정보 투명성 극히 제한적</span><span class="deep-arrow">▾</span></div><div class="deep-body">팀 리서치 결과 '투명성 극히 제한적'으로 평가되었으며, 공개 정보가 CEO 이름과 기초 앱 개발 경력에 국한됨 [확인]. 회사 등록 정보, 세금 ID, 법인 구조에 대한 공개 정보가 전혀 없어 법적 실체 검증 어려움 [미확인]. 웹사이트(onigroup.vn)와 회사명(ONEAPP GLOBAL) 간 불일치, IR Deck 텍스트 추출 불가 등 기본적 정보 제공 수준이 매우 낮음 [확인]. 투자 유치 이력, 기존 투자자, 자본금 규모 등 재무적 투명성 관련 정보 일체 부재로 신뢰도 판단 곤란 [미확인].</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>LGBTQ+ 커뮤니티라는 명확한 타겟 세그먼트 보유 [확인]</li>
+<li>2018년 설립으로 7년간 운영 지속성 [확인]</li>
+<li>사회적 포용성 관련 ESG 가치 방향성 [부분 확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>수익 모델 미공개, 재무 투명성 극히 낮음 [미확인]</li>
+<li>팀 구성 불명확, CEO 외 핵심 인력 정보 전무 [미확인]</li>
+<li>사용자 10만 주장에 대한 검증 자료 부재 (MAU/DAU/retention 등) [미확인]</li>
+<li>AI 섹터 표방하나 AI 기술력 또는 데이터 자산에 대한 근거 없음 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 및 APAC 지역 LGBTQ+ 커뮤니티 성장 가능성</li>
+<li>롯데 계열사와의 오프라인-온라인 연계 (예: 롯데시네마 이벤트, 롯데백화점 제휴) 가능성</li>
+<li>사회적 수용도 개선 시 사용자 기반 확대 여지</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Grindr, Blued 등 글로벌 선도 기업과의 경쟁 심화</li>
+<li>베트남 내 LGBTQ+ 관련 규제 및 사회적 인식 리스크</li>
+<li>수익화 모델 부재 시 지속 가능성 위협</li>
+<li>사용자 프라이버시 및 데이터 보안 리스크 (민감 정보 취급)</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">LGBTQ+ 사회문제 해결 방향성은 의미 있으나, 핵심 가정인 '10만 사용자가 실제 활성 유저이며 수익화 가능하다'는 전제가 전혀 검증되지 않았다. 매출 모델, 투자 이력, 팀 전문성, 시장 규모 분석 모두 미확인 상태이며, 롯데 PoC 아이디어는 단순 사용자 수 목표 외에 구체적 협력 방안이 없어 실행 가능성이 매우 낮다. IR Deck 접근 불가로 인해 추가 검증이 불가능하며, 공개된 정보만으로는 투자 적합성 판단 근거가 부족하다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">2 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>ONEAPP GLOBAL ONE MEMBER COMPANY LIMITED · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

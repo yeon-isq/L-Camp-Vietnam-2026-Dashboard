@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECOESG CONSULTING COMPANY LIMITED — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">ECOESG CONSULTING COMPANY LIMITED</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh city, Vietnam</span>
+          <span class="etag et-ind">Robotics</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">ECOESG CONSULTING COMPANY LIMITED</div>
+        <div class="hero-sub">설립 2025 · www.ecoesg.info</div>
+        <span class="hero-stage">Idea</span>
+        <p class="hero-desc">ECOESG는 침 뱉기 없이 전체 구강을 자동으로 세정하는 스마트 칫솔 'RollUpX'를 개발 중이다. 아동·환자·노인 등 제한된 구강 관리 능력을 가진 이들을 대상으로 하며, 현재 개념 검증(PoC) 단계로 프로토타입 제작 전 상태다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          AI 바이오센서와 자동 액체 회수 기술이 실제로 구현 가능하고, 타겟 고객이 기존 칫솔 대비 프리미엄 가격을 지불할 의향이 있다는 가정이 전혀 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">7</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">호주 1건</div><div class="kpi-desc">Application No. 2026903836 (검증 필요)</div></div>
+<div class="kpi"><div class="kpi-val">미제작</div><div class="kpi-desc">개념 검증 단계, 실물 없음</div></div>
+<div class="kpi"><div class="kpi-val">$0</div><div class="kpi-desc">2024-2025 매출 없음</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 타겟 시장 규모가 전혀 제시되지 않음. IR 자료에서 '아동 4-12세', '환자·노인', '활동적인 사람들'을 언급했으나 각 세그먼트의 규모, 베트남/글로벌 시장 잠재력, SAM/SOM 추정이 완전히 부재. [미확인] 경쟁 분석에서 'U-shape products'와 비교했으나 구체적 경쟁사명, 시장점유율, 가격대 정보 없음. 글로벌 구강 관리 디바이스 시장 진입 전략이 로드맵에만 언급('2028년 미국·EU 진출')되었으나 시장 진입 장벽, 규제 요건, 유통 채널 확보 계획이 전무. 확장 가능성을 판단할 근거 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 비즈니스 모델이 '메인 제품 판매 + 프랜차이징 + 교체 부품'으로 제시되었으나 각 수익원의 예상 비중, 단가, 고객 획득 비용(CAC), 생애 가치(LTV) 등 구체적 수치가 전혀 없음. [미확인] $150K 투자로 $10M 밸류에이션 달성 목표를 제시했으나 근거 없음 — R&D 40%, 마케팅 리서치 30%, IP 보호·운영 30%로 배분한다 했으나, 이 금액으로 프로토타입 제작부터 임상시험, 양산 준비까지 완수 가능한지 원가 구조 분석 부재. [심각] 현재 매출 $0, 제품 실물 없음, 고객 검증 전무 — 투자 적합성 판단 불가. 롯데벤처스 펀드 투자 기준(기술 검증, 초기 트랙션, 명확한 BM)을 전혀 충족하지 못함.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[부분 확인] 사회문제(아동·노인·환자의 구강 관리 어려움)는 명확히 정의되었으나, 솔루션의 실제 효능이 검증되지 않음. '침 뱉기 없는 자동 칫솔'이 타겟 사용자의 구강 건강을 실제로 개선하는지에 대한 임상 데이터, 파일럿 테스트, 사용자 피드백이 전무. [미확인] ESG 임팩트로 '물 사용량·폐수 처리, 삶의 질 향상'을 주장했으나 정량적 임팩트 측정 방법론이나 기존 솔루션 대비 개선 효과가 제시되지 않음. 아이디어 단계에서 사회적 가치 잠재력은 있으나, 실행 가능성과 지속성 확인 불가.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인 — 팀 리서치 결과 반영] Vu Manh Cuong의 LinkedIn 프로필이 발견되지 않았고, 공개된 경력·학력 정보가 전무함. 로보틱스 또는 의료기기 산업 관련 전문성을 확인할 수 없음. [심각한 우려] 회사명(ECOESG CONSULTING)과 산업 분야(로보틱스)의 불일치 — ESG 컨설팅 배경이 칫솔 하드웨어 개발과 어떻게 연결되는지 설명 부재. [검증 불가] 신청서에 '연구개발, 비즈니스 운영 관리'라는 일반적 역할만 명시, 실제 팀 구성(CTO, 하드웨어 엔지니어, AI 전문가 등)이 확인되지 않음. [Red Flag] 회사 웹사이트 접근 불가, 언론 보도·산업 인지도 전무, 베트남 로보틱스 업계에서 해당 회사 언급 없음. 디지털 발자국이 거의 없어 실재성 자체에 의문. 핵심 인력 검증 전까지 투자 부적합.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[부분 확인] 지정한 롯데 계열사(Healthcare CVC, LOTTE VENTURES JAPAN, LOTTE INNOVATE, Daehong Communications)가 존재하나, PoC 아이디어가 지나치게 일반적임 — '인프라와 자원 활용'이라는 표현만으로는 구체적 협력 방식(예: 롯데마트 고객 대상 파일럿, 롯데호텔 객실 비치 테스트 등)을 확인할 수 없음. [미확인] 구강 관리 디바이스가 롯데의 주요 사업 영역(식품·유통·건설·AI)과 직접 연계되는 근거가 약함 — LOTTE Innovate의 AI 역량 활용 가능성은 있으나, 롯데 계열사의 기존 고객 베이스나 유통망을 활용한 시장 검증 계획이 구체적이지 않음. [심각] 프로토타입조차 없는 상태에서 PoC를 진행할 실질적 기반이 부재. 롯데 계열사 입장에서 현 단계의 협력은 리스크가 지나치게 높음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 1 + B 1 + C 2 + D 1 + E 2</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">7</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Smart City/PropTech(LOTTE Engineering & Construction), AI/IT(LOTTE Innovate), Oral health care devices</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">주요 발명의 개념을 완성하고 프로토타입, 작동 샘플, MVP를 제작하기 위해 롯데의 인프라와 자원 활용 필요. Healthcare and Biopharmaceutical CVC, LOTTE VENTURES JAPAN, LOTTE INNOVATE, Daehong Communications Inc.의 지원을 통해 R&D 완성 목표</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">On Environmental issues, our solution addresses water usage and wastewater treatment; waste generation and recycling rates. On Social issues, addresses health in general and oral health care in particular; customer satisfaction, and improving the quality of life. On Governance issues, we commit to focusing on innovative products in combination with AI tools to help implement sustainability for any activities.
+A PoC collaboration with LOTTE will definitely help create these impacts because LOTTE is a big group of global companies with diverse innovative solutions and business ecosystems.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">검증 불가능. 제공된 정보(연구개발, 비즈니스 운영 관리)는 지나치게 일반적이며, 로보틱스 산업에 필요한 구체적인 기술 전문성(하드웨어 엔지니어링, AI/ML, 임베디드 시스템, 자동화 등)이 확인되지 않음. ESG 컨설팅 배경과 로보틱스 제품 개발 간의 명확한 연결고리가 부재.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">평가 불가능. 단 한 명의 연락처만 제공되었으며, 완전한 팀 구성을 확인할 수 없음. 성공적인 로보틱스 스타트업에는 일반적으로 최소한 다음이 필요: (1) 기술 리더/CTO (로보틱스/AI 전문가), (2) 제품 개발 책임자, (3) 비즈니스/영업 리더, (4) 엔지니어링 팀. 이러한 역할 중 어느 것도 확인되지 않음.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">매우 낮음. 공개적으로 검증 가능한 실적, 전문적인 온라인 존재감, 언론 보도, 산업 인지도, 또는 제3자 검증이 전혀 없음. 이는 초기 단계 스타트업에서도 극히 이례적. 대부분의 합법적인 로보틱스 스타트업은 LinkedIn 프로필, 기술 블로그, 특허 출원, 학술 논문, 또는 산업 행사 참여 등 최소한의 디지털 발자국을 남김.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">검증 가능성과 투명성의 완전한 부재. 가장 큰 우려는 확인 가능한 정보의 전반적인 부족. 즉각적인 조치 항목: (1) 회사 등록 문서 요청 및 검증, (2) 물리적 사무실 방문 및 확인, (3) 고객 레퍼런스 요청, (4) 기술 시연 또는 프로토타입 확인, (5) 팀 전체 구성원과의 대면 미팅, (6) 재무제표 및 은행 참조 확인, (7) 지적재산권(특허, 상표) 확인. 이러한 기본 실사 단계 없이는 어떠한 비즈니스 결정도 진행해서는 안 됨.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Vu Manh Cuong LinkedIn · ECOESG CONSULTING robotics · Vu Manh Cuong ECOESG LinkedIn · ecoesg.info company Vietnam · ECOESG CONSULTING COMPANY LIMITED · ECOESG Vietnam robotics founders</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Vu Manh Cuong</div><div class="member-role">Co-Founder</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없음 - 현대 비즈니스 환경에서 비정상적</span><span class='flag-item'>⑊ 회사 웹사이트(www.ecoesg.info)에서 팀 정보 접근 불가</span><span class='flag-item'>⑊ 공개된 회사 정보, 언론 보도, 또는 제3자 검증 자료 부재</span><span class='flag-item'>⑊ 회사명(ECOESG)과 산업 분야(로보틱스)의 불일치 - ESG는 일반적으로 환경·사회·거버넌스 컨설팅을 의미</span><span class='flag-item'>⑊ 베트남 로보틱스 산업 조사에서 해당 회사가 전혀 언급되지 않음</span><span class='flag-item'>⑊ 창업자의 검증 가능한 실적이나 경력 부재</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>ECOESG CONSULTING COMPANY LIMITED</td><td>Co-Founder</td><td>정보 없음</td><td style="font-size:11px;">자체 보고된 정보만 확인 가능. 독립적인 검증 불가.</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 로보틱스 산업에 대한 구체적인 경력이나 배경을 확인할 수 없음. 검색 결과에서 동명이인 여러 명이 발견되었으나 (소프트웨어 개발자, 기업 회장, 기술 팀장 등), ECOESG와 연결된 프로필은 발견되지 않음. ESG 컨설팅과 로보틱스의 연관성도 명확하지 않음.</div><div class="ma-overall"><strong>종합 평가:</strong> 심각한 우려 사항. 디지털 발자국이 거의 없고, 독립적으로 검증 가능한 정보가 전혀 없으며, LinkedIn과 같은 기본적인 전문 플랫폼에서도 존재가 확인되지 않음. 회사명(ESG 컨설팅)과 주장하는 산업(로보틱스) 간의 명백한 불일치가 존재. 추가 실사가 진행되기 전까지 투자 또는 협력을 강력히 권장하지 않음. 회사 등록 정보, 사업자 등록증, 물리적 사무실 확인, 그리고 대면 회의가 필수적으로 요구됨.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>기술 실현 가능성 리스크</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 'AI 바이오센서 + 자동 액체 회수 + 전체 구강 동시 세정' 기술의 실제 작동 여부가 검증되지 않음. 프로토타입 부재로 기술적 타당성 판단 불가.</td></tr>
+<tr><td>팀 신원 및 실행 능력 리스크</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 창업자의 LinkedIn 부재, 회사 웹사이트 접근 불가, 공개 경력 정보 전무. 로보틱스/의료기기 도메인 전문성 확인 안 됨. 회사 등록 문서, 사업자등록증, 물리적 사무실 확인 필수.</td></tr>
+<tr><td>시장 검증 부재 리스크</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 고객 인터뷰, 파일럿 테스트, MVP 사용자 피드백이 전혀 없음. 타겟 고객의 실제 지불 의향(willingness to pay) 미확인.</td></tr>
+<tr><td>자금 소진 리스크</td><td><span class="rpill-sm rp-h">높음</span></td><td>[부분 확인] $150K로 R&D 40%, 마케팅 리서치 30%, IP·운영 30% 배분 계획. 하드웨어 스타트업의 프로토타입→양산 과정에서 통상 $500K~$2M 이상 소요되므로, 제시된 금액으로는 상용화 불가능. 추가 자금 조달 계획 부재.</td></tr>
+<tr><td>규제·인증 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 구강 관리 디바이스의 의료기기 분류 여부 및 각국 인증(FDA, CE, MFDS 등) 취득 계획이 로드맵에 언급되지 않음. 임상시험만 2027년 계획에 포함되어 있으나, 인증 절차 및 소요 기간·비용 고려 부족.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category C — 하드웨어/의료기기</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-1</span><span class="deep-title">프로토타입·MVP 부재 및 기술 검증 수준</span><span class="dvtag dv-r">검증 불가 — 제품 실물 없음</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 프로토타입, 워킹 샘플, MVP 전무 — 신청서에서 '개념 검증(PoC) 단계'라 했으나 실제론 아이디어 단계에 불과. 호주 특허 출원만 있고 실제 작동하는 제품이 없어 기술적 실현 가능성 확인 불가. [미확인] '침 뱉기 없는 전체 구강 세정'이라는 핵심 메커니즘에 대한 엔지니어링 증빙(설계도, 유체역학 시뮬레이션, 안전성 테스트 등) 제로. [심각] $150K 투자로 R&D 40% 배분 계획이나, 의료기기 프로토타입 제작·임상시험·인증 획득까지 완수 가능한지 원가 분석 부재. 하드웨어 스타트업 투자 기준(working prototype + initial validation) 미충족.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-2</span><span class="deep-title">규제 인증 전략 및 의료기기 진입 장벽</span><span class="dvtag dv-r">전략 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 베트남·미국·EU 의료기기 인증(CE, FDA 510(k), MFDS 등) 획득 계획 전무 — 로드맵에 '2028년 미국·EU 진출'만 언급되었으나 Class I/II 의료기기 분류, 생체적합성 테스트, 임상시험 설계 등 구체적 인증 로드맵 부재. [미확인] 타겟 고객(아동·환자·노인)이 의료기관 또는 보험 적용 대상인지 불명확 — 병원·요양원 B2B 판매 시 의료기기 인증 필수이나 해당 전략 언급 없음. [Red Flag] 호주 특허 출원만으로 글로벌 IP 보호가 충분하지 않으며, 중국·미국 등 주요 시장에서의 특허 출원 현황 미공개. 규제 리스크 대응 능력 검증 불가.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-3</span><span class="deep-title">사용자 검증 및 임상 효능 데이터</span><span class="dvtag dv-r">검증 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 타겟 사용자(아동 4-12세, 환자, 노인)로부터의 사용성 테스트, 피드백, 파일럿 프로그램 결과가 일체 없음. '침 뱉기 없는 자동 칫솔'이 실제로 구강 건강을 개선하는지에 대한 임상 데이터 제로 — 치석 제거율, 치주질환 예방 효과 등 정량적 지표 부재. [부분 확인] 문제 정의(아동·노인의 칫솔질 어려움)는 명확하나, 기존 솔루션(U-shape 칫솔, 전동칫솔) 대비 효능 우위를 입증할 근거 없음. [심각] 의료기기 투자 심사에서 필수인 '사용자 중심 검증(user validation)'이 완전히 누락 — 병원·요양원과의 파일럿 협력, 치과의사 자문, 사용자 인터뷰 등 어떤 형태의 검증도 진행되지 않음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-4</span><span class="deep-title">양산 준비도 및 공급망 전략</span><span class="dvtag dv-r">계획 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 제조 파트너, ODM/OEM 협력사, 부품 조달 계획 등 양산 준비 관련 정보 전무 — '교체 부품 판매'를 비즈니스 모델로 제시했으나 부품 설계, 내구성 테스트, 공급망 확보 계획 부재. [미확인] 단가 구조(BOM cost), 목표 판매가, 마진율 등 제조 원가 분석 없음 — $150K 투자로 프로토타입 제작부터 초기 양산까지 진행 가능한지 판단 불가. [심각] 로보틱스/의료기기 하드웨어 경험이 있는 팀원 확인 안 됨 — CEO Vu Manh Cuong의 공개 프로필 부재, CTO/하드웨어 엔지니어 등 핵심 인력 정보 미공개. 하드웨어 스타트업 투자 시 필수 요건인 '실행 역량(execution capability)' 검증 불가.</div></div>
+<div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">AI 기술 통합 및 개인화 전략</span><span class="dvtag dv-a">미검증 — 기술 스택 불명</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] IR 자료에서 'AI tools를 결합한 혁신 제품'이라 했으나 구체적 AI 기능(예: 사용자별 칫솔질 패턴 학습, 구강 건강 모니터링, 맞춤형 세정 프로그램 등)이 정의되지 않음. [미확인] '개인화된 전체 구강 칫솔질 경험(Personalized Full-Mouth Brushing Experience)'이라는 제품 콘셉트가 있으나, 개인화를 구현할 데이터 수집 방법, 알고리즘, 센서 종류 등 기술 스택 미공개. [Red Flag] 팀 내 AI/소프트웨어 개발 전문가 확인 안 됨 — LOTTE Innovate의 AI 역량 활용을 언급했으나, 자체 AI 개발 역량이나 기술 파트너십 부재 시 차별화 요소 실현 불가. 소프트웨어 통합 전략 부재.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[부분 확인] 호주 특허 출원 완료 (Application No. 2026903836) — 단, 특허 승인 여부 및 기술적 신규성은 미확인</li>
+<li>[확인] 타겟 시장(아동·노인·환자 구강 관리)의 사회적 필요성은 명확함</li>
+<li>[미확인] '침 뱉기 없는 전자동 칫솔'이라는 제품 컨셉의 차별성 주장 — 단, 기술적 실현 가능성 검증 전</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[확인] 프로토타입·MVP 부재 — 개념 검증 단계로 실제 작동하는 제품 없음</li>
+<li>[확인] 팀 구성 및 전문성 검증 불가 — LinkedIn·공개 경력 정보 전무, 로보틱스/의료기기 도메인 전문가 확인 안 됨</li>
+<li>[확인] 매출·고객·트랙션 전무 — 시장 검증이 전혀 이루어지지 않은 상태</li>
+<li>[미확인] 비즈니스 모델의 단위 경제 및 수익성 근거 부재 — 가격, CAC, LTV, 제조 원가 등 구체적 수치 없음</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>글로벌 고령화 및 장애인 구강 관리 수요 증가 추세</li>
+<li>베트남 정부의 헬스케어 혁신 및 의료기기 산업 육성 정책</li>
+<li>롯데 계열사의 글로벌 유통망 및 AI 인프라 활용 가능성 (단, 구체적 연계 방안 필요)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>하드웨어 제조 및 양산에 필요한 대규모 초기 자본(CAPEX) 부담 — $150K로는 프로토타입 제작도 불확실</li>
+<li>의료기기 규제 및 인증(FDA, CE, TFDA 등) 획득의 장기간·고비용 리스크</li>
+<li>기존 U-shape 칫솔 제조사들의 기술 개선 및 가격 경쟁력 강화 가능성</li>
+<li>팀 검증 불가로 인한 실행 리스크 — 회사 실재성 자체에 대한 의문</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">7</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">프로토타입·매출·고객 검증이 전무한 아이디어 단계로, 핵심 기술(자동 액체 회수, AI 바이오센서)의 실현 가능성이 검증되지 않았다. 가장 큰 미확인 가정은 '복잡한 기계적 기구와 AI를 결합한 칫솔이 실제로 작동하며, 타겟 고객이 기존 칫솔보다 훨씬 높은 가격을 지불할 것'이라는 점인데, 이를 뒷받침할 기술 시연·파일럿·시장 조사가 전혀 없다. 팀 검증 불가(LinkedIn 프로필 부재, 회사 웹사이트 접근 불가, 디지털 발자국 전무)로 인해 실행 능력과 실재성 자체에 심각한 의문이 제기된다. 현 단계에서 투자 또는 PoC 진행은 부적합하며, 최소한 프로토타입 제작 + 팀 신원 확인 + 초기 사용자 테스트 완료 후 재평가 필요.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">2 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">7 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>ECOESG CONSULTING COMPANY LIMITED · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

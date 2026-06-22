@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OPENNEZT Technology Joint Stock Company — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">OPENNEZT Technology Joint Stock Company</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Hà Nội, Việt Nam</span>
+          <span class="etag et-ind">AI</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">OPENNEZT Technology Joint Stock Company</div>
+        <div class="hero-sub">설립 2025 · https://opennezt.com/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">OPENNEZT는 CTO/Tech Lead를 위한 AI 코딩 과정 평가 도구다. VSCode, IntelliJ, Cursor 등 IDE에서 개발자의 AI 활용 과정을 기록하고 보고서로 변환하여 채용 심사 및 교육 격차 파악에 사용된다. 개발자가 AI에게 무엇을 질문하고 코드를 어떻게 수정하는지 추적하며, 수익 모델은 현재 미확인 상태다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          AI 코딩 과정 기록이 실제 개발 역량의 유의미한 지표가 되며, 기업 채용 담당자가 이를 기존 평가 방식 대신 채택할 것이라는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-fail">📄 IR Deck 읽기 실패</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">12</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">4개 기업</div><div class="kpi-desc">파일럿 테스트 진행 중이나 계약 유형 미확인</div></div>
+<div class="kpi"><div class="kpi-val">$200K</div><div class="kpi-desc">Pre-seed 라운드 목표</div></div>
+<div class="kpi"><div class="kpi-val">4개</div><div class="kpi-desc">Asia Youth, Hanoi Top 30, Startup Runway 등</div></div>
+<div class="kpi"><div class="kpi-val">0</div><div class="kpi-desc">현재 무매출</div></div>
+<div class="kpi"><div class="kpi-val">파일럿</div><div class="kpi-desc">4개 기업 테스트 단계, 정식 출시 미확인</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[부분 확인] AI 코딩 평가 시장은 Codility, HackerRank 등 기존 플레이어가 존재하나, '과정 기록' 차별화 전략의 실제 수요는 미확인. TAM/SAM 제시 없음. [미확인] 4개 MOU 기업의 산업/규모/결제 의향 불명. 베트남 외 확장 계획 없음. 경쟁사 대비 기술적 우위(IDE 통합 안정성, 데이터 정확성)에 대한 구체적 근거 부재. 시장 검증 없이 제품 가정에만 의존.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 문제(개발자 평가의 불공정성)는 설명되나, 솔루션이 실제로 더 공정한지에 대한 검증 부재. [미확인] 수익 모델 전혀 명시 안 됨 — SaaS 구독인지, 평가당 과금인지, 라이선스인지 불명. [미확인] 무매출 상태에서 $200K 투자 유치 근거 희박. 고객 획득 비용, 단위 경제, LTV/CAC 등 경제성 지표 전무. 롯데벤처스 펀드 적합성은 PoC 가능성에만 의존하나 수익화 경로 없어 투자 매력도 낮음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 사회문제(채용 불공정성, 압박 환경 평가)는 정의되었으나, OpenNezt가 실제로 더 공정한지 실증 데이터 없음. [미확인] '원격 평가로 환경 영향 감소'는 지나치게 간접적이고 측정 불가. [확인] ESG 중 'Governance(설명 가능한 채용)' 방향은 명확하나, 실제 편향 감소 효과는 검증 필요. 사회적 가치 의도는 있으나 임팩트 규모/깊이 미확인.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[중대한 신뢰성 문제] 팀 자체 보고에서 '15년 SaaS 경력, 2번 엑시트, 수천 명 개발자 심사 경험'을 주장했으나, 실제 조사 결과 CEO는 NEU 2022-2026 재학 중인 경영학 전공 학생으로 시간상 모순. [미확인] 2번 엑시트 기록 발견 안 됨. [미확인] CTO 또는 기술 공동창업자 존재 불명 — AI 평가 도구 개발에 필수적인 개발자/AI 전문가가 팀에 없음. [확인] Head of Finance는 증권 배경이나 AI 도메인과 무관. 팀 배경 과장 또는 허위 기재 가능성 높아 투자 적격성에 심각한 의문.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">4<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">[확인] AI/IT 사업분야 부합, LOTTE Innovate 명시. [부분 확인] PoC 아이디어는 구체적(내부 개발팀 파일럿 → 채용 테스트)이나, LOTTE의 실제 AI 채용 정책 연계 여부는 미확인. [미확인] 보안 승인(sandbox), PIPA 준수 등 전제조건이 충족 가능한지 불명. IntelliJ 미지원은 LOTTE 개발 환경과 불일치 가능성. PoC 방향성은 있으나 실행 가능성 검증 필요.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 4</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">12</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">물류(LOTTE Global Logistics), 스마트시티(LOTTE E&C), AI/IT(LOTTE Innovate)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미명시</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">LOTTE Innovate의 내부 개발팀 1-2개를 대상으로 AI 코딩 작업 과정을 3-6개월간 기록하여 개발자별 강점/약점 보고서를 제공하고, 실제 채용 과정에서 후보자 평가에 활용하여 기존 방식 대비 심사 시간 및 신뢰도를 비교 검증. VS Code/Cursor 우선 지원, IntelliJ는 미확정. 보안 승인 및 PIPA 준수 전제 필요.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Social. Much fairer and more open hiring
+
+Most coding tests judge people on one thing, whether the final code runs, and often under the stress of someone watching. Strong people who don't perform well in that setting get passed over, and the company never knows what it missed. OpenNezt lets candidates work the way they normally do, in their own setup, and shows how they actually think through a problem. That gives a fairer read on real ability, especially for people who are good at the job but bad at exam-style pressure. On the internal side, the same approach helps a company see where each developer needs support and build training around real gaps, so people grow with AI instead of being left behind by it. For a group LOTTE's size, that is a meaningful number of careers.
+
+Governance. Hiring decisions you can explain
+
+Hiring and performance calls are often made on gut feeling, which is hard to defend and easy to bias. OpenNezt gives a clear record of what a person actually did, so a tech lead can point to real evidence for why someone was kept or passed over. That makes talent decisions more consistent and easier to stand behind, and it lowers the risk of unfair or arbitrary calls. We treat consent and data handling as part of this too: people know they are being recorded, and the data is handled to LOTTE's privacy standards rather than collected quietly.
+
+Environmental: a small effect, not the main point
+
+The environmental benefit is modest. Because assessments are done remotely and reviewed on the reviewer's own time, there is less need to fly candidates in or block out rooms for live interviews.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">OPENNEZT 팀은 AI 기반 개발자 평가 플랫폼 구축에 필요한 핵심 전문성이 심각하게 부족합니다. 확인된 2명의 팀원은 모두 NEU 경영학부 학생(2022-2026)으로, (1) 실제 개발 경험이 있는 엔지니어/개발자, (2) 채용 및 기술 평가 전문가, (3) AI/ML 전문가, (4) UX/제품 디자인 전문가가 팀에 없거나 확인되지 않습니다. 자체 주장한 '15년 SaaS 경력, 2번 엑시트, 수천 명 개발자 심사 경험, 심층 UX/제품 디자인 DNA, 실무 AI/ML 전문성'이 검증되지 않아 핵심 주장과 실제 팀 구성 간 중대한 불일치가 있습니다. 기술 공동창업자나 CTO가 없는 것으로 보이며, 제품 개발을 누가 담당하는지 불명확합니다.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">팀이 매우 불완전합니다. 확인된 인원은 CEO(경영학 전공, 파트너십 개발 경험)와 재무 책임자(재무/증권 배경) 2명뿐이며, AI 기술 제품 개발에 필수적인 (1) 기술 리더/CTO, (2) AI/ML 엔지니어, (3) 풀스택/백엔드 개발자, (4) 제품 디자이너, (5) 개발자 채용/평가 전문가가 없거나 공개되지 않았습니다. 4명 규모 회사로 보고되나 나머지 2명의 역할과 배경이 불명확합니다. One Mount, VinID, HUST, NEU, Founder Institute와의 연계를 주장하나 구체적인 관계나 지원 내용이 확인되지 않습니다.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">신뢰성에 중대한 우려가 있습니다. CEO가 자체 보고한 '15년 이상 SaaS 경력'과 '2번의 엑시트'는 NEU 2022-2026 재학 기록과 시간상 모순되어 검증 불가능합니다. '한 명은 후보자로서 불공정한 평가를 받았고, 다른 한 명은 수천 명의 개발자를 심사한 채용 의사결정자'라는 양면 경험 주장은 현재 확인된 팀 구성(2명의 NEU 경영학 학생)과 일치하지 않습니다. '심층 UX와 제품 디자인 DNA'와 '실무 AI/ML 전문성' 주장도 교육 및 경력 배경에서 뒷받침되지 않습니다. LinkedIn 프로필이 제한적이거나 없어 투명성이 부족하며, 팀 배경 설명이 과장되었거나 잘못된 정보일 가능성이 높습니다. 이는 투자자에게 중대한 위험 신호입니다.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 공백은 (1) 검증 가능한 기술 전문성과 개발 경험의 완전한 부재, (2) 자체 주장한 배경과 실제 확인된 경력 간의 중대한 불일치, (3) AI/ML 및 개발자 평가 도메인에서의 실무 전문성 부족입니다. 'AI 코딩 지원 시대의 개발자 평가' 문제를 해결하려면 깊은 기술 이해, 채용 프로세스 전문성, AI 모델 개발 능력이 필수적인데, 현재 팀에서는 이러한 역량이 확인되지 않습니다. 더 심각한 것은 신뢰성 문제로, 팀 배경이 사실과 다를 경우 투자 적격성 자체에 근본적인 의문이 제기됩니다. 즉각적인 검증과 명확화가 필요합니다.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: OPENNEZT Technology Joint Stock Company founding team · Chu Việt Anh CEO OPENNEZT · Chu Việt Anh LinkedIn · opennezt.com founders team · Chu Việt Anh OPENNEZT CEO product · Viet Anh Chu National Economics University NEU</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Chu Việt Anh (Viet Anh Chu)</div><div class="member-role">CEO & Head of Product</div></div>
+    <div class="member-meta"><a href="https://www.linkedin.com/in/viet-anh-chu-35bb8324b" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 자칭 '2번의 엑시트' 경험에 대한 검증 불가 - 공개된 정보에서 이전 엑시트 기록을 찾을 수 없음</span><span class='flag-item'>⑊ 자칭 '15년 이상 SaaS 경력'과 맞지 않음 - 2022년 대학 입학 시점을 고려하면 시간상 불가능 (현재 학생 신분으로 추정)</span><span class='flag-item'>⑊ 개발자 또는 채용 의사결정자로서의 직접 경험에 대한 증거 부족 - 팀 배경 설명과 불일치</span><span class='flag-item'>⑊ 기술 공동창업자 또는 CTO의 존재가 불명확 - 단독 창업자로 보임</span><span class='flag-item'>⑊ LinkedIn 프로필에 제한적인 정보만 공개되어 있음</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>Bachelor of Business Administration (BBA)/Business Administration and Management, General</td><td>National Economics University (NEU) Vietnam</td><td>2022 - 2026</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>OPENNEZT</td><td>Founder / CEO & Head of Product</td><td>현재 (현재)</td><td style="font-size:11px;">AI 기반 개발자 평가 플랫폼을 구축하는 창업자</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Axtra Labs</td><td>Partnership Development</td><td>과거</td><td style="font-size:11px;">AI/ML 및 데이터 엔지니어링 전문 기술 회사에서 파트너십 개발 담당</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Coptis Adventure</td><td>미상</td><td>과거</td><td style="font-size:11px;">관련 정보 제한적</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr><tr><td>NEU Center for Social Innovation and Entrepreneurship</td><td>미상</td><td>과거</td><td style="font-size:11px;">National Economics University의 사회혁신 및 창업 센터에서 활동</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 경영학 학사 배경과 Partnership Development 경험은 비즈니스 운영에 유용하나, AI 기반 개발자 평가라는 기술 중심 문제 해결을 위한 직접적인 기술 배경(개발자 경험, 채용 담당자 경험, AI/ML 전문성)은 제한적으로 확인됨. Axtra Labs에서의 파트너십 역할은 기술 생태계 이해에 도움이 되나, 제품 개발이나 개발자 평가 도메인의 심층 전문성은 명확하지 않음. NEU Center for Social Innovation 경험은 창업 생태계 이해에 도움이 될 수 있음.</div><div class="ma-overall"><strong>종합 평가:</strong> Chu Việt Anh는 NEU 경영학 전공 학생으로 파트너십 개발 경험이 있으나, 자체 주장한 '15년 SaaS 경력', '2번의 엑시트', '수천 명의 개발자 심사 경험', '불공정한 평가를 받은 후보자 경험' 등의 배경이 검증되지 않았습니다. 이는 심각한 신뢰성 문제를 제기합니다. 학생 신분과 제한된 경력을 고려할 때, 팀 배경 설명이 과장되었거나 다른 공동창업자의 경험을 혼합하여 기술했을 가능성이 있습니다. AI 개발자 평가라는 복잡한 기술 문제를 해결하기 위한 도메인 전문성이 명확하지 않으며, 기술팀 구성이 불투명합니다.</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Long Dao</div><div class="member-role">Head of Finance</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필이 발견되지 않음 - 투명성 부족</span><span class='flag-item'>⑊ 재무 책임자 역할이 2명의 대학생(CEO와 함께 NEU 2022-2026 재학) 팀 구성에서 조기 단계일 수 있음</span><span class='flag-item'>⑊ AI 기술 스타트업에서 재무 우선순위가 제품/기술 전문성보다 앞서는 것은 비정상적</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>학사/미상</td><td>National Economics University (NEU) Vietnam</td><td>2022 - 2026</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>OPENNEZT</td><td>Head of Finance</td><td>현재</td><td style="font-size:11px;">재무 책임자</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Fundwise</td><td>미상</td><td>과거</td><td style="font-size:11px;">경험 있음</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr><tr><td>Hub Network</td><td>미상</td><td>과거</td><td style="font-size:11px;">경험 있음</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr><tr><td>MBS - MB Securities JSC</td><td>미상</td><td>과거</td><td style="font-size:11px;">증권사 경험</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 재무 및 증권 배경은 회사 운영에 필요하나, AI 개발자 평가 플랫폼의 핵심 문제(기술 채용, AI/ML, 개발 프로세스 이해)와는 직접적 연관성이 없음. 재무 기능은 중요하지만 초기 스타트업의 제품-시장 적합성(Product-Market Fit) 발견 단계에서는 핵심 역량이 아님.</div><div class="ma-overall"><strong>종합 평가:</strong> Long Dao는 NEU 학생으로 일부 금융 관련 경험이 있으나, LinkedIn 프로필이 없어 세부 정보 확인이 불가능합니다. 재무 배경은 운영에 도움이 되나, AI 기술 스타트업의 초기 단계에서 핵심 제품 개발이나 시장 검증보다 재무 기능을 강조하는 것은 우선순위 문제를 시사할 수 있습니다.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 배경 허위 기재 가능성</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] CEO 자칭 '15년 SaaS 경력, 2번 엑시트'가 NEU 2022-2026 재학 기록과 모순. 외부 조사에서 엑시트 기록 발견 안 됨. 신뢰성 검증 필수.</td></tr>
+<tr><td>핵심 기술 인력 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] CTO, AI/ML 엔지니어, 풀스택 개발자 존재 불명. AI 평가 도구 개발에 필수적인 기술 전문성이 팀에서 확인되지 않음.</td></tr>
+<tr><td>수익 모델 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 가격 책정, 과금 방식, 단위 경제 전혀 명시 안 됨. 무매출 상태에서 수익화 경로 불명확.</td></tr>
+<tr><td>제품-시장 적합성 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 4개 MOU 모두 파일럿 단계. 결제 전환, 재계약, 실제 채용 프로세스 채택 여부 불명. '과정 기록'이 실제 채용 의사결정에 유용한지 실증 데이터 없음.</td></tr>
+<tr><td>보안 및 규제 승인 불확실성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 대기업 내부 코드 기록 시 보안 승인, PIPA 준수 가능 여부 불명. PoC 전제조건 충족 실패 시 LOTTE 협력 불가.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">시장 검증 및 제품-시장 적합성(PMF)</span><span class="dvtag dv-r">제품 가정만 존재, 실제 수요 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 4개 MOU 기업의 산업/규모/결제 의향이 전혀 불명확하며, '파일럿 테스트' 단계가 실제 유료 전환으로 이어질 근거가 없음. [부분 확인] 'AI 코딩 과정 평가'라는 차별화 포인트는 참신하나, Codility/HackerRank 등 기존 채용 평가 도구 대비 구매자(CTO/채용 담당)가 '과정 기록'에 실제로 프리미엄을 지불할지 고객 인터뷰나 willingness-to-pay 데이터가 전무함. [미확인] TAM/SAM 추정 없이 베트남 시장에만 집중하고 있어 확장 가능성 불투명. 제품 가정에만 의존한 채 시장 검증이 이루어지지 않아 PMF 달성 가능성 낮음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">기술적 진입장벽 및 방어 가능성</span><span class="dvtag dv-a">IDE 플러그인 개발 난이도는 중간, 독점 데이터 없음</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] VSCode, IntelliJ, Cursor 등 다양한 IDE 통합은 기술적으로 실현 가능하나, 현재 IntelliJ 미지원 상태로 LOTTE 등 엔터프라이즈 환경 대응 미흡. [미확인] '개발 과정 기록'을 위한 코어 IP(특허/독점 알고리즘)가 명시되지 않았고, GitHub Copilot Labs, Cursor 자체 analytics 등 대형 플레이어가 유사 기능을 빠르게 내재화할 위험 존재. [미확인] 데이터 정확성/안정성 관련 벤치마크나 제3자 검증 없어 기술적 우위 주장 근거 불충분. 플러그인 형태는 복제 가능성 높고, 네트워크 효과나 데이터 축적 우위 전략 부재로 장기 경쟁력 의문.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">수익화 모델 및 단위경제</span><span class="dvtag dv-r">수익 모델 전무, 투자 근거 없음</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 수익 모델이 '현재 미확인 상태'로 명시되어 있어, SaaS 구독형인지/평가당 과금인지/엔터프라이즈 라이선스인지 전혀 불명. [미확인] 무매출 상태에서 $200K 투자 유치를 목표로 하나, 고객 획득 비용(CAC), 생애 가치(LTV), 단위 경제, payback period 등 경제성 지표가 전무하여 투자금 사용 계획 및 회수 가능성 판단 불가. [미확인] 4개 MOU 기업이 파일럿 이후 유료 전환할 가격 민감도나 계약 규모 추정 없음. 수익화 경로가 설계되지 않은 상태에서 제품 개발만 진행 중이어서 벤처 투자 적격성 매우 낮음.</div></div>
+<div class="deep-category-label">Category D — 팀/실행력</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업팀 배경 및 신뢰성</span><span class="dvtag dv-r">중대한 경력 불일치 — 투자 적격성 의문</span><span class="deep-arrow">▾</span></div><div class="deep-body">[중대한 신뢰성 문제] 팀 자체 보고에서 '15년 SaaS 경력, 2번 엑시트(exit), 수천 명 개발자 심사 경험'을 주장했으나, 실제 조사 결과 CEO는 NEU(National Economics University) 2022-2026 재학 중인 경영학 전공 학생으로 시간상 모순 발생. [미확인] 2번 엑시트 기록이 공개 자료에서 발견되지 않음. [미확인] AI 코딩 평가 도구 개발에 필수적인 CTO 또는 기술 공동창업자 존재 불명 — 개발자/AI 전문가가 팀 구성에 없어 제품 실행력 의문. [확인] Head of Finance는 증권 배경이나 AI/SaaS 도메인과 무관. 팀 배경 과장 또는 허위 기재 가능성이 높아 투자 심사 시 실사(Due Diligence) 필수이며, 현 상태로는 투자 적격성에 심각한 의문.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">도메인 전문성 및 실행 이력</span><span class="dvtag dv-r">AI/채용 도메인 전문성 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] '채용 불공정성' 문제는 설명되었으나, 팀이 실제 채용 담당자/CTO/개발자 평가 전문가로서 해당 문제를 깊이 이해하고 있는지 근거 불충분 — CEO가 경영학 전공 재학생이고 기술 공동창업자 부재. [부분 확인] One Mount, VinID, HUST, NEU, Founder Institute와의 '연결'은 언급되었으나, 이들 기관이 실제 고객이나 파트너로 전환될 구체적 근거 없음. [미확인] '15년 SaaS 경력' 주장과 실제 이력 불일치로 제품 개발/시장 진출 경험 의문. AI/ML 도메인 이해도나 IDE 플러그인 개발 실력을 입증할 기술 포트폴리오 부재. 도메인 전문성과 실행 이력 모두 검증 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">비즈니스 실행 및 스케일 역량</span><span class="dvtag dv-a">수상 이력은 있으나 실제 사업 성과 없음</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] Asia Youth Entrepreneurs Competition 2025 공동 우승 및 Best Innovation Award, Hanoi People's Committee 선정 Top 30, Startup Runway 2025 2위 등 수상 이력은 다수 확인됨. [미확인] 그러나 수상이 실제 고객 확보/매출 발생/제품 검증으로 이어진 근거 없음 — 현재 무매출 상태. [미확인] '2번 엑시트' 주장의 실체 불명으로 '출시→확장→엑시트' 경험이 실제로 있는지 확인 불가. [부분 확인] 4개 MOU는 초기 관심도 지표이나, 파일럿 이후 유료 전환율/계약 규모 추정 없어 실행력 입증 부족. 수상 이력은 PR 자산이나 실제 사업 스케일 역량은 미검증.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[부분 확인] AI 코딩 시대의 새로운 평가 니즈를 포착한 타이밍은 적절</li>
+<li>[확인] 4개 수상 이력으로 일부 외부 검증 획득</li>
+<li>[부분 확인] LOTTE Innovate와의 PoC 방향성은 구체적</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] 팀 배경 과장/허위 가능성 — 자칭 경력과 실제 조사 결과 간 중대한 불일치</li>
+<li>[미확인] CTO 또는 개발 전문가 부재 — AI 제품 개발 실행력 의문</li>
+<li>[미확인] 수익 모델 전무 — 가격, 과금 방식, 단위 경제 전혀 불명</li>
+<li>[미확인] 무매출, MOU는 파일럿일 뿐 결제 전환 증거 없음</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>AI 코딩 도구 확산으로 개발자 평가 방식 재정립 가능성</li>
+<li>LOTTE 계열사 다수가 개발팀 보유 시 수평 확장 가능</li>
+<li>원격 채용 트렌드와 결합 시 글로벌 확장 잠재력</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Codility, HackerRank 등 기존 플레이어가 AI 평가 기능 추가 시 차별화 상실</li>
+<li>기업의 개발자 평가 프로세스 변경 저항 — 의사결정 사이클 길고 ROI 입증 어려움</li>
+<li>IDE 통합 보안 승인 실패 시 대기업 진입 불가</li>
+<li>팀 신뢰성 문제 노출 시 투자 유치 및 고객 확보 전면 차단</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">12</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">OPENNEZT는 AI 코딩 과정 평가라는 흥미로운 문제를 다루나, 팀 신뢰성과 사업 검증에 치명적 결함이 있다. 가장 큰 미검증 가정은 'AI 코딩 과정 기록이 실제 개발 역량의 유의미한 지표이며, 기업이 이를 기존 평가 방식 대신 채택할 것'인데, 4개 MOU는 모두 파일럿 단계로 결제 전환 증거가 없다. 더 심각한 것은 팀 배경 과장 문제로, CEO가 자칭한 '15년 SaaS 경력, 2번 엑시트'는 NEU 재학 기록과 시간상 불가능하며, 기술 전문가가 팀에 없어 AI 제품 개발 실행력이 의문시된다. 무매출 상태에서 수익 모델조차 명시되지 않아 투자 적합성이 매우 낮다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">4 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">12 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>OPENNEZT Technology Joint Stock Company · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Collectif — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Le Collectif</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Singapore (Vietnam 이전 가능)</span>
+          <span class="etag et-ind">Hospitality Tech / Content Production</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Le Collectif</div>
+        <div class="hero-sub">설립 2025 · www.lecollectif.tv</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Le Collectif은 독립 부티크 호텔을 위한 크리에이터 주도 콘텐츠 제작 플랫폼이다. OTA 의존도를 낮추고 직접 예약을 늘리기 위해 30분 브리프 기반으로 촬영·제작·AI 라이브러리 관리까지 제공하며, 연간 구독 모델($18K~$48K)로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          AI 라이브러리 기반 콘텐츠 배포가 실제로 OTA 대비 직접 예약 전환율을 측정 가능하게 증가시킨다는 인과관계가 아직 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">12</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">1개</div><div class="kpi-desc">베트남 부티크 호스피탤리티 브랜드, 600+ 라이선스 자산 납품 완료</div></div>
+<div class="kpi"><div class="kpi-val">$200K</div><div class="kpi-desc">Angel Round, 베트남 시장 초기 확장 자금</div></div>
+<div class="kpi"><div class="kpi-val">15~50실 독립 호텔</div><div class="kpi-desc">베트남 초기 ICP, 연 OTA 수수료 $110K 부담층</div></div>
+<div class="kpi"><div class="kpi-val">$18K~$48K/년</div><div class="kpi-desc">Active 플랜 $1,500/월, Always-On $4,000/월</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">타겟 시장(베트남 독립 부티크 호텔)은 정의되었으나 시장 규모 정량화 근거가 전혀 없음 [미확인]. IR Deck에서 '63.4% OTA 의존도' 등 일반 통계는 인용했으나 베트남 내 15~50실 독립 호텔 수, TAM/SAM/SOM 구분, 경쟁 솔루션 대비 전환 가능 고객 수 등 구체적 시장 분석 부재. 확장 전략은 'Phase 2 SEA, Phase 3 F&B/retail'로 언급되었으나 단계별 진입 장벽, 필요 자원, 타임라인 등 실행 가능성 근거 없음 [미확인]. 경쟁 분석도 'traditional agency' 대비 비용 우위만 주장할 뿐 기존 콘텐츠 마케팅 에이전시, SaaS 경쟁자, 호텔 자체 인하우스 팀 등과의 차별화가 구체적이지 않음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">비즈니스 모델 구조(브리프→제작→AI 라이브러리→측정)는 설명되었으나 핵심 가정이 검증되지 않음 [미확인]. '직접 예약 증대'를 판매하지만 콘텐츠 배포가 실제 예약 전환으로 이어진다는 인과관계 증명 없음. 유일한 유료 고객 케이스는 '600+ 자산 납품 완료'만 언급되고 직접 예약 증가율, ROI, 재계약 여부 등 핵심 성과 지표 부재 [미확인]. Unit Economics는 'LTV:CAC 4.4:1'로 제시되었으나 실제 데이터 기반이 아닌 모델 추정치임을 명시('Model output is far stronger; we pitch the conservative case'). 매출 없음, 투자 유치 이력 없음, 제품은 'MVP in development, Beta Q3-Q4 2026'으로 아직 미완성. 투자 적합성은 매우 낮음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">독립 호텔의 OTA 수수료 부담(18~25%) 문제는 명확히 정의됨 [확인]. 솔루션(콘텐츠 제작 자동화 + AI 라이브러리)이 비용 절감과 직접 예약 증대를 통해 문제 해결을 시도하는 방향성은 타당함 [부분 확인]. ESG 임팩트로 제시한 '제작 낭비 감소, 로컬 크리에이터 기회 창출, 지속 가능한 마케팅 생태계 구축'은 간접적 사회 가치로 인정 가능하나, 임팩트 규모·깊이·지속성을 입증할 구체적 데이터나 측정 방법론이 제시되지 않음 [미확인]. 로컬 크리에이터 수익 분배 구조, 환경 영향 감축 정량화, 장기 고용 창출 규모 등이 불명확하여 사회적 가치 주장의 실질성은 제한적.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">Stuart Howe는 Ogilvy, Publicis, Best Ever Food Review Show 등에서 20년간 글로벌 콘텐츠 프로덕션 경력 보유 [확인]. Webby Award 후보 지명, Creative Agency of the Year 수상 등 입증된 창작 역량 [확인]. 그러나 호스피탤리티 산업 직접 경험은 확인되지 않으며 [미확인], 세일즈/비즈니스 개발 이력도 부재. 가장 치명적인 것은 공동창업자나 기술 팀원에 대한 정보가 전혀 없다는 점 [미확인] — AI 플랫폼을 표방하지만 CTO나 제품 개발 인력이 공개되지 않음. Best Ever Food Review Show COO 현직 유지 중으로 Le Collectif에 전념 여부 불명확 [미확인]. 팀 완성도 매우 낮고 핵심 인력 의존도 리스크 높음. 호스피탤리티 산업 전문가, 세일즈 리더, 기술 공동창업자 등 핵심 역할 공백.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">롯데호텔과의 PoC 아이디어는 제시되었으나 구체성과 실행 가능성이 매우 낮음 [부분 확인]. '3~6개월 파일럿, 한 개 호텔 대상 콘텐츠 제작 및 AI 워크플로우 테스트'는 일반적인 협력 제안 수준이며, 롯데호텔의 특정 계열사(롯데호텔부산, 롯데호텔서울 등), 구체적 마케팅 니즈(예: 직접 예약 채널 강화, 특정 고객 세그먼트 타겟팅), 기존 마케팅 시스템과의 통합 방안 등이 명시되지 않음 [미확인]. '재사용 가능한 자산 라이브러리 구축'은 롯데호텔이 이미 보유한 글로벌 마케팅 인프라, 브랜드 가이드라인, 기존 에이전시 관계 등을 고려하지 않은 일방적 제안. 롯데 계열사가 이 스타트업의 초기 미완성 제품(MVP 2026 Q3-Q4 예정)을 파일럿할 동기 불명확. 호스피탤리티 분야는 L-Camp 주요 사업분야에 해당하나, PoC 실행 가능성 매우 낮음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 2 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">12</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">호스피탤리티/호텔/관광 (롯데호텔, 롯데면세점, 롯데시네마, 롯데월드 등)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">롯데호텔</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데호텔과 3~6개월 파일럿 협력을 제안. 한 개 호텔을 대상으로 객실, 식음료, 웰니스, 로컬 문화 등 게스트 경험 중심의 크리에이터 주도 숏폼 콘텐츠를 제작하고, AI 기반 콘텐츠 기획·자산 관리·캠페인 조정 워크플로우를 테스트. 재사용 가능한 라이선스 자산 라이브러리를 구축하여 다수 호텔 속성에 확장 가능한 콘텐츠 시스템 검증을 목표로 함.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Le Collectif’s solution supports ESG objectives by helping hospitality brands create more sustainable, locally-driven, and efficient marketing ecosystems. Instead of relying heavily on large-scale traditional productions or constantly recreating campaigns from scratch, our platform focuses on building reusable content libraries, creator-led storytelling, and AI-assisted workflows that reduce production waste, duplicated effort, and unnecessary travel. 
+
+On the social side, the platform also creates opportunities for local creators, storytellers, photographers, and small production teams to participate in tourism marketing and benefit economically from their local knowledge and culture. 
+
+A PoC collaboration with LOTTE Hotels would allow us to test how sustainable content operations can be implemented at scale within the hospitality industry, while also showcasing authentic local experiences, supporting community-driven storytelling, and building a more efficient long-term content model for hotel marketing.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">콘텐츠 제작 및 프로덕션 운영 측면에서는 뛰어난 커버리지를 보유하고 있으나, 호스피탤리티 산업 특화 전문성, 기술/제품 개발, 세일즈/마케팅, 재무 등 주요 기능 영역에서 공개된 팀원 정보가 없어 심각한 갭이 존재합니다. 공개된 팀 구성은 단일 창업자로만 보여 완전한 창업팀이 아닌 것으로 보입니다.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">불완전함. 단일 창업자만 확인되었으며, 기술 공동창업자, 호스피탤리티 산업 전문가, 제품/엔지니어링 리더, 세일즈/비즈니스 개발 리더 등 핵심 역할이 공개되지 않았거나 존재하지 않을 수 있습니다. AI 기반 콘텐츠 플랫폼을 구축하려면 강력한 기술팀이 필요하지만 이에 대한 증거가 없습니다. 확장 가능한 호스피탤리티 비즈니스를 위해서는 산업 전문가 및 파트너십/세일즈 전문성이 필수적입니다.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">Stuart Howe 개인의 자격증명은 강력하고 검증 가능합니다 (Webby 후보 지명, 주요 어워드 수상, 세계적 브랜드와의 작업 이력, 산업 심사위원 역할). 그러나 Le Collectif 자체의 신뢰성은 검증하기 어렵습니다 - 최소한의 웹 존재감, 공개된 자금조달 없음, 명확한 제품/고객 증거 없음, 2024년으로 표시된 저작권이지만 의미있는 공개 활동 없음. 회사는 사전 출시 또는 매우 초기 단계로 보입니다.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 갭은 (1) 완전한 창업팀의 부재 - 특히 기술/제품 공동창업자와 호스피탤리티 산업 전문 공동창업자, (2) 호스피탤리티 분야의 깊은 산업 전문성 부족, (3) Le Collectif의 검증 가능한 트랙션, 제품 개발 또는 시장 검증에 대한 증거 부족입니다. 콘텐츠 제작 역량은 강력하지만, 이를 호스피탤리티에 특화된 확장 가능한 기술 플랫폼으로 전환하려면 현재 공개되지 않은 추가 전문성이 필요합니다.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Stuart Howe Le Collectif CEO · Stuart Howe LinkedIn · lecollectif.tv founders · Stuart Howe content production hospitality · Stuart Howe Best Ever Food Review Show · "Stuart Howe" Le Collectif founder</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Stuart Howe</div><div class="member-role">CEO, Co-Founder</div></div>
+    <div class="member-meta"><a href="https://vn.linkedin.com/in/howestuart" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-h" style="margin-left:8px;">Domain: High</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ Le Collectif에 대한 공개 정보가 매우 제한적 - 웹사이트는 기본적인 대기자 명단 페이지만 존재하며 실제 제품이나 서비스에 대한 구체적 정보 부족</span><span class='flag-item'>⑊ 공동 창업자 또는 다른 팀원에 대한 정보를 찾을 수 없음 - 단독 창업자 리스크 가능성</span><span class='flag-item'>⑊ Le Collectif의 실제 운영 현황, 자금 조달, 고객 또는 트랙션에 대한 검증 가능한 정보 없음</span><span class='flag-item'>⑊ 여러 경력 경로 (영화제작, 광고 에이전시, 유튜브 콘텐츠, 스타트업)를 거쳐왔으나 호스피탤리티 산업 직접 경험은 명확하지 않음</span><span class='flag-item'>⑊ 현재 Best Ever Food Review Show에서 COO로 활동 중인 것으로 보이며, Le Collectif에 전념하고 있는지 불명확</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>BSc/Electronic Imaging and Media Communications</td><td>University of Bradford</td><td>2003</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>MBA/Business Administration and Management</td><td>Singapore Business School</td><td>2022-2024</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Best Ever Food Review Show</td><td>Chief Operations Officer</td><td>Current (as of 2025)</td><td style="font-size:11px;">호찌민시 베트남 기반. Webby Award 후보 지명을 포함한 주요 성과 달성. 20인 규모 콘텐츠 제작팀 운영</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Publicis Groupe</td><td>APAC Regional Client Production Lead / General Manager</td><td>~2020-2024</td><td style="font-size:11px;">베트남, 홍콩 등 아시아태평양 지역 프로덕션 리더십. Heineken, Mondelez, Nestle 등 글로벌 브랜드 대상 작업. Campaign AOY Southeast Asia Award 수상 (Creative Agency of the Year, Grand Prix 포함 12개 트로피)</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Prodigious (Publicis Production)</td><td>General Manager, Production Specialist and Consultant</td><td>~2019-2022</td><td style="font-size:11px;">글로벌 크로스미디어 프로덕션 플랫폼에서 콘텐츠 크리에이터 및 이노베이터 역할</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Ogilvy & Mather (Hong Kong & Vietnam)</td><td>Head Of Content Production, Production Consultant, Executive Producer</td><td>2013-2019</td><td style="font-size:11px;">홍콩과 베트남에서 콘텐츠 프로덕션 총괄. Cannes Direct Lion 수상 캠페인 참여. Senior Editor로 시작하여 프로덕션 헤드로 승진</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>STUDIO 163</td><td>Managing Director | Co-Founder | Executive Producer</td><td>2003-2013</td><td style="font-size:11px;">영국에서 설립한 부티크 에이전시. Business of the Year 수상. 대학 졸업 직후 공동 창업하여 10년 운영. £250K 포스트프로덕션 시설 구축로 350% 성과 향상 및 £1M+ 매출 성장 달성</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 호스피탤리티 및 여행 콘텐츠 분야에서 매우 강력한 관련성을 보유. Best Ever Food Review Show에서 COO로 활동하며 음식/여행 콘텐츠 제작 전문성 입증. 20년 이상의 글로벌 콘텐츠 프로덕션 경험 (Ogilvy, Publicis 등 주요 에이전시). AI 기반 프로덕션 워크플로우 및 확장 가능한 콘텐츠 시스템 구축 경험. 수상 경력이 있는 영화감독으로 Best Director 및 Best Drama 수상. 스토리텔링, 크로스플랫폼 콘텐츠 전달, 운영 혁신에 대한 전문성이 Le Collectif의 호스피탤리티 콘텐츠 플랫폼 비전과 완벽하게 일치함</div><div class="ma-overall"><strong>종합 평가:</strong> Stuart Howe는 20년 이상의 글로벌 콘텐츠 프로덕션 경험과 입증된 리더십 역량을 보유한 매우 자격을 갖춘 창업자입니다. Ogilvy, Publicis, Prodigious 등 세계 최고 수준의 에이전시에서 선임 역할을 수행했으며, AI 기반 워크플로우, 확장 가능한 프로덕션 시스템, 크로스플랫폼 콘텐츠 전달에 대한 전문성을 보유하고 있습니다. Best Ever Food Review Show에서의 현재 역할은 여행/음식 콘텐츠 영역에서의 직접적인 관련성을 제공합니다. 그러나 주요 우려사항은 (1) Le Collectif에 대한 공개 정보 및 검증 가능한 트랙션 부재, (2) 공개된 공동 창업자/팀 부재, (3) 호스피탤리티 산업 직접 경험 부족, (4) 현재 전임 직책과의 잠재적 시간 충돌입니다. 기술적 및 창의적 자격은 강력하지만, 스타트업의 초기 단계 성숙도와 팀 구성은 추가 실사가 필요합니다.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>핵심 가정 미검증: 콘텐츠 배포 → 직접 예약 증가 인과관계 증명 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 유일한 고객 사례에서도 예약 전환율, ROI 등 비즈니스 성과 데이터 없음. 콘텐츠 납품만으로 직접 예약이 증가한다는 주장은 검증 필요.</td></tr>
+<tr><td>팀 불완전성: 단독 창업자, 기술팀 부재, 호스피탤리티 산업 경험 부족</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 공동창업자, CTO, 호텔 산업 전문가 등 핵심 역할 부재. 현직 유지 중으로 전념도 불명확. AI 플랫폼 구축에 필수적인 기술 인력 정보 전무.</td></tr>
+<tr><td>제품 미완성 및 시장 검증 부족</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] MVP는 2026 Q3-Q4 예정. 현재 1개 유료 고객만 확보되었으며 재계약 여부, 고객 만족도, 제품-시장 적합성 등이 검증되지 않음.</td></tr>
+<tr><td>고객 지불 능력 제한: 독립 호텔의 연 $18K+ 구독료 부담 가능성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] 타겟인 15~50실 독립 호텔의 연 매출 $500K~$5M 중 $18K 구독료는 상당 부담. OTA 수수료 $110K 대비 저렴하다는 주장이나 실제 지불 의사 검증 필요.</td></tr>
+<tr><td>롯데 PoC 실행 가능성 낮음: 제안의 구체성 부족 및 글로벌 브랜드 도입 동기 불명확</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] PoC 제안이 일반적 수준이며, 롯데호텔의 기존 마케팅 시스템, 브랜드 가이드라인, 글로벌 에이전시 관계 등을 고려한 맞춤형 제안 부재. 초기 스타트업 제품 도입 동기 낮음.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">제품 완성도 및 기술 역량</span><span class="dvtag dv-r">심각한 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">MVP는 2026년 Q3-Q4 출시 예정으로 현재 제품이 존재하지 않음 [확인]. AI 라이브러리·워크플로우 자동화를 핵심으로 표방하지만 CTO나 기술 팀원에 대한 정보가 전혀 공개되지 않음 [미확인]. 창업자는 20년 콘텐츠 프로덕션 경력을 보유하나 소프트웨어 개발 이력은 확인되지 않음 [미확인]. 플랫폼 기반 SaaS 비즈니스를 추구하면서 기술 공동창업자 부재는 실행 리스크가 매우 높음. 제품 개발 타임라인, 기술 스택, 개발 인력 확보 계획 등이 모두 불명확함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">비즈니스 모델 검증 상태</span><span class="dvtag dv-r">미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">현재 매출 $0, 유료 고객 1개사 케이스는 '600+ 자산 납품 완료'만 언급되고 직접 예약 증가율·재계약 여부 등 핵심 성과 지표 부재 [미확인]. LTV:CAC 4.4:1은 실제 데이터가 아닌 모델 추정치이며, 창업자도 'Model output is far stronger; we pitch the conservative case'라고 명시 [확인]. 콘텐츠 배포가 실제 예약 전환으로 이어진다는 인과관계 증명 없음 [미확인]. 연간 구독료 $18K~$48K을 지불할 독립 호텔의 지불 의사·예산 여력·ROI 기대치가 검증되지 않음. PMF 도달 이전 단계로 투자 적합성 매우 낮음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">경쟁 우위 및 차별화 전략</span><span class="dvtag dv-a">불분명</span><span class="deep-arrow">▾</span></div><div class="deep-body">기존 호텔 마케팅 에이전시 대비 비용 우위(전통적 에이전시 $50K~$200K vs. Le Collectif $18K~$48K)만 주장 [부분 확인]. 그러나 기존 콘텐츠 마케팅 에이전시, 호스피탤리티 전문 SaaS(예: Sojern, Revinate), 호텔 자체 인하우스 마케팅 팀 등과의 구체적 차별화 근거가 없음 [미확인]. AI 라이브러리 관리·크리에이터 네트워크 등의 기술적·운영적 방어 가능성이 입증되지 않음. '30분 브리프 기반 제작'이 실제로 호텔 브랜드 아이덴티티 유지와 마케팅 효과를 동시에 충족시킬 수 있는지 검증 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-5</span><span class="deep-title">기술 확장성 및 운영 효율성</span><span class="dvtag dv-r">매우 불확실</span><span class="deep-arrow">▾</span></div><div class="deep-body">AI 워크플로우·자동화 라이브러리를 표방하지만 기술 아키텍처·데이터 인프라·자동화 수준에 대한 구체적 설명 전무 [미확인]. 크리에이터 네트워크 운영 방식(매칭·품질 관리·수익 분배)이 명시되지 않음 [미확인]. 현재 1개 고객사에 '600+ 자산 납품'은 수작업 프로덕션 중심으로 추정되며, 이를 연간 수십~수백 고객사로 확장할 기술적·운영적 메커니즘이 불명확. Phase 2 SEA 확장 시 다국어·문화권별 콘텐츠 로컬라이제이션, 크리에이터 네트워크 구축 등 추가 복잡성이 발생하나 대응 전략 부재.</div></div>
+<div class="deep-category-label">Category D — 콘텐츠/크리에이터 이코노미</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">크리에이터 네트워크 및 품질 관리 체계</span><span class="dvtag dv-a">불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">로컬 크리에이터 활용을 핵심 가치로 제시하나 크리에이터 선발·교육·품질 관리 프로세스가 전혀 공개되지 않음 [미확인]. 독립 부티크 호텔의 브랜드 아이덴티티 유지와 크리에이터 자유도 간 균형을 어떻게 맞출지 불명확. 베트남 시장 진입 시 현지 크리에이터 네트워크 구축 방법·시간·비용에 대한 구체적 계획 없음 [미확인]. '30분 브리프'만으로 호텔의 고유한 브랜드 스토리와 프리미엄 포지셔닝을 일관되게 전달할 수 있는지 검증 필요. 크리에이터 수익 분배 구조도 명시되지 않아 생태계 지속가능성 불확실.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">콘텐츠 성과 측정 및 최적화 시스템</span><span class="dvtag dv-r">미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">제작된 콘텐츠가 실제로 직접 예약 증대로 이어진다는 핵심 가설이 입증되지 않음 [미확인]. 유일한 고객 케이스에서도 직접 예약 전환율·ROI·재계약 여부 등 성과 지표가 제시되지 않음 [미확인]. 콘텐츠 퍼포먼스 추적·A/B 테스트·채널별 최적화 등 데이터 기반 최적화 시스템 존재 여부 불명확. 호텔 마케팅은 긴 구매 주기와 다양한 터치포인트를 가지므로 콘텐츠 기여도 측정이 복잡하나, 이를 해결할 방법론이나 기술적 솔루션 제시 없음. 성과 입증 없이는 고가 연간 구독 모델 지속 어려움.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-4</span><span class="deep-title">콘텐츠 라이브러리 및 IP 관리 체계</span><span class="dvtag dv-a">불분명</span><span class="deep-arrow">▾</span></div><div class="deep-body">AI 라이브러리 관리를 핵심 기능으로 제시하지만 구체적 기술 구현·메타데이터 구조·검색 알고리즘 등이 명시되지 않음 [미확인]. 제작된 콘텐츠의 IP 소유권·라이선스 범위·재사용 권한이 호텔과 크리에이터 간 어떻게 분배되는지 불명확 [미확인]. '600+ 자산 납품' 케이스에서 해당 자산들이 실제로 호텔에 의해 재활용되고 있는지, 라이브러리 시스템이 마케팅 효율성 향상으로 이어졌는지 검증 부재. 롯데호텔 같은 대형 계열사는 이미 글로벌 DAM(Digital Asset Management) 시스템과 브랜드 가이드라인을 보유하고 있어 통합 가능성 불확실.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>창업자의 20년 글로벌 콘텐츠 프로덕션 경력 및 Webby Award 후보 지명 등 입증된 창작 역량 [확인]</li>
+<li>독립 호텔의 높은 OTA 수수료 부담(18~25%)이라는 명확한 문제 정의 [확인]</li>
+<li>1개 유료 고객 확보 및 600+ 라이선스 자산 납품 완료로 최소 실행 역량 검증 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>콘텐츠 배포가 직접 예약 증가로 이어진다는 핵심 가정의 검증 부재 — 유일한 고객 케이스에서도 ROI나 예약 전환 데이터 없음 [미확인]</li>
+<li>공동창업자 부재 및 AI 플랫폼 표방에도 기술팀 정보 전무 — 단독 창업자 구조로 실행 리스크 매우 높음 [미확인]</li>
+<li>호스피탤리티 산업 직접 경험 부재 및 현직(Best Ever Food Review Show COO) 유지 중으로 전념도 불명확 [미확인]</li>
+<li>제품 미완성(MVP 2026 Q3-Q4 예정) 상태이며 매출 없음, 투자 유치 이력 없음</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 및 동남아 독립 호텔 시장의 디지털 전환 수요 증가</li>
+<li>OTA 수수료 부담 심화로 직접 예약 채널 강화 니즈 상승</li>
+<li>롯데호텔 글로벌 네트워크를 통한 레퍼런스 확보 가능성(PoC 성공 시)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>기존 호스피탤리티 마케팅 에이전시 및 SaaS 솔루션(예: Canva, Adobe Express)과의 경쟁 심화</li>
+<li>대형 호텔 체인은 자체 마케팅팀 보유로 타겟이 아니며, 독립 호텔은 연 $18K+ 구독료 지불 능력 제한적</li>
+<li>콘텐츠 제작 자동화만으로는 예약 전환 보장 불가 — SEO, 채널 최적화, CRM 등 통합 솔루션 필요성</li>
+<li>롯데호텔급 글로벌 브랜드는 이미 정교한 마케팅 인프라 보유로 초기 스타트업 솔루션 도입 동기 낮음</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">12</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Le Collectif은 독립 부티크 호텔의 OTA 의존도 문제를 콘텐츠 제작 자동화로 해결하려는 방향성은 타당하나, 핵심 가정인 '콘텐츠 배포 → 직접 예약 증가'의 인과관계가 전혀 검증되지 않았다. 창업자 Stuart Howe의 콘텐츠 제작 역량은 입증되었으나 호스피탤리티 산업 경험 부재, 공동창업자 없음, AI 플랫폼 표방에도 기술팀 부재 등 팀 구성이 심각하게 불완전하다. 유일한 유료 고객 사례도 납품 완료만 확인될 뿐 실제 비즈니스 성과(직접 예약 증가율, ROI)는 미확인이며, 제품은 아직 개발 중(Beta 2026 Q3-Q4)이다. 롯데호텔 PoC 제안은 일반적 수준이며 롯데의 기존 마케팅 인프라 및 글로벌 브랜드 운영 방식과의 구체적 연계 방안이 부재하여 실행 가능성이 낮다. 가장 큰 미검증 가정은 콘텐츠 라이브러리가 호텔의 직접 예약 전환을 측정 가능하게 증가시킨다는 주장이며, 이것이 틀리면 전체 비즈니스 모델이 무효화된다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">12 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Le Collectif · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

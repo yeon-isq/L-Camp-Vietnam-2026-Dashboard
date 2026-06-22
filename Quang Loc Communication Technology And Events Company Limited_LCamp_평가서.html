@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quang Loc Communication Technology And Events Company Limited (QLCE Group) — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Quang Loc Communication Technology And Events Company Limited (QLCE Group)</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam, Da Nang City</span>
+          <span class="etag et-ind">Entertainment Technology / Event & Communication</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Quang Loc Communication Technology And Events Company Limited (QLCE Group)</div>
+        <div class="hero-sub">설립 2023년 7월 7일 · 미완성 (보안 업그레이드 중이라고 명시)</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">QLCE Group은 베트남 기업들을 위한 이벤트 기획 및 소셜미디어 마케팅 에이전시이다. 중소기업의 AI 도입 장벽 해결을 목표로 하며, 이벤트 서비스 프로젝트 기반 수익 모델로 운영된다고 주장하나 구체적 계약 건수와 단가는 미확인이다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          콘텐츠 크리에이터 네트워크를 통한 ESG 메시지 확산이 실제 고객 행동 변화와 측정 가능한 환경 임팩트로 이어진다는 인과관계가 전혀 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">892+</div><div class="kpi-desc">[미확인] 클라이언트명·기간·계약금액 없음</div></div>
+<div class="kpi"><div class="kpi-val">98+</div><div class="kpi-desc">[미확인] 구체적 행사명·규모 없음</div></div>
+<div class="kpi"><div class="kpi-val">918+</div><div class="kpi-desc">[미확인] 레퍼런스·증빙 없음</div></div>
+<div class="kpi"><div class="kpi-val">$500K</div><div class="kpi-desc">VGE Posium·Warrior 프로젝트 예산</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 이벤트·커뮤니케이션 시장 규모 또는 베트남/APAC SAM/SOM 제시 전무. '수천 개 소규모 이벤트사 경쟁 환경'이라는 자체 언급만 있고 차별화 근거 부재. 엔터테인먼트 기술이라는 포지셔닝과 실제 제공 서비스(이벤트 기획, SNS 마케팅) 간 괴리. 확장 가능성은 '다국적 기술 기업 파트너십' 언급만 있고 구체적 전략·실행 계획 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 문제-솔루션-고객-수익 구조가 불명확. '기업 이벤트 892건, 만족 클라이언트 918+'는 구체적 거래처명·계약서·매출액 없이 수치만 나열. 매출 정보는 '직접 미팅 시 공개'로 회피. 투자 이력 없고, 롯데벤처스 펀드 적합성 판단 근거 부족. 프로젝트 기반 수익 모델은 지속성·확장성 측면에서 취약.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] ESG 임팩트 방향성(탄소 감축 인식 제고, 재활용 캠페인, 그린 액션 측정)은 명확하나, 실제 임팩트 규모·깊이·지속성을 입증할 과거 사례 전무. '국가 녹색 환경 프로젝트 14년 운영'은 정부 문서에서 확인되나 본 회사(2023년 설립)와의 직접 연결성 불명확. 사회적 가치 창출 의도는 분명하나 검증된 트랙레코드 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 역량 실사 결과 극히 부정적. 창립자 LinkedIn 프로필 부재, 교육 배경·이전 경력 정보 전무, CEO 외 팀원 정보 전혀 공개되지 않음. 법인 등록은 확인되나 실제 사업 역량을 뒷받침할 도메인 전문성·기술 인력·프로젝트 관리 경험 검증 불가. 웹사이트 미완성 상태는 준비 부족 또는 정보 은폐 의심. 엔터테인먼트 기술 사업 수행에 필요한 핵심 역량 보유 여부 확인 불가. Key-person dependency 위험 극대.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[부분 확인] ESG/그린 캠페인은 롯데 주요 사업분야(유통·호텔·건설)와 간접 연관성 있으나, PoC 아이디어가 극히 포괄적이고 비구체적. '그린 로열티 포인트' 시스템의 기술적 구현 방안, 롯데 기존 멤버십 연동 가능성, 콘텐츠 크리에이터 네트워크 실체, 임팩트 측정 방법론 등 구체성 전무. 특정 롯데 계열사와의 사전 논의나 MOU 없음. 협력 가능성을 판단하기에는 제안이 너무 일반적.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통/커머스 (롯데백화점, 롯데마트), 호텔/관광 (롯데호텔, 롯데시네마, 롯데월드), 스마트시티/건설</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">3SWAY Warrior 프로젝트: 롯데의 유통·호텔·서비스 생태계 전반에 걸쳐 '롯데와 함께하는 그린 액션' 캠페인 전개. 고객이 포장재 재활용, 비닐봉투 감소, 책임 소비 활동에 참여하면 '그린 로열티 포인트' 부여. 콘텐츠 크리에이터 네트워크를 활용해 롯데의 ESG 메시지를 확산하고, 실시간으로 ESG 임팩트 지표를 수집·측정하여 롯데의 지속가능성 이니셔티브 ROI를 평가. 향후 베트남 및 역내 롯데 생태계 전반으로 확장 가능한 청사진 제시를 목표로 함.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">ESG Impact of the Solution
+Our solution aims to build an ecosystem that connects enterprises, communities, and content creators to spread green lifestyles, promote sustainable consumption, and drive environmental protection actions through digital media and community-driven campaigns.
+
+🌱 Environmental
+
+Raise public awareness regarding carbon emission reduction, waste separation at source, energy conservation, and sustainable consumption.
+
+Drive green campaigns for tree planting, recycling, and plastic waste reduction through an extensive network of content creators and volunteers.
+
+Measure and record the green actions of individuals and organizations, contributing to traceable and positive environmental impacts.
+
+👥 Social
+
+Empower citizens, especially the youth, to actively participate in environmental protection and sustainable development activities.
+
+Build a socially responsible community of content creators to amplify and spread positive values to millions of users across digital platforms.
+
+Support enterprises in deploying community-driven ESG programs, fostering greater consumer engagement and alignment.
+
+🏛 Governance
+
+Establish a transparent system for recording, evaluating, and disclosing the ESG activities of all participating stakeholders.
+
+Enhance reporting and tracking capabilities to effectively measure social and environmental impact indicators.
+
+Promote multi-stakeholder collaboration among enterprises, regulatory bodies, social organizations, and communities based on the principles of transparent governance and sustainable development.
+
+How LOTTE Can Support and Amplify This Impact Through the PoC?
+The Proof of Concept (PoC) collaboration with LOTTE Group will help validate the scalability and real-world effectiveness of our solution through:
+
+Deploying "Green Actions with LOTTE" campaigns across LOTTE's extensive retail, commercial, and service ecosystem.
+
+Incentivizing customers to participate in green activities such as packaging recycling, plastic bag reduction, responsible consumption, and earning "green loyalty points."
+
+Leveraging a network of content creators to amplify LOTTE’s ESG messages and sustainable values to the wider community.
+
+Collecting data and measuring ESG impact metrics in real-time, helping LOTTE accurately evaluate the return on investment (ROI) of its sustainability initiatives.
+
+Creating a replicable blueprint/model that can be scaled across LOTTE’s entire ecosystem in Vietnam and other regional markets in the future.
+
+Post-PoC Expectations: The solution is anticipated to demonstrate its ability to maximize community engagement, generate measurable green actions, and effectively support LOTTE in realizing its ESG milestones in an efficient, transparent, and sustainable manner.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">이벤트 및 커뮤니케이션 기술 분야를 표방하고 있으나, 팀의 도메인 전문성을 검증할 수 있는 공개 정보가 전무함. CEO 외 다른 핵심 팀원에 대한 정보가 없어 조직 구조와 역량을 평가할 수 없음. 회사가 주장하는 '글로벌 기술 트렌드와 인간 창의성을 결합'한 솔루션 제공 능력을 뒷받침할 기술 인력이나 크리에이티브 전문가에 대한 정보 부재. 엔터테인먼트 기술 산업에서 성공하기 위해 필요한 기술 개발, 콘텐츠 제작, 프로젝트 관리, 영업/마케팅 등 핵심 기능별 전문가 보유 여부 확인 불가.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">팀 구성에 대한 정보가 극도로 부족함. CEO 한 명의 정보만 확인 가능하며, 그마저도 검증이 어려운 상태. CTO, CMO, COO 등 핵심 경영진에 대한 정보 전무. 엔터테인먼트 기술 회사로서 필요한 기술 개발팀, 크리에이티브 팀, 이벤트 기획팀, 영업팀 등의 존재 여부와 역량을 확인할 수 없음. 고객사 관리, 프로젝트 실행, 품질 관리를 담당할 중간 관리자급 인력에 대한 정보도 없음. 신생 스타트업임을 감안하더라도 팀 구성에 대한 투명성이 현저히 낮음.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">신뢰성 평가가 매우 어려운 상황. 공개된 정보의 대부분이 회사 자체 주장에 기반하고 있으며, 제3자에 의한 검증이 불가능함. LinkedIn과 같은 전문 플랫폼에서의 존재감 부재는 현대 비즈니스 환경에서 우려스러운 신호임. 웹사이트가 '보안 업그레이드 중'이라는 이유로 접근 불가한 점도 의심스러움 - 이는 정보 은폐나 준비 부족을 시사할 수 있음. 다만, 베트남 정부 기업 등록 데이터베이스에서 회사와 대표자 이름이 확인되어 법적으로는 실재하는 기업임. 그러나 법인 등록과 실제 사업 역량은 별개의 문제임. 극도로 제한적인 공개 정보와 검증 불가능한 주장들로 인해 전반적인 신뢰성 평가는 부정적임.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 문제는 검증 가능한 트랙 레코드의 완전한 부재임. 창립자의 이력, 팀 구성, 과거 프로젝트 실적, 클라이언트 레퍼런스 등 기본적인 실사 항목에 대한 정보를 전혀 확인할 수 없음. 엔터테인먼트 기술이라는 전문 분야에서 사업을 영위하기 위한 기술적 역량이나 산업 경험을 입증할 증거가 없음. 회사가 주장하는 '수많은 기업의 신뢰받는 파트너'라는 표현과 달리 구체적인 협력사나 성공 사례를 제시하지 못하고 있음. 디지털 시대에 LinkedIn 프로필 부재는 전문성에 대한 심각한 의문을 제기함. 투자를 고려하기 전에 직접 미팅, 사업장 방문, 레퍼런스 체크, 재무제표 검토 등 포괄적인 오프라인 실사가 반드시 선행되어야 함.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Nguyễn Đăng Quang LinkedIn · Nguyễn Đăng Quang Qlce LinkedIn · Nguyen Dang Quang QLCE Event · QLCE Event Vietnam · Quang Loc Communication Technology Events Company · QLCE Group founder CEO</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Nguyễn Đăng Quang</div><div class="member-role">Founder & CEO - Qlce Group</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필 부재 - 전문 네트워킹 플랫폼에서 디지털 존재감 없음</span><span class='flag-item'>⑊ 검증 가능한 교육 배경 정보 전무</span><span class='flag-item'>⑊ 이전 직장 경력에 대한 공개 정보 없음</span><span class='flag-item'>⑊ 회사 웹사이트 미완성 상태 - '보안 및 최적화를 위해 플랫폼 업그레이드 중'이라고 명시</span><span class='flag-item'>⑊ 매우 짧은 운영 기록 (2023년 7월 설립, 약 3년 미만)</span><span class='flag-item'>⑊ 구체적인 클라이언트 레퍼런스나 프로젝트 포트폴리오 공개 부재</span><span class='flag-item'>⑊ 팀 구성원 정보 부재 - CEO 외 다른 핵심 인력에 대한 정보 없음</span><span class='flag-item'>⑊ 산업 내 인지도 매우 낮음 - 베트남 주요 이벤트 회사 목록에 미포함</span><span class='flag-item'>⑊ 검증 가능한 성과 지표나 수상 경력 부재</span><span class='flag-item'>⑊ 주의: 동명이인인 Masan Group의 억만장자 회장 Nguyễn Đăng Quang(1963년생)과 혼동 가능성 - 이는 완전히 다른 인물임</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>정보 없음/정보 없음</td><td>정보 없음</td><td>정보 없음</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Công Ty TNHH Công Nghệ Truyền Thông Và Sự Kiện Quang Lộc (QLCE Event)</td><td>대표이사 (법정대리인)</td><td>2023년 7월 - 현재</td><td style="font-size:11px;">다낭시 Thanh Khê 구 An Khê 동 K1A/73 Lê Trọng Tấn 소재. 회사 등록 문서에서 법정대리인으로 확인됨.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 회사가 이벤트 및 커뮤니케이션 산업에서 운영되고 있다고 주장하지만, 창립자의 이전 경험, 교육 배경, 또는 관련 분야 전문성에 대한 공개 정보를 찾을 수 없음. 회사는 2023년 7월에 설립되어 운영 기간이 3년 미만으로 매우 짧음. YouTube 채널과 Facebook 페이지가 존재하나 구체적인 프로젝트 실적이나 포트폴리오에 대한 검증 가능한 정보가 부족함. 다낭 지역의 수천 개 소규모 이벤트 회사 중 하나로 차별화 요소가 불명확함.</div><div class="ma-overall"><strong>종합 평가:</strong> 창립자에 대한 검증 가능한 정보가 극도로 제한적임. LinkedIn 프로필이 없고, 교육 배경, 이전 경력, 도메인 전문성을 확인할 수 있는 공개 정보가 전무함. 회사는 2023년 중반에 설립되어 운영 기록이 3년 미만으로 매우 짧으며, 웹사이트도 완성되지 않은 상태. 베트남 다낭의 성숙한 이벤트 산업에서 수천 개의 경쟁사 중 하나로 보이나, 차별화된 경쟁 우위나 검증된 실적을 확인할 수 없음. Facebook과 YouTube에서 소셜 미디어 존재감은 있으나, 이는 실제 사업 실행 능력이나 창립자의 자격을 입증하기에 불충분함. 투자 결정을 위해서는 직접 미팅을 통한 추가 실사가 필수적으로 필요함.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 역량 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] LinkedIn 부재, 교육·경력 정보 전무, CEO 외 팀원 정보 미공개로 실행 역량 판단 불가능</td></tr>
+<tr><td>매출·트랙션 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] '892 기업 이벤트, 918 만족 클라이언트'는 거래처명·계약서·매출액 없는 수치 나열에 불과</td></tr>
+<tr><td>기술 역량 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] '엔터테인먼트 기술' 표방하나 기술팀·특허·MVP·기술 검증 자료 전무</td></tr>
+<tr><td>PoC 실행 가능성 불명</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 롯데 계열사별 구체적 협력 방안 부재, 기술 구현 계획 없음, 일반적 ESG 캠페인 아이디어 수준</td></tr>
+<tr><td>재무 투명성 결여</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 매출 정보 전면 비공개, 투자 유치 이력 없음, 재무제표 미제공</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — 서비스/에이전시 (이벤트·마케팅)</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">프로젝트 기반 수익성 및 반복 매출 구조</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] '892+ 기업 이벤트' 수행 주장에도 불구하고 구체적 계약 건수, 프로젝트 단가, 총 매출액이 전혀 공개되지 않음('직접 미팅 시 공개'로 회피). [미확인] 2023년 7월 설립 이후 2년 이내 900건 이상 프로젝트 수행은 월 평균 37건에 해당하나, 이를 뒷받침할 팀 규모·운영 역량 정보 부재. [미확인] 프로젝트 기반 모델 특성상 고객 재구매율(retention rate), 평균 계약 기간, LTV/CAC 비율 등 지속가능성 지표가 전무하여 반복 매출 가능성 판단 불가. 일회성 용역 사업 의존도가 높을 경우 확장성 제약 우려.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">경쟁 차별화 및 방어 가능성</span><span class="dvtag dv-r">차별화 근거 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] '수천 개 소규모 이벤트·커뮤니케이션 회사'가 경쟁하는 레드오션 시장임을 스스로 인정. [미확인] 'AI 활용 워크숍 제공'이라는 차별화 전략을 언급하나 실제 AI 기술 역량, 교육 커리큘럼 개발 경험, 기술 파트너십 실체가 검증되지 않음. [미확인] 'Entertainment Technology' 포지셔닝과 실제 제공 서비스(이벤트 기획, SNS 마케팅) 간 괴리가 크며, 기술 기반 경쟁우위 부재. 브랜드 마스코트·스토리텔링 등 무형자산만으로는 모방 방어 어려움. 지속 가능한 경쟁우위(sustainable competitive advantage) 확인 불가.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">고객 검증 및 레퍼런스 신뢰성</span><span class="dvtag dv-r">객관적 검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] '918+ 만족 클라이언트' 수치는 구체적 거래처명, 계약서, 추천서(testimonial), 케이스 스터디 등 객관적 검증 자료 없이 나열만 되어 신뢰성 판단 불가. [미확인] 웹사이트가 '보안 업그레이드 중'이라는 이유로 미공개 상태여서 포트폴리오, 고객 로고, 프로젝트 사례 등 일반적인 에이전시 신뢰도 지표 확인 불가. [미확인] 5+ 국제 이벤트 언급에도 불구하고 국가명, 행사명, 규모, 파트너 등 구체적 정보 전무. 자체 보고 수치의 과장 또는 부풀리기 가능성 배제 불가.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-5</span><span class="deep-title">Unit Economics 및 확장성</span><span class="dvtag dv-r">분석 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 프로젝트당 평균 매출, 원가율, 인건비 비중, 공헌이익률(contribution margin) 등 Unit Economics 정보 전혀 공개되지 않아 사업 건전성 판단 불가. [미확인] 이벤트·에이전시 모델 특성상 노동집약적 구조인데, 확장 시 인력 증가 대비 마진 개선 가능성(scalability)에 대한 전략 부재. [미확인] 지리적 확장 계획('다국적 기술 기업 파트너십' 언급)은 있으나 구체적 시장 진입 전략, 현지 파트너, 초기 투자 규모, 예상 손익분기점(break-even) 등 실행 계획 전무. 자본 효율성 및 확장 시 투자 대비 성장률(capital efficiency) 예측 불가.</div></div>
+<div class="deep-category-label">Category D — 팀/조직 역량</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창립자 및 핵심 인력 검증</span><span class="dvtag dv-r">정보 부족 심각</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 창립자의 LinkedIn 프로필, 교육 배경, 이전 경력, 도메인 전문성 등 기본적인 신원 정보가 전혀 공개되지 않음. [미확인] CEO 외 다른 팀원(CTO, 마케팅 책임자, 프로젝트 매니저 등) 정보가 일절 없어 조직 구성 및 실행 역량 판단 불가. [미확인] 'Entertainment Technology' 표방에도 불구하고 기술 인력 보유 여부, AI/디지털 전문성, 대규모 프로젝트 관리 경험 등 핵심 역량 검증 불가. [부분 확인] 베트남 법인 등록은 확인되나 사업자 등록만으로는 실제 운영 능력 입증 불충분. Key-person dependency 위험이 극대화된 상태로, 투자자 관점에서 치명적 약점.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">조직 투명성 및 거버넌스</span><span class="dvtag dv-r">투명성 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 웹사이트 미완성 상태('보안 업그레이드 중')는 정보 공개 의지 부족 또는 준비 미비 신호로 해석 가능. 일반적인 기업 웹사이트 필수 요소(팀 소개, 프로젝트 포트폴리오, 연락처, 회사 연혁 등) 전무. [미확인] 주주 구성, 지분율, 이사회 구성, 자문단 등 거버넌스 정보 일절 공개되지 않아 의사결정 구조 및 견제 장치 확인 불가. [미확인] 과거 투자 이력 전무로 외부 검증(due diligence) 경험 없음. [미확인] '기밀 데이터 취급'을 이유로 웹사이트를 공개하지 않는다는 설명은 B2B 에이전시로서 비정상적이며, 오히려 보안 관리 체계 부재 의심 야기.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-4</span><span class="deep-title">도메인 전문성 및 Track Record</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 'AI 도입 장벽 해결', '글로벌 기술 트렌드 반영' 등 기술 지향적 포지셔닝에도 불구하고 팀의 AI/ML 개발 경험, 기술 파트너십 실체, 교육 프로그램 개발 역량 등 전문성 입증 자료 전무. [미확인] '국가 녹색 환경 프로젝트 14년 운영' 언급은 회사 설립 연도(2023년)와 모순되어 창립자 개인 경력 또는 관련 조직 경험으로 추정되나, 구체적 연결성·증빙 자료 부재. [미확인] 베트남 이벤트 산업 내 평판, 수상 경력, 미디어 노출, 업계 네트워크 등 신뢰도 지표 전혀 확인되지 않음. 실행 능력(execution capability) 판단을 위한 과거 성공 사례 부족.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[부분 확인] ESG/그린 트렌드와 정부 정책(국가 녹색 환경 프로젝트) 정합성</li>
+<li>[부분 확인] 다낭시 로컬 네트워크 기반 지역 이벤트 경험 보유 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[확인] 창립자 및 팀 이력 검증 불가 — LinkedIn 부재, 교육·경력 정보 전무</li>
+<li>[확인] 매출·고객사 정보 전면 비공개 — 트랙레코드 검증 불가능</li>
+<li>[확인] 웹사이트 미완성 — 디지털 프레즌스 취약</li>
+<li>[미확인] 기술 역량 증빙 부재 — '엔터테인먼트 기술' 표방하나 기술팀·특허·기술 검증 자료 없음</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 ESG 규제 강화 및 기업 지속가능성 보고 의무화 트렌드</li>
+<li>롯데그룹의 APAC ESG 이니셔티브와 연계 가능성</li>
+<li>콘텐츠 크리에이터 경제 성장 및 소셜미디어 마케팅 수요 증가</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>수천 개 이벤트사 밀집 경쟁 환경에서 차별화 실패 시 도태 위험</li>
+<li>프로젝트 기반 수익 모델의 낮은 예측 가능성 및 현금흐름 불안정성</li>
+<li>검증되지 않은 ESG 임팩트 측정 방법론 — 그린워싱 의혹 가능성</li>
+<li>창립자 1인 의존도 극대 — key-person risk</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">이벤트 에이전시로 시작한 초기 단계 회사가 ESG·엔터테인먼트 기술 플랫폼으로 피봇하려는 시도로 보이나, 검증 가능한 트랙레코드가 거의 전무하다. '기업 이벤트 892건, 만족 클라이언트 918+'는 구체적 거래처명·계약서·매출액 없이 숫자만 나열되어 신뢰성 판단 불가. 팀 역량 실사 결과 창립자 이력·교육 배경·도메인 전문성을 확인할 공개 정보가 전혀 없고, LinkedIn 프로필조차 부재하여 전문성 검증 불가능. 가장 큰 미검증 가정은 '콘텐츠 크리에이터 네트워크를 통한 ESG 메시지 확산이 실제로 고객 행동 변화와 측정 가능한 환경 임팩트로 이어진다'는 인과관계가 전혀 검증되지 않았다는 점이다. 투자 고려 전 포괄적 오프라인 실사 필수.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Quang Loc Communication Technology And Events Company Limited (QLCE Group) · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

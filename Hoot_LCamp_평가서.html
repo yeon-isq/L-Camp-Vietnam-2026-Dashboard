@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hoot — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Hoot</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Singapore</span>
+          <span class="etag et-ind">E-commerce & Retail</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Hoot</div>
+        <div class="hero-sub">설립 2026 · hoot.asia</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Hoot은 베트남 Tier-1 OEM과 합작 제조 방식으로 Kaiteki(홈·패브릭케어)와 Poptast(플레이버드 캐슈넛) 등 FMCG 브랜드를 생산·판매하는 하우스 오브 브랜드이다. 베트남 제조사가 OEM 계약에서 5~10% 마진만 가져가는 구조적 문제를 해결하고자 JV 모델로 제조 가치를 현지에 남기며, 쇼피·틱톡샵 중심의 KOC(소규모 인플루언서) 네트워크 2,000명을 활용한 소셜커머스 유통 방식으로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          소셜커머스에서 검증된 SKU가 롯데마트 같은 오프라인 모던 트레이드 채널로 전환했을 때도 동일한 구매 전환율과 재구매율을 유지할 수 있다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">14</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">VND 5.7B</div><div class="kpi-desc">2025년 9월~2026년 4월, 약 $230K [부분 확인]</div></div>
+<div class="kpi"><div class="kpi-val">VND 3.4B</div><div class="kpi-desc">약 $133K, 2025년 9~12월 부분 실적 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">VND 21.7B</div><div class="kpi-desc">약 $851K, 진행 중/전망치 [미확인]</div></div>
+<div class="kpi"><div class="kpi-val">$1M</div><div class="kpi-desc">Seed Round 2026 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">2,000+</div><div class="kpi-desc">소규모 크리에이터 네트워크 규모 [미확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">베트남 홈케어(에어케어 8.8%, 패브릭 소프트너 8.9% CAGR) 및 스낵(8.4% CAGR) 시장은 성장세이며 온라인 채널 성장률 15% 이상으로 시장 매력도는 있음 [확인 — IR 덱 Euromonitor 2025 인용]. 그러나 경쟁 분석이 구체적이지 않음. Unilever, P&G 등 글로벌 대기업과 로컬 브랜드(Lix, Net 등)가 이미 점유한 시장에서 Hoot의 차별화 요소가 '소셜커머스 최적화 SKU + JV 제조'로 설명되나, 이것이 소비자 선택 시점에서 실제 구매 전환으로 이어지는지에 대한 검증 데이터는 없음 [미확인]. GMV $230K 규모는 시장 검증 초기 단계이며, 오프라인 확장 시 브랜드 인지도 부족 및 유통 마진 압박 리스크가 존재함.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">문제(베트남 OEM이 가치의 5~10%만 획득)와 솔루션(JV 제조 + 소셜커머스 유통)의 연결은 설명되나, 실제 수익 구조의 지속 가능성이 불분명함 [부분 확인]. 2025년 순매출 VND 3.4B($133K, 4개월 실적)는 확인되나, 이 중 실제 순이익 또는 단위경제(unit economics) 데이터가 전혀 제시되지 않음 [미확인]. IR 덱은 2026년 VND 21.7B($851K) 목표를 제시하나 이는 전망치일 뿐 계약·파이프라인 근거가 없음 [미확인]. 투자 이력도 명시되지 않아 외부 검증이 부재하며, 현재 매출 규모는 펀드 투자 적합성을 입증하기에 매우 초기 단계임. KOC 2,000명 네트워크 주장도 구체적 운영 데이터(평균 전환율, 재구매율, CAC 등) 없이는 검증 불가 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">문제 정의는 명확함: 베트남 제조사가 OEM 계약에서 저마진(5~10%)만 가져가는 구조적 불균형을 JV 모델로 개선하고, 농업 공급망(캐슈, 코코넛 등)과 KOC 크리에이터 소득 창출에 기여한다는 방향성은 사회적 가치와 연결됨 [부분 확인]. 그러나 실제 JV 파트너 제조사가 Hoot를 통해 얼마나 더 많은 마진을 가져갔는지, KOC 2,000명이 실제로 얼마의 소득을 창출했는지에 대한 정량 데이터가 전혀 없음 [미확인]. 또한 롯데마트 PoC를 통해 현지 공급망 가시성을 높인다는 주장도 현재로서는 계획일 뿐 실행 결과가 없음 [미확인]. 임팩트의 규모·깊이·지속성을 판단하기에는 근거가 부족함.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 리서치 결과에 따르면 두 공동창업자 모두 LinkedIn 프로필을 찾을 수 없으며, 자가 보고된 경력(Shopee 베트남 책임자, Roland Berger 컨설턴트)을 뒷받침하는 독립적 검증 자료가 전혀 없음 [미확인]. 10~20년 경력의 고위 임원이 디지털 발자국이 전혀 없다는 것은 극히 비정상적이며, Hoot 회사 자체에 대한 공개 정보(웹사이트, 보도자료, 업계 기사)도 부재함 [미확인]. 이는 매우 초기 단계이거나 경력 과장 가능성을 시사함. 또한 기술·제품·물류 전문 인력에 대한 언급이 없어 팀 구성이 불완전하며, 핵심 인물 의존도 리스크가 높음 [확인 — 리서치 결과]. 도메인 관련성은 자가 보고 내용이 사실이라면 중간 수준이나, 검증 불가로 인해 실제 역량을 평가할 수 없어 매우 낮은 점수 부여.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">5<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">주요 사업분야(유통·식품)와 롯데마트 베트남 연계는 명확하며, PoC 아이디어는 구체적임 [확인]. 3~6개월 파일럿 구조(매장 선정 → 온보딩 → 샘플링·프로모션 → 데이터 분석)가 실행 가능한 수준으로 기술되어 있고, L.POINT 연계 재구매 추적 등 롯데 인프라 활용도 언급됨 [확인]. 그러나 PoC 성공 가능성에 대한 핵심 전제가 검증되지 않음: (1) 소셜커머스 최적화 SKU가 오프라인 모던 트레이드에서도 전환될 것이라는 가정, (2) Hoot 브랜드 인지도가 거의 없는 상태에서 롯데마트 매대 경쟁력 [미확인]. 또한 Hoot 측이 실제로 롯데마트 입점 협상 경험이나 B2B 유통 운영 역량을 보유하고 있는지 불분명하며, 현재 D2C 중심 팀 구성으로는 실행 기반이 약함 [미확인]. PoC 아이디어 자체는 구체적이나 실행 주체의 역량 검증 부족으로 중 등급.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 2 + C 3 + D 1 + E 5</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">14</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통(롯데마트), 식품(롯데리아)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">롯데마트 베트남</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데마트 베트남 현대적 유통 채널 파일럿. Hoot의 Kaiteki(패브릭·룸 스프레이, 세탁 세제)와 Poptast(플레이버드 캐슈) SKU를 호찌민 소재 롯데마트 하이퍼마켓 소수 매장과 온라인 채널에 입점시켜, 소셜커머스에서 검증된 제품이 오프라인 현대적 유통에서도 전환되는지 3~6개월간 테스트. 1개월차 롯데마트 바이어와 카테고리 리뷰 및 파일럿 매장 선정, 1~2개월차 공급 온보딩 및 매대 배치, 2~4개월차 Hoot KOC 네트워크 활용 매장 샘플링 및 L.POINT 연계 프로모션 실행, 4~6개월차 판매 데이터·마진·재구매율 분석 후 확대 여부 결정.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">On the social side, it's a fact that that Vietnamese manufacturers currently earn only 5-10% margin on OEM contracts while foreign brands keep 40-60%; Hoot's JV model is explicitly designed to shift more of that value capture back to Vietnamese manufacturing partners and, by extension, the local agricultural supply chains (cashew, coconut, coffee) those products are built on. The 2,000+ creator (KOC) network also functions as an income and skills channel for young Vietnamese creators, and the brand is creating local jobs (brand ops, marketing, KOC management) rather than offshoring them.
+
+A PoC with LOTTE Mart would amplify this by giving Vietnamese-origin, locally-sourced products mainstream retail visibility and L.POINT-backed data credibility that small Vietnamese brands rarely get, helping formalize and scale demand for the local agricultural inputs behind Kaiteki and Poptast, and giving LOTTE a concrete "supporting local Vietnamese supply chains and creator-economy livelihoods" story for its own ESG reporting</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">자가 보고된 경력이 정확하다면, 팀은 이론적으로 플랫폼 측 이커머스 운영(Shopee), 전략 컨설팅(Roland Berger), 브랜드 구축 및 카테고리 관리에 대한 보완적인 전문 지식을 보유하고 있음. 그러나 이러한 주장을 검증할 수 없으므로 실제 도메인 커버리지를 평가할 수 없음. 검증 가능한 기술, 제품 개발, 물류/운영 전문성에 명확한 격차가 있음.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">제공된 정보는 2명의 공동 창업자만 언급하고 있으며, 두 사람 모두 배경을 검증할 수 없음. 이커머스 스타트업에 필요한 핵심 기능에 대한 명확한 언급이 없음: 기술/엔지니어링 리더십, 제품 관리, 마케팅/고객 확보, 재무, 물류/풀필먼트 운영. 2명으로만 구성된 팀은 이커머스 벤처의 운영 복잡성에 대해 불완전해 보임.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">심각한 우려: 두 창업자 모두 검증 가능한 디지털 존재감이 전혀 없음. 주요 플랫폼(Shopee)과 유명 기업(Roland Berger)에서 10-20년의 고위직 경험을 주장하는 임원들은 일반적으로 LinkedIn 프로필, 업계 보도, 회의 발표, 또는 전문 네트워크를 통해 확인 가능한 공개 기록을 가지고 있음. Hoot 자체에 대한 공개 정보(웹사이트, 회사 등록, 보도 자료, 업계 보도)가 없다는 것은 추가적인 우려사항임. 이는 매우 초기 단계(아직 공개 출시 전), 잘못된 정보, 또는 과장된 자격 증명을 나타낼 수 있음. 진행하기 전에 철저한 배경 조사 및 검증이 필수적임.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">검증 가능성 및 투명성: 가장 중요한 격차는 창업자의 정체성, 배경 및 회사 자체의 존재에 대한 기본적인 검증 부족임. 즉각적인 조치: (1) 두 창업자의 실제 LinkedIn URL 또는 검증 가능한 전문 프로필 요청, (2) Shopee 및 Roland Berger에서의 고용을 확인하는 추천서 또는 고용 확인서 요청, (3) 회사 등록 문서, 법인 설립 증명서 및 창업자 지분 구조 요청, (4) 업계 추천인 또는 이전 동료와의 역참조 수행, (5) 제품 데모, 고객 증언 또는 견인력의 증거 요청. 2차적 격차: 기술/제품/운영 리더십, 자금 조달 내역, 명확한 시장 차별화 요소, 그리고 이미 주요 업체들(Shopee, Lazada, TikTok Shop)이 지배하고 있는 혼잡한 베트남 이커머스 시장에서 경쟁할 수 있는 실행 가능한 전략이 없음.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Lê Thị Khánh Linh LinkedIn · Linh Le Hoot CEO LinkedIn · Linh Le Shopee Vietnam LinkedIn · Linh Nguyen Hoot COO LinkedIn · Linh Nguyen Shopee Fashion Lifestyle LinkedIn · Linh Le Roland Berger Vietnam consultant</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Lê Thị Khánh Linh (Linh Le)</div><div class="member-role">CEO & Co-founder</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없음 - CEO가 전문 네트워킹 플랫폼에 존재감이 없다는 것은 비정상적</span><span class='flag-item'>⑊ 자가 보고된 경력을 검증할 수 있는 독립적인 출처 없음</span><span class='flag-item'>⑊ Shopee 또는 Roland Berger와의 연결을 확인할 수 있는 공개 기록 없음</span><span class='flag-item'>⑊ Hoot.asia 또는 Hoot 스타트업에 대한 공개 정보 없음</span><span class='flag-item'>⑊ 회사 웹사이트, 보도자료 또는 업계 보도 자료 없음</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>미확인/미확인</td><td>미확인</td><td>미확인</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Shopee</td><td>Head of Shopee Consignment Vietnam (자가 보고)</td><td>미확인</td><td style="font-size:11px;">10년 이상의 베트남 이커머스, 공급망 및 소싱 경험을 보유했다고 주장. 검증된 LinkedIn 프로필을 찾을 수 없음.</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr><tr><td>Roland Berger</td><td>전략 컨설턴트 (자가 보고)</td><td>미확인</td><td style="font-size:11px;">Roland Berger에서 전략 컨설팅 경험이 있다고 주장하나 공개적으로 검증 가능한 정보를 찾을 수 없음.</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 자가 보고된 경력이 사실이라면, Shopee에서의 위탁 판매 및 Roland Berger에서의 전략 컨설팅 경험은 이커머스 및 리테일 스타트업에 관련성이 높음. 그러나 이러한 주장을 검증할 수 있는 공개 프로필이나 독립적인 출처를 찾을 수 없어 실제 관련성을 평가하기 어려움.</div><div class="ma-overall"><strong>종합 평가:</strong> 이 창업자의 배경을 검증할 수 없음. CEO가 LinkedIn 존재감이 전혀 없고 자가 보고된 경력을 뒷받침하는 공개 기록이 없다는 것은 심각한 우려사항임. 베트남 이커머스 생태계(Shopee)와 글로벌 컨설팅(Roland Berger)에서 주장하는 10년 이상의 고위직 경험을 가진 임원이라면 일반적으로 상당한 디지털 발자국을 남기게 됨. 제공된 정보의 정확성과 이 개인의 실제 자격에 대한 철저한 실사가 필요함.</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Linh Nguyen</div><div class="member-role">COO & Co-founder</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없음 - 20년 경력의 고위 임원이 LinkedIn에 없는 것은 매우 비정상적</span><span class='flag-item'>⑊ 자가 보고된 경력을 뒷받침하는 독립적인 검증 없음</span><span class='flag-item'>⑊ Shopee 또는 이커머스 업계와의 연결을 확인할 수 있는 공개 기록 없음</span><span class='flag-item'>⑊ 'Linh Nguyen'은 베트남에서 매우 흔한 이름이지만 설명된 프로필과 일치하는 사람을 찾을 수 없음</span><span class='flag-item'>⑊ Hoot와의 연결을 보여주는 공개 정보 없음</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>미확인/미확인</td><td>미확인</td><td>미확인</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Shopee Vietnam</td><td>Head of Fashion & Lifestyle (자가 보고)</td><td>미확인</td><td style="font-size:11px;">동남아시아 전역에서 20년 이상의 이커머스 및 브랜드 구축 경험을 보유했다고 주장. 검증된 LinkedIn 프로필을 찾을 수 없음.</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 자가 보고된 경력이 정확하다면, Shopee에서 패션 및 라이프스타일 부문을 이끌고 동남아시아에서 20년의 이커머스 경험은 리테일 스타트업에 매우 관련성이 높음. 그러나 이러한 광범위한 주장에 대한 검증 가능한 증거가 없어 실제 전문성을 평가할 수 없음.</div><div class="ma-overall"><strong>종합 평가:</strong> 이 창업자의 배경도 검증할 수 없음. 20년 경력의 동남아시아 이커머스 임원이 아무런 디지털 발자국이나 업계 존재감이 없다는 것은 극히 드문 일임. Shopee와 같은 주요 플랫폼에서 주장하는 고위직은 일반적으로 언론 보도, 업계 이벤트, 전문 네트워크를 통해 공개적으로 문서화됨. 이 개인의 정체성과 자격 증명에 대한 독립적인 검증이 투자 전에 필수적임.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>창업자 경력 및 회사 존재 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 두 창업자 모두 자가 보고 경력을 뒷받침하는 독립적 자료가 전혀 없으며, Hoot 회사 자체의 공개 정보(웹사이트, 보도자료, 업계 기사)도 부재. 10~20년 경력 고위 임원이 디지털 발자국이 전혀 없다는 것은 극히 비정상적이며 실사 필수.</td></tr>
+<tr><td>소셜커머스 → 오프라인 전환 가정 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 틱톡샵·쇼피에서 성과를 낸 SKU가 롯데마트 같은 오프라인 모던 트레이드에서도 동일한 구매 전환율과 재구매율을 유지할 것이라는 핵심 가정이 검증되지 않음. 소비자 행동·구매 맥락이 완전히 다른 채널.</td></tr>
+<tr><td>단위경제 및 수익성 데이터 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 2025년 순매출 $133K는 확인되나 COGS, 마케팅 비용, CAC, LTV, 순이익률 등 사업모델의 지속가능성을 판단할 수 있는 핵심 지표가 전혀 제시되지 않음. 투자 적합성 판단 불가.</td></tr>
+<tr><td>팀 구성 불완전 및 B2B 운영 역량 부족</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] 기술·제품·물류 전문 인력 부재, 2명 공동창업자만으로는 FMCG 브랜드 운영 복잡성 대응 어려움. 또한 자가 보고 경력이 사실이더라도 D2C 중심 배경이며 B2B 모던 트레이드 운영 경험은 불명확.</td></tr>
+<tr><td>브랜드 인지도 제로 상태에서 글로벌·로컬 강자와 경쟁</td><td><span class="rpill-sm rp-m">중간</span></td><td>[확인] Unilever, P&G, Lix, Net 등이 이미 시장 점유한 상태. Hoot의 차별화 요소(소셜커머스 최적화 + JV 제조)가 소비자 선택 시점에서 실제 구매로 전환되는지 검증 필요.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — FMCG·하우스 오브 브랜드</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">제품–시장 적합성 (Product-Market Fit) 검증</span><span class="dvtag dv-r">초기 단계, 근거 미흡</span><span class="deep-arrow">▾</span></div><div class="deep-body">누적 GMV $230K(8개월)는 FMCG 브랜드 초기 견인력으로 매우 작은 규모이며, 이것이 제품-시장 적합성을 입증한다고 보기 어렵다 [확인 — 자가 보고]. IR 덱은 Kaiteki와 Poptast가 소셜커머스에서 '검증'되었다고 주장하나, 실제 재구매율·고객 유지율·NPS 등 정성적 PMF 지표가 전혀 제시되지 않음 [미확인]. 더욱이 온라인 D2C에서 작동한 SKU가 오프라인 모던 트레이드(롯데마트)에서도 동일하게 전환될 것이라는 가정은 검증되지 않았으며, 글로벌 FMCG 대기업(Unilever, P&G)과 로컬 강자(Lix, Net) 대비 브랜드 인지도 및 선반 경쟁력이 극히 낮아 PoC 성공 가능성에 상당한 리스크가 존재함 [미확인]. 따라서 현재로서는 제품-시장 적합성이 초기 탐색 단계에 있으며, 규모 확장을 뒷받침할 만한 근거가 부족하다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">단위경제 (Unit Economics) 및 수익성 경로</span><span class="dvtag dv-r">데이터 부재, 평가 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">IR 덱과 제출 자료 어디에도 제품별 단위경제 — 제조 원가(COGS), 물류비, 마케팅비(CAC), 기여 이익률(contribution margin) — 가 공개되지 않음 [미확인]. 2025년 순매출 $133K는 확인되나, 이것이 실제로 수익을 남겼는지 아니면 마케팅·운영비로 적자인지 알 수 없음 [미확인]. KOC 2,000명 네트워크를 활용한다는 주장도 평균 전환율, 커미션 구조, CAC 대비 LTV 비율 등 구체적 운영 데이터 없이는 마케팅 효율성을 판단할 수 없음 [미확인]. FMCG 브랜드는 규모의 경제가 핵심인데, 현재 매출 규모에서는 제조·물류·마케팅 고정비를 흡수하기 어려우며, 수익성 경로에 대한 명확한 로드맵이 없어 투자 적합성 판단이 매우 어려움.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">JV 제조 모델의 실질적 경쟁 우위 여부</span><span class="dvtag dv-a">주장만 있고 검증 없음</span><span class="deep-arrow">▾</span></div><div class="deep-body">Hoot은 베트남 Tier-1 OEM과의 JV(합작 제조) 모델을 핵심 차별화 요소로 제시하며, 이를 통해 제조사가 5~10% 마진 대신 더 많은 가치를 가져간다고 주장함 [부분 확인 — 자가 보고]. 그러나 실제 JV 파트너가 누구인지, 지분 구조가 어떻게 되어 있는지, 제조사가 실제로 얼마의 추가 마진을 획득했는지에 대한 정량 데이터가 전혀 없음 [미확인]. 또한 JV 모델이 최종 소비자에게 어떤 가치를 제공하는지 — 더 나은 품질, 더 낮은 가격, 더 빠른 출시 속도 — 가 명확하지 않으며, 이것이 경쟁사 대비 실질적 우위로 이어진다는 증거가 부재함 [미확인]. 따라서 JV 모델은 현재로서는 '스토리'일 뿐 검증된 경쟁 우위로 보기 어렵다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">브랜드 포트폴리오 확장 전략 및 실행 역량</span><span class="dvtag dv-a">야심적이나 근거 약함</span><span class="deep-arrow">▾</span></div><div class="deep-body">Hoot은 '하우스 오브 브랜드' 모델을 표방하며 현재 Kaiteki(홈케어)와 Poptast(스낵) 두 브랜드를 운영하고, 퍼스널케어 브랜드 론칭을 준비 중이라고 밝힘 [부분 확인]. 그러나 각 브랜드가 독립적으로 성공 궤도에 있는지에 대한 검증이 없으며, 두 브랜드 합산 GMV $230K는 개별 브랜드로 나누면 각각 매우 미미한 규모임 [확인]. 하우스 오브 브랜드 모델은 각 브랜드가 독립적인 PMF와 수익성을 확보한 후 포트폴리오 시너지를 추구하는 것이 일반적이나, Hoot은 아직 단일 브랜드도 검증하지 못한 상태에서 다중 브랜드 확장을 추진하고 있어 리소스 분산 및 실행 리스크가 높음 [미확인]. 또한 팀 구성에서 제품 개발, 브랜드 관리, 카테고리 전문가에 대한 언급이 없어 실행 역량에 의문이 제기됨.</div></div>
+<div class="deep-category-label">Category D — 팀 검증 및 실행 역량</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업자 경력 진위 여부 및 디지털 발자국 부재</span><span class="dvtag dv-r">심각한 검증 불가 상태</span><span class="deep-arrow">▾</span></div><div class="deep-body">두 공동창업자 Linh Le(CEO)와 Linh Nguyen(COO)는 각각 Shopee 베트남 책임자(Consignment Head, Fashion & Lifestyle Head) 및 Roland Berger 컨설턴트 경력을 자가 보고했으나, LinkedIn을 포함한 어떠한 공개 플랫폼에서도 프로필을 찾을 수 없음 [확인 — 리서치 결과]. 10~20년 경력의 고위 임원급 인물이 디지털 발자국이 전혀 없다는 것은 극히 비정상적이며, 이는 경력 과장 또는 허위 가능성을 강하게 시사함 [미확인]. 또한 Hoot 회사 자체에 대한 공개 정보(공식 웹사이트 hoot.asia 접속 불가, 언론 보도, 업계 기사)도 전혀 없어 회사 실재 여부조차 독립적으로 확인하기 어려움 [미확인]. 이는 투자 심사에서 가장 기본적인 신뢰성 검증이 불가능한 상태이며, 매우 높은 위험 신호로 판단됨.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">팀 구성 완결성 및 핵심 역량 공백</span><span class="dvtag dv-r">불완전, 실행 리스크 높음</span><span class="deep-arrow">▾</span></div><div class="deep-body">제출 자료에는 두 명의 공동창업자만 언급되어 있으며, FMCG 브랜드 운영에 필수적인 핵심 역량 — 제품 개발(R&D), 제조·물류 관리, 브랜드 마케팅, 데이터 분석 — 을 담당하는 전문 인력에 대한 언급이 전혀 없음 [미확인]. 특히 JV 제조 모델을 핵심으로 내세우면서도 공급망·품질관리 전문가가 팀에 없다는 것은 실행 기반이 매우 약함을 의미함 [확인]. 또한 두 창업자 모두 e-commerce 플랫폼 운영 배경을 주장하나, 실제 브랜드 빌딩(brand-building) 또는 FMCG 제조·유통 경험이 검증되지 않아 도메인 전문성이 불분명함 [미확인]. 현재 팀 구성으로는 다중 브랜드 포트폴리오 및 오프라인 확장을 실행하기 어려우며, 핵심 인물 의존도가 극히 높아 이탈 리스크가 큼.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">B2B 유통 및 모던 트레이드 운영 경험</span><span class="dvtag dv-r">경험 없음, PoC 실행 위험</span><span class="deep-arrow">▾</span></div><div class="deep-body">Hoot은 현재까지 Shopee, TikTok Shop 등 D2C 소셜커머스 채널에서만 판매해 왔으며, B2B 유통 또는 모던 트레이드(MT) 운영 경험이 전혀 없음 [확인]. 그러나 제안된 PoC는 롯데마트라는 대형 오프라인 리테일 체인에 입점하는 것으로, 이는 바이어 협상, 매대 관리, 프로모션 실행, 재고 관리 등 D2C와는 전혀 다른 역량을 요구함 [확인]. 팀에 MT 채널 경험자가 없는 상태에서 PoC를 실행할 경우 실패 가능성이 높으며, 이는 롯데 측에도 부정적 신호를 줄 수 있음 [미확인]. 더욱이 IR 덱 로드맵에서 B2B/MT 확장은 2027년으로 계획되어 있었으나 PoC를 위해 이를 앞당긴 것으로 보이며, 이는 준비 부족 상태에서의 성급한 확장 시도일 가능성이 높음.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>베트남 홈케어·스낵 시장의 연평균 8% 이상 성장세와 온라인 채널 15% 성장률은 시장 기회로 확인됨 [확인 — IR 덱 Euromonitor 인용]</li>
+<li>JV 제조 모델은 베트남 Tier-1 OEM 여유 생산능력 활용 및 FTA 관세 우위(미국 0~5%)라는 구조적 이점을 가짐 [부분 확인 — OEM 파트너 구체명 없음]</li>
+<li>롯데마트 PoC 아이디어는 실행 단계별 구조(매장 선정·온보딩·샘플링·데이터 분석)와 L.POINT 연계가 구체적으로 기술됨 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>두 창업자 모두 자가 보고 경력을 검증할 수 있는 독립적 자료(LinkedIn, 추천서, 고용 확인서)가 전혀 없으며 회사 자체의 공개 정보도 부재 [미확인 — 팀 리서치 결과]</li>
+<li>2025년 순매출 $133K는 초기 트랙션이나 단위경제·순이익·CAC·LTV 등 수익성 지표가 전혀 제시되지 않아 사업모델 지속가능성 불명확 [미확인]</li>
+<li>KOC 2,000명 네트워크 주장에 대한 구체적 운영 데이터(평균 전환율, 크리에이터당 GMV, 재계약률 등) 없음 [미확인]</li>
+<li>소셜커머스 최적화 SKU가 오프라인 모던 트레이드로 전환 시 동일한 성과를 낼 것이라는 핵심 가정이 검증되지 않음 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남-미국 FTA 활용 시 미국 캐슈넛 시장($1.9B, 8.1% CAGR) 진출 가능성</li>
+<li>롯데마트 베트남과의 PoC 성공 시 롯데 계열사 유통망(백화점·마트·온라인) 확장 가능성</li>
+<li>베트남 소셜커머스(쇼피·틱톡샵) 성장세 지속 시 KOC 네트워크 기반 D2C 채널 강화 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Unilever, P&G 등 글로벌 대기업과 Lix, Net 등 로컬 강자가 이미 시장 점유한 상태에서 브랜드 인지도 제로 상태로 경쟁</li>
+<li>오프라인 유통 확장 시 유통 마진 압박 및 재고 리스크 증가, 현재 D2C 중심 팀 구성으로는 B2B 운영 역량 부족</li>
+<li>창업자 경력 검증 불가 및 팀 구성 불완전(기술·제품·물류 전문 인력 부재)으로 인한 실행 리스크</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">14</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">Hoot은 베트남 FMCG 시장의 구조적 문제(OEM 저마진)를 JV 제조 + 소셜커머스 유통으로 해결하려는 방향성은 명확하나, 핵심 전제들이 검증되지 않았다. 가장 큰 미검증 가정은 소셜커머스에서 성과를 낸 SKU가 오프라인 모던 트레이드로 전환 시에도 동일한 구매 전환율과 재구매율을 유지할 수 있다는 것이다. 또한 두 창업자 모두 자가 보고된 고위직 경력(Shopee 책임자, Roland Berger 컨설턴트)을 뒷받침하는 독립적 검증 자료가 전혀 없으며, LinkedIn 프로필조차 찾을 수 없어 팀 역량 평가가 불가능하다. 현재 매출 규모($133K, 4개월)는 초기 트랙션이지만 단위경제·수익성 데이터 부재로 투자 적합성 판단이 어렵다. 롯데마트 PoC 아이디어는 구체적이나 실행 주체의 B2B 유통 역량 및 브랜드 인지도 부족이 실행 리스크로 작용한다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">5 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">14 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Hoot · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

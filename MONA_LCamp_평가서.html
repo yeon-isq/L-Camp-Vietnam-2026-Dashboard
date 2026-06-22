@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MONA — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">MONA</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Seoul, South Korea</span>
+          <span class="etag et-ind">Sustainability / Circular Economy</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">MONA</div>
+        <div class="hero-sub">설립 2023 · www.monaofficial.co</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">MONA는 기업의 잉여 식품, 소비재, 재고를 검증된 비영리단체에 재분배하는 ESG 자원관리 플랫폼이다. 그랜드 하얏트 인천, 벤앤제리스 등 50개 기업 파트너와 100개 이상 비영리단체를 매칭하며, 연 구독 및 건당 수수료 혼합 모델로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          AI 매칭 엔진(NeuMF)이 수작업 대비 실제로 매칭 시간을 7일→24시간으로 단축하고 성공률 90%를 달성한다는 기술적 우위가 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">19</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$40K</div><div class="kpi-desc">2026년 연매출 (확인)</div></div>
+<div class="kpi"><div class="kpi-val">50개</div><div class="kpi-desc">MOU 체결 및 거래 완료 (부분 확인)</div></div>
+<div class="kpi"><div class="kpi-val">100개+</div><div class="kpi-desc">재분배 네트워크 (부분 확인)</div></div>
+<div class="kpi"><div class="kpi-val">35,000명</div><div class="kpi-desc">누적 지원 인원 (미확인)</div></div>
+<div class="kpi"><div class="kpi-val">544톤</div><div class="kpi-desc">CO₂ 배출 방지량 (미확인)</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 타겟 시장(기업 ESG 컴플라이언스 및 잉여자원 처리)은 글로벌적으로 존재하나, 베트남/APAC 특정 시장 규모에 대한 구체적 데이터가 없음. IR Deck에서 '$30B+ 글로벌 폐기 비용'을 언급하나 SAM/SOM 세분화 없이 거대한 TAM만 제시한 것은 경계 대상. 경쟁사 분석이 IR Deck에 누락되어 차별화 전략의 검증 불가. 한국 내 50개 파트너 확보는 초기 시장 적합성을 시사하나, 베트남 확장은 '파트너십 구축 노력'으로만 언급되어 실제 현지 트랙션은 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 문제(기업 잉여자원 폐기 비용)-솔루션(AI 매칭 플랫폼)-고객(B2B 기업) 구조는 명확. 수익모델(구독+건당 수수료 혼합)은 제시되었으나 단위경제(CAC, LTV, 건당 마진)는 공개되지 않음. 2024년 $5K→2026년 $40K 성장은 초기 트랙션을 보여주나, 정부 보조금($52K)이 매출($40K)을 초과하여 실제 시장 검증보다 보조금 의존도가 높은 것으로 보임. 투자 유치 이력 없음. 롯데벤처스 투자 적합성은 PoC를 통한 검증이 선행되어야 함.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">[확인] 사회문제(식품 폐기→온실가스 배출 8-10%, 취약계층 자원 접근성 부족) 정의가 구체적이며, 솔루션(잉여자원 재분배)이 문제 해결에 직접 연결됨. 35,000명 수혜자, 544톤 CO₂ 저감 주장은 [미확인]이나 사회적기업 인증(한국 정부), 영국상공회의소 지속가능성 상 수상 등 제3자 검증이 존재. 임팩트의 규모·깊이·지속성 모두 사업모델에 내재되어 있으며, 순환경제 촉진이라는 구조적 가치 창출이 명확함.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 리서치 결과 중대한 불일치 발견: 자기보고 프로필의 'UN, Samsung, LG, SK에서 10년+ ESG/AI 경험' 주장이 LinkedIn 및 공개기록에서 검증 불가. 확인된 경력은 비건 레스토랑 운영(2020-2023)이 유일하며, 이는 커뮤니티 구축 능력은 입증하나 엔터프라이즈 ESG 시스템이나 AI 개발 역량과는 무관. 단독 창업자 구조로 핵심 인력 의존도 높음. CTO, ESG 전문가, 물류 책임자 등 필수 팀원 정보 부재. 16,000명 커뮤니티 및 50개 파트너십 구축은 실행력 증명이나, 기술 배경 과장 리스크와 팀 불완전성이 확장성을 저해.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">7<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">[부분 확인] 주요 사업분야(유통·호텔·F&B) 명확히 부합. 그랜드 하얏트 인천 협력 경험은 롯데호텔 PoC 관련성 입증. 그러나 PoC 아이디어가 '잉여자원 재분배+ESG 보고서 생성'이라는 일반적 서비스 소개 수준에 그치며, 롯데 특정 인프라(예: 롯데마트 물류망, 롯데멤버스 데이터, 롯데월드 방문객 연계)를 활용한 차별적 협력 방안이 부재. 베트남 비영리 파트너십 언급은 있으나 구체적 조직명·계약 없이 [미확인]. 롯데 계열사와의 협력 가능성은 중간 수준이나, PoC 구체성 보완 필요.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 3 + C 4 + D 2 + E 7</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">19</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통(롯데마트), 호텔(롯데호텔), F&B(롯데리아)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">롯데호텔, 롯데리아, 롯데마트</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데호텔·롯데리아·롯데마트의 잉여 식품 및 재고를 검증된 비영리단체에 재분배하는 파일럿. 식품안전 준수, 물류 조정, 수혜자 검증을 관리하고 탄소저감·사회적 임팩트 보고서를 생성. 그랜드 하얏트 인천 등 기존 호텔 협력 경험 활용.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">MONA transforms surplus resources into measurable environmental, social, and economic value while helping businesses achieve ESG objectives.
+
+Environmental (E)
+• Reduce food waste and disposal of usable products
+• Lower carbon emissions through resource redistribution
+• Support circular economy and resource efficiency initiatives
+
+Social (S)
+• Support vulnerable communities through access to food and essential goods
+• Create employment opportunities for marginalized groups through community-based logistics and delivery programs
+• Strengthen local nonprofit ecosystems through reliable resource access
+
+Governance (G)
+• Improve transparency and traceability of corporate giving and resource redistribution
+• Provide ESG impact measurement and reporting
+• Support sustainability disclosures and stakeholder communications
+
+A PoC with LOTTE would demonstrate how surplus resources across retail, hospitality, logistics, and F&B operations can be systematically transformed into measurable ESG outcomes, cost savings, and meaningful community impact at scale.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">제한적 도메인 커버리지: 현재 팀은 창업자 1인으로 구성된 것으로 보이며, 자기보고된 역량(ESG 전략, AI/데이터 분석, B2B/B2G 개발, 운영/공급망, 프로젝트 관리)을 모두 커버하기에는 한 사람의 전문성으로 부족합니다. 검증 가능한 배경은 F&B 창업 및 커뮤니티 구축이며, 이는 현재 비즈니스의 일부 측면(파트너십, 마케팅)을 지원하지만 기술적 깊이(AI, ESG 데이터 시스템)는 검증되지 않았습니다. 핵심 기능 영역(CTO, 데이터 과학자, ESG 전문가, 운영 책임자)에 대한 전담 팀원이 필요합니다.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">불완전한 팀 구조: 공개 정보에서 공동 창업자나 핵심 경영진을 확인할 수 없습니다. 50개 이상의 기업 파트너십과 6개 산업 분야 파일럿을 운영하는 B2B 스타트업이 단독 창업자로만 운영되는 것은 비현실적이므로, 직원이나 계약직이 있을 것으로 추정되나 정보가 공개되지 않았습니다. 중요한 누락: (1) 기술 리더십 (CTO/엔지니어링) - 자기보고된 AI 및 데이터 분석 역량에 필수, (2) ESG 도메인 전문가 - 기업 ESG 전략 자문을 위한 검증된 자격증/경험 필요, (3) 운영/물류 책임자 - 잉여 제품 재분배 비즈니스 모델에 핵심, (4) 재무/법무 리더십 - B2G 계약 및 확장성을 위해 필요. 팀 구성 정보의 투명성 부족은 우려사항입니다.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">혼합된 신뢰도: 강점 - Quinn은 실제 트랙션(16,000명 커뮤니티, 50개 파트너십, 측정 가능한 임팩트)과 제3자 인정(Women of the Future, 서울시 명예시민)을 달성했습니다. 그녀의 창업 여정(비건 레스토랑에서 ESG 플랫폼으로)은 일관되고 진정성 있게 보입니다. 약점 - 자기보고 프로필과 검증 가능한 경력 간의 중대한 불일치가 신뢰도를 손상시킵니다. 'UN, Samsung, LG, SK에서 10년 이상 ESG/AI 경험' 주장은 입증되지 않았으며, 이는 의도적 과장이거나 제3자(프로필 작성자)의 오해일 수 있습니다. LinkedIn 프로필의 미비함(주요 경력 누락)도 전문성 제시에 부정적입니다. 권장사항: 투자 전 (1) 주장된 대기업/UN 경력에 대한 직접 확인, (2) 교육 배경 검증(학위, 전공), (3) 현재 팀 구성원 및 자문단 공개 요청.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 격차는 검증되지 않은 기술 역량입니다. 비즈니스 모델(ESG 데이터 시스템, AI 기반 솔루션)이 주장하는 핵심 차별화 요소는 '10년 이상의 ESG 데이터 시스템 및 AI 솔루션 개발 경험'이지만, 이를 뒷받침하는 증거가 없습니다. 검증된 배경(F&B 운영)은 커뮤니티 구축 및 파트너십 개발에는 관련이 있지만, 엔터프라이즈급 데이터 시스템이나 AI 개발에는 불충분합니다. 두 번째 격차는 팀 깊이입니다. 확장 가능한 B2B SaaS/플랫폼을 구축하려면 기술, 운영, 재무 분야의 보완적 공동 창업자 또는 초기 핵심 직원이 필요하지만, 현재 팀 구성이 명확하지 않습니다. 세 번째는 투명성입니다. 핵심 주장에 대한 증거 부족과 팀 정보 비공개는 due diligence 관점에서 중요한 위험 신호입니다.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Quynh Phan LinkedIn MONA · Quynh Phan CEO monaofficial.co · MONA sustainability startup founders team · Phan Quinn LinkedIn phanquynh · Phan Quynh education university degree · Quynh Phan Vegan Beyond Seoul background</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Quinn Phan (Phan Quynh / Quynh Phan)</div><div class="member-role">Founder & CEO</div></div>
+    <div class="member-meta"><a href="https://kr.linkedin.com/in/phanquynh" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 중대한 불일치: 자기보고 프로필에서 주장한 'UN, Samsung, LG, SK Group에서 10년 이상 ESG 데이터 시스템 및 AI 솔루션 개발 경험'을 뒷받침하는 증거를 찾을 수 없음</span><span class='flag-item'>⑊ LinkedIn 프로필에는 주장된 대기업 경력이 표시되지 않으며, Vegan & Beyond 및 Emory University만 나열됨</span><span class='flag-item'>⑊ 학위 전공, 졸업 연도, 구체적인 학위 유형(학사/석사) 정보 없음</span><span class='flag-item'>⑊ 단독 창업자로 보이며, 핵심 팀원(CTO, COO, 공동창업자)에 대한 정보 없음</span><span class='flag-item'>⑊ 기술 배경(AI, ESG 데이터 분석) 주장과 실제 확인 가능한 경력(F&B) 간의 큰 격차</span><span class='flag-item'>⑊ Taiwan 체류 경험 언급되었으나 구체적인 기간이나 활동 내용 미확인</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>학사 (학위 유형 미확인)/미확인</td><td>Emory University</td><td>미확인</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Vegan & Beyond</td><td>Owner/Founder</td><td>2020년 6월 - 약 2023년 (폐업)</td><td style="font-size:11px;">서울 연희동에서 비건 레스토랑, 베이커리 및 이벤트 공간 운영. 7평 규모로 시작하여 더 큰 공간으로 확장. 기업가 네트워킹 이벤트 및 커뮤니티 활동 주최. 이 경험을 통해 소규모 비즈니스의 폐기물 관리 및 지속가능성 문제를 직접 경험하고 MONA 설립의 계기가 됨</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>MONA (주식회사 모나)</td><td>Founder & CEO</td><td>약 2019년 - 현재 (온라인 커뮤니티로 시작, 법인은 이후 설립)</td><td style="font-size:11px;">ESG 및 순환경제 플랫폼. 16,000명 이상의 회원을 보유한 온라인 커뮤니티로 시작하여 B2B 및 B2G ESG 솔루션 제공 기업으로 성장. 50개 이상의 기업 파트너십 구축. 6개 산업 분야에서 파일럿 프로그램 런칭</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> ESG 및 지속가능성 분야에서 실무 경험이 제한적입니다. 그녀의 배경은 주로 F&B 창업(비건 레스토랑)에서 나왔으며, 이를 통해 폐기물 관리 문제를 직접 경험했습니다. 그러나 자기보고 프로필에 언급된 'UN, Samsung, LG, SK Group에서의 10년 이상 ESG 데이터 시스템 및 AI 솔루션 개발 경험'을 뒷받침하는 검증 가능한 증거를 찾을 수 없었습니다. LinkedIn 프로필은 Vegan & Beyond만 표시하고 있어 주장된 대기업 및 국제기구 경력과 불일치합니다. 현재 활동(50개 이상의 기업 파트너십, 6개 산업 파일럿, ESG 교육 제공)은 실행력을 보여주지만, 핵심 기술 배경(AI, ESG 데이터 분석) 주장에 대한 검증이 필요합니다.</div><div class="ma-overall"><strong>종합 평가:</strong> Quinn Phan은 한국 내 ESG 및 순환경제 분야에서 실질적인 임팩트를 창출하고 있는 기업가입니다. 그녀는 커뮤니티 구축 능력, 파트너십 개발, 그리고 지속가능성에 대한 진정성 있는 열정을 보여주었습니다. 국제적 인정(Women of the Future 50 선정, 서울시 명예시민)과 구체적인 성과(50개 파트너십, 16,000명 커뮤니티)는 그녀의 실행력을 입증합니다. 그러나 심각한 우려사항이 존재합니다. 자기보고 프로필에서 주장한 핵심 기술 배경(UN, Samsung, LG, SK에서 10년 이상의 ESG 데이터/AI 경험)을 뒷받침하는 검증 가능한 증거를 찾을 수 없었습니다. LinkedIn 프로필은 이러한 경력을 표시하지 않으며, 공개 기록은 Vegan & Beyond 창업 경험만 확인합니다. 이는 역량 과장 또는 LinkedIn 프로필 미업데이트일 수 있으나, 투자 전 명확한 해명이 필요합니다. 또한 단독 창업자 구조는 주요 인력 의존도 리스크를 높입니다.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>AI 기술 역량 검증 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] NeuMF 알고리즘의 실제 성능 우위 및 개발 주체가 불명확. 창업자의 AI 개발 경력 주장이 외부 검증 불가하여 기술 자산의 실존성 및 품질 의문.</td></tr>
+<tr><td>키퍼슨 의존도</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 단독 창업자 구조로 CEO 부재 시 사업 연속성 위험. 기술, 운영, 영업 전담 팀원 정보 부재로 확장 시 병목 발생 가능성 높음.</td></tr>
+<tr><td>보조금 의존 재무 구조</td><td><span class="rpill-sm rp-m">중간</span></td><td>[확인] 2026년 정부 보조금($52K)이 자체 매출($40K)을 초과. 시장 검증보다 보조금 수혜 중심으로 성장하여 민간 시장 경쟁력 불확실.</td></tr>
+<tr><td>임팩트 측정 방법론 검증 필요</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 탄소저감 544톤, 수혜자 35,000명 등 주장 수치의 산출 방법론 및 제3자 검증 여부 불명. ESG 보고서 품질이 기업 고객 만족도에 직결되나 MRV 체계 구체성 부족.</td></tr>
+<tr><td>베트남 시장 진입 불확실성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 베트남 비영리 파트너십 언급되나 구체적 조직명, 계약, 현지 운영 인력 등 실체적 근거 부재. 한국 내 트랙션이 해외 복제 가능성을 보장하지 않음.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category C — 임팩트/소셜벤처</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-1</span><span class="deep-title">임팩트 측정 방법론 및 데이터 신뢰성</span><span class="dvtag dv-a">검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 35,000명 수혜자, 544톤 CO₂ 저감 수치가 IR 자료에 명시되었으나, 산출 방법론(예: 음식물 폐기→온실가스 환산 계수, 수혜자 카운팅 기준)이 공개되지 않음. 제3자 검증 기관(예: B-Corp, 탄소배출권 인증기관)의 확인서가 부재하여 자체 추정치일 가능성 높음. 사회적기업 인증과 영국상공회의소 지속가능성 상은 사업 방향성을 인정받았으나, 정량적 임팩트 데이터의 정확성을 직접 보증하지는 않음. PoC 단계에서는 롯데 내부 ESG 보고 기준(예: LCA 표준, Scope 3 배출 계산법)과의 정합성 확인이 필수적.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-2</span><span class="deep-title">수혜자 범위 및 지속가능한 분배 구조</span><span class="dvtag dv-a">보완 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 100개 비영리단체 파트너십은 분배 인프라 존재를 시사하나, 수혜자 35,000명의 구성(일회성 vs. 정기 수혜, 지역 분포, 취약계층 비율)이 불분명. 수혜자 데이터 수집·관리 시스템(예: 중복 제거, 프라이버시 보호)에 대한 설명 없음. 베트남 확장 시 현지 비영리 생태계(예: 정부 등록 NGO, 종교단체, 커뮤니티 조직)와의 연결 방식, 문화적 차이(예: 기부 음식 수용성, 할랄/채식 요구사항)에 대한 구체적 전략 부재. 롯데 PoC에서는 롯데복지재단, 롯데장학재단 등 기존 사회공헌 채널과의 시너지 가능성 검토 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-3</span><span class="deep-title">순환경제 모델의 확장성 vs. 자선 의존성</span><span class="dvtag dv-a">구조적 검토 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 사업모델이 '기업 폐기비용 절감(경제적 가치)'과 '취약계층 지원(사회적 가치)'을 동시 추구하나, 두 가치 간 트레이드오프 관리 전략이 불명확. 예: 기업이 폐기비용 절감만 원할 경우 가장 저렴한 처리 방식(예: 사료화, 퇴비화)을 선호할 수 있으며, 이는 '인간 소비용 재분배'라는 사회적 가치와 충돌 가능. 수익모델에서 비영리단체로부터 수수료를 받는지 여부가 불분명한데, 만약 무료 서비스라면 기업 고객 의존도가 높아져 임팩트보다 수익성이 우선될 리스크 존재. 베트남 시장에서는 정부 보조금(2026년 $52K)이 매출($40K)을 초과하는 구조가 지속 가능한지 의문.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-4</span><span class="deep-title">식품 안전 및 법적 리스크 관리</span><span class="dvtag dv-r">중요 검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] IR Deck에서 'food safety management'를 핵심 서비스로 명시했으나, 구체적 프로세스(예: 유통기한 검증, 온도 이력 추적, 교차오염 방지)가 공개되지 않음. 한국 식품위생법상 잉여식품 기부 시 책임 소재(기부자 vs. 중개자 vs. 수혜기관) 관련 법적 검토 이력 확인 불가. 만약 MONA가 법적 책임을 지지 않는 순수 중개 플랫폼이라면, 식중독 등 사고 발생 시 기업 고객이 평판 리스크를 부담하여 서비스 이탈 가능성 있음. 베트남 진출 시 현지 식품안전법(Vietnam Food Safety Law 2010, Decree 15/2018)과의 정합성, 필요 라이선스(예: 식품 운송업 허가) 확보 계획 부재는 운영 리스크로 작용.</div></div>
+<div class="deep-category-label">Category D — 팀/창업자 역량</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업자 경력 검증 및 핵심 역량 정합성</span><span class="dvtag dv-r">중대한 불일치</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 자기보고 프로필의 'UN, Samsung, LG, SK Group에서 10년+ ESG/AI 경험' 주장이 LinkedIn, 공개 기사, 인터뷰 등 독립적 소스에서 확인되지 않음. 검증 가능한 유일한 경력은 2020-2023년 비건 레스토랑 운영으로, 이는 로컬 커뮤니티 구축 및 F&B 운영 역량을 입증하나 엔터프라이즈 ESG 컨설팅, AI 시스템 개발과는 무관. 만약 과거 경력이 정규직이 아닌 프로젝트 참여/컨설팅이었다면 그 범위와 성과를 명확히 해야 하며, 현재 제시된 정보만으로는 대기업 ESG 시스템 구축 역량 입증 불가. 롯데와 같은 대규모 조직과의 협업에는 조직 정치, 의사결정 프로세스 이해가 필수인데, 이 부분의 실무 경험 부족이 우려됨.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">팀 구성 완전성 및 기술 실행 역량</span><span class="dvtag dv-r">핵심 인력 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] Application에서 '단독 창업자(solo founder)' 또는 초소규모 팀으로 추정되며, CTO/개발자, ESG 데이터 전문가, 물류 책임자 등 핵심 기능별 인력 정보가 전혀 제시되지 않음. IR Deck에서 'AI-driven matching'을 강조했으나, 현재 플랫폼이 실제 머신러닝 알고리즘을 사용하는지, 아니면 수동 매칭 후 '스마트' 레이블을 붙인 것인지 불명확. 만약 외주 개발을 이용 중이라면 IP 소유권, 기술 종속성 리스크 존재. 베트남 확장을 위해서는 현지 언어·법규·비즈니스 관행에 능통한 팀원이 필수인데, 현재 팀에 다국적 운영 경험이 있는지 확인 불가. 16,000명 커뮤니티 운영 경험은 있으나, 이를 B2B SaaS 확장으로 전환할 엔지니어링·세일즈 조직이 부재.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">어드바이저 네트워크 및 거버넌스 구조</span><span class="dvtag dv-a">정보 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 사회적기업, 수상 이력이 많은 것에 비해 외부 어드바이저, 멘토, 이사회 구성에 대한 정보가 전무. 특히 ESG 분야에서는 제도적 투자자(예: 임팩트 펀드), 산업 전문가(예: 전직 대기업 CSR 임원), 학계(예: 지속가능경영 교수)의 검증과 네트워크가 신뢰도를 좌우하는데 이 부분 부재. K-Startup Grand Challenge Top 20, She Loves Tech Top 10 등 국제 대회 입상 시 받았을 멘토링, 투자자 연결이 실제 사업에 반영되었는지 불명확. 단독 창업자 구조에서 의사결정 견제 장치(예: 자문위원회)가 없다면, 전략적 오판(예: 성급한 시장 확장, 수익모델 피봇)에 취약.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[확인] 50개 기업 파트너십 및 100개 비영리 네트워크 구축으로 양면 시장 초기 유동성 확보</li>
+<li>[확인] 사회적기업 인증, 영국상공회의소 지속가능성 상 등 제3자 검증을 통한 사회적 가치 입증</li>
+<li>[확인] 그랜드 하얏트 인천 등 호스피탈리티 분야 실제 협력 경험으로 롯데호텔 PoC 관련성 높음</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] AI 매칭 엔진의 기술적 우위(24시간 매칭, 90% 성공률) 주장에 대한 독립적 검증 부재</li>
+<li>[미확인] 창업자의 대기업/UN ESG 경력 주장이 공개기록과 불일치하여 기술 개발 역량에 의문</li>
+<li>[확인] 정부 보조금($52K)이 자체 매출($40K)을 초과하여 시장 검증보다 보조금 의존적 재무 구조</li>
+<li>[미확인] 단독 창업자 구조로 CTO, ESG 전문가 등 핵심 팀원 부재, 확장성 제약</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>APAC 기업들의 Scope 3 탄소 배출 보고 의무화 확대로 ESG 데이터 솔루션 수요 증가</li>
+<li>롯데 계열사 다수(호텔·마트·백화점·F&B)가 잉여자원 발생 가능 사업 영위하여 PoC 확장 잠재력</li>
+<li>베트남 정부의 순환경제 정책 강화 및 외식·유통 산업 성장으로 현지 시장 진입 타이밍 양호</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Too Good To Go 등 글로벌 플랫폼의 APAC 진출 시 브랜드 인지도 및 자본력에서 열세</li>
+<li>기업 고객의 ESG 워싱 우려로 인한 임팩트 측정 방법론에 대한 높은 검증 요구</li>
+<li>식품안전 규제 및 비영리단체 검증 기준의 국가별 상이함으로 인한 국제 확장 복잡도</li>
+<li>단일 창업자 의존도로 인한 키퍼슨 리스크 — 사업 연속성 취약</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">19</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">MONA는 순환경제라는 명확한 사회적 가치와 초기 파트너십 구축 실행력을 보유하나, 핵심 기술 역량 검증 부재와 단독 창업자 구조가 확장성을 제약함. 가장 큰 미검증 가정은 AI 매칭 엔진(NeuMF)의 실제 성능 우위(7일→24시간, 90% 성공률)가 수작업 대비 입증되지 않았으며, 자기보고된 대기업 ESG/AI 경력이 외부 검증 불가하여 기술 개발 능력에 의문이 남음. 정부 보조금($52K)이 자체 매출($40K)을 초과하여 시장 검증보다 보조금 의존도가 높은 상태. 롯데 PoC는 호텔·유통 분야 적합성은 있으나, 계열사 특정 인프라 활용 방안이 구체화되지 않아 차별적 협력 가치가 불분명함.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">7 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">19 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>MONA · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>
