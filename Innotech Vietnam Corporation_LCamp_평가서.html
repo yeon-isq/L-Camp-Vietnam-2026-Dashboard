@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Innotech Vietnam Corporation (Gexim) — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Innotech Vietnam Corporation (Gexim)</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Hochiminh City, Vietnam</span>
+          <span class="etag et-ind">Prop-tech / Trade-tech</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Innotech Vietnam Corporation (Gexim)</div>
+        <div class="hero-sub">설립 2014 · https://innotech-vn.com/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Gexim은 베트남 수출입 중소기업을 위한 AI 기반 무역 컴플라이언스 및 서류 자동화 플랫폼이다. 수출입 업체들이 겪는 서류 오류, HS 코드 오분류, 규제 준수 실패 문제를 해결하며, SaaS 구독 또는 거래당 수수료 모델로 운영된다고 주장하나 현재 매출은 없고 1개 파일럿 고객만 확보한 MVP 단계이다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          모회사 Innotech의 Fintech 개발 역량이 전혀 경험이 없는 무역 컴플라이언스 도메인에서 실제 운영 가능한 제품으로 전환될 수 있다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">1개</div><div class="kpi-desc">[확인] EZIMEX, 워크플로우 테스트 진행 중</div></div>
+<div class="kpi"><div class="kpi-val">2개</div><div class="kpi-desc">[부분 확인] TMT, Logimark — 워크샵 완료, 파일럿 논의 중</div></div>
+<div class="kpi"><div class="kpi-val">15+</div><div class="kpi-desc">[미확인] 구체적 대상, 날짜, 결과 미제시</div></div>
+<div class="kpi"><div class="kpi-val">500+</div><div class="kpi-desc">[미확인] 내부 테스트 중 처리, 실제 고객 거래 아님</div></div>
+<div class="kpi"><div class="kpi-val">USD 250K</div><div class="kpi-desc">Pre-seed 라운드</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[부분 확인] IR은 베트남 수출입 시장 규모 $930B(2025)를 제시하나 TAM/SAM/SOM 세분화가 지나치게 추상적임. SAM을 '식품·화장품·육아용품 수입 중소기업'으로 정의했으나 실제 시장 규모, 고객 수, 지불 의향에 대한 구체적 데이터 없음. [미확인] 경쟁사 분석 전무 — 베트남에 이미 존재하는 관세사, 포워더, 통관 소프트웨어 업체와의 차별점 불명확. 15개 인터뷰 결과도 페인 포인트 나열에 그치며 구매 의향이나 가격 검증은 없음. 확장 가능성은 주장되나 근거 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 비즈니스 모델이 IR에서 SaaS 구독 또는 거래당 수수료로 언급되었으나 가격, 단위 경제, 고객당 LTV/CAC 등 구체적 수익 구조 전무. [확인] 현재 매출 없음, 1개 파일럿만 진행 중. [미확인] 투자 적합성 — Pre-seed $250K 목표이나 사용 계획, 마일스톤, 12개월 후 목표 지표 불명확. 문제-솔루션 핏은 IR에서 설명되나 실제 지불 고객 확보 증거 없어 시장 검증 미완료. 롯데벤처스 펀드 투자 적합성은 PoC 가능성에 의존하나 상업적 견인력 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 사회문제는 명확 — 베트남 중소 수출입 업체들의 서류 오류, 규제 준수 실패, 수동 프로세스로 인한 비효율. 솔루션(AI 자동화, 지식 구조화)이 이 문제 해결에 논리적으로 연결됨. [미확인] 실제 임팩트 규모·깊이·지속성 — 1개 파일럿만 진행 중이며 정량적 효과(비용 절감액, 시간 단축률) 미측정. ESG 임팩트는 'governance 개선, 투명성 강화'로 서술되나 측정 가능한 지표나 검증 방법 없음. 사회적 가치 방향성은 타당하나 현재는 주장 단계.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[확인] 팀 리서치 결과 심각한 신뢰성 문제 발견. CEO Nguyen Vu Linh는 12년 Fintech/소프트웨어 아웃소싱 경력 보유(ACB, TymeBank 등)하나 [미확인] Prop-tech 또는 무역 도메인 경험 전무 — 회사 웹사이트에 Gexim 언급 없음. [미확인] Won ChanMi(사업개발 이사)는 LinkedIn 포함 어떠한 공개 정보도 발견되지 않아 실존 여부 자체가 불확실. [미확인] 무역 전문가, 관세사, 물류 전문가 등 도메인 필수 인력 부재. 신뢰성 평가: 제출 정보(Prop-tech, 무역)와 확인 가능한 사실(Fintech 아웃소싱) 간 근본적 괴리. 고위험.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[부분 확인] 주요 사업분야(유통·물류·AI) 부합. 롯데글로벌로지스, 롯데마트, 롯데이노베이트 명시. [미확인] PoC 아이디어가 지나치게 포괄적(HS 분류, 서류 검증, 비용 산정, 공급업체 온보딩 등 8개 모듈 나열)이며 실행 가능성 불분명 — 3~6개월 내 검증 가능한 구체적 유스케이스, 데이터 요구사항, 성공 지표 없음. 롯데 계열사의 실제 페인 포인트(예: 수입 SKU 수, 현재 통관 소요시간, 서류 오류율)와 연결되지 않은 generic한 제안. PoC 협력 가능성은 낮음 — 팀의 도메인 전문성 부족과 MVP 검증 미완료 상태.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통/커머스, 물류/공급망, AI/IT</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">롯데글로벌로지스, 롯데마트, 롯데이노베이트</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데글로벌로지스, 롯데마트, 롯데이노베이트와의 3~6개월 PoC를 통해 수입 제품의 AI HS 코드 분류, 무역 서류 자동 검증(인보이스, 패킹리스트, 선하증권), 수입 컴플라이언스 자문, 착지비용 산정, 공급업체 온보딩 지원, AI 기반 무역 지식 지원 등을 검증. 수동 작업 감소, 서류 정확도 향상, 공급업체 온보딩 가속화, 수입 리스크 및 관세 가시성 확보를 목표로 함. 동남아시아 글로벌 무역 AI 운영 시스템 구축 비전과 연계.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">GEXIM supports ESG objectives by improving trade governance, compliance transparency, and operational efficiency.
+Our AI platform helps businesses reduce document errors, strengthen regulatory compliance, digitize trade workflows, and improve supply chain visibility. This contributes to better governance practices, lower operational waste, and more efficient international trade operations.
+Through a PoC with LOTTE, we aim to validate how AI can support supplier onboarding, trade compliance, document intelligence, and cross-border logistics processes. The collaboration could create measurable ESG impact by enhancing transparency, reducing manual processes, and improving operational sustainability across LOTTE's retail and logistics ecosystem.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">팀의 도메인 커버리지가 매우 불충분함. 실제 확인 가능한 전문성은 소프트웨어 아웃소싱 및 Fintech에 집중되어 있으나, 제시된 사업 영역인 Prop-tech 및 수출입 무역에 대한 관련 경험이나 전문성은 전혀 확인되지 않음. 'Gexim'이라는 제품이나 사업 부문에 대한 공개 정보가 존재하지 않으며, 수출입 전문가나 부동산 기술 전문가가 팀에 포함되어 있다는 증거가 없음</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">팀 구성이 매우 불완전하고 신뢰성에 중대한 문제가 있음. 주요 연락처로 제시된 Won ChanMi의 실존 여부조차 확인할 수 없으며, 실제 확인 가능한 팀원들(CEO, HR Manager, Account Manager)은 모두 소프트웨어 개발 및 아웃소싱 사업에만 연관되어 있음. Prop-tech 사업에 필수적인 부동산 전문가, 무역 전문가, 제품 관리자 등이 확인되지 않음. 12년 역사의 회사임에도 불구하고 경영진의 교육 배경 및 상세 경력이 공개되지 않은 점도 우려스러움</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">신뢰성에 심각한 문제가 있음. 제출된 정보와 실제 확인 가능한 사실 간 근본적인 불일치가 존재: 1) 회사는 소프트웨어 아웃소싱 전문 기업이나 Prop-tech로 소개됨, 2) 주요 연락처 Won ChanMi의 실존 여부 미확인, 3) 'Gexim' 제품/서비스에 대한 공개 정보 전무, 4) 수출입 무역 경험을 가진 임원진 확인 불가. 회사는 Fintech 분야에서 실적이 있으나, 제시된 사업 계획과 실제 역량 사이에 중대한 괴리가 있어 듀딜리전스 관점에서 고위험으로 판단됨</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 갭은 제출된 사업 정보의 진실성과 일관성 부족임. Prop-tech 및 수출입 무역 사업에 대한 어떠한 검증 가능한 증거도 찾을 수 없었으며, 주요 연락처의 실존 여부조차 확인되지 않음. 회사의 실제 사업(B2B 소프트웨어 아웃소싱)과 제시된 사업 모델(Prop-tech, 무역 플랫폼) 간 완전한 불일치는 사업 계획의 신뢰성에 대한 근본적인 의문을 제기함. 추가 조사 없이는 투자 진행을 권장할 수 없음</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Innotech Vietnam Corporation founders · Won ChanMi LinkedIn · Won ChanMi Innotech Vietnam · Linh Nguyen Innotech Vietnam CEO LinkedIn · Mark Pham Innotech Vietnam founder · Gexim Innotech Vietnam prop-tech</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Nguyen Vu Linh (Linh Nguyen)</div><div class="member-role">Founder & CEO</div></div>
+    <div class="member-meta"><a href="https://vn.linkedin.com/in/linh-nguyen-itv" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필이 비공개로 설정되어 세부 학력 및 경력 정보 확인 불가</span><span class='flag-item'>⑊ 제출된 사업 정보(Gexim, Prop-tech, 수출입)와 실제 회사의 핵심 사업(소프트웨어 아웃소싱, Fintech) 간 심각한 불일치</span><span class='flag-item'>⑊ 회사 웹사이트나 공개 자료에 Prop-tech 또는 Gexim에 대한 언급 전무</span><span class='flag-item'>⑊ 교육 배경에 대한 공개 정보 없음</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>정보 없음/정보 없음</td><td>정보 없음</td><td>정보 없음</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Innotech Vietnam Corporation</td><td>Founder & CEO</td><td>2014 - 현재</td><td style="font-size:11px;">회사는 2014년에 설립되었으며 베트남, 일본(2개 지사), 미국(텍사스) 등에 5개 지사를 운영. 12년 이상의 소프트웨어 개발 경험 보유. ACB, TymeBank, Unifimoney, Commonwealth Bank 등 주요 금융기관 고객 확보</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> Fintech 및 소프트웨어 아웃소싱 분야에서 12년 이상의 경험을 보유하고 있으나, 제시된 Prop-tech(부동산 기술) 또는 수출입 무역 산업과는 직접적인 연관성이 확인되지 않음. 회사의 핵심 사업은 은행, 핀테크, 보험 분야 소프트웨어 개발이며, Gexim이라는 프롭테크 벤처에 대한 공개 정보가 전혀 발견되지 않음</div><div class="ma-overall"><strong>종합 평가:</strong> Nguyen Vu Linh는 소프트웨어 아웃소싱 분야에서 검증된 실적을 보유한 창업자이나, 제시된 Prop-tech 산업과의 연관성이 전혀 확인되지 않아 중대한 우려가 있음. 회사의 실제 사업 모델(B2B 소프트웨어 아웃소싱)과 제출된 사업 계획(Prop-tech, 수출입 무역) 간 근본적인 괴리가 존재함</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Won ChanMi</div><div class="member-role">Business Development Director (자체 보고)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필 발견 불가 - 다양한 검색어 조합으로 시도했으나 결과 없음</span><span class='flag-item'>⑊ 온라인상 전문 경력 정보 전무</span><span class='flag-item'>⑊ Innotech Vietnam 공식 웹사이트, Crunchbase, RocketReach 등 어떠한 공개 자료에도 이 인물의 언급 없음</span><span class='flag-item'>⑊ 실존 여부 자체가 불확실함</span></div><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> Won ChanMi에 대한 공개 정보를 전혀 찾을 수 없음. 이름, 직책, Innotech Vietnam과의 연관성 모두 확인 불가. LinkedIn을 포함한 모든 전문 플랫폼에서 이 인물과 Innotech Vietnam 또는 Gexim의 연결고리가 발견되지 않음</div><div class="ma-overall"><strong>종합 평가:</strong> Won ChanMi라는 인물의 실존 여부 및 회사와의 연관성을 확인할 수 없음. 이는 심각한 신뢰성 문제를 제기함</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Nhan Tran Thi Thanh</div><div class="member-role">HR Manager</div></div>
+    <div class="member-meta"><a href="https://vn.linkedin.com/in/nhan-tran-thi-thanh-76399392" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필 비공개로 세부 정보 확인 불가</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>정보 없음/정보 없음</td><td>정보 없음</td><td>정보 없음</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Innotech Vietnam Corporation</td><td>HR Manager</td><td>정보 없음</td><td style="font-size:11px;">회사 관리팀의 일원으로 확인됨</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> HR 관리자로서 기술 인력 채용 및 관리에 기여하나, Prop-tech 또는 무역 산업에 대한 특화된 경험은 확인되지 않음</div><div class="ma-overall"><strong>종합 평가:</strong> HR 관리 역할로 확인되었으나 세부 배경 정보 부족</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Trinh Pham</div><div class="member-role">Executive Account Manager</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필 발견 불가</span><span class='flag-item'>⑊ 온라인 전문 경력 정보 매우 제한적</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Innotech Vietnam Corporation</td><td>Executive Account Manager</td><td>정보 없음</td><td style="font-size:11px;">회사 관리팀의 일원으로 언급됨</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 계정 관리 역할이 확인되었으나 구체적인 경력 및 Prop-tech 관련 경험은 확인되지 않음</div><div class="ma-overall"><strong>종합 평가:</strong> 관리팀 일원으로 확인되었으나 배경 정보 매우 제한적</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 신뢰성 및 정보 일관성</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 핵심 연락처 실존 미확인, 모회사 사업과 제시 사업 간 완전한 불일치, 공개 정보에 Gexim 언급 전무. 사업 계획의 진정성 자체에 의문.</td></tr>
+<tr><td>도메인 전문성 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 무역·관세·물류 경험 있는 팀원 없음. Fintech 개발사가 전혀 다른 도메인에서 제품-시장 핏 달성 가능성 낮음. Key-person dependency 높음.</td></tr>
+<tr><td>시장 검증 부족</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 1개 파일럿만 진행, 매출·LOI·정량적 효과 없음. [미확인] 15개 인터뷰의 구매 의향, 가격 민감도, 전환 의지 미검증.</td></tr>
+<tr><td>비즈니스 모델 불명확성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 가격, 단위 경제, LTV/CAC, 고객당 계약 규모 전무. SaaS 모델 주장이나 실행 계획 없음.</td></tr>
+<tr><td>경쟁 우위 부재</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 기존 관세사·포워더·소프트웨어 업체 대비 차별점 불명확. AI 기술만으로는 방어 가능한 해자 형성 어려움.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — SaaS/구독 모델</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">단위경제(Unit Economics) 및 LTV/CAC 구조</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] IR에서 SaaS 구독 또는 거래당 수수료 모델을 언급했으나 가격 책정(tier별 구독료, 수수료율), 고객당 예상 매출, CAC 추정치가 전무하다. [미확인] 1개 파일럿 고객(EZIMEX)으로부터 지불 의향이나 계약 조건 확보 여부 불명확하다. [미확인] SaaS 필수 지표인 Churn rate, expansion revenue, payback period에 대한 계획이나 가정조차 제시되지 않았다. 현재 단계에서 비즈니스 모델의 상업적 실현 가능성을 평가할 근거가 없다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">제품-시장 적합성(PMF) 검증 수준</span><span class="dvtag dv-r">초기 단계, 증거 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 15개 인터뷰와 1개 파일럿은 problem discovery 단계로는 적절하나, [미확인] 실제 구매 의향(willingness to pay), 계약 파이프라인, 또는 LOI(letter of intent) 같은 상업적 검증 증거는 전무하다. [미확인] 2개 discovery 고객(TMT, Logimark)과의 '파일럿 논의 중'이라는 주장도 타임라인, 구체적 조건, 의사결정 단계 불명확하다. [미확인] 500+ 문서 처리는 내부 테스트일 뿐 고객 환경에서의 정확도·속도·만족도 데이터 없다. PMF 달성 여부를 판단하기엔 정량·정성 증거 모두 불충분하다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">Go-to-Market 전략 및 확장성</span><span class="dvtag dv-r">전략 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] TAM $930B은 제시되나 실제 공략 가능한 SAM/SOM(식품·화장품·육아용품 수입 중소기업)의 규모, 고객 수, 집중 지역, 진입 순서에 대한 구체적 계획이 없다. [미확인] 고객 획득 채널(direct sales, 파트너십, 온라인 마케팅 등) 전략 부재 — 어떻게 첫 10개, 100개 고객을 확보할지 불명확하다. [미확인] 경쟁 환경 분석 전무 — 기존 관세사, 포워더, 통관 소프트웨어(예: CargoWise, Descartes) 대비 차별점이나 경쟁 우위 근거 없다. 확장 가능성은 주장되나 실행 로드맵 부재로 투자 설득력 낮다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">자금 사용 계획 및 마일스톤</span><span class="dvtag dv-r">불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] Pre-seed $250K 목표이나 자금 배분(인건비, 제품 개발, 마케팅, 운영비 등) 불명확하다. [미확인] 12~18개월 후 목표 지표(고객 수, MRR, retention rate, 다음 라운드 조건 등) 미제시로 투자금의 효율성과 성과 측정 기준이 없다. [미확인] 마일스톤 로드맵(예: 3개월 내 파일럿 3개 완료, 6개월 내 첫 유료 고객 확보, 12개월 내 $10K MRR)이 부재해 실행 계획의 구체성을 판단할 수 없다. 현재 투자 준비도는 낮다.</div></div>
+<div class="deep-category-label">Category D — 팀 역량 및 신뢰성</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업팀 도메인 전문성 및 실행력</span><span class="dvtag dv-r">심각한 괴리</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] CEO Nguyen Vu Linh는 12년 Fintech/소프트웨어 아웃소싱 경력(ACB, TymeBank 등) 보유하나, [미확인] Prop-tech, 무역, 물류, 관세 도메인 경험은 공개 정보에서 전혀 확인되지 않는다. [미확인] IR에서 'seasoned import-export executives and industry veterans'라 주장했으나 팀 구성원 중 실제 무역·관세·물류 분야 커리어를 가진 인물이 명시되지 않았다. [미확인] 필수 역량(관세사, HS 코드 전문가, 물류 오퍼레이션 경력자) 부재로 제품 설계·검증·영업 실행력 우려된다. 제출 정보와 확인 가능한 사실 간 근본적 괴리가 존재한다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">팀 구성 및 실존 여부 검증</span><span class="dvtag dv-r">검증 실패</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] Won ChanMi(사업개발 이사)는 LinkedIn, Facebook, 검색 엔진 등 어떠한 공개 정보에서도 발견되지 않아 실존 여부 자체가 불확실하다. [미확인] IR에서 'extensive networks across Vietnam, SEA, Korea, Japan, US'를 주장했으나 구체적 인물, 경력, 네트워크 증거가 없다. [확인] Innotech 웹사이트(https://innotech-vn.com/)에 Gexim 관련 언급이 전혀 없어 모기업과의 연계성도 의문이다. 팀의 투명성과 신뢰성에 중대한 문제가 있다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">과거 실행 이력(Track Record) 및 성과</span><span class="dvtag dv-r">관련 이력 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 창업팀이 과거 무역·물류·컴플라이언스 분야에서 제품을 출시하거나 비즈니스를 성장시킨 이력이 확인되지 않는다. [부분 확인] Innotech의 12년 소프트웨어 아웃소싱 경력은 존재하나 SaaS 제품 개발, B2B 영업, 글로벌 시장 진출 경험은 불명확하다. [미확인] '20+ years of combined founder experience in import-export, logistics, compliance'라는 주장의 구체적 근거(누가, 어디서, 어떤 역할)가 없다. 실행력을 뒷받침할 과거 성과가 부족해 투자 리스크가 높다.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[확인] 모회사 Innotech의 12년 소프트웨어 개발 역량 및 200명 엔지니어 보유</li>
+<li>[부분 확인] 베트남 무역 시장의 실재하는 디지털화 수요 — 수동 프로세스, 서류 오류 문제는 인터뷰에서 확인됨</li>
+<li>[확인] 1개 파일럿 고객(EZIMEX) 확보 및 2개 기업과 발견 단계 진행 중</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[확인] 팀의 도메인 전문성 전무 — 무역, 관세, 물류 경험 있는 인력 부재, CEO는 Fintech 배경</li>
+<li>[확인] 핵심 연락처(Won ChanMi) 실존 미확인으로 신뢰성 의문</li>
+<li>[확인] 매출 없음, 정량적 효과 측정 없음, MVP 검증 미완료 상태</li>
+<li>[미확인] 비즈니스 모델의 단위 경제 및 가격 전략 불명확</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 수출입 시장 연 18% 성장 및 FTA(CPTPP, EVFTA, RCEP) 확대로 컴플라이언스 복잡도 증가</li>
+<li>베트남 정부의 Single Window 시스템 디지털화 추진</li>
+<li>롯데글로벌로지스 및 롯데마트와의 PoC 가능성 — 수입 프로세스 자동화 수요 존재 가능</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>기존 관세사, 포워더, 통관 소프트웨어 업체와의 경쟁 — 차별화 전략 불명확</li>
+<li>무역 도메인의 높은 진입장벽 — 규제 전문성, 고객 신뢰 구축에 장기간 소요</li>
+<li>팀의 도메인 미스매치로 제품-시장 핏 달성 실패 위험 높음</li>
+<li>모회사 Innotech의 핵심 사업(아웃소싱)과의 전략적 정렬 불명확 — 리소스 투입 지속성 의문</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Gexim은 베트남 무역 중소기업의 실재하는 페인 포인트(서류 오류, 컴플라이언스 실패)를 타겟하나, 세 가지 치명적 약점이 존재한다. 첫째, 팀의 신뢰성 문제 — CEO는 Fintech 아웃소싱 전문가이나 무역 도메인 경험 전무, 핵심 연락처 Won ChanMi는 실존 미확인, 무역 전문가 부재. 둘째, 검증 부족 — 1개 파일럿만 진행 중이며 매출·LOI·정량적 효과 측정 전무, 15개 인터뷰 결과도 구매 의향 미검증. 셋째, 모회사 Innotech의 실제 사업(Fintech 개발)과 제시된 사업(무역 플랫폼) 간 완전한 불일치로 사업 계획의 진정성 자체에 의문. 가장 큰 미검증 가정: Fintech 개발사가 전혀 다른 도메인(무역 컴플라이언스)에서 운영 가능한 제품을 만들 수 있다는 것. 추가 실사 없이 투자 진행 불가.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Innotech Vietnam Corporation (Gexim) · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

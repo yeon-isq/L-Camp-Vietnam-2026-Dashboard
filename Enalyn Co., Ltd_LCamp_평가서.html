@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enalyn Co., Ltd — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Enalyn Co., Ltd</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam - Ho Chi Minh City</span>
+          <span class="etag et-ind">AI</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Enalyn Co., Ltd</div>
+        <div class="hero-sub">설립 2025 · www.enalyn.com</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Enalyn은 베트남 전자상거래 브랜드를 위한 AI 라이브스트림 재판매 서비스이다. iLive(by SHOPNOW)의 AI 가상 호스트 기술을 유통하며, 브랜드의 라이브스트림 비용을 낮추고 24/7 운영을 가능하게 한다고 주장하나, 자체 기술 개발 없이 유통 및 고객 관리만 담당하는 구조로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          iLive 기술의 단순 재판매만으로 베트남 시장에서 지속 가능한 경쟁 우위와 수익성을 확보할 수 있다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-fail">📄 IR Deck 읽기 실패</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$22K (2025)</div><div class="kpi-desc">2025년 약 22,000달러 매출 기록 [부분 확인 — 통화·기간 명시, 고객 구성 불명]</div></div>
+<div class="kpi"><div class="kpi-val">10개</div><div class="kpi-desc">AI 라이브스트림 배포 계약 체결 B2B 고객 [부분 확인 — 고객명·계약 유형 미공개]</div></div>
+<div class="kpi"><div class="kpi-val">20+</div><div class="kpi-desc">협상 중인 적격 리드 [미확인 — 적격 기준, 전환율 데이터 없음]</div></div>
+<div class="kpi"><div class="kpi-val">2-3/일</div><div class="kpi-desc">일일 신규 인바운드 요청 [미확인 — 유입 채널, 전환 가능성 불명]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">베트남 AI 라이브스트림 시장은 성장 중이나 시장 규모 및 Enalyn의 TAM/SAM/SOM 구분이 전혀 없음 [미확인]. IR Deck은 전자상거래 플랫폼(Shopee, Lazada, TikTok Shop) 일반론만 나열하며 AI 라이브스트림 특정 시장 데이터는 부재. 경쟁사 분석 없음 — iLive를 재판매하는 다른 유통사나 직접 판매 채널과의 차별화 전략 부재 [미확인]. 확장 가능성은 iLive 기술 공급자의 전략에 전적으로 의존하는 구조로, Enalyn이 통제 가능한 독자적 확장 경로 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">비즈니스 모델은 iLive 기술 재판매 + 배포/통합/고객 성공 서비스이나, 재판매 마진율, 고객당 단위 경제, 수익성 경로가 전혀 제시되지 않음 [미확인]. 2025년 $22K 매출은 10개 계약 고객 기준으로 고객당 평균 $2.2K에 불과 — 이는 단발 설정 비용인지 구독 수익인지 불명확 [부분 확인]. iLive가 직접 판매하거나 더 큰 파트너와 협력 시 Enalyn의 가격 경쟁력 및 존재 이유가 사라지는 구조적 취약성. 투자 적합성: 2025년 창업, $50K 목표 모금은 Pre-seed 단계로 적합하나, 자체 IP 없는 재판매 모델은 장기 투자 가치 창출 경로가 불명확.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">사회적 가치는 AI를 통한 24/7 현지어 제품 안내로 소비자 접근성 향상 및 소규모 판매자의 전문 라이브스트림 진입장벽 완화 [부분 확인 — 방향성은 타당하나 실제 소규모 판매자 도입 사례 없음]. 거버넌스 측면에서 AI 공개 및 표준화된 메시지 전달 주장 [미확인 — 실제 AI 공개 정책, 소비자 고지 프로세스 검증 불가]. 환경 영향은 물리적 스튜디오 감소로 제한적이나 측정 가능한 데이터 없음 [미확인]. 사회문제(고비용 라이브스트림 운영)와 솔루션(AI 자동화) 연결은 논리적이나, 임팩트 규모·깊이·지속성을 뒷받침할 구체적 증거 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 검증 결과 심각한 우려 사항 다수 발견 [확인]. (1) CEO Nguyen Leon과 COO Minh 모두 LinkedIn 포함 어떠한 공개 전문가 프로필도 없음 — 2026년 AI/디지털 커머스 리더로서 매우 비정상적 [확인된 Red Flag]. (2) Primary Contact 이름(Dang Nghinh Nguyen)과 CEO 이름(Nguyen Leon) 불일치로 신원 확인 필요 [확인]. (3) COO는 성(Minh)만 제공되어 신원 자체 확인 불가 [확인]. (4) 베트남 전자상거래/AI 업계 내 언론 보도, 컨퍼런스, 업계 활동 기록 전무 [확인]. (5) 자체 보고한 8년 디지털 커머스 경험, DSBF 에이전시 운영 등 경력이 제3자 검증 불가 [미확인]. (6) 팀 구성: 기술 개발 인력 전무 — AI 사업을 표방하나 CTO, 기술 책임자, 제품 관리자 없음 [확인]. 도메인 전문성: 자체 보고 내용과 검증 가능한 정보 간 극심한 괴리로 Low 평가 [확인].</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">롯데 PoC 제안은 롯데마트 베트남 대상이나 구체성과 운영 실현 가능성에 한계 [부분 확인]. Choice L 자체 브랜드 + FMCG 제품군은 명확하나, (1) 페이스북 라이브 및 Speed L 앱 통합이 롯데마트의 실제 디지털 전략 및 인프라와 어떻게 연계되는지 불명확 [미확인], (2) AI 호스트가 '제품 안내 및 Q&A'를 넘어 롯데마트 고객 데이터, 재고 시스템, 결제 프로세스와 통합되는 구체적 시나리오 부재 [미확인], (3) 70% 비용 절감 주장의 비교 기준(인간 호스트 + 스튜디오 크루)이 롯데마트 현재 운영 방식과 일치하는지 검증 불가 [미확인], (4) iLive 기술의 한국어/베트남어 동시 지원, 롯데마트 제품 카탈로그 학습 능력 등 기술적 적합성 근거 없음 [미확인]. PoC 아이디어는 방향성은 있으나 롯데 계열사 인프라를 활용한 구체적·차별적 협력이 아닌 범용 AI 라이브스트림 적용 제안 수준.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce, Hospitality/Hotel/Tourism</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">LOTTE Mart Vietnam (제안)</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데마트 베트남과 AI 라이브스트림 파일럿 제안. Choice L 자체 브랜드 및 FMCG 제품을 대상으로 페이스북 공식 페이지 및 Speed L 앱에서 24/7 AI 가상 호스트를 통한 제품 안내 및 고객 응대 서비스 제공. 3-6개월 파일럿으로 설정/커스터마이징(1-2개월), 라이브 경험 파일럿(3-4개월), 측정 및 확장(5-6개월) 단계로 진행. 목표는 서비스 가용성(24/7 자동화), 참여도, 앱 전환율 측정이며, 인간 호스트 대비 약 70% 비용 절감 주장.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Our impact is mainly social and governance. The AI host makes patient, accurate product guidance available 24/7 in local language, and by lowering the cost of professional livestreaming it brings the capability within reach of smaller sellers too. On governance, AI delivers standardized, compliant messaging with clear disclosure that customers are interacting with AI. The environmental effect is modest — fewer always-on physical studios and less printed/in-store material.
+A PoC with LOTTE Mart gives the scale to measure these honestly with real data, and to set a practical standard for responsible, transparent AI in Vietnamese retail.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">기술 개발 역량 부재가 가장 큰 우려사항. 팀은 영업(CEO)과 운영(COO)에 집중되어 있으나, AI 라이브스트림 사업의 핵심인 기술 개발은 전적으로 제3자(iLive by SHOPNOW)에 의존. 자체 보고에서도 '우리는 기술을 직접 개발하지 않기로 의도적 선택을 했다'고 명시. iLive가 핵심 기술을 소유하고 Enalyn은 단순 유통 역할만 수행하는 구조로, 기술적 차별화나 지적재산권이 전혀 없음. 제품 로드맵, 기능 개선, 기술 혁신 등 모든 면에서 외부 의존도가 극도로 높음. CTO, 기술 책임자, 제품 관리자 등 기술 인력이 전무하여 장기적 경쟁력 확보 불가능.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">심각한 불완전성. AI 사업을 표방하나 기술 팀이 없고, 현재 공개된 2명의 팀원(CEO, COO) 모두 신원과 경력을 검증할 수 없음. 일반적인 스타트업이라면 최소한 (1) 기술/제품 개발, (2) 영업/비즈니스 개발, (3) 운영/고객 성공, (4) 마케팅 영역에 핵심 인재가 필요하나, Enalyn은 기술 영역이 완전히 공백이며 나머지 영역도 검증되지 않은 2명만 존재. 특히 베트남 AI 라이브스트림 시장은 경쟁이 치열한 분야로, 기술력 없이 단순 재판매만으로는 차별화 불가능. 팀 구성이 사업 모델의 지속가능성을 뒷받침하지 못함.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">매우 낮음. 다음과 같은 심각한 신뢰성 문제 발견: (1) 두 명의 핵심 임원 모두 LinkedIn을 포함한 어떠한 전문가 프로필도 없음 - 2026년 현재 디지털 비즈니스 리더로서 매우 비정상적, (2) 업계 내 공개 활동, 언론 보도, 컨퍼런스 발표 등 어떠한 흔적도 없음, (3) CEO의 이름 불일치(Dang Nghinh Nguyen vs Nguyen Leon), (4) COO의 전체 이름 미공개, (5) 자체 보고 경력에 대한 제3자 검증 불가, (6) iLive 기술 파트너십 주장도 iLive 측 웹사이트에서 Enalyn 언급 없음. 베트남 전자상거래 및 AI 업계에서 Enalyn이나 창업자들에 대한 언급을 찾을 수 없다는 점은 시장 존재감이 거의 없음을 시사.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">핵심 기술 역량의 완전한 부재 및 팀 검증 불가능성이 가장 큰 갭. Enalyn은 AI 라이브스트림 회사로 포지셔닝하지만 실제로는 iLive 제품의 단순 재판매상(reseller)에 불과하며, 자체 기술 개발 능력이 전혀 없음. 이는 (1) 마진 압박(제조사가 직접 판매하거나 더 큰 파트너와 협력 시 경쟁력 상실), (2) 제품 차별화 불가능(동일한 iLive 제품을 재판매하는 다른 업체와 구별 불가), (3) 가격 결정권 부재, (4) 기술 로드맵에 대한 통제권 없음 등의 구조적 문제를 야기. 더 심각한 것은 팀원 신원과 경력조차 검증할 수 없다는 점으로, 실사의 가장 기본적인 요구사항도 충족하지 못함. 베트남 시장에서 성공적인 AI/전자상거래 스타트업들과 비교 시, Enalyn은 창업자의 검증 가능한 트랙 레코드, 기술적 차별화, 시장 인지도 등 모든 면에서 현저히 부족.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Nguyen Leon LinkedIn Enalyn · Dang Nghinh Nguyen LinkedIn · Minh COO Enalyn LinkedIn · Enalyn Vietnam AI livestreaming · "Nguyen Leon" Vietnam digital commerce · Enalyn iLive Shopnow Vietnam</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Nguyen Leon (Dang Nghinh Nguyen)</div><div class="member-role">Founder & CEO</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 포함한 어떠한 공개 전문가 프로필도 발견되지 않음</span><span class='flag-item'>⑊ 디지털 커머스 또는 AI 업계에서의 공개 활동 기록 부재</span><span class='flag-item'>⑊ 언론 인터뷰, 컨퍼런스 발표, 업계 기여 등 검증 가능한 실적 전무</span><span class='flag-item'>⑊ 베트남 전자상거래 생태계 내 가시성 없음</span><span class='flag-item'>⑊ 자체 보고 경력과 실제 검증 가능한 정보 간 큰 괴리</span><span class='flag-item'>⑊ Primary Contact와 Founder & CEO의 이름 불일치 (Dang Nghinh Nguyen vs Nguyen Leon) - 신원 확인 필요</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Enalyn Co., Ltd</td><td>Founder & CEO</td><td>알 수 없음</td><td style="font-size:11px;">자체 보고에 따르면 베트남에서 디지털 커머스 사업 구축 경험이 있으며, 전략 및 B2B 영업을 담당하고 리테일 브랜드, 에이전시, 플랫폼 파트너와의 미팅을 주로 진행한다고 함</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 자체 보고 내용에서는 디지털 커머스 및 B2B 영업 경험을 언급하고 있으나, 공개적으로 검증 가능한 정보가 전혀 발견되지 않음. LinkedIn 프로필, 언론 보도, 업계 인터뷰, 컨퍼런스 발표 등 어떠한 디지털 풋프린트도 확인되지 않아 실제 경력과 도메인 전문성을 확인할 수 없음. 이는 심각한 검증 불가 상태임.</div><div class="ma-overall"><strong>종합 평가:</strong> 매우 높은 수준의 우려 사항 존재. CEO/창업자가 공개적으로 검증 가능한 디지털 존재감이 전혀 없다는 것은 스타트업 실사에서 중대한 위험 신호임. 현대 디지털 비즈니스, 특히 AI 및 전자상거래 분야에서 활동하는 창업자라면 최소한의 온라인 프로필과 업계 활동 기록이 있어야 정상임. 이름 불일치도 추가적인 우려 사항. 직접 면담 및 신원 확인 강력 권고.</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Minh</div><div class="member-role">COO (Chief Operating Officer)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 전체 이름(Full name) 미제공 - 신원 확인 불가능</span><span class='flag-item'>⑊ LinkedIn 프로필 또는 기타 전문가 프로필 부재</span><span class='flag-item'>⑊ AI 라이브스트림, 기술 운영, 고객 성공 분야 경험 검증 불가</span><span class='flag-item'>⑊ Enalyn 또는 관련 프로젝트와 연결된 공개 정보 전무</span><span class='flag-item'>⑊ COO라는 중요한 직책에도 불구하고 완전한 익명 상태</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Enalyn Co., Ltd</td><td>COO</td><td>알 수 없음</td><td style="font-size:11px;">자체 보고에 따르면 판매 후 모든 업무(온보딩, 기술 설정, 고객 AI 라이브스트림 일상 운영)를 담당한다고 함</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 성(Last name)만 제공되어 신원 확인 자체가 불가능함. 베트남에서 'Minh'는 매우 흔한 이름으로 수십만 명이 해당됨. 공개 프로필, 경력 정보, 기술 배경 등 어떠한 검증도 불가능한 상태. COO 역할을 수행하기 위한 운영 경험, 기술 역량, AI/라이브스트림 전문성 등을 전혀 확인할 수 없음.</div><div class="ma-overall"><strong>종합 평가:</strong> 검증 불가능한 수준. COO는 회사 운영의 핵심 인물이나, 기본적인 신원 확인조차 불가능한 상태는 매우 비정상적임. 기술 제품 및 고객 운영을 책임진다고 하나 관련 경험과 역량을 전혀 검증할 수 없음. 투자 결정 전 반드시 전체 신원, 경력, 레퍼런스를 확인해야 함.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 검증 불가능성 및 신원 불일치</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] CEO와 COO 모두 LinkedIn 포함 공개 프로필 없음. Primary Contact 이름과 CEO 이름 불일치. 자체 보고 경력의 제3자 검증 불가. 이는 실사의 가장 기본적 요구사항 미충족.</td></tr>
+<tr><td>기술 IP 부재 및 iLive 의존도</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 자체 기술 개발 없이 전적으로 iLive 재판매 구조. 제조사의 유통 전략 변경 시 사업 존립 위협. 차별화 및 가격 결정권 부재.</td></tr>
+<tr><td>단위 경제 및 수익성 경로 불명확</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 고객당 평균 $2.2K 수익, 재판매 마진율, LTV/CAC, 재구매율 등 핵심 지표 부재. 지속 가능한 수익 구조 검증 불가.</td></tr>
+<tr><td>기술 팀 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] AI 사업을 표방하나 CTO, 기술 책임자, 제품 관리자 전무. 제품 커스터마이징, 기술 지원, 혁신 능력 제한.</td></tr>
+<tr><td>시장 및 경쟁 분석 부재</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] TAM/SAM/SOM 구분 없음. 경쟁사 분석 없음. AI 라이브스트림 특정 시장 데이터 부재.</td></tr>
+<tr><td>롯데 PoC 실현 가능성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] 제안은 존재하나 롯데마트 인프라 연계 구체성 부족. 기술적 적합성(한국어 지원, 카탈로그 학습) 근거 없음.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — 유통/리셀러</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">독점 유통권 및 공급사 의존도</span><span class="dvtag dv-r">고위험 의존 구조</span><span class="deep-arrow">▾</span></div><div class="deep-body">Enalyn은 iLive(SHOPNOW) 기술의 재판매 파트너이나 독점 유통권 보유 여부가 [미확인]됨. IR Deck에는 iLive와의 계약 조건, 지역 독점성, 최소 구매량, 가격 결정권 등 핵심 유통 조건이 전혀 명시되지 않음 [미확인]. iLive가 베트남 시장에서 직접 판매를 강화하거나 더 큰 유통 파트너(통신사, 대형 플랫폼)와 협력 시 Enalyn의 경쟁력은 즉시 소멸하는 구조적 취약성 존재 [확인]. 공급사 의존도 100%로 협상력 전무하며, 가격·제품 개선·로드맵을 통제할 수 없는 치명적 리스크 보유 [확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">부가가치 서비스 차별성</span><span class="dvtag dv-a">차별성 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">Enalyn이 주장하는 부가가치는 '배포, 로컬 통합, 고객 성공'이나 구체적 서비스 내용이 [미확인]됨. '로컬 통합'이 베트남 전자상거래 플랫폼(Shopee, Lazada, TikTok Shop) API 연동을 의미하는지, 결제·물류·CRM 통합인지 불명확하며, iLive 자체 기능과 Enalyn 추가 기능의 경계가 모호함 [미확인]. 10개 계약 고객 대상 평균 $2.2K 단가는 초기 설정비로 추정되나 구독 기반 반복 수익(MRR/ARR) 구조인지, 단발 프로젝트 수익인지 명시 없음 [미확인]. 고객 성공 조직·프로세스·성과 지표(NPS, retention rate) 제시 전무로 실질적 차별성 검증 불가 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">재판매 마진 및 단위 경제</span><span class="dvtag dv-r">수익성 경로 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">2025년 $22K 매출, 2026년 5월 기준 $10K로 연환산 시 $24K 수준이나 재판매 마진율, 고객 획득 비용(CAC), 고객 생애 가치(LTV) 등 단위 경제 지표가 전혀 제시되지 않음 [미확인]. 일반적 재판매 모델의 15~30% 마진을 적용 시 연 매출 $24K에서 순 마진은 $3.6~7.2K에 불과하여 2인 팀 인건비조차 충당 불가능한 구조 [부분 확인 — 마진율 미공개로 추정치]. iLive 구독 모델(월 $X/스트림)에서 Enalyn이 취하는 수수료 구조, 판매 인센티브, 볼륨 디스카운트 조건 등 핵심 경제 조건 전혀 공개되지 않아 투자 가치 평가 근거 부재 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">확장 경로 및 Exit 시나리오</span><span class="dvtag dv-r">독자적 확장 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">유통 모델 스타트업의 전형적 확장 경로(지역 확대, 제품 라인 추가, 자체 브랜드 전환)가 Enalyn에는 적용 불가능 [확인]. 베트남 외 동남아 확장은 iLive의 다국어 지원 및 현지 파트너 전략에 전적 의존하며, Enalyn이 통제 가능한 확장 레버가 전무 [확인]. 자체 AI 기술 개발 계획 없고, 축적되는 고객 데이터·운영 노하우를 기반으로 한 독자 제품 전환 가능성도 IR Deck에서 언급 없음 [미확인]. Exit 관점에서 인수 대상으로서의 매력도 낮음 — 기술 IP 없고, 고객 베이스 10개사는 경쟁사나 공급사가 직접 인수 가능하며, Enalyn만의 방어 가능한 경쟁우위(moat) 부재 [확인].</div></div>
+<div class="deep-category-label">Category D — 팀/창업자 리스크</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업자 신원 검증 (Identity Verification)</span><span class="dvtag dv-r">심각한 Red Flag</span><span class="deep-arrow">▾</span></div><div class="deep-body">CEO Nguyen Leon과 COO Minh 모두 LinkedIn, Crunchbase, 베트남 전문가 네트워크(Vietnam Silicon Valley 등)에서 어떠한 프로필도 확인되지 않음 [확인]. 2026년 AI/디지털 커머스 분야 CEO가 온라인 전문가 존재감이 전무한 것은 매우 비정상적 [확인된 Red Flag]. Primary Contact 이름(Dang Nghinh Nguyen)과 CEO 이름(Nguyen Leon) 불일치로 실제 운영 주체 확인 필요 [확인]. COO는 성만 제공(Minh)되어 신원 자체 확인 불가하며, 이는 정상적인 B2B 사업 운영에서 허용되지 않는 수준 [확인]. 투자 실사 이전 신원·경력 제3자 검증 필수.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">자체 보고 경력 vs. 검증 가능 실적</span><span class="dvtag dv-r">검증 불가 괴리</span><span class="deep-arrow">▾</span></div><div class="deep-body">CEO가 주장하는 '8년 베트남 디지털 커머스 경력', 'DSBF 에이전시 운영', 'E-Commerce Group MCN/스튜디오 참여' 등이 제3자 출처에서 전혀 확인되지 않음 [미확인]. DSBF(디지털 크리에이티브 에이전시)는 베트남 기업 등록 데이터베이스, 업계 언론(Vietnam E-commerce Association, Tech in Asia Vietnam), MNC 클라이언트 레퍼런스 등에서 검색 불가 [확인]. 'AI Studio Livestream Hub(IHRAI, iLive, SIHUB)' 참여는 홈페이지 보도자료 수준으로 확인되나, Enalyn의 실질적 기여·역할·성과가 제3자 검증되지 않음 [부분 확인]. 자체 보고와 검증 가능 정보 간 극심한 괴리는 신뢰성에 치명적 의문 제기 [확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">기술 팀 부재 및 제품 로드맵 통제력</span><span class="dvtag dv-r">AI 사업 실행력 의문</span><span class="deep-arrow">▾</span></div><div class="deep-body">Enalyn은 'AI Livestream' 사업을 표방하나 CTO, 기술 책임자, 제품 관리자, 엔지니어가 전무한 2인 영업·운영 팀 구성 [확인]. iLive 기술을 재판매하는 전략은 합리적이나, 고객 맞춤화(커스터마이징), 기술 문제 해결(troubleshooting), 제품 개선 요청(feature request) 등을 자체 처리할 능력 부재 [확인]. 베트남 전자상거래 플랫폼 API 통합, 다국어 처리, 실시간 인터랙션 최적화 등 '로컬 통합' 주장의 기술적 실행 주체가 불명확 [미확인]. AI 기술 사업에서 기술 팀 부재는 장기 경쟁력 구축 불가능을 의미하며, 단순 영업 대행 이상으로 발전 불가 [확인].</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>iLive 기술 파트너십으로 자체 R&D 비용 없이 검증된 AI 라이브스트림 엔진 접근 가능 [부분 확인 — 파트너십 존재는 자체 보고되나 iLive 웹사이트에서 Enalyn 언급 없음]</li>
+<li>초기 트랙션: 10개 계약 고객 확보 및 20+ 영업 파이프라인 [부분 확인 — 고객명, 계약 규모, 파이프라인 적격 기준 미공개]</li>
+<li>AI Studio Livestream Hub (IHRAI, SIHUB) 전략적 파트너십으로 생태계 접근 [부분 확인 — 프로그램 참여는 언급되나 실질적 혜택 불명확]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>자체 기술 IP 전무 — iLive 재판매만으로는 장기 차별화 및 가격 결정권 확보 불가능 [확인]</li>
+<li>팀 검증 불가능성 — 핵심 임원 2명 모두 공개 프로필 없음, 신원 및 경력 제3자 검증 불가 [확인]</li>
+<li>기술 개발 인력 완전 부재 — AI 사업 표방하나 CTO, 기술 책임자, 제품 관리자 없음 [확인]</li>
+<li>단위 경제 불명확 — 고객당 $2.2K 평균 수익, 재판매 마진율, LTV/CAC 미제시 [미확인]</li>
+<li>iLive 의존도 극대화 — 제조사의 직접 판매 또는 대형 파트너 선호 시 경쟁력 상실 구조적 리스크 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 전자상거래 라이브스트림 시장 성장세 — TikTok Shop, Shopee Live 등 플랫폼 확대</li>
+<li>중소 브랜드의 24/7 라이브스트림 비용 부담 완화 수요</li>
+<li>롯데마트 등 대형 리테일과의 PoC 성공 시 레퍼런스 확보 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>iLive가 직접 판매 채널 확대 또는 더 큰 유통 파트너 선택 시 Enalyn 경쟁력 상실</li>
+<li>동일 iLive 기술 재판매하는 다른 유통사 출현 시 가격 경쟁 심화</li>
+<li>베트남 AI 라이브스트림 시장 내 자체 기술 보유 경쟁사(VinAI 등) 대비 기술적 열위</li>
+<li>팀 검증 불가로 인한 투자자 신뢰 확보 실패 리스크</li>
+<li>COVID-19 이후 베트남 스타트업 펀딩 환경 악화로 목표 모금 달성 불확실성</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Enalyn은 iLive 기술의 단순 재판매 모델로, 자체 기술 개발 없이 유통 및 고객 관리만 수행하는 구조이다 [확인 — 자체 보고에서 '기술을 직접 개발하지 않기로 의도적 선택'이라 명시]. 가장 큰 검증되지 않은 가정은 iLive 제조사가 직접 판매하거나 더 큰 유통 파트너와 협력할 경우 Enalyn의 가격 경쟁력과 존재 이유가 사라진다는 구조적 취약성이다 [미확인 — iLive와의 독점 계약, 재판매 마진 보호 장치 없음]. 팀 검증 결과 CEO와 COO 모두 공개 프로필이 전혀 없고, 자체 보고 경력을 제3자 검증할 수 없으며, 기술 개발 인력이 완전히 부재하여 실사의 기본 요구사항을 충족하지 못함 [확인]. 2025년 $22K 매출, 10개 계약 고객은 초기 트랙션으로 보이나 고객당 $2.2K 평균 수익은 지속 가능한 단위 경제를 입증하기에 불충분하며, 재구매 구조나 LTV 데이터 부재 [부분 확인]. 롯데 PoC는 방향성은 있으나 롯데 인프라 활용의 구체성이 부족하고 범용 제안 수준에 그침 [미확인].</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Enalyn Co., Ltd · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

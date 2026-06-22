@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FATS AI Sustainable Finance — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">FATS AI Sustainable Finance</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City, Vietnam</span>
+          <span class="etag et-ind">AI / Financial Technology</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">FATS AI Sustainable Finance</div>
+        <div class="hero-sub">설립 2024 · fats-ai-sustainable-finance.web.app / fats.vn</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">FATS AI는 베트남 대기업의 재무 데이터 통합 및 분석을 위한 온프레미스 AI 플랫폼이라고 주장한다. 220M 파라미터 베트남어 NLP 모델을 통해 송장·스프레드시트·ERP 데이터를 자동 수집·분류하고 현금흐름 예측 및 실시간 CFO 대시보드를 제공한다고 설명하나, 기술 성능(92.5% NER 정확도, 85% 현금흐름 예측 정확도)에 대한 독립적 검증은 확인되지 않았다. 수익 모델은 B2B 엔터프라이즈 구독 및 B2C 프리미엄 구독으로 명시되어 있다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          Petrosetco와의 계약 및 USD 858M 매출 규모 고객사 확보 주장이 사실이며, 220M 파라미터 자체 AI 모델이 실제로 존재하고 주장된 성능을 발휘한다는 전제가 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">9</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">USD 74K</div><div class="kpi-desc">[미확인] 자체 주장, 증빙 자료 없음</div></div>
+<div class="kpi"><div class="kpi-val">1,170명</div><div class="kpi-desc">[미확인] 프리미엄 유료 구독자 주장, 검증 불가</div></div>
+<div class="kpi"><div class="kpi-val">4개사</div><div class="kpi-desc">[미확인] Petrosetco 등 명시했으나 독립 확인 불가</div></div>
+<div class="kpi"><div class="kpi-val">USD 300-500K</div><div class="kpi-desc">Seed 라운드 목표 금액</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 타겟 시장은 베트남 대기업 재무 시스템 통합으로 명시되었으나 SAM/SOM 산정 없이 글로벌 TAM만 언급. 경쟁 분석 부재 — 기존 ERP 솔루션(SAP, Oracle) 대비 차별성이 '베트남어 NLP'와 '온프레미스'로 제시되었으나 이것이 실질적 구매 전환 동인인지 검증 불가. Petrosetco 외 확장 사례 없음. [부분 확인] WSA 2025 숏리스트 및 National Quality Top 10 수상은 확인 가능하나 시장 검증력은 제한적.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 2025년 매출 USD 74K 주장에 대한 증빙 없음. B2B 고객 4개사(Petrosetco, PNK, Sun Mountain 등) 계약 존재 여부를 독립적으로 확인 불가. B2C 1,170명 유료 구독자 및 65% 전환율 주장은 자체 IR 자료에만 존재. [미확인] 투자 유치 이력 없음. Seed 라운드 목표 USD 300-500K이나 valuation 근거 불명확. 사업모델 설명은 구조화되어 있으나 단위 경제(unit economics), 고객 획득 비용, LTV 등 핵심 지표 전무. 롯데벤처스 투자 적합성 판단 불가.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 사회문제 정의는 명확 — 베트남 기업 및 개인의 재무 투명성·리터러시 부족. 솔루션과의 연결성은 논리적이나 임팩트 규모·깊이에 대한 정량 증거 제한적. [미확인] '저축 목표 달성률 60% 증가', '재무 성과 140% 개선' 등 B2C 임팩트 수치는 검증 불가. ESG 중 Governance(재무 투명성)와 Social(금융 리터러시) 기여는 설득력 있으나 Environmental 주장(220M 파라미터로 에너지 효율)은 과장 — GPT-4 대비 0.02% 연산량 주장은 비교 기준이 불명확하고 실제 탄소 절감 효과 측정 불가.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 딥 리서치 결과, 모든 핵심 멤버(CEO Phuc Nguyen, CTO Phuong Nguyen, Legal Advisor Giang Vien, Strategy Advisor Khoa Nguyen)의 LinkedIn 프로필이 발견되지 않았으며, 자칭 경력(EY-Parthenon 17년, AI 연구 17년 등)에 대한 독립적 검증이 전혀 불가능함. CTO의 220M 파라미터 모델 및 92.5% NER 성능 주장에 대한 학술 출판물, 특허 등록 번호, GitHub 저장소 등 기술적 증거 부재. [미확인] 회사 자체의 공개 정보(언론 보도, 고객 추천사, 소셜 미디어)가 전무하여 운영 실체 확인 불가. [심각한 Red Flag] 2024년 창업 회사임에도 창업자들의 디지털 발자취가 전혀 없다는 것은 극히 비정상적이며, 제공된 모든 정보가 자체 주장에 불과하고 제3자 검증이 불가능하여 신뢰성이 매우 낮음. 팀 역량 평가 자체가 불가능한 상태.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[부분 확인] 사업 분야(유통·물류·AI)는 롯데 주력 영역과 일치. [미확인] PoC 아이디어는 롯데글로벌로지스 5개 창고 온프레미스 배포로 구체적이나 실현 가능성이 의문 — Petrosetco 레퍼런스가 검증되지 않은 상태에서 동일 모델 적용 가능성 불확실. [미확인] Viettel Cloud MoU, BNI Vietnam 파트너십 등 주장된 인프라 협력이 실제로 존재하는지 확인 불가. PoC 예산 USD 80K 요청은 명시되었으나 3-5명 파워 유저 접근 요구사항이 롯데 내부 리소스 부담으로 작용 가능. 계열사 연계 방식이 다소 일반적(재무 통합, 대시보드)이며 롯데 고유 인프라·데이터·고객 기반을 활용하는 차별적 PoC 설계는 부족.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 1 + C 3 + D 1 + E 2</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">9</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">식품·유통·건설·AI/첨단산업 중 유통·물류·AI</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">롯데글로벌로지스, 롯데마트, 롯데리아</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">90일 PoC를 롯데글로벌로지스 5개 창고에서 온프레미스 배포. Petrosetco 모델 복제하여 (1) 실시간 매출·현금·재고 대시보드, (2) AI 현금흐름 예측(85% 정확도 목표), (3) 수동 보고서 대비 분산 분석 제공. 성공 지표는 재무팀 NPS 8+/10. 이후 롯데마트 본사 재무 통합(Q4 2026), 롯데리아 300+ 가맹점 재무 건전성 플랫폼(Q3 2027)으로 확장. 모든 배포는 온프레미스 또는 Viettel Cloud 사용. PoC 예산 USD 80K 요청.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">FATS AI delivers measurable, structural ESG impact — not as a layer added on top of the product, but as an inherent consequence of how the platform was built.
+
+G — GOVERNANCE: Radical Financial Transparency at Conglomerate Scale
+The most immediate and quantifiable ESG contribution of FATS AI is the systematic elimination of financial opacity. Manual, siloed reporting across disconnected subsidiaries is not merely an efficiency problem — it is a governance failure waiting to surface. FATS AI directly addresses this by replacing month-end consolidation lag with real-time, AI-verified financial dashboards that surface cash position, revenue variance, and anomalous transactions the moment they occur.
+For enterprises like LOTTE Vietnam — operating 25+ subsidiaries across retail, F&B, hospitality, and logistics — this translates into: a single auditable source of verified financial truth accessible to board-level decision-makers; AI-driven anomaly detection that identifies irregular transactions in real time, reducing exposure to internal fraud and reporting error; and cash flow forecasting at >85% accuracy versus ~60% for conventional Excel-based models, enabling decisions grounded in evidence rather than assumption.
+Critically, 100% of data is stored and processed on domestic infrastructure — Viettel Cloud / on-premise — in full compliance with Vietnam's Decree 13/2023/NĐ-CP on personal data protection and the national Cybersecurity Law. No sensitive financial data is transmitted to foreign servers. For a conglomerate operating under Vietnamese regulatory scrutiny, this is not optional good practice — it is a legal and governance imperative that FATS AI fulfills by design.
+FATS AI's founding constitution — Fair, Accountable, Transparent, Safe — is not a marketing tagline. It is the architectural principle from which every product decision flows.
+
+S — SOCIAL: Democratizing Institutional-Grade Financial Intelligence
+Vietnam faces a structural financial literacy gap. The vast majority of individuals and SMEs manage money reactively — without forecasting tools, without behavioral insights, and without access to the kind of financial intelligence that large corporates take for granted. FATS AI closes this gap at scale.
+For individual users: FATS AI's AI-powered personal finance platform — supporting voice input, natural language chat ("Trưa nay ăn cơm 200k"), and computer vision invoice scanning at >95% accuracy — reduces manual data entry time by 80% and cuts recording errors by 60% versus traditional methods. The result is measurable behavioral change: users who adopt FATS AI increase their savings goal completion rate by 60%, and personalized AI recommendations deliver 140% better financial outcomes than generic advice tools. With over 1,170 premium subscribers and a monthly retention rate exceeding 85%, the platform demonstrably sustains — not merely initiates — healthier financial habits.
+For SMEs: Automated cash flow forecasting at >85% accuracy enables small business owners to plan proactively, reduce dependence on expensive accounting headcount, and avoid the cash flow crises that cause the majority of Vietnamese SME failures.
+Beyond individual impact, every FATS AI deployment strengthens Vietnam's "Make in Vietnam" technology sovereignty agenda — generating demand for Vietnamese AI and ML engineers, reducing talent migration to foreign technology firms, and building domestic capability in a sector where Vietnam has historically been a consumer, not a creator.
+
+
+E — ENVIRONMENTAL: Efficiency by Architecture
+FATS AI's 220M-parameter model is purpose-engineered for financial reasoning — a domain-specific architecture requiring a fraction of the compute resources consumed by general-purpose large language models. GPT-4 operates at an estimated 1 trillion+ parameters. FATS AI delivers superior performance on Vietnamese financial tasks at 0.02% of that computational footprint.
+This is not an environmental claim bolted onto a pitch — it is a structural consequence of building a specialized model rather than deploying an oversized foreign one. Lower parameters mean lower energy consumption per inference, lower carbon output per financial insight delivered, and lower dependency on energy-intensive foreign data centers. Deployed across LOTTE's ecosystem at scale, this efficiency compounds meaningfully.
+Additionally, by running on Viettel's domestic data centers — which operate under Vietnamese energy efficiency standards — FATS AI avoids the carbon overhead associated with cross-border data transmission and foreign hyperscaler infrastructure.
+
+A PoC collaboration with LOTTE Ventures would extend all three of these ESG dimensions across one of Vietnam's largest commercial ecosystems — delivering governance transparency to 25+ subsidiaries, financial intelligence to hundreds of Lotteria franchisees, and a replicable sovereign AI model that other Vietnamese conglomerates can adopt without dependency on foreign infrastructure or foreign regulatory risk.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">제공된 정보가 사실이라면 팀은 재무(Phuc), 기술(Phuong), 법률(Giang), 전략(Khoa) 영역을 커버하나 모든 정보가 미검증 상태. 가장 심각한 문제는 FATS AI라는 회사 자체의 존재가 확인되지 않는다는 점. 제공된 웹사이트, LinkedIn 페이지, 언론 보도, 고객 사례(Petrosetco 포함) 등 어떤 독립적 증거도 발견되지 않음</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">4명의 핵심 멤버 구성(CEO, CTO, Legal Advisor, Strategy Advisor)은 이론적으로 완전해 보이나 실제 존재와 역량을 검증할 수 없음. 8-10명의 엔지니어 팀 주장도 확인 불가. 확장 네트워크로 주장된 인물들(Phung Tuan Nam, Nguyen Nhu Long, Tran Quang Huy)과의 관계도 검증 불가</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">매우 낮음 - 심각한 우려 사항: 1) 회사 자체의 공개 정보가 전혀 없음, 2) 모든 핵심 팀원의 LinkedIn 프로필 부재, 3) 주장된 고객사(Petrosetco)와의 관계를 입증하는 독립적 출처 없음, 4) 기술 성과(220M 파라미터 모델, 92.5% NER)에 대한 검증 불가, 5) 17년 경력의 전문가들이 디지털 발자취가 전혀 없다는 것은 극히 비정상적. 이는 정보가 조작되었거나 회사가 실제로 운영되지 않을 가능성을 시사</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">투명성과 검증가능성의 완전한 부재. 정상적인 스타트업이라면 최소한 LinkedIn 프로필, 회사 웹사이트 실체, 언론 보도, 고객 추천사 등 일부 검증 가능한 정보가 있어야 함. FATS AI의 경우 제공된 모든 정보가 자체 주장에 불과하며 제3자 검증이 전혀 불가능. 투자 고려 시 극도로 주의 필요</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Phuc Nguyen FATS AI LinkedIn · Phuc Nguyen EY Parthenon Vietnam LinkedIn · Phuong Nguyen PhD AI Vietnam LinkedIn · Phuong Nguyen CTO FATS AI LinkedIn · Giang Vien PhD Economic Law Vietnam LinkedIn · Giang Vien PhD Economic Law Banking University Ho Chi Minh</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Phuc Nguyen</div><div class="member-role">CEO & Co-Founder</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필 발견 불가 - CEO 직책에서 비정상적</span><span class='flag-item'>⑊ EY-Parthenon에서 17년 경력 주장하나 검증 불가</span><span class='flag-item'>⑊ FATS AI 회사 자체에 대한 공개 정보 전무</span><span class='flag-item'>⑊ 제공된 웹사이트(fats-ai-sustainable-finance.web.app, fats.vn) 관련 검색 결과 없음</span><span class='flag-item'>⑊ Temasek 관련 업무 경력 구체적 증거 없음</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>MSc Finance/Finance</td><td>정보 확인 불가</td><td>정보 확인 불가</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>EY-Parthenon</td><td>Senior Manager (자칭)</td><td>17년 경력 (자칭)</td><td style="font-size:11px;">EY-Parthenon에서 근무한 Phuc Nguyen을 검색했으나 FATS AI 관련 인물을 찾을 수 없음. EY Vietnam 웹사이트에서 Nguyễn Thanh Phúc (Manager, EY-Parthenon Strategy)를 확인했으나 FATS AI와 연결 없음</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr><tr><td>Temasek-backed entities (자칭)</td><td>Valuation and M&A 업무 수행 (자칭)</td><td>정보 확인 불가</td><td style="font-size:11px;">구체적 증거 없음</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 제공된 배경 정보(재무 전략 컨설팅, M&A)가 사실이라면 AI 기술 개발보다는 비즈니스 전략에 더 적합함. 그러나 정보 검증 불가로 실제 적합성 평가 불가능. CPA Australia 자격 주장도 확인 불가</div><div class="ma-overall"><strong>종합 평가:</strong> 제공된 정보의 신빙성이 매우 낮음. CEO가 공개 프로필이 없다는 것은 심각한 우려 사항. 회사와 창업자 모두에 대한 독립적 검증 불가능</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Phuong Nguyen</div><div class="member-role">CTO & Co-Founder</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필 발견 불가</span><span class='flag-item'>⑊ 17년 AI/ML 경력 주장에도 불구하고 학술 출판물 확인 불가</span><span class='flag-item'>⑊ 호주에서 박사 학위를 받았다고 주장하나 구체적 대학명 없음</span><span class='flag-item'>⑊ 220M 파라미터 모델 및 92.5% NER 정확도 주장에 대한 독립적 검증 불가</span><span class='flag-item'>⑊ 베트남어 AI 모델 개발자로서 연구 커뮤니티에서 전혀 발견되지 않음</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>PhD/AI/Computer Science</td><td>호주 대학교 (자칭 - 구체적 학교명 불명)</td><td>정보 확인 불가</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>정보 없음</td><td>Machine Learning 및 NLP 연구자 (자칭)</td><td>17년 (자칭)</td><td style="font-size:11px;">베트남어 AI 모델 개발 주장하나 학술 출판물이나 연구 기록 확인 불가</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> AI/ML 배경이 사실이라면 기술 개발에 적합하나 모든 정보가 미검증 상태. 17년 경력의 AI 연구자가 검색 가능한 학술 발표나 LinkedIn 프로필이 없다는 것은 매우 의심스러움</div><div class="ma-overall"><strong>종합 평가:</strong> 주장된 기술 역량이 사실이라면 인상적이나 검증 가능한 증거가 전혀 없음. 경력있는 AI 연구자의 디지털 흔적이 전무한 것은 극히 비정상적</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Giang Vien</div><div class="member-role">Legal Advisor</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ FATS AI와의 연결을 보여주는 증거 없음</span><span class='flag-item'>⑊ Banking University에서의 역할 확인 불가</span><span class='flag-item'>⑊ Decree 13/2023/NĐ-CP 전문가 주장에 대한 구체적 증거 없음</span><span class='flag-item'>⑊ Advisor 직책임에도 공개 프로필이나 회사 연관성 없음</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>PhD/Economic Law</td><td>정보 확인 불가</td><td>정보 확인 불가</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Banking University Ho Chi Minh City</td><td>대학 강사 및 규제 전문가 (자칭)</td><td>정보 확인 불가</td><td style="font-size:11px;">ResearchGate와 Google Scholar에서 Ho Chi Minh University of Banking의 Vien Giang (Economic Law 전공)을 확인했으나 FATS AI와의 연결고리 없음. Decree 13/2023/NĐ-CP 관련 전문성 확인 불가</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 경제법 및 데이터 보호 전문성은 금융 AI 스타트업에 관련성 있으나 FATS AI와의 실제 관계 확인 불가. Fintech 및 사이버보안 법률 전문성 주장은 미검증</div><div class="ma-overall"><strong>종합 평가:</strong> 유사한 이름과 배경을 가진 학자가 존재하나 FATS AI와의 연결은 확인 불가. 주장된 자문 역할에 대한 독립적 검증 없음</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Khoa Nguyen</div><div class="member-role">Strategy Advisor</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ Queensland University 박사 주장하나 전공 분야조차 명시되지 않음</span><span class='flag-item'>⑊ ASEAN 전략 전문가 주장에 대한 증거 없음</span><span class='flag-item'>⑊ LinkedIn 프로필 없음</span><span class='flag-item'>⑊ FATS AI와의 관계를 보여주는 공개 정보 전무</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>PhD/정보 불명</td><td>Queensland University, Australia (자칭)</td><td>정보 확인 불가</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>정보 없음</td><td>ASEAN 시장 전략 전문가 (자칭)</td><td>정보 확인 불가</td><td style="font-size:11px;">Queensland University 관련 여러 Khoa Nguyen을 확인했으나 FATS AI Strategy Advisor와 일치하는 인물 없음</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> ASEAN 시장 전략 배경이 사실이라면 사업 확장에 도움이 될 수 있으나 모든 정보가 미검증 상태. 구체적 경력이나 전문 분야 불명</div><div class="ma-overall"><strong>종합 평가:</strong> 제공된 정보가 극히 제한적이고 검증 불가능. Advisor 역할의 실체 확인 불가</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 및 회사 운영 실체 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 모든 핵심 멤버의 LinkedIn 부재, 회사 공개 정보 전무 — 투자 전 필수 실사 불가능. 정보 조작 또는 운영 부재 가능성 존재.</td></tr>
+<tr><td>기술 성능 주장 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 220M 파라미터 모델, 92.5% NER 정확도, 85% 현금흐름 예측 등 모든 기술 지표가 자체 주장에만 기반. 학술 출판, 특허 번호, 벤치마크 비교 등 독립적 증거 부재.</td></tr>
+<tr><td>고객 레퍼런스 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] Petrosetco(USD 858M 고객사) 계약 주장이 독립적으로 확인되지 않음. Petrosetco IR 자료, 언론 보도, 공식 발표 등에서 FATS AI 언급 발견 불가. B2B 실행 역량 판단 불가.</td></tr>
+<tr><td>매출 및 구독자 수치 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] USD 74K(2025), B2C 1,170명, 65% 전환율 등 모든 트랙션 지표가 IR 자료에만 존재. 결제 게이트웨이, 세금 신고, 은행 거래 등 검증 가능한 증거 요청 필요.</td></tr>
+<tr><td>PoC 실현 가능성 불확실</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] PoC 계획은 구체적이나 Petrosetco 레퍼런스 미검증 상태에서 롯데글로벌로지스 배포 가능성 불투명. 온프레미스 배포 경험 및 기술 스택 검증 필요.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge active">✓ 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">기술 검증 가능성 및 제품 실체</span><span class="dvtag dv-r">심각한 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 220M 파라미터 베트남어 NLP 모델, 92.5% NER 정확도, 85% 현금흐름 예측 정확도 등 핵심 기술 성능 지표에 대한 독립적 검증이 전무하다. GitHub, 학술 논문, 특허, 기술 백서 등 일반적인 기술 증빙 자료가 존재하지 않는다. [미확인] 제시된 웹사이트(fats-ai-sustainable-finance.web.app, fats.vn)의 실제 작동 여부 및 프로덕션 수준 제품 존재 여부를 확인할 수 없다. [심각한 Red Flag] 2024년 창업 AI 기업임에도 CTO의 디지털 발자취가 전무하고 기술 실체를 뒷받침할 어떠한 공개 정보도 없어 제품이 실제로 존재하는지조차 의문이다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">고객 검증 및 레퍼런스 신뢰성</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] Petrosetco, PNK, Sun Mountain 등 4개 B2B 고객사 계약에 대한 독립적 확인이 불가능하다. 고객사 추천사, 언론 보도, 케이스 스터디 등 일반적인 B2B SaaS 검증 자료가 전혀 존재하지 않는다. [미확인] B2C 1,170명 유료 구독자 및 65% 전환율 주장은 자체 IR 자료에만 존재하며 앱스토어 리뷰, 사용자 커뮤니티, 소셜 미디어 언급 등 제3자 검증 경로가 없다. [심각한 Red Flag] 베트남 대기업 대상 엔터프라이즈 솔루션임에도 고객사 공동 마케팅, 보도자료, 업계 인지도가 전무한 것은 실제 배포가 이루어지지 않았을 가능성을 시사한다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">경쟁 우위 및 시장 포지셔닝</span><span class="dvtag dv-r">근거 불충분</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] '베트남어 NLP'와 '온프레미스 주권 AI'를 차별점으로 제시하나, 이것이 SAP, Oracle 등 글로벌 ERP 대비 실질적 구매 전환 동인인지 검증되지 않았다. [미확인] PhoBERT, XLM-R 대비 우수 성능 주장에 대한 벤치마크 결과 공개가 없다. [미확인] Viettel Cloud MoU, BNI Vietnam 파트너십 등 인프라 협력 주장의 실재 여부를 확인할 수 없다. TAM만 언급되고 SAM/SOM 산정이 없어 실제 addressable market 규모가 불명확하며, 'sovereign AI' 포지셔닝의 시장 수요가 실증되지 않았다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">사업 모델 및 Unit Economics</span><span class="dvtag dv-r">핵심 지표 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 2025년 매출 USD 74K 주장에 대한 증빙이 없다. B2B 엔터프라이즈 구독과 B2C 프리미엄 구독으로 이원화된 모델이 제시되었으나 각 세그먼트별 ARPU, CAC, LTV, churn rate 등 unit economics 핵심 지표가 전무하다. [미확인] 엔터프라이즈 고객 획득 전략(영업 사이클, 평균 계약 규모, 배포 기간)이 구체화되지 않았다. [부분 확인] 수익 모델 구조 자체는 명시되어 있으나 실행 가능성과 확장성을 판단할 정량적 근거가 없어 투자 의사결정에 필요한 최소 기준을 충족하지 못한다.</div></div>
+<div class="deep-category-label">Category D — 팀 신뢰성</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업자 및 핵심 팀 검증 가능성</span><span class="dvtag dv-r">심각한 Red Flag</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] CEO Phuc Nguyen(EY-Parthenon 17년), CTO Phuong Nguyen(AI 연구 17년), Legal Advisor Giang Vien, Strategy Advisor Khoa Nguyen 전원의 LinkedIn 프로필이 발견되지 않았다. [미확인] 자칭 경력에 대한 독립적 검증이 전혀 불가능하며, 이전 직장(EY, 학계 등)에서의 실적, 논문, 프로젝트 이력 등 일반적인 경력 증빙 자료가 존재하지 않는다. [심각한 Red Flag] 2024년 창업한 AI 핀테크 스타트업의 전체 핵심 팀이 디지털 상에 어떠한 흔적도 남기지 않았다는 것은 극히 비정상적이며, 이는 팀 실체성 자체에 대한 근본적 의문을 제기한다. 통상적인 due diligence 수행이 불가능한 상태이다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">기술 리더십 및 AI 전문성</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] CTO Phuong Nguyen의 '17년 AI 연구' 경력 및 220M 파라미터 모델 개발 능력에 대한 어떠한 학술적·기술적 증거도 없다. 논문 출판, 컨퍼런스 발표, 오픈소스 기여, 기술 블로그 등 일반적인 AI 연구자/엔지니어의 활동 흔적이 전무하다. [미확인] 팀 전체의 베트남어 NLP, 금융 AI, 엔터프라이즈 배포 경험을 입증할 수 있는 이력이 없다. [심각한 우려] 고도의 기술적 난이도를 요구하는 엔터프라이즈 AI 플랫폼임에도 기술 팀의 실재와 역량을 확인할 방법이 없어 기술 실행 가능성에 대한 신뢰를 형성할 수 없다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">회사 운영 실체 및 투명성</span><span class="dvtag dv-r">심각한 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] FATS AI Sustainable Finance에 대한 베트남 기업 등록 정보, 언론 보도, 업계 언급, 소셜 미디어 존재가 전혀 확인되지 않는다. [미확인] WSA 2025 숏리스트 및 National Quality Top 10 수상 주장에 대한 공식 수상자 명단 교차 검증이 필요하다. [미확인] 투자 유치 이력이 없으며 Seed 라운드 USD 300-500K 목표에 대한 valuation 근거가 불명확하다. [심각한 Red Flag] 정상적으로 운영되는 스타트업이라면 최소한의 디지털 발자취(회사 웹사이트 about 페이지, 팀 소개, 고객 후기, 파트너 로고 등)가 존재해야 하나 이 모든 것이 부재하여 실제 운영 중인 회사인지조차 의심스럽다.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[부분 확인] WSA 2025 숏리스트(UN 후원), Top 10 National Quality 수상 등 외부 인증 존재 — 단, 이는 제품 검증이 아닌 컨셉 수준 인정</li>
+<li>[미확인] 베트남 사이버보안법(Decree 13/2023) 준수 온프레미스 구조는 정책 적합성 측면에서 강점일 수 있으나 실제 배포 사례 검증 불가</li>
+<li>[미확인] 베트남어 NLP 특화는 차별화 요소일 수 있으나 92.5% NER 성능 주장에 대한 독립적 벤치마크 부재</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] 모든 재무·고객·기술 지표가 자체 주장에만 기반하며 제3자 검증 불가 — 투자자 신뢰 확보 불가능</li>
+<li>[미확인] 팀 경력(EY-Parthenon 17년, AI 연구 17년) 검증 실패 — LinkedIn, 학술 DB, 언론 등 어떤 채널에서도 확인되지 않음</li>
+<li>[미확인] Petrosetco 레퍼런스 고객이 검증되지 않아 B2B 실행 역량 판단 불가</li>
+<li>2024년 창업 후 1년 내 USD 74K 매출 주장이나 단위 경제, CAC, LTV 등 사업모델 핵심 지표 전무</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 대기업의 재무 시스템 통합 수요는 실재하며, 데이터 주권 이슈는 정책 순풍 요인</li>
+<li>롯데 베트남 25+ 자회사 구조는 제품이 실제로 작동한다면 확장 가능성 높음</li>
+<li>AI 재무 자동화 시장은 글로벌적으로 성장 중이며 베트남 로컬 솔루션 부재</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>글로벌 ERP 벤더(SAP, Oracle, Microsoft Dynamics)가 베트남어 지원 강화 시 경쟁 우위 소멸</li>
+<li>검증되지 않은 기술 및 고객 주장으로 인한 레퓨테이션 리스크 — 투자 후 실사에서 주장 불일치 발견 가능성</li>
+<li>팀 실체 불명으로 인한 운영 연속성 리스크 — 핵심 인력 이탈 또는 부재 시 사업 지속 불가능</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">9</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">FATS AI는 베트남 대기업 재무 통합 AI라는 명확한 문제-솔루션 구조를 제시했으나, 핵심 가정의 검증 불가능성이 치명적이다. [미확인] Petrosetco(USD 858M 고객사) 계약, USD 74K 매출, 1,170명 유료 구독자, 220M 파라미터 자체 AI 모델 등 모든 핵심 주장이 독립적으로 확인되지 않았다. [심각한 Red Flag] 가장 우려스러운 점은 2024년 창업 회사임에도 회사 및 창업팀의 공개 정보가 전혀 존재하지 않는다는 것 — CEO·CTO 모두 LinkedIn 프로필 부재, 언론 보도 전무, 고객사 추천 검증 불가. 이는 정보 조작 또는 운영 실체 부재 가능성을 시사한다. 투자 고려 시 기본적인 실사(due diligence) 전제조건조차 충족되지 않은 상태로, 현 단계에서는 투자 부적합.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">2 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">9 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>FATS AI Sustainable Finance · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

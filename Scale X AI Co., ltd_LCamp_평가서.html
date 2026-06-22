@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scale X AI Co., ltd — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Scale X AI Co., ltd</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">베트남</span>
+          <span class="etag et-ind">AI/SaaS</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Scale X AI Co., ltd</div>
+        <div class="hero-sub">설립 2025 (1년) · https://www.scalexai.org</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Scale X AI는 창업자와 소규모 팀을 위한 AI 운영 시스템(AI Operating System)이다. 창업자의 의사결정 패턴과 업무 지식을 학습하여 콘텐츠 생성, 이메일 자동화, 고객 관계 관리, 보고서 작성 등을 통합 실행하며, 현재 SaaS 구독 모델로 운영될 계획이나 구체적인 가격 구조는 미공개 상태이다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          창업자의 암묵지(tacit knowledge)와 의사결정 패턴을 AI가 학습하여 실제 업무 실행 품질을 창업자 수준으로 재현할 수 있다는 기술적 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">200+</div><div class="kpi-desc">정식 출시 전 등록자 수 (확인)</div></div>
+<div class="kpi"><div class="kpi-val">MVP</div><div class="kpi-desc">내부 테스트 중, 베타 미출시 (부분 확인)</div></div>
+<div class="kpi"><div class="kpi-val">$150K</div><div class="kpi-desc">Pre-Seed 라운드 목표 금액 (확인)</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[부분 확인] IR 자료는 크리에이터 이코노미 $480B 시장(Goldman Sachs)을 언급하나, 베트남/APAC SAM/SOM 세분화가 전무함. '1인 10억 달러 기업' 등 거시적 트렌드 주장만 있고 구체적 타겟 세그먼트(연 매출, 팀 규모, 업종)가 불명확함. [미확인] 경쟁 분석 부재 — Notion AI, ChatGPT Enterprise, Microsoft Copilot 등 기존 AI 생산성 도구 대비 차별점이 선언적 수준('기억하는 AI')에 그침. 시장 확장 가능성을 뒷받침할 pilot customer 계약, LOI, 또는 유료 전환 의향 데이터 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 문제-솔루션 fit은 개념적으로만 제시됨. '창업자 병목 현상' 문제는 일반론이며, 이를 겪는 특정 고객군의 willingness to pay 검증 없음. [미확인] 수익 모델이 IR에 명시되지 않음 — SaaS 구독인지, 사용량 기반인지, 가격대가 얼마인지 불명확. 매출 이력 전무, 투자 유치 이력 전무. [미확인] 롯데벤처스 펀드 투자 적합성: Pre-Seed $150K 목표는 롯데벤처스의 일반적 투자 규모(Series A 이상, $3M+)보다 훨씬 작으며, exit 경로나 Series A 준비 지표(ARR target, customer pipeline) 부재.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 사회적 가치는 '소규모 팀의 생산성 향상'과 '조직 지식 민주화'로 정의되며, 방향성은 명확함. 그러나 임팩트 규모·깊이·지속성에 대한 구체적 근거 부족 — 실제 사용자가 얼마나 생산성이 개선되었는지, 어느 업무에서 가장 효과적인지에 대한 데이터 없음. [미확인] ESG 관점에서 AI 윤리, 데이터 프라이버시, 알고리즘 투명성 등 잠재적 사회적 리스크에 대한 언급 전무. 디지털 전환 접근성 개선 주장은 개념적 수준에 그침.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] TEAM DEEP RESEARCH 결과, 제공된 공동창업자 TRẦN VƯƠNG HÙNG의 LinkedIn 프로필을 찾을 수 없으며, 공개된 업무 이력, 교육 배경, 또는 AI/기술 분야 경험을 검증할 수 없음. 회사 웹사이트에 팀 정보 부재. [미확인] 자체 주장('AI 시스템 및 제품 개발, B2B 영업 경험')을 뒷받침할 제3자 검증 전무 — 이전 직장, 프로젝트 포트폴리오, 기술 논문, 오픈소스 기여 등 어떤 형태의 공개 실적도 확인 불가. [Critical Red Flag] 팀 투명성 부재는 Pre-Seed 투자 실사에서 치명적 리스크 요인. Domain relevance score: Low. Key person dependency risk: High. 전체 팀 구성(CTO, Product Lead 등) 불명확.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[부분 확인] AI/IT 분야는 롯데이노베이트 주요 사업분야와 부합. 그러나 PoC 아이디어가 지나치게 일반적 — '조직 지식 캡처 및 AI Brain 구축'은 어느 기업에나 적용 가능한 범용 제안이며, 롯데이노베이트의 특정 인프라(기존 시스템, 데이터 구조), 고객 기반, 또는 사업 목표와의 구체적 연결점 부재. [미확인] 롯데 계열사와의 기존 접점, 파일럿 논의, 또는 내부 챔피언 존재 여부 불명확. PoC 성공 기준, 타임라인, 필요 리소스, 예상 성과 지표가 전혀 제시되지 않음. 실행 가능성 평가 불가.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">AI/IT(롯데이노베이트)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">롯데이노베이트</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데 사업부 내 운영 지식, 고객 상호작용, SOP, 내부 문서, 의사결정 이력을 캡처하여 조직화하는 AI Brain 구축. 직원들이 조직 지식에 빠르게 접근하고 반복 업무를 줄이며 의사결정 일관성을 개선하는 공유 인텔리전스 레이어 생성을 목표로 함.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">ScaleXAI proposes building an AI Brain that captures and organizes operational knowledge, customer interactions, SOPs, internal documents, and decision history across selected LOTTE business units.
+
+The objective is to create a shared intelligence layer that enables employees to quickly access institutional knowledge, reduce repetitive work, and improve decision-making consistency.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">제공된 정보만으로는 팀의 도메인 커버리지를 평가할 수 없습니다. 웹사이트는 'AI 시스템 및 제품 개발, 기업 비즈니스 운영, B2B 영업, 스타트업 실행' 분야의 전문성을 주장하지만, 이를 뒷받침할 검증 가능한 팀원 배경 정보가 없습니다. 완전한 평가를 위해서는 창업팀 전체 명단과 각 구성원의 검증 가능한 이력이 필요합니다.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">평가 불가능 - 단 한 명의 공동 창업자만 제공되었으며, 그에 대한 공개 정보도 없습니다. 일반적으로 AI 스타트업은 기술 리더(CTO/Chief Scientist), 제품 리더, 비즈니스 리더를 포함한 보완적 기술을 가진 팀이 필요합니다. 현재 팀 구성의 완전성을 판단할 수 없습니다.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">검증 불가 - 공개적으로 검증 가능한 정보의 부재로 인해 팀의 신뢰성을 확인할 수 없습니다. 주요 우려 사항: (1) LinkedIn을 포함한 전문 네트워크에서의 디지털 발자국 없음, (2) 검증 가능한 업무 이력 없음, (3) 회사 웹사이트의 투명성 부족, (4) 미디어 보도 또는 제3자 검증 없음. 실사를 진행하기 전에 창업자들과의 직접 미팅, 이력서 검증, 추천인 확인, 법인 등록 서류 확인이 필수적입니다.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 격차는 투명성과 검증 가능성의 완전한 부재입니다. 투자 결정을 내리기 전에 다음이 필요합니다: (1) 전체 창업팀 명단과 각자의 역할, (2) 검증 가능한 LinkedIn 프로필 또는 전문 이력, (3) AI/기술 분야에서의 입증된 경험, (4) 이전 성과 또는 프로젝트, (5) 교육 배경 확인, (6) 추천인 및 이전 고용주로부터의 검증. 또한 회사의 법적 지위, 등록, IP 소유권에 대한 명확성도 필요합니다.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: TRẦN VƯƠNG HÙNG LinkedIn · Scale X AI founders team · scalexai.org founders · "Scale X AI" Vietnam founders · TRẦN VƯƠNG HÙNG co-founder AI · "scalexai.org" team</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">TRẦN VƯƠNG HÙNG</div><div class="member-role">CO-FOUNDER</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없음 - 전문가 네트워크에서의 존재감 부족</span><span class='flag-item'>⑊ 공개된 업무 이력 또는 교육 배경 정보 없음</span><span class='flag-item'>⑊ 회사 웹사이트에 팀 정보 또는 About 페이지 없음</span><span class='flag-item'>⑊ 언론 보도, 인터뷰, 또는 공개 발표 기록 없음</span><span class='flag-item'>⑊ 검증 가능한 이전 스타트업 또는 기업가적 경험 없음</span></div><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 공개된 정보를 찾을 수 없어 AI 산업에 대한 도메인 관련성을 평가할 수 없습니다. 회사 웹사이트(scalexai.org)는 대기자 명단 페이지만 제공하며 팀 정보가 없습니다.</div><div class="ma-overall"><strong>종합 평가:</strong> TRẦN VƯƠNG HÙNG에 대한 검증 가능한 공개 정보를 찾을 수 없었습니다. 이는 여러 가지를 의미할 수 있습니다: (1) 회사가 아직 스텔스 모드에 있음, (2) 창업자가 온라인에서 매우 제한적인 존재감을 유지함, (3) 회사가 아직 공식 출시 전 단계임, 또는 (4) 제공된 정보가 불완전하거나 부정확할 수 있음. 투자 실사를 위해서는 직접적인 커뮤니케이션, 추가 문서 및 검증이 필수적입니다.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 검증 불가 리스크</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 공동창업자의 LinkedIn 프로필, 업무 이력, 기술 경험을 공개적으로 확인할 수 없어 실행 역량 평가 불가. Pre-Seed 투자 실사에서 치명적 요인.</td></tr>
+<tr><td>기술 실현 가능성 리스크</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 창업자의 암묵지를 AI가 학습하여 실행 품질을 재현한다는 핵심 가정에 대한 검증 데이터 전무. MVP 성능 지표, 사용자 테스트 결과, 기술 백서 등 부재.</td></tr>
+<tr><td>시장 검증 부재 리스크</td><td><span class="rpill-sm rp-h">높음</span></td><td>[부분 확인] 200+ 대기자는 관심도를 보여주나, 유료 전환 의향, 목표 가격대, 핵심 페인 포인트에 대한 고객 인터뷰 결과 등 실질적 시장 검증 부재.</td></tr>
+<tr><td>경쟁 차별화 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] Notion AI, ChatGPT, Copilot 등 기존 도구 대비 구체적 차별점이 '기억' 기능 선언에 그침. 실제 사용자 경험, 전환 비용, lock-in 구조 등 방어 전략 불명확.</td></tr>
+<tr><td>투자 적합성 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>[확인] Pre-Seed $150K 목표는 롯데벤처스의 일반적 투자 규모(Series A+, $3M 이상)보다 작음. Exit 경로, Series A 준비 지표(ARR target 등) 부재로 펀드 전략과 불일치 가능성.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge active">✓ 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">시장 규모 추정의 신뢰성 및 베트남 로컬 시장 적합성</span><span class="dvtag dv-r">과대 추정 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] IR 자료는 Goldman Sachs의 크리에이터 이코노미 $480B 시장을 언급하나, 이는 Scale X AI의 실제 타겟(소규모 팀, 창업자)과 괴리가 큽니다. [미확인] 베트남 및 APAC의 SAM/SOM 세분화가 전무하며, 구체적 타겟 세그먼트(연 매출, 팀 규모, 업종)가 불명확합니다. [미확인] 베트남 시장의 B2B SaaS 지불 의향, 평균 ACV, 경쟁 환경에 대한 분석이 없어 시장 진입 가능성을 판단할 수 없습니다. '1인 10억 달러 기업' 등 거시적 트렌드 주장은 검증 불가능한 마케팅 레토릭에 가깝습니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">경쟁 우위 및 차별화 전략의 구체성</span><span class="dvtag dv-r">차별점 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] Notion AI, ChatGPT Enterprise, Microsoft Copilot, Salesforce Einstein 등 기존 AI 생산성 도구 대비 기술적·기능적 차별점이 '기억하는 AI' 등 선언적 수준에 그칩니다. [미확인] '조직 지식 학습' 메커니즘의 구체적 구현 방식(RAG, fine-tuning, vector DB 아키텍처 등)이 명시되지 않아 기술적 방어 가능성을 평가할 수 없습니다. [미확인] Early adopter 중 타 솔루션 대비 전환 이유, retention rate, NPS 등 정성적·정량적 차별화 지표가 부재합니다. 200+ 웨이트리스트는 단순 관심 표명일 뿐 구매 의향 검증은 아닙니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-5</span><span class="deep-title">SaaS 성장 지표 및 unit economics 검증 가능성</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] MVP가 내부 테스트 중이나 beta user의 engagement 지표(DAU/MAU, feature adoption, retention cohort)가 전혀 공개되지 않았습니다. [미확인] 수익 모델이 IR에 명시되지 않음 — 구독 tier, 가격대($50/mo? $500/mo?), upsell 구조, CAC payback period 등 SaaS 핵심 economics 정보가 전무합니다. [미확인] Pre-seed $150K 자금으로 달성 가능한 milestone(paying customers 수, ARR target, burn multiple)이 명시되지 않아 투자금 효율성을 판단할 수 없습니다. Series A 준비를 위한 성장 경로가 부재합니다.</div></div>
+<div class="deep-category-label">Category C — Pre-Seed/Seed 단계 초기 스타트업</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-1</span><span class="deep-title">Problem-Solution Fit 검증 수준</span><span class="dvtag dv-a">가설 단계</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] '창업자 병목 현상'과 '도구 간 컨텍스트 단절' 문제는 일반론으로 제시되나, 특정 고객군(업종, 매출 규모, 팀 구성)에서 이 문제가 top pain point임을 입증하는 1차 고객 인터뷰, willingness-to-pay 데이터가 없습니다. [미확인] 200+ 웨이트리스트 중 실제 problem interview 진행 건수, pain point 우선순위 검증, 기존 workaround 대비 10배 개선 가능성 검증이 불명확합니다. [미확인] Early adopter community의 구성(founder/consultant/팀 비율, 업종 분포)과 이들의 구체적 use case가 공개되지 않아 ICP 정의 수준을 확인할 수 없습니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-2</span><span class="deep-title">MVP 완성도 및 Product-Market Fit 신호</span><span class="dvtag dv-a">조기 단계</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] MVP가 내부 테스트 중이며 'core AI Brain architecture completed'라고 주장하나, 실제 사용자 손에 제품이 전달된 이력이 없어 real-world validation이 부재합니다. [미확인] Private beta 대상자 수, onboarding 일정, success metric(e.g. 주간 활성 사용자 수, task completion rate)이 명시되지 않았습니다. [미확인] '기억하는 AI'의 핵심 기능(지식 학습 정확도, 응답 품질, 통합 실행 성공률)에 대한 정량적 벤치마크나 사용자 피드백이 전무합니다. MVP→PMF 경로가 불명확하여 $150K 투자금으로 PMF 검증 가능 여부를 판단할 수 없습니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-4</span><span class="deep-title">창업팀 역량 및 실행력 검증</span><span class="dvtag dv-r">Critical Red Flag</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] TEAM DEEP RESEARCH 결과, 공동창업자 TRẦN VƯƠNG HÙNG의 LinkedIn 프로필을 찾을 수 없으며, 공개된 업무 이력·교육 배경·AI/기술 분야 경험을 검증할 수 없습니다. [미확인] 자체 주장('AI 시스템 및 제품 개발, B2B 영업 경험')을 뒷받침할 제3자 검증 전무 — 이전 직장명, 프로젝트 포트폴리오, 기술 논문, GitHub 활동, 추천인 등 어떤 형태의 공개 실적도 확인 불가합니다. [Critical] 팀 투명성 부재는 Pre-Seed 투자 실사에서 치명적 리스크 요인입니다. Domain relevance 낮음, key person dependency 높음, 전체 팀 구성(CTO, Product Lead 등) 불명확하여 실행 가능성을 신뢰할 수 없습니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-5</span><span class="deep-title">Pre-Seed 펀딩 규모의 적정성 및 롯데벤처스 fit</span><span class="dvtag dv-r">펀드 전략 불일치</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] Pre-Seed $150K 목표는 롯데벤처스의 일반적 투자 규모(Series A 이상, typically $3M+)보다 훨씬 작으며, 펀드 전략과 맞지 않습니다. [미확인] Exit 경로, Series A 준비 로드맵, ARR target, customer pipeline, follow-on 투자자 관심 등 성장 궤적 지표가 전혀 제시되지 않았습니다. [미확인] L-Camp 프로그램을 통해 달성하고자 하는 구체적 milestone(e.g. 첫 유료 고객 10개사 확보, $10K MRR)이 명시되지 않아 프로그램 fit을 평가할 수 없습니다. 롯데 네트워크 활용 계획이 'AI/IT 분야 부합'이라는 일반론에 그쳐 전략적 시너지가 불명확합니다.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[부분 확인] 200+ 대기자 명단은 컨셉에 대한 초기 시장 관심을 시사 (단, 유료 전환 의향은 미검증)</li>
+<li>[확인] Pre-Seed 펀딩 목표($150K)는 초기 단계 스타트업으로서는 적정 수준</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] 팀 배경 공개 검증 불가 — LinkedIn, 이전 경력, 기술 실적 전무로 실행 역량 평가 불가</li>
+<li>[미확인] 매출 이력 전무, 수익 모델 불명확, pilot customer 계약 없음</li>
+<li>[미확인] 핵심 기술(암묵지 AI 학습) 검증 데이터 부재 — MVP가 내부 테스트 중이나 성능 지표 미공개</li>
+<li>[미확인] 경쟁 분석 및 차별화 전략이 선언적 수준('기억하는 AI')에 그침</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>AI 생산성 도구 시장의 지속적 성장 (단, 베트남/APAC SAM 세분화 필요)</li>
+<li>소규모 팀 및 솔로프레너 증가 트렌드 (Goldman Sachs 크리에이터 이코노미 $480B 예측)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Notion AI, ChatGPT Enterprise, Microsoft Copilot 등 자금력 있는 기존 플레이어의 기능 확장</li>
+<li>창업자 지식 복제 품질이 기대에 미달할 경우 제품 가치 훼손</li>
+<li>팀 투명성 부재로 인한 투자자 신뢰 확보 난이도</li>
+<li>롯데벤처스 투자 규모와 Pre-Seed 펀딩 목표 간 미스매치</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Scale X AI는 '창업자 지식을 AI로 복제'하는 비전을 제시하나, 가장 큰 미검증 가정은 암묵지(tacit knowledge) 학습 및 실행 품질 재현 가능성이다. 200+ 대기자는 컨셉 관심도를 보여주나 지불 의향 검증은 부재하며, 팀 배경이 공개적으로 전혀 검증되지 않아 실행 역량 평가 불가. 롯데 PoC 제안은 범용적이며 계열사 특화 연결점이 없고, Pre-Seed $150K 목표는 롯데벤처스 투자 전략과 불일치. 현 단계에서는 팀 투명성 확보, MVP 실사용 검증, 구체적 수익 모델 정의가 선행되어야 투자 적합성 판단 가능.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Scale X AI Co., ltd · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

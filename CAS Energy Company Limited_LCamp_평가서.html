@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAS Energy Company Limited — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">CAS Energy Company Limited</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Da Nang, Vietnam</span>
+          <span class="etag et-ind">Decarbonize solutions & Greening services</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">CAS Energy Company Limited</div>
+        <div class="hero-sub">설립 2008 · https://cas-energy.com/</div>
+        <span class="hero-stage">Series A</span>
+        <p class="hero-desc">CAS Energy는 베트남 상업·산업 건물 소유주를 위한 탈탄소화 통합 서비스(REGreen)이다. 고객이 겪는 ESG 규제 준수 부담과 높은 전기료 문제를 해결하며, 제로 CAPEX·OPEX 구독 모델로 태양광·건물 녹화·유기폐기물 처리를 패키지로 제공하고 월 사용료를 수취한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          제로 CAPEX 모델의 자본 조달 구조가 시리즈 A 이후에도 지속 가능하며, 고객사가 20~30% 전기료 절감만으로 장기 계약을 유지할 것이라는 가정이 아직 대규모로 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-top">🏆 상</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">24</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$1.5M</div><div class="kpi-desc">2024년 $1M 대비 50% 성장 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">500+</div><div class="kpi-desc">완료 프로젝트·사이트 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">15MW+</div><div class="kpi-desc">2024년까지 태양광 설치 용량 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">120MW</div><div class="kpi-desc">시리즈 A 자금으로 확장 목표 [계획]</div></div>
+<div class="kpi"><div class="kpi-val">Mobile World</div><div class="kpi-desc">체인 고객 확보 [확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">상</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">[부분 확인] 베트남 상업·산업 건물 시장 규모 $2.1B, 동남아시아 $5.5B, APAC $12.5B로 제시되나 출처 및 산정 근거 없음. 그러나 베트남 내 10,500개 공장 및 1.4M 건물이라는 구체적 잠재 고객 수는 시장 존재성을 뒷받침. [확인] Mobile World Group, Dien may XANH 등 체인 고객 확보로 B2B 확장 가능성 입증. 경쟁 분석은 부재하나 제로 CAPEX 모델과 태양광·녹화·폐기물 통합 패키지가 차별화 요소로 작동. APEC·ASEAN 확장 로드맵 제시되었으나 구체적 진입 전략은 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">[확인] 문제(ESG 규제 부담·높은 전기료)-솔루션(REGreen 통합 서비스)-고객(상업·산업 건물)-수익(월 사용료 $250~$10,000) 구조가 명확. [확인] 2024년 $1M, 2025년 $1.5M 매출 실적으로 수익 창출 검증. [확인] Beacon Fund 투자 유치 사실 확인됨. 그러나 시리즈 A $10M 목표가 제로 CAPEX 모델의 자본 집약적 특성과 어떻게 정합되는지, 단위 프로젝트당 수익성 및 회수 기간이 [미확인]. IR에서 EBITDA 75% 제시되나 구체적 원가 구조 및 감가상각 반영 여부 불명확. 롯데벤처스 펀드 투자 적합성은 ESG·탄소 중립 트렌드 및 롯데 계열사 PoC 연계 가능성으로 [부분 확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">5<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">[확인] 문제 정의: 기업들이 ESG 규제 준수와 탄소 감축 압박에 직면하나 높은 초기 투자 부담으로 실행 어려움. [확인] 솔루션: 제로 CAPEX·OPEX 모델로 태양광·녹화·폐기물 처리 통합 제공, 전기료 절감 및 탄소 감축 동시 달성. [확인] 임팩트 규모·깊이·지속성: 2030년까지 1GW 설치 시 연간 1.5B kWh 녹색 에너지 생산, 150만 톤 CO₂ 감축, 1만 개 녹색 일자리 창출 목표. Vietnam Corporate Sustainability Award 2023~2026 4년 연속 수상, UN Women WEPs Award, UNDP Impact Award 등 다수 국제 인정으로 사회적 가치 입증.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[확인] Tu Nguyen: 통신공학 학사(다낭공대 2002~2007 확인), Royal Academy LIF 펠로우, Vital Voices 펠로우, UN Women WEPs Award 수상으로 국제적 인정 검증. Beacon Fund 투자 유치 및 20MW+ 프로젝트 실적 확인. 재생에너지 17년 경력 중 EVN 외부 프로젝트 세부사항은 [부분 확인]. [부분 확인] Dong Tran: 전력시스템 학사 및 EVN 20년 경력 자체보고되나 대학명·졸업연도 미확인, EVN 재직 이력 직접 검증 불가. [미확인] 두 창업자 모두 LinkedIn 프로필 부재로 디지털 존재감 약함. [미확인] CFO·CMO·국제 사업개발 전문가 등 C-level 경영진 구조 불명확. 50명 조직 언급되나 핵심 임원진 정보 부족. 도메인 적합성은 높으나(전력·통신·재생에너지) 대규모 스케일업 및 국제 확장 경험 제한적. Key person dependency 리스크 높음.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score h">8<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-h">상</div>
+      <div class="sc-comment">[확인] 주요 사업분야 적합성: 건설(롯데건설), 유통(롯데마트·몰·백화점), 호텔(롯데호텔), F&B(롯데리아) 모두 전기료 절감 및 ESG 성과 필요성 높음. [확인] 구체적 계열사 연계: 롯데몰·롯데마트·롯데호텔 등 다수 대형 건물 인프라 보유 계열사 명시. [확인] PoC 구체성: 3~6개월 기간, 옥상·발코니 태양광·건물 녹화·유기폐기물 처리 통합 시스템 설치, 탄소 감축량·전기료 절감 MRV(측정·검증·보고) 절차 수립이라는 명확한 실행 계획. [확인] 롯데 인프라 활용 명확성: 롯데 건물 옥상·외벽·폐기물을 직접 활용하는 물리적 통합 솔루션으로 협력 실현 가능성 높음. 단, 롯데 측 초기 투자 부담 여부 및 제로 CAPEX 모델에서 CAS Energy의 자본 조달 방식 구체화 필요.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 4 + B 4 + C 5 + D 3 + E 8</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">24</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-top">상</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce, Hospitality/Hotel/Tourism, Smart City/PropTech, F&B/Food</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">롯데마트, 롯데몰, 롯데호텔, 롯데건설 등 언급</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데 계열사 건물·공장·상업시설(롯데몰, 롯데마트 등)에 REGreen 솔루션 배치하여 3~6개월 PoC 수행. 옥상·발코니 태양광, 건물 외벽 녹화, 유기폐기물 처리 통합 시스템 설치 후 탄소 감축량·전기료 절감·ESG 성과를 측정·검증·보고(MRV) 절차 수립. PoC 성공 시 롯데 그룹 전체 인프라로 확장 가능성 검증.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Environmental Impact (E)
+Renewable Energy Generation: Installs rooftop and balcony solar infrastructure to generate green energy, directly reducing Scope 2 emissions for buildings. 
+Building Greenery Integration: Implements smart greenery that naturally insulates the building envelope, cooling concrete surfaces and lowering peak HVAC electricity loads by 15-20%. 
+Organic Waste treatment: Integrates compact, on-site biological treatment units to process daily organic waste, mitigating methane emissions from external municipal landfills. 
+
+Social Impact (S)
+Green Workforce: Creates green jobs with a strategic focus on empowering urban farmers.
+ 
+Governance (G)
+Digitized ESG Accounting: Uses integrated IoT monitoring sensors to log energy savings and carbon offset data, providing property owners with transparent, audit-ready ESG reporting. 
+Utility Cost Relief: Lowers electricity and building management expenses under a Zero-CAPEX model, passing down financial burdens.
+
+How a PoC with LOTTE Drives This Impact
+LOTTE Facilities Portfolio Transition: Partnering on a 3-to-6-month PoC allows LOTTE to transform commercial malls LOTTE Marts and LOTTE towers into high-visibility "REGreen Buildings" showcases and calculate carbon reduction.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">두 창업자가 상호보완적 전문성을 보유: Tu Nguyen은 통신/자동화 배경에 사업개발 및 금융 전문성, Dong Tran은 전력시스템 및 EVN 그리드 경험으로 기술 실행력 담당. 재생에너지, 스마트그리드, 농업-태양광 통합, 프로젝트 파이낸싱 등 핵심 도메인이 충분히 커버됨. 다만 대규모 스케일업 경험, 국제 시장 확장 경험, 디지털/소프트웨어 전문성은 상대적으로 약함</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">핵심 기술(전력, 자동화)과 사업(금융, 투자유치)은 강하나 몇 가지 갭 존재: (1) CFO/재무 전문 임원 정보 없음 (Tu가 겸직 가능성), (2) CMO/마케팅 리더 부재, (3) 국제 사업개발 전문가 부재, (4) 소프트웨어/IoT 기술 리더 명확하지 않음. 웹사이트에서 Binh Tran, Tram Truong 등 추가 팀원 언급되나 역할 불명확. 50명+ 조직이나 경영진 구조가 불투명</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">중상위 수준의 신뢰성. 긍정 요소: (1) 2008년 설립으로 17년 운영 실적, (2) Beacon Fund 투자 유치 검증, (3) 다수의 국제 프로그램 참여 및 수상, (4) 주요 언론 보도 (VIR, The Investor 등), (5) Mobile World Group 등 주요 고객 확보, (6) 20MW+ 실제 프로젝트 수행. 우려 요소: (1) 두 창업자 모두 LinkedIn 프로필 미발견으로 디지털 존재감 약함, (2) 학력 세부 정보 부분 미확인 (특히 Dong Tran), (3) EVN 경력 직접 검증 불가, (4) 국제적 레퍼런스는 있으나 대규모 벤처 투자 실적 제한적</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 갭은 다음 세 가지: (1) 전문 경영진 구조 부재 - CFO, CTO 외 C-level 정보 없음, 스케일업 단계에 필요한 경영진 구성 불명확, (2) 국제 시장 진출 경험 및 전문성 부족 - 베트남 시장에 집중되어 있고 동남아시아 또는 글로벌 확장 경험 제한적, (3) 디지털/소프트웨어 역량 불명확 - IoT, AI, 데이터 분석 등 현대 에너지 관리 시스템에 필수적인 디지털 기술 리더십 명시되지 않음. 추가로 두 창업자 모두 LinkedIn 부재로 인한 전문 네트워크 투명성 부족도 우려</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Tu Nguyen Pham Cam LinkedIn · Tu Nguyen Pham Cam CAS Energy LinkedIn · Dong Tran LinkedIn · Dong Tran CAS Energy LinkedIn · Tu Nguyen Pham Cam CAS Energy Vietnam · Dong Tran CTO CAS Energy Vietnam</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Tu Nguyen Pham Cam (Tu Nguyen)</div><div class="member-role">Founder & CEO</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-h" style="margin-left:8px;">Domain: High</span></div>
+  </div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>Bachelor/Telecommunications Engineering</td><td>Danang University of Technology</td><td>2002-2007</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>CAS Energy Company Limited</td><td>CEO & Co-Founder</td><td>2008 - 현재 (2008년 설립)</td><td style="font-size:11px;">재생에너지 및 기후 스마트 농업 분야에서 베트남 최전선에 위치. 기업 재무 계획, 프로젝트 투자, 투자 펀드 및 은행과의 연락 담당. 20MW 이상의 태양광 프로젝트 성공적 수행</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>텔레커뮤니케이션 업계</td><td>기술 엔지니어링 역할</td><td>약 7년 (재생에너지 전환 전)</td><td style="font-size:11px;">통신 네트워크 개발 및 운영 경험</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr><tr><td>재생에너지 프로젝트 개발 및 사업 금융</td><td>프로젝트 개발자</td><td>17년 경험 (자체보고)</td><td style="font-size:11px;">재생에너지 프로젝트 개발 및 비즈니스 파이낸싱 전문</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 통신 공학 학사 배경과 자동화 분야 15년 이상 경험을 보유하여 스마트 그리드 및 재생에너지 시스템 통합에 매우 적합. 17년간의 재생에너지 프로젝트 개발 경험과 사업 금융 전문성이 탈탄소화 솔루션 및 녹색 서비스 사업에 직접적으로 부합. Beacon Fund로부터 투자 유치 성공 및 20MW 이상의 태양광 프로젝트 실적이 검증된 역량을 입증</div><div class="ma-overall"><strong>종합 평가:</strong> 매우 강력한 창업자 프로필. 기술적 배경(통신 공학), 실무 경험(자동화 15년+), 사업 경험(재생에너지 17년), 국제적 인정(Royal Academy, Vital Voices, UN Women) 등이 균형 잡혀 있음. Beacon Fund 투자 유치 및 20MW+ 프로젝트 실적이 실행 능력을 입증. 여성 리더십과 사회적 영향력에서도 두각을 나타냄. LinkedIn 프로필 미발견은 소규모 우려사항이나 다른 검증 가능한 공적 활동이 이를 보완</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Dong Tran (Dong Anh Tran / Tran Anh Dong)</div><div class="member-role">Co-Founder & CTO / President</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-h" style="margin-left:8px;">Domain: High</span></div>
+  </div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>Bachelor/Power System (전력 시스템)</td><td>미확인</td><td>미확인</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>CAS Energy Company Limited</td><td>Co-Founder, CTO & President</td><td>2008 - 현재</td><td style="font-size:11px;">CAS의 미션, 리더십 및 관리 총괄. 전반적인 전략, 운영 성과 및 성과 책임. 기업 전략, 비즈니스 실행 및 기술 통합 주도</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>EVN (Vietnam Electricity) 계열사</td><td>스마트 그리드 시스템 및 그리드 연결 전문가</td><td>20년 경험 (자체보고)</td><td style="font-size:11px;">스마트 그리드 시스템 및 그리드 연결 작업. 재생에너지 및 스마트 정밀 농업 프로젝트 개발 경험</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 전력 시스템 학사 학위와 EVN(베트남 국영 전력공사)에서 20년간의 스마트 그리드 및 그리드 연결 경험은 재생에너지 통합 및 탈탄소화 솔루션에 핵심적. 엔지니어링 및 자동화 분야 20년 경험이 CTO 역할에 완벽히 부합. 재생에너지 프로젝트 개발 경험과 스마트 농업 프로젝트 경험이 회사의 기후 스마트 농업 모델과 직접 연관</div><div class="ma-overall"><strong>종합 평가:</strong> 강력한 기술 리더 프로필. EVN에서의 20년 경험은 베트남 전력 부문에 대한 깊은 이해와 네트워크를 시사. 엔지니어링 및 자동화 전문성이 CTO 역할에 적합. 그러나 학력 세부사항(대학명, 졸업연도) 미확인 및 구체적인 EVN 경력 검증 불가가 약점. LinkedIn 부재로 경력 추적이 제한적. 회사의 실제 성과(500+ 프로젝트)가 역량을 간접 입증</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>자본 조달 구조 불명확성</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 제로 CAPEX 모델은 CAS Energy가 초기 투자를 부담하는 구조인데, 시리즈 A $10M으로 120MW 확장 시 필요한 총 자본 규모 및 프로젝트파이낸싱·리스 등 자금 조달 방식이 IR에 구체적으로 명시되지 않음. 현금 흐름 관리 및 회수 기간 리스크 존재.</td></tr>
+<tr><td>단위 경제 검증 부족</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 프로젝트당 평균 계약 규모, 설치 원가, 월 사용료 수준, 손익분기 기간이 제시되지 않음. EBITDA 75% 주장은 IR에 있으나 원가 구조·감가상각·O&M 비용 세부 근거 없음. 대규모 확장 시 단위 수익성 유지 여부 불확실.</td></tr>
+<tr><td>경영진 구조 및 Key person dependency</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 두 창업자 외 CFO·CMO·국제 사업개발 임원 정보 부족. 50명 조직 언급되나 C-level 구성 불명확. 두 창업자 LinkedIn 부재로 전문 네트워크 투명성 낮음. 스케일업 단계에서 경영진 보강 필요성 높으나 계획 [미확인].</td></tr>
+<tr><td>베트남 전력 규제 및 정책 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] 베트남 재생에너지 FIT 제도 변화 및 그리드 연결 정책 불확실성. EVN과의 협력 관계는 Dong Tran 경력으로 [부분 확인]되나, 정책 변화 시 사업 모델 영향도 분석 없음.</td></tr>
+<tr><td>국제 확장 경험 부족</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] APEC·ASEAN 확장 계획 제시되나 팀 내 국제 사업개발 전문가 부재, 해외 레퍼런스 없음. 베트남 외 시장 진입 시 현지 규제·파트너십 확보 난이도 높을 수 있음.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category C — Climate Tech/Green Tech</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-1</span><span class="deep-title">자본 집약적 비즈니스 모델의 재무 지속가능성</span><span class="dvtag dv-a">Cash Burn 관리 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 제로 CAPEX 모델은 CAS Energy가 전액 선투자 후 월 구독료로 회수하는 구조로, 프로젝트당 평균 투자액 및 회수 기간이 핵심이나 IR 자료에 명시되지 않음. [확인] 2024년 $1M, 2025년 $1.5M 매출 실적은 검증되었으나 EBITDA 75% 주장의 원가 구조(태양광 패널 구매·설치·유지보수 비용, 감가상각) 상세 미공개. [미확인] Series A $10M 조달 목표가 500개 기존 프로젝트 운영 현금흐름과 신규 프로젝트 확장 간 자본 배분 계획 불투명. 단위 경제학(Unit Economics) 및 프로젝트별 IRR 검증 필수.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-2</span><span class="deep-title">베트남 전력 규제 및 Net Metering 정책 리스크</span><span class="dvtag dv-a">정책 의존도 높음</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 베트남은 2021년 이후 FIT(Feed-in Tariff) 제도 종료 후 Net Metering 및 DPPA(Direct Power Purchase Agreement) 시범 운영 중이나 정책 불확실성 지속. [미확인] CAS Energy의 수익 모델이 EVN 그리드 연계 및 전력 판매 허가에 얼마나 의존하는지 명시 부재. [부분 확인] 'REGreen' 패키지가 태양광 외 건물 녹화·유기폐기물 처리를 포함하여 전력 규제 의존도를 분산시키나, 각 서비스 라인별 매출 기여도 비공개로 실제 리스크 완화 효과 불명확. 베트남 정부의 RE100 지원 정책 및 탄소세 도입 시나리오 분석 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-3</span><span class="deep-title">경쟁 구도 및 차별화 지속가능성</span><span class="dvtag dv-g">선점 우위 확보</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] Mobile World Group(베트남 최대 전자제품 유통 체인), Dien may XANH, Bach hoa XANH 등 대형 체인 고객 확보로 B2B 레퍼런스 입증. [확인] Vietnam Corporate Sustainability Award 4년 연속(2023~2026) 수상, UN Women WEPs Award, UNDP Impact Award 등 국제 인정으로 브랜드 신뢰도 구축. [부분 확인] 베트남 내 태양광 EPC 경쟁자(Trung Nam Group, BCG Energy 등) 대비 '통합 탈탄소 패키지(태양광+녹화+폐기물)' 및 '제로 CAPEX 구독 모델'이 차별점이나, 경쟁사 가격 및 서비스 범위 비교 분석 부재. [미확인] ASEAN·APAC 확장 시 현지 재생에너지 기업과의 경쟁력 유지 전략 구체화 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-4</span><span class="deep-title">Impact 측정 및 검증 체계(MRV)</span><span class="dvtag dv-g">강력한 Impact 입증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 2030년까지 1GW 설치 시 연간 1.5B kWh 녹색 에너지 생산, 150만 톤 CO₂ 감축, 1만 개 녹색 일자리 창출이라는 구체적 임팩트 목표 제시. [확인] IR 자료에 '탄소 감축량·전기료 절감 MRV(Measurement, Reporting, Verification) 절차 수립' 명시로 데이터 기반 성과 관리 의지 확인. [부분 확인] 기존 500개 프로젝트에서 실제 누적 CO₂ 감축량 및 고객 전기료 절감률 데이터는 [미확인]되었으나, 4년 연속 지속가능성상 수상 실적이 제3자 검증을 시사. 롯데 PoC에서 MRV 체계를 계열사 ESG 보고서와 직접 연동 가능.</div></div>
+<div class="deep-category-label">Category B — SaaS/구독 경제</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">고객 생애가치(LTV) 및 해지율 관리</span><span class="dvtag dv-a">장기 계약 안정성 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 월 사용료 $250~$10,000 범위로 고객 규모별 가격 차등화 확인되나, 평균 계약 기간 및 갱신율 미공개. [미확인] 구독 모델에서 고객 Churn Rate(해지율) 데이터 부재. 태양광 설비 수명(통상 25년) 대비 고객사가 중도 해지 시 CAS Energy의 자산 회수 방안 불명확. [부분 확인] Mobile World Group 등 체인 고객은 다점포 계약으로 LTV 향상 가능성 있으나, 단일 사업장 고객의 장기 유지 전략 구체화 필요. [미확인] CAC(Customer Acquisition Cost) 대비 LTV 비율 및 회수 기간(Payback Period) 미공개로 단위 경제학 검증 불가.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">제품-시장 적합성(PMF) 확장성</span><span class="dvtag dv-g">검증된 PMF, 스케일 전략 보완 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 500개 프로젝트 실적 및 주요 체인 고객 확보로 베트남 상업·산업 건물 세그먼트에서 PMF 입증. [확인] 문제(ESG 규제+높은 전기료)-솔루션(REGreen 통합 서비스)-수익(구독료) 구조 명확. [부분 확인] 베트남 내 10,500개 공장, 1.4M 건물이라는 잠재 시장 규모 제시되나, 실제 타겟 가능 고객(일정 규모 이상 건물, ESG 규제 적용 대상 기업) 비율 및 Go-to-Market 전략 구체성 부족. [미확인] ASEAN·APAC 확장 로드맵에서 각국 전력 규제·건물 기준·ESG 정책 차이 대응 방안 미명시.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">운영 효율성 및 프로젝트 관리 역량</span><span class="dvtag dv-a">스케일업 준비 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 20MW+ 프로젝트 실적 및 Dong Tran CTO의 EVN 20년 경력으로 기술 실행 역량 검증. [부분 확인] 50명 조직 규모 언급되나 프로젝트 관리·설치·유지보수 인력 구조 및 1인당 관리 가능 프로젝트 수 미공개. [미확인] 500개 프로젝트 운영에 필요한 원격 모니터링 시스템, 예방 정비(Preventive Maintenance) 프로세스, 고객 지원 체계 구체성 부족. [미확인] Series A 자금으로 연간 목표 신규 프로젝트 수 및 이를 감당할 조직 확장 계획(채용·교육·시스템 투자) 불명확. 급성장 시 품질 관리 및 고객 만족도 유지 리스크 존재.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>17년 운영 실적(2008년 창업) 및 500개 프로젝트 완료로 검증된 실행력 [확인]</li>
+<li>Mobile World Group 등 대형 체인 고객 확보 및 $1.5M 매출 실적 [확인]</li>
+<li>제로 CAPEX·OPEX 모델로 고객 진입장벽 낮추고 태양광·녹화·폐기물 통합 차별화</li>
+<li>Vietnam Corporate Sustainability Award 4년 연속 수상, UN Women·UNDP 등 국제 인정 다수 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>시리즈 A $10M 조달 목표와 제로 CAPEX 모델의 자본 조달·회수 구조 불명확 [미확인]</li>
+<li>CFO·CMO 등 C-level 경영진 구조 및 역할 정보 부족, 두 창업자 LinkedIn 부재로 디지털 존재감 약함 [미확인]</li>
+<li>단위 프로젝트 수익성·마진·회수 기간 데이터 제시 없음, EBITDA 75% 근거 불명확 [미확인]</li>
+<li>경쟁사 분석 및 시장 내 포지셔닝 구체성 부족 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남·동남아시아 ESG 규제 강화 및 탄소 중립 정책 확대 추세</li>
+<li>롯데 계열사 건물·공장 인프라를 통한 대규모 PoC 및 레퍼런스 확보 가능성</li>
+<li>APEC·ASEAN 시장 확장 로드맵(APAC $12.5B 시장) 존재</li>
+<li>Beacon Fund 투자 유치 성공으로 후속 기관 투자자 유치 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>제로 CAPEX 모델의 높은 자본 집약성으로 인한 자금 조달 및 현금 흐름 리스크</li>
+<li>베트남 전력 규제 변화 및 FIT(발전차액지원제도) 정책 불확실성</li>
+<li>대형 에너지 기업 또는 글로벌 ESG 솔루션 제공업체의 시장 진입 가능성</li>
+<li>Key person dependency: 두 창업자 의존도 높고 경영진 후속 구성 불명확</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">24</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">상</div>
+      <p class="vc-text">CAS Energy는 17년 운영 실적, $1.5M 매출, 500개 프로젝트, Mobile World 등 체인 고객 확보로 검증된 사업 모델을 보유하고 있으며, 제로 CAPEX 통합 솔루션과 롯데 계열사 인프라 활용 PoC 구체성이 높아 협력 적합성이 우수하다. 그러나 시리즈 A $10M 조달 목표가 제로 CAPEX 모델의 자본 집약적 특성과 어떻게 정합되는지, 단위 프로젝트 수익성 및 자본 회수 구조가 명확하지 않다는 점이 가장 큰 미확인 가정이다. 또한 경영진 구조가 불투명하고 두 창업자 의존도가 높아 스케일업 실행 리스크가 존재한다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">5 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">8 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">24 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>CAS Energy Company Limited · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

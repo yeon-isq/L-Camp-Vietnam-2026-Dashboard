@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REFLECTIVE LEARNINGS CO., LTD. — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">REFLECTIVE LEARNINGS CO., LTD.</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam, Ho Chi Minh City</span>
+          <span class="etag et-ind">HR Tech / Career Development SaaS</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">REFLECTIVE LEARNINGS CO., LTD.</div>
+        <div class="hero-sub">설립 2024 · https://app.reflectivelearnings.com/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Reflective Learnings는 베트남 기업 인사팀과 개인 직장인을 위한 커리어 평가 및 코칭 서비스이다. CliftonStrengths, Hogan, CareerLeader 등 글로벌 평가 도구의 재판매와 1:1 코칭을 제공하며, 기업 B2B 계약 및 개인 유료 평가로 수익을 창출한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          수작업 코칭 서비스를 AI SaaS로 전환했을 때 기존 B2B 고객들이 실제로 자동화된 플랫폼으로 이전할 것이라는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$60,800</div><div class="kpi-desc">1.6B VND, 평가 및 코칭 서비스 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">1,600+건</div><div class="kpi-desc">2025년까지 누적 유료 평가 제공 [부분 확인]</div></div>
+<div class="kpi"><div class="kpi-val">10+개사</div><div class="kpi-desc">Microsoft, AIA, Prudential 등 [부분 확인]</div></div>
+<div class="kpi"><div class="kpi-val">$300K</div><div class="kpi-desc">18개월 성장 자금 확보 목표 [확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">베트남 도시 근로자 19.5M을 TAM으로 제시하나 실제 SOM은 '공격적 유저 확보'라는 모호한 표현뿐이다. [미확인] 커리어 코칭 시장은 Gallup, CareerLeader, Hogan 등 글로벌 기업이 이미 직접 진출해 있으며, 자사는 이들의 재판매 파트너에 불과하다. [확인] 차별화 요소로 제시한 'AI 통합 리포트'의 기술적 독자성이나 데이터 우위가 전혀 입증되지 않았다. [미확인] 시장 확장성은 기존 평가 도구 라이선스 의존도가 높아 제한적이다.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">$60.8K 매출은 [확인]되나 이는 수작업 코칭 서비스 매출이며 SaaS 전환 후 재현 가능성은 [미확인]이다. 1,600건 평가가 몇 년간 누적인지, 재구매율은 얼마인지 명시되지 않았다. [미확인] B2B 고객 명단은 나열되었으나 계약 규모, 갱신율, MRR/ARR 구조가 없다. [미확인] 비즈니스 모델은 글로벌 평가 도구의 재판매 + 코칭 서비스로, SaaS 전환 시 COGS 구조와 단위경제가 제시되지 않았다. [미확인] 롯데벤처스 펀드 투자 적합성은 AI/IT 분야 연관성만으로는 불충분하며, Exit 경로나 시장 지배 가능성이 전혀 설명되지 않았다.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">베트남 근로자의 89% 업무 불만족, 75.6% 직업 후회, 21% 전공 불일치라는 사회문제 정의는 명확하다. [확인] 솔루션은 커리어 평가 + 코칭으로 문제 해결 방향성은 타당하나, 실제 고객이 평가 후 커리어 전환에 성공했는지, 만족도 변화가 있었는지 임팩트 측정 데이터가 없다. [미확인] 사회적 가치 창출의 규모(몇 명에게 실질적 변화를 가져왔는지), 깊이(커리어 전환율, 소득 증가 등), 지속성(재구매 또는 장기 추적)이 모두 입증되지 않았다. [미확인]</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 리서치 결과: 창업자는 Intel, Microsoft, NAB 등에서 15년+ HR 경력을 보유한 검증된 전문가이다. [확인] Executive MBA, Gallup/Hogan/CareerLeader 자격증 보유. [확인] 그러나 'AI 산업'으로 분류되었음에도 불구하고 AI 기술 개발 배경이나 소프트웨어 엔지니어링 경험은 전혀 없다. [확인] CTO 또는 기술 공동창업자가 확인되지 않으며, 엔지니어링 팀 구성 정보가 전무하다. [확인] 2024년 6월 설립된 초기 단계 기업이 'Proven traction, Scalable tech, Expert team'을 주장하나, 실제로는 단독 창업자 구조에 기술 리더십 부재로 Key Person Risk가 매우 높다. [확인] HR 도메인 전문성은 우수하나 AI SaaS 구축 실행력은 [미확인]이다.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">AI/IT 분야로 LOTTE Innovate를 연계했으나 PoC 아이디어는 '모바일 앱 출시 가속화 및 핵심 기능 개발 지원'이라는 매우 일반적 내용이다. [확인] 롯데 인프라(데이터, 고객 베이스, 기술 스택) 활용 방안이 전혀 구체화되지 않았다. [미확인] LOTTE Innovate가 왜 커리어 코칭 플랫폼 개발을 지원해야 하는지, 롯데 계열사 임직원 대상 PoC 가능성도 언급되지 않았다. [미확인] 식품·유통·건설·AI/첨단산업 주요 사업분야와의 직접적 연결고리가 약하며, 단순 기술 지원 요청 수준에 그친다.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 2 + E 2</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">AI/IT (LOTTE Innovate)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">LOTTE Innovate</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">LOTTE Innovate와의 PoC를 통해 모바일 앱 출시를 가속화하고 핵심 기능을 개발할 수 있다고 제안하나, 구체적인 협력 방식이나 롯데 인프라 활용 계획은 제시되지 않음.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Our solution does not directly focus on ESG today. However, a PoC with LOTTE could help expand access and create long-term social impact through digital career services.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">창업팀의 도메인 커버리지는 부분적입니다. HR 및 커리어 개발 분야에서는 강력한 전문성을 보유하고 있으나, 'AI 산업'으로 분류된 것에 비해 AI 기술 개발, 소프트웨어 엔지니어링, 데이터 사이언스 등 핵심 기술 역량이 확인되지 않습니다. 단독 창업자 구조로 보이며, 기술 파트너나 CTO의 존재가 확인되지 않아 기술 개발 및 제품 실행 능력에 대한 우려가 있습니다. 비즈니스 개발 및 HR 도메인에서는 충분한 경험이 있으나, 실제 AI 기술 구현을 위한 엔지니어링 팀이나 데이터 사이언스 전문가의 존재가 불명확합니다.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">팀 구성의 완전성이 매우 낮습니다. 확인된 정보로는 단독 창업자만 식별되었으며, 공동 창업자, CTO, 기술 책임자, 개발팀 등에 대한 정보가 전혀 공개되지 않았습니다. AI 기술 기반 스타트업이라면 필수적인 기술 리더십(CTO), 엔지니어링 팀, 데이터 사이언티스트, 제품 관리자 등의 핵심 인력에 대한 정보가 부재합니다. 웹사이트에서 '자문위원회'의 존재를 언급하고 있으나 구체적인 명단이나 배경 정보는 공개되지 않았습니다. 초기 단계 스타트업임을 고려하더라도, 기술 기반 스타트업으로서 최소한의 핵심 팀 구성이 검증되지 않는 것은 심각한 우려 사항입니다.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">창업자 개인의 신뢰성은 높습니다. Intel, Microsoft, Avery Dennison, NAB 등 검증된 글로벌 기업에서 15년 이상의 경력을 쌓았으며, 다수의 전문 자격증과 Executive MBA 학위를 보유하고 있습니다. 과거 동료들로부터 긍정적인 추천을 받았으며, 베트남에서 주요 평가 도구 파트너십을 확보했습니다. 그러나 스타트업 팀 전체의 신뢰성은 평가하기 어렵습니다. 회사 웹사이트에서 주장하는 '검증된 트랙션(Proven traction)', '확장 가능한 기술(Scalable tech)', '전문가 팀(Expert team)'에 대한 구체적인 증거가 제시되지 않았습니다. 2024년 6월에 설립된 초기 단계 기업이 '검증된 트랙션'을 주장하는 것은 과장되었을 가능성이 있습니다. 기술팀이나 공동 창업자에 대한 정보 부재는 투명성 측면에서 우려를 야기합니다.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 격차는 기술 리더십 및 엔지니어링 역량의 부재입니다. 회사가 'AI 산업'으로 분류되었으나, CTO나 기술 공동 창업자가 확인되지 않으며, AI 개발팀, 데이터 사이언티스트, 소프트웨어 엔지니어 등 핵심 기술 인력에 대한 정보가 전혀 공개되지 않았습니다. 창업자는 HR 및 커리어 개발 전문가로서 강점을 보유하고 있으나, AI 기술 개발이나 소프트웨어 제품 구축 경험은 확인되지 않습니다. 실제로 회사는 기존 평가 도구(CliftonStrengths, CareerLeader, Hogan)의 베트남 파트너/재판매자 역할을 하는 것으로 보이며, 자체 AI 기술을 개발하는 것인지 불명확합니다. 기술 기반 스타트업으로서 성공하기 위해서는 강력한 기술 리더십, 엔지니어링 팀, 명확한 AI 기술 차별화 요소가 필수적이나, 이 모든 요소가 현재 부재하거나 검증되지 않았습니다. 또한 공동 창업자가 없는 단독 구조는 Key Person Risk가 매우 높으며, 창업자에게 과도한 의존도를 초래합니다.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Nguyễn Minh Tuấn LinkedIn · Nguyễn Minh Tuấn REFLECTIVE LEARNINGS LinkedIn · REFLECTIVE LEARNINGS CO LTD founder team · reflectivelearnings.com founding team · Tuan Nguyen reflectivelearnings NAB Vietnam · Nguyen Minh Tuan Intel Microsoft Avery Dennison</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Nguyễn Minh Tuấn (Tuan Nguyen)</div><div class="member-role">Founder & CEO</div></div>
+    <div class="member-meta"><a href="https://www.linkedin.com/in/tuanracen/" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ AI 기술 개발 배경 부재: 회사가 'AI 산업'으로 분류되었으나 창업자의 배경은 HR/인재 개발에 집중되어 있으며, AI 기술 개발이나 소프트웨어 엔지니어링 경험이 확인되지 않음</span><span class='flag-item'>⑊ 단독 창업자 구조: 현재까지 확인된 정보로는 공동 창업자나 CTO 등 기술 파트너가 확인되지 않음. 기술 개발을 담당할 핵심 인력 정보 부재</span><span class='flag-item'>⑊ 초기 단계 스타트업: 회사는 2024년 6월에 설립된 매우 초기 단계 기업으로, 실질적인 트랙션이나 성과가 검증되지 않음. '검증된 트랙션, 확장 가능한 기술, 전문가 팀'이라는 자체 설명과 실제 검증 가능한 증거 간의 괴리</span><span class='flag-item'>⑊ 사업 모델 불명확: 웹사이트와 LinkedIn 정보에서 커리어 평가 도구 및 코칭 서비스를 제공하는 것으로 보이나, AI 기술을 어떻게 활용하는지 구체적인 정보 부족</span><span class='flag-item'>⑊ 팀 규모 미확인: 핵심 팀원, 개발팀, 자문단 등에 대한 구체적인 정보가 공개되지 않음</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>Executive MBA/Business Administration</td><td>University of Hawaii at Manoa</td><td>2018-2021</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Intel</td><td>HR/Talent Development (추정)</td><td>15년 이상 경력 중 일부</td><td style="font-size:11px;">글로벌 기업에서 HR 및 인재 개발 전문성 축적</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Microsoft</td><td>HR/Talent Development (추정)</td><td>15년 이상 경력 중 일부</td><td style="font-size:11px;">글로벌 기업에서 HR 및 인재 개발 전문성 축적</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Avery Dennison</td><td>HR/Talent Development (추정)</td><td>15년 이상 경력 중 일부</td><td style="font-size:11px;">글로벌 기업에서 HR 및 인재 개발 전문성 축적</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>National Australia Bank (NAB) Innovation Center Vietnam</td><td>리더십 역할 (Associate Director 추정)</td><td>2024년 이전까지</td><td style="font-size:11px;">NAB Innovation Center Vietnam에서 HR, 인재 채용, 조직문화, 고용주 브랜딩 담당. 팀원들로부터 영감을 주는 리더로 평가받음</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Fushan Technology Vietnam</td><td>미확인</td><td>미확인</td><td style="font-size:11px;">과거 경력 중 하나로 언급됨</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 창업자는 15년 이상 Intel, Microsoft, Avery Dennison, NAB 등 글로벌 기업에서 HR 및 인재 개발 전문가로 활동한 검증된 경력을 보유하고 있습니다. 회사는 커리어 개발 및 인재 평가 도구(CliftonStrengths, CareerLeader, Hogan Assessments)를 제공하는 HR Tech/EdTech 기업입니다. 그러나 AI 기술 개발이나 소프트웨어 엔지니어링 배경은 확인되지 않았으며, 회사 웹사이트에서 'AI' 산업으로 분류되었으나 실제로는 HR/커리어 개발 플랫폼에 가깝습니다. AI 기술 기반 스타트업을 운영하기 위한 기술적 배경이나 AI 전문성은 제한적입니다.</div><div class="ma-overall"><strong>종합 평가:</strong> 창업자는 글로벌 기업에서 15년 이상의 HR 및 인재 개발 경력을 보유한 검증된 전문가입니다. Executive MBA 학위와 다수의 전문 자격증을 보유하고 있으며, NAB에서 리더십 역할을 수행한 경험이 있습니다. 그러나 회사가 'AI 산업'으로 분류된 것과 달리, 실제로는 커리어 개발 및 인재 평가 플랫폼(HR Tech/EdTech)에 가까우며, AI 기술 개발 역량은 확인되지 않습니다. 2024년 6월에 설립된 초기 단계 스타트업으로, 자체 주장하는 '검증된 트랙션'이나 '확장 가능한 기술'에 대한 구체적인 증거가 부족합니다. 기술 공동 창업자나 CTO의 부재는 기술 기반 스타트업으로서의 실행 능력에 의문을 제기합니다. HR/커리어 개발 분야에서는 높은 전문성을 보유하고 있으나, AI 기술 스타트업으로서의 역량은 제한적입니다.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>기술 리더십 부재 — CTO 없이 AI SaaS 제품 개발 실행 불가능</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 팀 리서치 결과 기술 공동창업자, 엔지니어링 팀 정보 전무. AI 기술 개발 역량 미검증.</td></tr>
+<tr><td>비즈니스 모델 전환 리스크 — 수작업 서비스→SaaS 전환 시 고객 이탈 가능성</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 기존 B2B 고객이 AI 자동화 플랫폼으로 전환할 의향, 지불 의사 검증 안 됨.</td></tr>
+<tr><td>라이선스 의존 리스크 — Gallup/Hogan 등 글로벌 기업의 직접 진출 또는 계약 종료 시 사업 기반 붕괴</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 독자 기술 자산 없이 재판매 파트너 구조. 글로벌 기업이 베트남 시장 직접 진출 시 경쟁력 상실.</td></tr>
+<tr><td>Key Person Dependency — 단독 창업자 구조로 인한 과도한 의존도</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 공동 창업자 없음. 창업자 이탈 시 사업 지속 불가능.</td></tr>
+<tr><td>단위경제 미검증 — SaaS 전환 후 COGS, LTV/CAC, Churn Rate 등 핵심 지표 부재</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] IR Deck에 단위경제 분석 없음. B2B2C 모델의 수익성 입증 필요.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">재판매 의존 구조와 SaaS 전환 실행력</span><span class="dvtag dv-r">SaaS 전환 경로 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">Gallup CliftonStrengths, Hogan, CareerLeader 등 글로벌 평가 도구의 재판매 파트너로 출발했으나 [확인], 자체 IP나 독점 데이터 없이 SaaS 플랫폼으로 전환할 경로가 불명확하다 [미확인]. $60.8K 매출은 수작업 코칭 서비스에서 발생했으며 [확인], EMBLEM 플랫폼 MVP가 2026년 6월 출시 예정이나 기술 스택, 개발 인력, API 통합 구조가 전혀 제시되지 않았다 [미확인]. AI 통합 리포트를 차별화 요소로 언급했으나 알고리즘 독자성이나 학습 데이터 우위가 입증되지 않았다 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">단위경제 및 COGS 구조 부재</span><span class="dvtag dv-r">수익성 모델 불투명</span><span class="deep-arrow">▾</span></div><div class="deep-body">1,600건 평가 제공을 언급했으나 [확인] 누적 기간, CAC, LTV, 재구매율이 명시되지 않았다 [미확인]. B2B 고객사(Microsoft, AIA, Prudential 등)가 나열되었으나 [확인] 계약 규모, MRR/ARR, 갱신율 데이터가 전무하다 [미확인]. 평가 도구 라이선스 비용이 COGS에서 차지하는 비중과 SaaS 전환 후 마진 구조가 제시되지 않아 수익성 판단이 불가능하다 [미확인]. $300K 투자금으로 18개월 운영 계획을 밝혔으나 Burn Rate, Runway, Unit Economics 근거가 없다 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">시장 포지셔닝과 경쟁 우위 결여</span><span class="dvtag dv-r">차별화 요소 미입증</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 도시 근로자 19.5M을 TAM으로 제시했으나 [확인], 실제 SAM/SOM 산정이 '공격적 유저 확보'라는 모호한 표현에 그친다 [미확인]. Gallup, Hogan 등 글로벌 플레이어가 이미 베트남에 직접 진출해 있으며 [확인], 자사는 이들의 하위 재판매 파트너로 가격 결정권과 브랜드 장벽이 없다 [확인]. AI 통합, 커뮤니티, 모바일 우선 전략을 언급했으나 기술적 독자성이나 네트워크 효과 입증 사례가 전무하다 [미확인].</div></div>
+<div class="deep-category-label">Category D — 팀 역량 및 실행 가능성</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">기술 공동창업자 부재와 Key Person Risk</span><span class="dvtag dv-r">팀 구성 불균형</span><span class="deep-arrow">▾</span></div><div class="deep-body">창업자는 Intel, Microsoft, NAB에서 15년+ HR 경력을 보유한 검증된 도메인 전문가다 [확인]. Executive MBA, Gallup/Hogan 자격증 보유 [확인]. 그러나 AI SaaS로 포지셔닝했음에도 AI 개발 배경, 소프트웨어 엔지니어링 경험이 전혀 없으며 [확인], CTO 또는 기술 공동창업자가 확인되지 않는다 [확인]. 2024년 6월 설립된 초기 단계에서 단독 창업자 구조로 Key Person Risk가 매우 높고, 18개월 내 모바일 앱 출시 목표는 현 팀 구성으로 실행 불가능해 보인다 [부분 확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">기술 스택 및 개발 로드맵 미공개</span><span class="dvtag dv-r">실행 계획 불투명</span><span class="deep-arrow">▾</span></div><div class="deep-body">EMBLEM 플랫폼 MVP를 2026년 6월 웹, 8월 모바일로 출시 예정이나 [확인], 기술 스택(프론트엔드/백엔드 프레임워크, 클라우드 인프라, AI 모델 아키텍처)이 전혀 명시되지 않았다 [미확인]. CliftonStrengths, Hogan, CareerLeader API 통합 방식, 데이터 파이프라인, AI 리포트 생성 알고리즘 구조가 불명확하다 [미확인]. $300K 투자금 중 개발 인력 채용, 라이선스 비용, 인프라 운영에 각각 얼마를 배분할지 계획이 없다 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">고객 검증 및 PMF 입증 부족</span><span class="dvtag dv-a">제품-시장 적합성 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">1,600건 평가 제공과 10+ B2B 고객사를 언급했으나 [확인], 이는 수작업 코칭 서비스 기반이며 디지털 플랫폼 전환 후 고객 유지율이나 사용성 검증 데이터가 없다 [미확인]. 평가 후 커리어 전환 성공률, 만족도 변화, NPS 등 임팩트 측정 지표가 제시되지 않았다 [미확인]. EMBLEM MVP V1.0 출시를 주장했으나 [확인] 실제 사용자 수, DAU/MAU, Retention, 피드백 반영 사례 등 PMF 검증 근거가 전무하다 [미확인].</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>창업자의 검증된 HR/인재개발 경력 (Intel, Microsoft, NAB 15년+) [확인]</li>
+<li>$60.8K 매출과 10+ B2B 기업 고객 확보 (Microsoft, AIA, Prudential 등) [부분 확인]</li>
+<li>Gallup, Hogan, CareerLeader 등 글로벌 평가 도구와의 파트너십 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>CTO 또는 기술 공동창업자 부재, AI 개발팀 정보 전무 [확인]</li>
+<li>기존 매출이 수작업 서비스 기반이며 SaaS 전환 후 재현 가능성 미검증 [미확인]</li>
+<li>독자적 기술 자산 없이 글로벌 평가 도구 재판매에 의존하는 구조 [확인]</li>
+<li>MRR/ARR, 재구매율, 단위경제, COGS 등 SaaS 핵심 지표 전무 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 근로자의 높은 커리어 불만족(89%)과 직업 후회(75.6%) 시장 수요</li>
+<li>기업 L&D 예산 증가 및 디지털 인재개발 툴 도입 트렌드</li>
+<li>APAC 지역 확장 가능성 (유사한 커리어 개발 니즈)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Gallup, Hogan, CareerLeader 등 글로벌 기업의 직접 시장 진출 및 라이선스 회수 리스크</li>
+<li>AI 코칭 시장 경쟁 심화 (ChatGPT 기반 무료/저가 대안 등장)</li>
+<li>기술팀 부재로 인한 제품 개발 지연 및 품질 이슈</li>
+<li>Key Person Risk: 단독 창업자 의존도 극대화</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">창업자는 HR 분야 15년+ 경력의 검증된 전문가이나, 'AI 스타트업'으로 분류된 것과 달리 기술 리더십이 전혀 없다. $60.8K 매출은 수작업 코칭 서비스 기반이며, AI SaaS 전환 후 고객 유지 및 단위경제 개선 가능성은 미검증 상태이다. 가장 큰 위험은 글로벌 평가 도구(Gallup, Hogan 등)의 재판매 파트너로서 독자적 기술 자산이나 데이터 우위가 없다는 점이다. CTO 부재와 단독 창업자 구조는 제품 개발 실행력에 심각한 의문을 제기한다. PoC 제안은 롯데 인프라 활용 없이 일반적 개발 지원 요청 수준에 불과하다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">2 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>REFLECTIVE LEARNINGS CO., LTD. · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

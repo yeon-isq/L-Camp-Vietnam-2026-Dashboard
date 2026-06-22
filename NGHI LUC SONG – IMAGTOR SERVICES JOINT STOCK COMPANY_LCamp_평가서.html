@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NGHI LUC SONG – IMAGTOR SERVICES JOINT STOCK COMPANY — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">NGHI LUC SONG – IMAGTOR SERVICES JOINT STOCK COMPANY</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ha Noi, Viet Nam</span>
+          <span class="etag et-ind">E-commerce & Retail + AI + Prop-tech</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">NGHI LUC SONG – IMAGTOR SERVICES JOINT STOCK COMPANY</div>
+        <div class="hero-sub">설립 2016 · www.imagtor.com</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">Imagtor는 글로벌 부동산 사진작가 및 이커머스 기업을 위한 대량 이미지 후반 작업 서비스 기업이다. 전체 직원의 35%가 장애인으로 구성된 포용적 인력으로 12시간 내 납품 및 2단계 품질관리 프로세스를 제공하며, B2B 구독 및 프로젝트 기반 수익 모델로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          롯데마트 SKU 이미지 표준화 작업이 실제로 전환율 또는 고객 체류시간 증가로 이어진다는 인과관계가 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-fail">📄 IR Deck 읽기 실패</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">20</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$811K</div><div class="kpi-desc">2024년 확인된 총 매출 (코어 이미지 편집 + 스킨케어 파일럿 포함)</div></div>
+<div class="kpi"><div class="kpi-val">222개</div><div class="kpi-desc">2021~2025년 누적, 13개국, 90% 매출 기여</div></div>
+<div class="kpi"><div class="kpi-val">76%</div><div class="kpi-desc">2021~2025년 고객 재계약률</div></div>
+<div class="kpi"><div class="kpi-val">$32.5K</div><div class="kpi-desc">상위 5개 파트너 월평균 매출 (반복 수익 확인)</div></div>
+<div class="kpi"><div class="kpi-val">35%</div><div class="kpi-desc">전체 인력 중 장애인 비율, ESG 핵심 지표</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 글로벌 B2B 시장(미국·호주·EU 부동산 사진작가 대상)에서 10년간 실적 확인됨. 13개국 222개 고객 및 76% 유지율은 시장 수요를 뒷받침. 그러나 이커머스 제품 이미지 시장으로의 확장 가능성은 검증되지 않음 [미확인]. 롯데마트 대상 PoC는 첫 이커머스 대기업 사례이며, 전환율·매출 증대 효과가 아직 입증되지 않아 확장 전략의 구체성이 제한적.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[확인] 2024년 $811K 매출 및 반복 수익(상위 고객 월 $2.3K~$32.5K)으로 사업모델 검증됨. 그러나 코어 비즈니스($480K, 2024)와 스킨케어 파일럿(중단됨)을 분리 시 성장률은 ~20% YoY로 제한적. 투자 유치 이력 [미확인] — MYSC·KOICA는 파트너로 명시되나 지분 투자 여부 불명확. 롯데벤처스 펀드 투자 적합성: 초기 단계 소셜벤처로 임팩트 펀드 적합성은 높으나 재무적 회수 경로는 구체화 필요.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">5<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">[확인] 장애인 고용 35%, 여성 48%(경영진 83%)로 SDG 8·10·5 직접 기여 확인. 창업자 Nguyễn Thị Vân은 장애인 당사자이자 BBC 100 Women 2019 수상자로 사회적 가치 창출의 진정성 및 규모 검증됨. 2003년 이후 1,000명+ 장애인 IT 교육 실적 보유. 매출 증가 시 즉시 고용 확대 가능한 구조로 임팩트의 확장성·지속성 명확. UNDP, HEAD Foundation 등 다수 국제 임팩트 어워드 수상 이력이 사회적 가치의 깊이를 뒷받침.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 외부 검증 불가 — 연구 수행되지 않음. 자체 보고된 경력: Nguyễn Thị Vân의 사회적 리더십(BBC 100 Women, Forbes Top 50)은 임팩트 분야에서 세계적 인정 받음 [부분 확인 — 수상 이력은 공개 정보로 확인 가능]. 그러나 Phan Duy Sơn의 상업적 실행 경험은 구체적 검증 불가 [미확인]. 10년간 B2B 이미지 편집 운영 실적은 있으나, 이커머스 시장 진출·세일즈·제품-시장 적합성 검증 경험은 불명확. 기술·상업적 확장을 주도할 임원진 구성 정보 부족. 키맨 리스크(창업자 의존도) 높음.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">7<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">[부분 확인] 롯데마트와의 PoC 아이디어는 구체적: 500~1,000 SKU 이미지 표준화, 12시간 SLA, 2단계 QC, 마켓플레이스 기준 충족. 롯데마트 현황 조사(106 SKU 분석)를 바탕으로 문제 정의 명확. 그러나 이미지 품질 개선이 실제 전환율·체류시간·매출 증대로 이어지는지 검증 필요 [미확인]. PoC 성공 기준이 '납품 완료 및 기준 충족'에 국한되어 있어, 롯데마트의 비즈니스 임팩트 측정 방법론 부재. 확장 경로(20,000 SKU → 롯데몰)는 제시되었으나, 단가·ROI·내재화 리스크 평가 없음. ESG 연계성(장애인 고용 확대)은 명확하나, 롯데 측 ESG 보고 체계와의 통합 가능성 [미확인].</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 3 + C 5 + D 2 + E 7</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">20</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce (LOTTE Mart)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">LOTTE Mart</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데마트 온라인몰의 1개 카테고리(500~1,000 SKU) 상품 이미지를 4~6개월간 표준화 및 재편집. 12시간 SLA 내 100% 납품, 2단계 품질관리 적용, 마켓플레이스 요구사항(≥1,000px) 충족. 성공 시 전체 20,000+ SKU 및 롯데몰로 확장. 장애인 인력 35% 고용을 통해 롯데 ESG(사회) 성과 창출.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">"Imagtor's core impact is Social: sustainable employment for vulnerable people. Imagtor is a social enterprise co-founded and chaired by Nguyễn Thị Vân — a person with disability and a BBC 100 Women 2019 honoree. Today ~35% of our staff are people with disabilities and 48% are women (83% of senior management roles held by women), directly advancing SDGs 8, 10 and 5. Our shareholder MYSC (a Korean impact investor) and partner KOICA validate that this impact is real.
+Standardizing product images is easy to train people with disabilities for, so every volume of work from LOTTE directly creates new jobs (we can onboard ~50 more people/year). LOTTE provides the scale (20,000+ SKUs), so the social impact grows with order volume. This is also ESG-to-ESG: it helps LOTTE Mart strengthen its Social pillar in a measurable way."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>이커머스 시장 제품-시장 적합성 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 부동산 사진 편집 → 이커머스 제품 이미지 전환 시 고객 요구사항, 단가 구조, 세일즈 프로세스가 상이. 롯데마트 PoC가 첫 사례.</td></tr>
+<tr><td>PoC 비즈니스 임팩트 측정 방법론 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 이미지 품질 개선 → 전환율/매출 증대 인과관계 검증 계획 없음. 단순 용역 제공으로 종료될 가능성.</td></tr>
+<tr><td>팀 역량 외부 검증 불가 및 키맨 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] CEO의 상업적 확장 경험 불명확. 창업자 Nguyễn Thị Vân 의존도 높음. 임원진 구성 정보 부족.</td></tr>
+<tr><td>AI 자동화 도구 대체 위험</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] 수작업 기반 모델은 AI 편집 툴 발전 시 가격 경쟁력 약화 가능. 현재 AI 보조 활용 여부 불명확.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">부동산→이커머스 시장 확장 전략의 검증 가능성</span><span class="dvtag dv-a">추가 검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 10년간 부동산 사진 후반작업 시장에서 13개국 222개 고객 확보 및 76% 유지율 달성. [부분 확인] 롯데마트 PoC는 이커머스 진출의 첫 대기업 사례로, 500~1,000 SKU 표준화 및 12시간 SLA 제공 계획 수립됨. [미확인] 그러나 이미지 품질 개선이 전환율·체류시간·매출 증대로 이어지는 인과관계 미검증. PoC 성공 기준이 '납품 완료'에 국한되어, 롯데마트의 실제 비즈니스 임팩트 측정 방법론 부재. 부동산(B2B 사진작가)과 이커머스(플랫폼·브랜드 직접 거래)의 세일즈 사이클·의사결정 구조·단가 구조 차이에 대한 대응 전략 불명확.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">AI 기술 경쟁력 및 자동화 로드맵</span><span class="dvtag dv-r">미흡</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 'AI-augmented'로 표기되었으나 구체적 AI 기술 스택·자동화 비율·품질 검증 알고리즘 공개되지 않음. [부분 확인] 2단계 QC 프로세스 및 12시간 납품은 운영 효율성을 시사하나, 이는 프로세스 설계의 결과이지 AI 기술 우위의 증거는 아님. 글로벌 이미지 편집 시장에서 Pixelz(AI 자동화 특화), Remove.bg(배경 제거 자동화), Canva Magic Studio(제품 이미지 생성형 AI) 등 기술 기반 경쟁자와의 차별화 전략 부재. 장기적으로 AI 자동화 진행 시 인력 기반 모델의 임팩트·경쟁력 지속 가능성 리스크 존재.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">단가 구조 및 확장성 경제학</span><span class="dvtag dv-a">추가 정보 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 상위 5개 고객 월 평균 $32.5K, 일반 반복 고객 $2.3K~$11.8K/월로 B2B 구독 모델 작동 중. [부분 확인] 2024년 매출 $811K(코어 비즈니스 $480K 기준 시 YoY ~20% 성장)로 사업모델 검증되었으나, 성장률은 제한적. [미확인] 롯데마트 PoC의 SKU당 단가·프로젝트 총액·마진 구조 공개되지 않아, 이커머스 시장에서의 단위경제성 평가 불가. 20,000 SKU 확장 시 인력 증원 규모·채용 속도·품질 유지 가능성에 대한 운영 계획 부재. 대량 주문 시 할인 압력 및 내재화(in-house) 리스크 대응 전략 불명확.</div></div>
+<div class="deep-category-label">Category C — 임팩트/소셜벤처</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-1</span><span class="deep-title">임팩트의 깊이, 진정성 및 국제적 검증</span><span class="dvtag dv-g">탁월함</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 창업자 Nguyễn Thị Vân은 장애인 당사자(척수성 근위축증)로 2003년 이후 1,000명+ 장애인 대상 IT·영어 교육 제공, 대다수 안정적 취업 연결. BBC 100 Women 2019, Forbes Vietnam Top 50 영향력 있는 여성 2019, Her Abilities Award 2019(Light for the World) 등 국제적 인정 다수 확보. [확인] 현재 전체 직원의 35%가 장애인, 여성 48%(경영진 83%)로 SDG 8(양질의 일자리), SDG 10(불평등 감소), SDG 5(성평등) 직접 기여. [확인] UNDP, HEAD Foundation 등 다수 국제 임팩트 어워드 수상 이력이 사회적 가치의 깊이를 뒷받침, 임팩트의 진정성 및 규모 검증됨.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-2</span><span class="deep-title">임팩트 확장성 및 측정 체계</span><span class="dvtag dv-g">양호 (측정 체계 보완 필요)</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 매출 증가 시 즉시 장애인 고용 확대 가능한 구조로, 롯데마트 PoC 성공 시 500~1,000 SKU → 20,000 SKU 확장 계획에 따라 고용 규모 비례 증가 예상. [부분 확인] 현재 76% 고객 유지율 및 반복 수익 구조는 임팩트의 지속성을 뒷받침하나, 고객 증가율이 ~20% YoY로 제한적이어서 단기 확장 속도는 제한적. [미확인] 장애인 고용자 1인당 임팩트 지표(소득 증대, 삶의 질 개선, 가족 경제 기여 등) 측정 프레임워크 부재. 롯데 측 ESG 보고 체계(GRI, SASB 등)와의 통합 가능성 및 임팩트 리포팅 자동화 계획 불명확. IRIS+ 또는 B Impact Assessment 등 국제 표준 임팩트 측정 도구 활용 여부 미확인.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-3</span><span class="deep-title">임팩트-수익 상충 리스크 관리</span><span class="dvtag dv-a">모니터링 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 장애인 고용 35% 유지 시 생산성·납기 준수(12시간 SLA)가 10년간 글로벌 고객 만족도로 검증되었으나, 이커머스 시장의 대량·단기 주문 시 품질-속도-임팩트 균형 유지 가능성 미검증. [미확인] AI 자동화 진행 시 인력 감축 압력 발생 가능 — 장애인 고용 비율 유지 정책 및 '인간-AI 협업' 모델 설계 계획 부재. [미확인] 대기업(롯데) 계약 시 단가 인하 압력 → 임금·근로조건 악화 리스크에 대한 방어 메커니즘(최저 단가 정책, 임팩트 프리미엄 협상 전략 등) 불명확. 투자자·이사회 구성 시 임팩트 목표 우선순위 보장 장치(정관 명시, 의결권 구조 등) 공개되지 않음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-4</span><span class="deep-title">ESG 연계 전략적 포지셔닝</span><span class="dvtag dv-g">잠재력 높음 (실행 계획 보완 필요)</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 롯데마트 PoC는 롯데그룹의 ESG 보고 수요(장애인 고용 확대, 협력사 다양성 지표)와 명확히 정렬됨. 롯데벤처스 펀드의 임팩트 투자 테제(사회적 가치 + 재무 회수)에 부합. [부분 확인] 장애인 고용 확대가 롯데의 ESG 공시(예: 지속가능경영보고서, CDP, TCFD 등)에 기여 가능하나, 구체적 KPI 연동 방안(예: Scope 3 사회적 임팩트 측정, 공급망 다양성 점수 개선 등) 미제시. [미확인] 글로벌 이커머스 플랫폼(Amazon, Shopify 등)의 'Supplier Diversity' 프로그램 진출 가능성 및 장애인 소유 기업(disability-owned business) 인증 취득 계획 부재. ESG 프리미엄을 단가에 반영하는 협상 전략 및 레퍼런스 구축 로드맵 불명확.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>10년간 글로벌 B2B 고객 222개, 76% 유지율로 입증된 서비스 품질 및 운영 안정성 [확인]</li>
+<li>창업자의 세계적 사회적 리더십(BBC 100 Women, Forbes Top 50) 및 장애인 고용 35%로 ESG 임팩트 검증 [확인]</li>
+<li>12시간 SLA + 2단계 QC 프로세스로 표준화된 대량 생산 시스템 보유 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>팀 구성 및 경력 외부 검증 불가 — 상업적 확장 주도 인력 불명확 [미확인]</li>
+<li>이커머스 대기업 고객 확보 경험 전무, 제품-시장 적합성 검증 필요 [미확인]</li>
+<li>코어 비즈니스 성장률 ~20% YoY로 제한적, 스케일업 전략 구체성 부족 [부분 확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>롯데마트 20,000+ SKU 및 롯데몰로의 확장 가능성 — 대규모 반복 수익 창출 기회</li>
+<li>글로벌 이커머스 플랫폼의 이미지 품질 기준 강화 트렌드(≥1,000px, 라이프스타일 이미지)</li>
+<li>ESG 보고 의무화 확대로 대기업의 장애인 고용 협력 수요 증가</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>AI 자동 이미지 편집 툴(Adobe Firefly, Canva AI 등) 발전으로 수작업 기반 모델 대체 위험</li>
+<li>롯데마트 내부 이미지 제작 인하우스화 가능성 — 용역 의존도 감소</li>
+<li>베트남 장애인 고용 지원 정책 변화 또는 경쟁 소셜벤처 출현 시 차별성 약화</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">20</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">Imagtor는 10년간 글로벌 B2B 이미지 편집 시장에서 검증된 운영 역량과 세계적으로 인정받은 사회적 임팩트(장애인 고용 35%, BBC 100 Women 수상)를 보유한 소셜벤처다. 그러나 핵심 가정 — '롯데마트 SKU 이미지 표준화가 실제 매출 증대로 이어진다' — 는 검증되지 않았으며, 이커머스 대기업 고객 확보 경험이 없어 제품-시장 적합성이 불확실하다. 팀 역량은 외부 검증 불가 상태이며, 상업적 확장을 주도할 임원진 구성이 불명확하여 키맨 리스크가 높다. PoC는 구체적이나 비즈니스 임팩트 측정 방법론이 부재하여, 단순 용역 제공에 그칠 위험이 있다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">5 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">7 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">20 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>NGHI LUC SONG – IMAGTOR SERVICES JOINT STOCK COMPANY · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

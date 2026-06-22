@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAPLAST JOINT STOCK COMPANY — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">HAPLAST JOINT STOCK COMPANY</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam</span>
+          <span class="etag et-ind">Manufacture</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">HAPLAST JOINT STOCK COMPANY</div>
+        <div class="hero-sub">설립 2015 · https://haplastgroup.com/</div>
+        <span class="hero-stage">Growth</span>
+        <p class="hero-desc">HAPLAST는 전 세계 식품·유통·산업 시장을 대상으로 HDPE/LDPE/PP 비닐봉투와 인증된 생분해성 포장재(HapBio 브랜드)를 제조·수출하는 베트남 기업이다. Walmart, Target, ALDI 등 글로벌 B2B 고객에게 공급하며, 2024년 매출 약 $27.9M로 전년 대비 26.3% 성장했고, 수출 네트워크는 90개국 이상으로 확대되어 연간 생산능력 54,000톤 규모로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          롯데 베트남 계열사들이 기존 플라스틱 포장재를 HAPLAST의 프리미엄 생분해성 제품으로 대체할 때 발생하는 추가 비용을 ESG 가치만으로 정당화하고 지속적으로 부담할 의사가 있다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">22</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$27.9M</div><div class="kpi-desc">확인 — 전년 대비 26.3% 성장</div></div>
+<div class="kpi"><div class="kpi-val">$29.0M</div><div class="kpi-desc">확인 — 2024년 대비 3.9% 성장</div></div>
+<div class="kpi"><div class="kpi-val">54,000 tons/year</div><div class="kpi-desc">확인 — 3개 공장, 400대 설비 운영</div></div>
+<div class="kpi"><div class="kpi-val">90+ countries</div><div class="kpi-desc">확인 — 5개 대륙 B2B 고객 공급</div></div>
+<div class="kpi"><div class="kpi-val">$1M</div><div class="kpi-desc">확인 — 시리즈 A 라운드 목표</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">[확인] 글로벌 포장재 시장은 지속 성장 중이며, HAPLAST는 90개국 이상 수출 실적으로 시장 확장성을 입증함. Walmart, Target, ALDI 등 글로벌 대형 유통사 공급 계약 보유. [확인] 베트남 플라스틱 수출 TOP 2 위치 확보. 생분해성 포장재 규제 강화 추세와 부합하여 시장 매력도 높음. [부분 확인] 베트남 내수 시장 점유율 및 APAC 지역별 SAM/SOM 세분화는 IR에서 구체적으로 제시되지 않았으나, 수출 중심 B2B 모델의 확장성은 검증됨.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">[확인] 2024년 매출 $27.9M, 2025년 $29M로 안정적 성장세. B2B 수출 중심의 명확한 수익 구조(제조→글로벌 유통사 공급). [확인] ISO 9001:2015, BRCGS Grade B, TÜV Austria OK Compost 등 15개 이상 국제 인증 보유로 제품 신뢰성 검증. [확인] 3개 공장 54,000톤/년 생산능력, 800명 직원 규모로 규모의 경제 달성. [부분 확인] $1M 투자 유치 목표는 명시되었으나 기존 투자 유치 이력(시리즈, 금액, 투자자)은 IR에서 구체적으로 확인되지 않음. 롯데벤처스 펀드 적합성은 제조업 CAPEX 투자보다는 유통 연계 전략적 가치에 의존.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">5<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">[확인] 플라스틱 폐기물 문제 해결을 핵심 가치로 설정. TÜV Austria OK Compost INDUSTRIAL/HOME, BPI Certificate 등으로 생분해성 제품의 환경 효능 검증됨. [확인] HapBio 브랜드 생분해성 제품군과 HapEco 재활용 함량 70% 이상 제품으로 순환경제 기여. [확인] PoC에서 월 5-10톤 플라스틱 대체, CO₂ 저감 지표 측정 계획으로 사회적 임팩트 규모·지속성 확인 가능. ESG 전략이 비즈니스 모델과 긴밀히 연계되어 있으며, 글로벌 규제 강화 추세와 정합성 높음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 외부 검증 미실시 — 제출된 팀 경력은 모두 자체 보고 자료로, 회장·CEO·부CEO의 실제 학력, 이전 직장, 도메인 전문성을 독립적으로 확인할 수 없음. [미확인] 회장의 '20년 이상 경영 경험', CEO의 '스타트업→베트남 1위 제조사' 스토리는 구체적 이전 직장명, 프로젝트명, 수상 이력 없이 서술적으로만 제시됨. [부분 확인] 엔지니어링팀의 ISO 9001:2015 QMS 관리 역량은 인증서로 간접 검증 가능하나, 개별 팀원의 전문성은 불명확. [위험 요소] 핵심 인물 의존도 평가 불가 — 회장/CEO 외 후계 구조나 조직 분산 리더십 여부 확인 안 됨. 800명 규모 제조사로서 팀 구성은 설명되었으나, 외부 검증 없는 자체 보고만으로는 신뢰성 제한적.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">7<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">[확인] 롯데 주요 사업분야(유통·F&B·물류)와 명확히 부합. 5개 계열사(롯데마트, 백화점, 시네마, 롯데리아, 호텔) 구체적으로 명시. [확인] PoC 아이디어는 운영적으로 실행 가능 — 기존 플라스틱 봉투를 HAPLAST 제품으로 교체하는 파일럿은 기술적 복잡도 낮음. [부분 확인] PoC 협력 방식이 '공급업체 교체' 수준에 그칠 가능성 — 롯데의 기존 인프라, 데이터, 고객 접점을 활용한 차별화된 가치 창출(예: 롯데 멤버십 연계 친환경 리워드, 롯데글로벌로지스 순환물류 통합)은 제안되지 않음. [위험 요소] 프리미엄 가격 부담 — 생분해성 제품은 일반 PE 대비 비용 상승 불가피. PoC에서 비용 비교 항목은 있으나, 롯데가 ESG 가치만으로 추가 비용을 장기 부담할 의사 결정 근거 미확인. 단순 공급업체 전환이 아닌 전략적 파트너십으로 발전 가능성은 제한적.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 4 + B 4 + C 5 + D 2 + E 7</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">22</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce, Logistics/Supply Chain, F&B/Food</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">LOTTE Mart Vietnam, LOTTE Department Store, LOTTE Cinema, Lotteria Vietnam, LOTTE Hotel Vietnam</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데 베트남 유통·F&B 매장에서 기존 일회용 플라스틱을 HAPLAST의 인증 생분해성(HapBio) 및 재활용 함량(HapEco) 포장재로 대체하는 3-6개월 파일럿. 롯데마트(2-3개 매장), 백화점, 시네마, 롯데리아, 호텔 등 5개 계열사 참여. 월 5-10톤 플라스틱 대체, ESG 지표 측정, 비용 비교 및 소비자 수용도 평가 후 확대 방안 도출.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">1. Plastic Waste Reduction: Estimated diversion of 5–10 tones of conventional single-use plastic per month across pilot LOTTE outlets
+2. Recycled Content Integration: Diversion of post-consumer plastic waste from landfill into circular product cycles
+3. Carbon Footprint Reduction: Measurable CO₂ equivalent savings per tone of conventional plastic substituted
+4. Food Safety Compliance: Ensures LOTTE's compliance with increasingly stringent Vietnamese and export-market food packaging regulations</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>PoC 비용 부담 의사결정 불확실성</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 생분해성 제품 프리미엄 가격을 롯데가 장기 부담할 예산 및 의사 결정 근거 부재. PoC 평가 후 확대 여부 불투명.</td></tr>
+<tr><td>단순 공급업체 교체 수준 협력</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] PoC가 롯데 인프라(물류, 데이터, 멤버십)를 활용한 전략적 협력이 아닌 단순 제품 공급으로 그칠 가능성. 차별화된 가치 창출 방안 보완 필요.</td></tr>
+<tr><td>팀 외부 검증 부재</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 경영진 경력이 자체 보고로만 제시되어 독립적 검증 불가. 핵심 인물 의존도 및 조직 안정성 평가 제한적.</td></tr>
+<tr><td>CAPEX 중심 제조업의 벤처 투자 적합성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] $1M 투자 목표는 명시되었으나 기존 투자 유치 이력 미확인. 롯데벤처스 펀드 전략(유통 연계)과의 정합성은 있으나, 제조업 특성상 빠른 EXIT 경로 불명확.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — 제조·하드웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">원가 구조 및 마진 분해 — 생분해성 프리미엄이 수익성에 미치는 영향</span><span class="dvtag dv-a">Caution</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 2024년 매출 $27.9M, 2025년 $29M로 안정적 성장세이나, HDPE/LDPE 대비 생분해성(PLA+PBAT) 원재료 비용은 통상 40~80% 높음. IR 자료에 제품별 Gross Margin, EBITDA Margin, 원가 분해(원재료/인건비/에너지/물류) 데이터가 제시되지 않아 생분해성 제품 확대 시 수익성 유지 가능 여부 불확실. [미확인] 54,000톤/년 생산능력 중 생분해성 제품 비중, 가동률, 제품 믹스별 마진 차이 불명. [위험 요소] 롯데 PoC에서 프리미엄 가격 수용 의사 결정 근거 부족 — ESG 가치만으로 장기 비용 부담 정당화 어려움.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">CAPEX 계획 및 ROI 가시성 — $1M 투자금 사용처 구체성</span><span class="dvtag dv-r">Concern</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] $1M 투자 유치 목표는 명시되었으나, 자금 사용 계획(신규 압출기 도입, R&D, 인증 확대, 영업 조직 확충 등)의 구체적 항목별 배분, 예상 ROI, 회수 기간이 IR에서 확인되지 않음. [미확인] 기존 투자 유치 이력(시리즈, 투자자명, 밸류에이션, 지분 구조) 불명확 — 외부 자본 조달 경험 없이 자체 현금흐름으로 성장했는지, 가족 경영 구조인지 확인 불가. [위험 요소] 롯데벤처스는 제조업 CAPEX 투자보다 유통·플랫폼 연계 전략적 가치에 집중 — $1M이 PoC 확장이 아닌 범용 설비 투자로 쓰일 경우 펀드 투자 논리 약화.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">글로벌 경쟁 포지셔닝 — Walmart, Target 공급 지위의 지속 가능성</span><span class="dvtag dv-g">Good</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] Walmart, Target, ALDI, Home Depot 등 글로벌 Tier-1 유통사 공급 계약 보유는 제품 품질·납기·가격 경쟁력의 강력한 시장 검증. [확인] BRCGS Grade B, amfori BSCI, ISO 9001:2015 등 15개 이상 국제 인증으로 글로벌 바이어의 ESG·품질 요구사항 충족. [부분 확인] 베트남 플라스틱 수출 TOP 2 지위는 언급되었으나, 중국·인도·태국 등 아시아 경쟁사 대비 원가·기술 우위의 구체적 근거(예: 베트남 인건비, 원재료 조달 시너지, 생분해성 배합 특허)는 IR에서 미제시. [위험 요소] 대형 바이어 의존도 — 상위 3개 고객사 매출 비중, 계약 갱신 주기, 가격 협상력 데이터 없음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">생분해성 기술 차별성 — TÜV/BPI 인증 외 독자 R&D 역량</span><span class="dvtag dv-a">Caution</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] TÜV Austria OK Compost INDUSTRIAL/HOME, BPI Certificate으로 생분해성 효능은 제3자 검증 완료. [부분 확인] HapBio 브랜드 생분해성 제품군은 PLA+PBAT+옥수수 전분 배합으로 소개되었으나, 독자 개발 배합 기술인지, 범용 원료 조합인지 불명확 — 특허 등록 여부, R&D 인력 규모, 연간 R&D 투자액 미제시. [위험 요소] 생분해성 포장재 시장은 NatureWorks(미국), BASF(독일), Novamont(이탈리아) 등 글로벌 원료사와 중국 저가 경쟁사가 동시 진입 중. HAPLAST의 기술 장벽(배합 노하우, 공정 최적화, 비용 경쟁력)이 지속 가능한 해자인지 검증 필요.</div></div>
+<div class="deep-category-label">Category E — 대기업 연계 전략</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">롯데 PoC 아이디어의 전략적 깊이 — 단순 공급업체 교체 vs. 공동 가치 창출</span><span class="dvtag dv-a">Caution</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 롯데 주요 사업분야(유통·F&B·물류)와 제품군(포장재) 명확히 부합. 5개 계열사(롯데마트, 백화점, 시네마, 롯데리아, 호텔) 구체적 명시. [부분 확인] 제안된 PoC는 '기존 플라스틱 봉투 → HAPLAST 생분해성 제품 교체' 수준으로, 운영적 실행 가능성은 높으나 롯데의 기존 인프라·데이터·고객 접점을 활용한 차별화된 가치 창출 부재. [미확인] 롯데 멤버십 연계 친환경 리워드, 롯데글로벌로지스 순환물류 통합, 롯데케미칼 원료 협업 등 그룹 시너지 활용 아이디어 없음. [위험 요소] PoC 성공 기준이 '월 5~10톤 플라스틱 대체, CO₂ 저감'에 한정 — 롯데 입장에서 단기 ESG 보고서용 수치 확보 외 장기 전략적 파트너십 동기 불충분.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">PoC 비용 구조 및 롯데의 의사결정 논리 — 프리미엄 가격 수용 근거</span><span class="dvtag dv-r">Concern</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] PoC 평가 지표에 '비용 비교' 항목은 포함되었으나, 생분해성 제품의 일반 PE 대비 가격 프리미엄(통상 30~60%), 롯데 5개 계열사의 연간 플라스틱 봉투 구매량, 교체 시 추가 비용 총액이 IR에서 정량화되지 않음. [미확인] 롯데가 ESG 가치만으로 추가 비용을 장기 부담할 의사결정 근거 부족 — 소비자 가격 전가 가능성, 정부 규제 대응 필요성, 브랜드 이미지 제고 효과 등의 정성적 가치를 내부 승인 프로세스에서 정량화한 사례 없음. [위험 요소] 롯데 구매 부서는 통상 원가 절감 KPI로 평가 — PoC 단계에서 '비용 중립' 또는 '장기 원가 절감 경로'(예: 재활용 비용 감소, 폐기물 처리비 절감) 제시 없이는 전사 확대 어려움.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-3</span><span class="deep-title">롯데 조직 내 PoC 추진 주체 및 의사결정 경로 명확성</span><span class="dvtag dv-r">Concern</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] PoC 협업 대상으로 5개 계열사(롯데마트, 백화점, 시네마, 롯데리아, 호텔)를 나열했으나, 각 계열사별 실무 담당 부서(구매팀, ESG팀, 운영팀), 의사결정권자, 승인 프로세스가 사전 조율되지 않음. [미확인] 롯데 지주 ESG전략실 또는 롯데벤처스가 PoC를 주도할지, 개별 계열사가 자율 참여할지 거버넌스 불명확 — 계열사 간 이해관계 상이(예: 롯데마트는 원가, 백화점은 브랜드 이미지 우선) 시 조율 주체 부재. [위험 요소] L-Camp 프로그램 종료 후 PoC를 장기 공급 계약으로 전환할 책임 주체(Champion)가 롯데 내부에 명시되지 않으면 파일럿 종료 후 확산 불가능.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[확인] 글로벌 B2B 고객 기반 — Walmart, Target, ALDI 등 대형 유통사 공급 실적 보유</li>
+<li>[확인] 베트남 플라스틱 수출 TOP 2 — 3개 공장 54,000톤/년 생산능력, 15개 이상 국제 인증</li>
+<li>[확인] 생분해성 제품 기술력 — TÜV Austria OK Compost, BPI Certificate 등으로 검증된 HapBio 브랜드</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] 팀 외부 검증 부재 — 경영진 경력이 자체 보고로만 제시되어 독립 확인 불가</li>
+<li>[미확인] 롯데와의 전략적 시너지 구체성 부족 — PoC가 단순 공급업체 교체 수준에 그칠 위험</li>
+<li>[부분 확인] 프리미엄 가격 부담 — 생분해성 제품 추가 비용에 대한 롯데 측 예산 확보 여부 불명확</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>글로벌 일회용 플라스틱 규제 강화로 생분해성 포장재 수요 증가</li>
+<li>롯데 베트남 계열사 5개사 동시 파일럿으로 빠른 레퍼런스 확보 가능성</li>
+<li>APAC 지역 내 롯데 계열사 추가 확대(한국, 인도네시아 등) 잠재력</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>생분해성 제품 단가 상승으로 인한 롯데 측 채택 지연 또는 중단 가능성</li>
+<li>베트남 및 APAC 내 중국·태국 제조사들의 저가 경쟁 심화</li>
+<li>롯데 계열사별 ESG 우선순위 차이로 PoC 전사 확대 실패 리스크</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">22</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">HAPLAST는 검증된 생산능력(54,000톤/년), 글로벌 고객 기반(90개국, Walmart·Target 등), 국제 인증(15개 이상)을 보유한 성장 단계 제조사로, 시장 매력도와 사회적 가치는 명확히 확인됨. 그러나 가장 큰 미검증 가정은 롯데 베트남 계열사들이 기존 PE 대비 고가인 생분해성 제품의 추가 비용을 ESG 가치만으로 지속 부담할 의사와 예산 확보 여부임. PoC 제안은 실행 가능하나 '공급업체 교체' 수준에 그칠 위험이 있으며, 롯데 인프라를 활용한 차별화된 전략적 협력 방안은 부재함. 팀 역량은 자체 보고만으로 외부 검증되지 않아 신뢰성 제한적. 투자 적합성은 제조업 CAPEX보다는 롯데 유통망 연계 전략적 가치에 의존하나, 구체적 시너지 창출 메커니즘 보완 필요.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">5 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">7 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">22 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>HAPLAST JOINT STOCK COMPANY · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGRITREE VIETNAM COMPANY LIMITED — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">AGRITREE VIETNAM COMPANY LIMITED</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Japan, Fukuoka Prefecture, Nakagawa City</span>
+          <span class="etag et-ind">Agri Energy Development, Rural Development</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">AGRITREE VIETNAM COMPANY LIMITED</div>
+        <div class="hero-sub">설립 2025 · www.agritree.jp</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Agritree Vietnam은 베트남 농가를 위한 Solar Sharing(영농형 태양광) EPC 솔루션이다. 농지 생산성 저하 없이 태양광 발전 수익을 창출하는 문제를 해결하며, 태양광 설비 설치 및 운영 서비스로 수익을 얻는다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          Solar Sharing이 베트남 농가에 실질적 경제적 이익을 제공하며, 농작물 생산성 저하 없이 전력 판매 수익이 지속 가능하다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">16</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">221 kWp</div><div class="kpi-desc">2025년 12월 베트남 내 설치 완료</div></div>
+<div class="kpi"><div class="kpi-val">7개 사이트</div><div class="kpi-desc">4명 사용자, 2025년 8월~12월 데이터 축적</div></div>
+<div class="kpi"><div class="kpi-val">$200K</div><div class="kpi-desc">Seed 라운드 목표 금액</div></div>
+<div class="kpi"><div class="kpi-val">2개</div><div class="kpi-desc">연구 협력 기관 확보</div></div>
+<div class="kpi"><div class="kpi-val">Next Wave Top 10</div><div class="kpi-desc">2025년 10월 스타트업 경진대회 입상</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">베트남 농가의 전력비 상승 및 기후 피해 문제는 [확인] — IR에서 농가별 월 전력비($150~$335K/월) 및 손실액($1.4B~$7.3B/년) 구체적 제시. 그러나 Solar Sharing의 실제 시장 규모(SAM/SOM)는 [미확인]. TAM만 언급되고 베트남 내 채택 가능 농가 수, 경쟁 솔루션 대비 가격 경쟁력, 확장 전략이 불명확. 일본·중국 사례 제시는 있으나 베트남 시장 특성 반영 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">비즈니스 모델은 EPC(설계-조달-건설) 및 O&M 서비스로 설명되나 수익 구조 구체성 [미확인]. 2025년 설립 후 7개 사이트 설치는 [확인]되나 매출 실적 전무. 투자 유치 $200K 목표는 명시되었으나 현재까지 유치 금액, 투자자 유형(기관/개인/정부), 자금 사용 계획 불명확. 베트남 정부 보조금 정책 존재 언급은 있으나 실제 수혜 여부 및 의존도 [미확인]. 단위 프로젝트당 수익성, CAC, LTV 데이터 부재로 투자 적합성 판단 불가.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">사회문제(농가 전력비 부담 430M tCO2 배출, 기후 피해 $1.4B~$7.3B)와 솔루션(Solar Sharing) 간 연결성 [확인]. 태양광 발전으로 농가 수익 다변화 + 탄소 감축 + 농지 보호 효과를 명확히 제시. 7개 사이트 운영 데이터 축적 중으로 임팩트 측정 가능성 [부분 확인]. 규모·깊이·지속성 측면에서 베트남 농업 전반으로 확대 가능한 구조적 솔루션이나, 실제 확산 속도 및 정책 연계성은 초기 단계.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 심층 조사 미수행으로 외부 검증 불가 [미확인]. 자기 보고상 'General Director: Yamamoto Teruhisa' 외 구성원 정보 부재. 'First private Solar Sharing EPC in Vietnam' 주장은 차별성을 나타내나 실제 태양광 EPC 경험, 베트남 농업 도메인 전문성, 기술 인력 구성 등 핵심 역량 근거 없음. 일본 본사(www.agritree.jp) 존재 암시되나 베트남 법인과의 관계, 기술 이전 체계, 핵심 인력 배치 불명확. 키맨 의존도 리스크 높음.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">6<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">주요 사업분야(식품·농업, 건설) 부합 [확인]. 롯데마트 베트남과의 PoC 아이디어는 구체적 — Solar Sharing 농장에서 생산된 저탄소 농산물의 Scope 3 감축 효과 측정 및 지속가능 조달 모델 검증 [부분 확인]. 롯데건설(스마트시티/프롭테크)과의 연계 가능성도 제시. 그러나 PoC 실행 시 롯데마트의 실제 조달 프로세스 변경 필요성, 농산물 품질·가격 경쟁력 검증 방안, 6개월 내 측정 가능한 KPI 설정이 불명확. 'Legal framework development' 언급은 정책 개발 의도를 보이나 롯데 입장에서의 직접적 비즈니스 이익이 다소 간접적.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 2 + C 4 + D 1 + E 6</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">16</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce, Hospitality/Hotel/Tourism, Smart City/PropTech, F&B/Food</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">LOTTE Mart Vietnam</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데마트 베트남과 협력하여 Solar Sharing 시스템을 적용한 농수산 농장에서 재생에너지 발전량, 탄소 감축량, 친환경 농산물 가치 평가를 수행하는 6개월 PoC. Scope 3 탄소 감축 및 지속가능한 조달 모델 검증 목표.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Agritree Vietnam addresses key ESG challenges by promoting sustainable agriculture, distributed renewable energy, and climate resilience through Solar Sharing.  Solar Sharing technology reduces greenhouse gas emissions and supports efficient land use without requiring additional land development.  Solar Sharing enhances farmers’ income diversification, strengthens rural energy resilience, and supports sustainable food production.  From a governance perspective, the project contributes to science-based decision-making and future policy development through collaboration with research institutions and stakeholders.  PoC collaboration with LOTTE will accelerate these impacts by demonstrating low-carbon and climate-resilient agricultural supply chains, supporting Scope 3 decarbonization, and creating sustainable sourcing and branding opportunities within LOTTE’s ecosystem.  The collaboration would provide a scalable model for ESG-driven food systems across Vietnam and ASEAN.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>매출 실적 부재 및 비즈니스 모델 검증 미흡</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 2025년 설립 후 7개 사이트 설치되었으나 수익 발생 여부, 고객 지불 능력, 프로젝트당 마진 구조 불명확. Pre-revenue 단계에서 $200K 유치 목표의 타당성 판단 불가.</td></tr>
+<tr><td>팀 구성 및 도메인 전문성 불투명</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] General Director 외 팀원 정보 전무. 태양광 EPC 및 베트남 농업 전문가 보유 여부, 일본 본사와의 기술 이전 체계 검증 불가. 키맨 의존도 리스크.</td></tr>
+<tr><td>Solar Sharing의 베트남 농업 적합성 장기 검증 부족</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] 7개 사이트에서 2025년 8~12월(5개월) 데이터만 축적. 베트남 다기후 조건(북부·고원·남부) 및 주요 작물(쌀·차·새우) 대상 장기 생산성 영향 미검증.</td></tr>
+<tr><td>정부 보조금 의존도 및 전력 매입 가격 변동</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 베트남 정부 보조금 정책 존재 언급되나 실제 수혜 여부, 보조금 비율, 정책 지속성 불명확. 전력 매입 가격 변동 시 농가 ROI 악화 가능.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category E — 하드웨어/제조/에너지</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">자본집약적 사업 특성상 초기 자금 조달 및 캐시플로 관리 능력</span><span class="dvtag dv-r">미흡</span><span class="deep-arrow">▾</span></div><div class="deep-body">EPC 사업은 프로젝트당 선행 투자(설비 조달, 설치)가 필수적이나 현재까지 매출 실적 전무 [확인]. $200K 목표 투자 유치 규모는 7개 사이트 운영 대비 소규모이며, 프로젝트당 평균 설치비용, 회수 기간, 운전자본 요구량 등 재무 구조 [미확인]. 베트남 정부 보조금 정책 존재 언급은 있으나 실제 수혜 조건, 지급 시기, 의존도가 불명확해 현금흐름 리스크 높음. 221 kWp 설치 실적은 [확인]되나 이후 확장을 위한 자금 조달 계획 및 파트너십 전략 부재.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">기술 개발 역량 및 현지화(localization) 수준</span><span class="dvtag dv-a">검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">일본 본사(www.agritree.jp) 존재와 'First private Solar Sharing EPC in Vietnam' 주장은 [확인]되나, 베트남 기후·토양·작물 조건에 맞춘 시스템 설계 능력은 [부분 확인]. 2개 대학 파트너십 및 multi-climate validation 언급은 있으나 구체적 연구 결과, IP 보유 여부, 기술 이전 체계 불명확. 7개 사이트에서 1사이클 데이터 축적(2025.8~12)은 초기 단계로, 장기 농지 생산성 및 발전 효율 검증 데이터 부족. 일본 기술의 베트남 현지 적용 시 발생 가능한 기술적·규제적 리스크 대응 전략 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-3</span><span class="deep-title">규제 환경 대응 및 정부 관계 구축 능력</span><span class="dvtag dv-a">초기 단계</span><span class="deep-arrow">▾</span></div><div class="deep-body">2026년 3월 APV Project Technical Consulting Conference 초청 참가는 정부 네트워크 접근성 [확인]. PoC에서 'legal framework development' 목표 제시는 규제 환경 인식을 나타내나, 베트남 내 Solar Sharing 관련 법령·인허가 절차·전력망 연계 기준 등 구체적 규제 현황 파악 수준 [미확인]. 농지법, 전력법, 재생에너지 보조금 정책과의 정합성 검증 및 정부 승인 획득 경험 부재. 향후 상용화 시 토지 용도 변경, 농업 보조금 자격 유지, 발전 사업자 등록 등 복합 규제 리스크 존재하나 대응 전략 불명확.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-5</span><span class="deep-title">핵심 인력 구성 및 운영 역량</span><span class="dvtag dv-r">정보 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">팀 구성 정보는 'General Director: Yamamoto Teruhisa' 외 전무 [미확인]. EPC 사업 필수 역량인 전기·구조 설계, 시공 관리, O&M 기술 인력 보유 여부 불명확. 베트남 농업 도메인 전문가, 현지 정부 관계 담당, 재무·법무 인력 배치 상황 [미확인]. 일본 본사로부터의 기술 지원 체계 및 현지 법인 자율성 수준 불분명. 7개 사이트 운영 및 2개 대학 파트너십 관리는 소규모 팀으로 가능하나, 향후 확장 시 필요한 조직 구축 계획 및 핵심 인력 확보 전략 부재. 키맨 의존도 리스크 매우 높음.</div></div>
+<div class="deep-category-label">Category G — 기타(복합형·신규)</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">G-1</span><span class="deep-title">시장 교육 및 고객 확보 전략</span><span class="dvtag dv-a">불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 농가 대상 Solar Sharing 개념 인지도 및 수용성 수준 [미확인]. 현재 4명의 사용자는 얼리어답터로 추정되나, 일반 농가로의 확산 전략(영업 채널, 교육 프로그램, 데모 사이트 운영 등) 부재. 농가 입장에서 초기 투자비 부담, ROI 불확실성, 농지 임대 계약 복잡성 등 도입 장벽 존재하나 극복 방안 [미확인]. 월 전력비 절감액($150~$335K/월) 제시는 있으나 실제 농가별 경제성 분석 케이스 스터디 부족. 경쟁사(기존 태양광 EPC, 디젤 발전기 등) 대비 차별화 포인트 및 전환 유인책 불명확.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">G-2</span><span class="deep-title">임팩트 측정 체계 및 ESG 스토리 구축</span><span class="dvtag dv-g">진행 중</span><span class="deep-arrow">▾</span></div><div class="deep-body">사회문제(농가 전력비 부담, 430M tCO2 배출, 기후 피해 $1.4B~$7.3B) 정의 및 솔루션 연결성 [확인]. 롯데마트와의 PoC에서 Scope 3 감축 측정, ESG 임팩트 평가 계획 [부분 확인]. 7개 사이트 1사이클 데이터는 탄소 감축량, 발전량, 농작물 생산성 비교 기초 자료로 활용 가능. 그러나 측정 방법론(ISO 14064, GHG Protocol 등) 준수 여부, 제3자 검증 계획, 탄소 크레딧 발행 가능성 등 구체적 프레임워크 [미확인]. 향후 저탄소 농산물 인증, ESG 리포트 연계 등 상업화 전략 구축 시 롯데 그룹 ESG 목표와의 정합성 강화 가능.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">G-3</span><span class="deep-title">PoC 실행 가능성 및 롯데 비즈니스 연계성</span><span class="dvtag dv-a">아이디어 단계</span><span class="deep-arrow">▾</span></div><div class="deep-body">롯데마트 베트남과의 저탄소 농산물 공급망 PoC 아이디어는 구체적이나 실행 계획 [부분 확인]. 6개월 내 측정 가능한 KPI(에너지·탄소 감축 데이터, 농산물 품질·수량 비교 등) 설정은 가능하나, 롯데마트의 실제 조달 프로세스 변경 필요성, 협력 농가 선정 기준, 물류·유통 통합 방안 불명확. 롯데건설(스마트시티)과의 연계 가능성 언급은 있으나 구체적 협업 모델 부재. 'Legal framework development'는 정책 개발 의도를 보이나 6개월 PoC 범위를 초과하며, 롯데 입장에서의 직접적 사업 이익(매출 증대, 비용 절감 등)보다는 ESG 브랜딩에 치중된 제안.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>베트남 최초 민간 Solar Sharing EPC로서 선점 우위 및 7개 운영 사이트 실적 확보 [확인]</li>
+<li>농가 전력비 절감 + 탄소 감축 + 추가 수익 창출의 명확한 가치 제안 [확인]</li>
+<li>2개 대학 파트너십 및 Next Wave Top 10 수상으로 초기 검증 신호 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>매출 실적 전무 및 단위 프로젝트 수익성 데이터 부재 [미확인]</li>
+<li>팀 구성원 정보 및 도메인 전문성 외부 검증 불가 [미확인]</li>
+<li>베트남 Solar Sharing 시장 규모(SAM/SOM) 및 확장 전략 구체성 부족 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>롯데마트의 Scope 3 탄소 감축 니즈와 저탄소 농산물 조달 모델 협력 가능성</li>
+<li>베트남 정부의 재생에너지 보조금 정책 활용 가능성</li>
+<li>ASEAN 농업 시장으로의 확장 가능성 (일본·중국 Solar Sharing 선례 존재)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>베트난 농가의 초기 설치 비용 부담 능력 및 투자 회수 기간 리스크</li>
+<li>Solar Sharing 기술의 베트남 기후 적합성 및 농작물 생산성 장기 검증 부족</li>
+<li>정부 보조금 정책 변경 또는 전력 매입 가격 변동 리스크</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">16</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">Agritree Vietnam은 베트남 농가의 전력비 부담과 기후 피해라는 명확한 사회문제에 Solar Sharing 솔루션을 제시하며, 7개 사이트 설치 및 221 kWp 운영 실적으로 초기 실행력을 보였다. 롯데마트와의 저탄소 농산물 조달 PoC는 ESG 전략과 부합하나, 가장 큰 미검증 가정은 Solar Sharing이 베트남 농가에 실질적 경제 이익을 제공하며 농작물 생산성 저하 없이 전력 판매 수익이 지속 가능하다는 점이다. 매출 실적 부재, 팀 구성 불명확, 단위 경제 및 확장 전략 미검증으로 투자 적합성은 제한적이나, 사회적 가치와 롯데 연계 가능성은 조건부 긍정적이다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">6 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">16 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>AGRITREE VIETNAM COMPANY LIMITED · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

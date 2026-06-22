@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SKALE — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">SKALE</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City, Vietnam</span>
+          <span class="etag et-ind">HR Tech</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">SKALE</div>
+        <div class="hero-sub">설립 2021 · https://skale.asia/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">SKALE Placement은 기업 HR팀을 위한 역량 기반 채용관리 플랫폼(ATS)이다. 채용 공고부터 지원자 선별, 평가, 온보딩까지 전 과정을 자동화하며, AI가 이력서를 파싱하고 역량 프레임워크 기준으로 적합도를 점수화하여 후보자를 랭킹한다. SaaS 구독료, CV/채용건당 분석 수수료, 성공 채용 수수료의 복합 수익 모델로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          역량 프레임워크 기반 AI 매칭이 실제로 채용 정확도를 높이고 조기 이직률을 낮춘다는 인과관계가 아직 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">14</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">122</div><div class="kpi-desc">[부분 확인] 유형(기업/개인) 및 유료 전환 불명</div></div>
+<div class="kpi"><div class="kpi-val">$3,802</div><div class="kpi-desc">[미확인] 연도 표기 오류 가능성, 금액 매우 낮음</div></div>
+<div class="kpi"><div class="kpi-val">$3M</div><div class="kpi-desc">[확인] Seed 라운드 목표</div></div>
+<div class="kpi"><div class="kpi-val">Sao Khue 2025</div><div class="kpi-desc">[확인] 베트남 소프트웨어 부문 수상</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] IR Deck에서 APAC 66% 기업이 적합 인재 채용에 어려움을 겪고 베트남 1천만 근로자 시장을 언급하나, SAM/SOM 세분화 없이 TAM만 제시. 채용 플랫폼 시장은 경쟁이 치열하며(글로벌 ATS 업체들과 현지 플레이어 존재), SKALE의 '역량 프레임워크 기반 AI 매칭'이라는 차별화 요소가 실제 고객이 프리미엄을 지불할 만큼 가치 있는지에 대한 시장 검증 데이터가 부족함. 베트남 내 유사 솔루션 대비 구체적인 경쟁 우위나 시장 점유율 목표가 불명확함. 확장 가능성은 APAC 시장으로의 진출 언급이 있으나 구체적 진입 전략이나 현지화 계획은 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 문제-솔루션 연결은 명확하나 실제 매출 증명이 불충분함. 신고된 2026년 매출 $3,802는 연도 표기 오류이거나 실제 수치가 극히 낮음을 의미하며, 2024/2025 매출은 공란. 수익 모델은 SaaS 구독료, CV/채용건당 수수료, 성공 수수료, 컨설팅 비용의 4가지로 제시되나 각 모델의 기여도, 단가, 고객당 평균 수익(ARPU)이 전혀 명시되지 않음. 122명 사용자/파트너가 유료 고객인지, 무료 사용자인지, 파트너사인지 구분 불가. $3M 목표 투자 유치는 [확인]되나 현재 밸류에이션이나 기존 투자 이력이 없어 투자 적합성 평가 곤란. Seed 단계 스타트업으로서 PMF 증명이 매우 약함.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 역량 기반 평가를 통한 채용 편향 감소 및 공정한 채용 기회 확대라는 사회적 가치 제안은 논리적으로 타당함. IR Deck에서 주관적 채용의 문제점과 잘못된 채용의 비용(연봉의 1.5~3배 손실, 경영진 교체 시 5배)을 구체적으로 제시하여 문제 정의는 명확함. 그러나 SKALE 도입 기업에서 실제로 채용 다양성 증가, 편향 감소, 조기 이직률 감소 등의 임팩트가 측정되었다는 레퍼런스 데이터는 [미확인]. ESG Impact 섹션에서 종이 기반 프로세스 감소(E), 공정 채용(S), 투명한 거버넌스(G)를 주장하나 정량적 임팩트 측정 사례가 부재함. 사회문제와 솔루션의 연결성은 있으나 임팩트의 규모와 지속성에 대한 증명이 제한적임.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 연구 결과가 수행되지 않아 외부 검증 불가능. 신청서 자체 신고에서 '역량 프레임워크 컨설팅, 인재 채용, HR 기술 분야 총 25년 경험'을 주장하나 구성원 이름, 직책, 구체적 경력사항, 이전 회사명 등 어떠한 검증 가능한 정보도 제공되지 않음. LinkedIn, 공개 프로필, 언론 보도 등에서 팀 배경을 확인할 방법이 없어 전문성 주장은 [미확인]으로 처리. 창업팀 구성(기술/비즈니스/HR 전문가 분업)이 어떻게 이루어졌는지, 핵심 인력 의존도가 높은지, 팀 완성도가 충분한지 판단 불가능. HR Tech 스타트업으로서 AI 기술 역량과 역량 프레임워크 설계 역량이 모두 필요한데 이를 충족하는 팀 구성인지 확인할 수 없어 실행 기반 평가 곤란.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">5<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">[부분 확인] 롯데 주요 사업 분야 중 유통(롯데마트), 호텔(롯데호텔), F&B(롯데리아), 물류(글로벌로지스) 등 현장 인력 채용이 많은 계열사와의 연계 가능성이 명확히 제시됨. PoC 제안은 구체적 — 3~6개월 파일럿, 매장 직원/계산원/슈퍼바이저/고객 서비스 직원 채용에 플랫폼 도입, 채용 시간 50~70% 단축, 채용 소요 기간 20~30% 단축 등 정량적 목표 제시. 그러나 롯데 계열사가 이미 보유한 내부 채용 시스템이나 기존 ATS와의 통합 방안, 롯데의 특수한 기업 문화나 역량 프레임워크 커스터마이징 필요성에 대한 언급이 부족함. PoC 성공 후 전사 확장 시나리오나 롯데의 데이터/고객 베이스를 활용한 제품 고도화 방안은 제시되지 않아 전략적 시너지는 [미확인]. 제안 자체는 실행 가능하나 롯데 인프라 활용의 구체성은 제한적임.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 2 + C 3 + D 1 + E 5</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">14</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통(롯데마트, 백화점), 호텔/관광(롯데호텔, 롯데월드), 물류(롯데글로벌로지스), 건설(롯데건설), F&B(롯데리아), AI/IT(롯데이노베이트)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">3~6개월 동안 롯데마트(매장 직원, 계산원, 슈퍼바이저), 롯데호텔(고객 서비스 및 운영 직원), 롯데리아(매장 직원 및 교대 리더) 등 현장 직원 채용에 SKALE Placement를 파일럿 플랫폼으로 도입. 역량 기반 평가와 AI 보조 인재 매칭을 활용하여 지원자를 직무 요구사항 및 조직 문화 기준에 따라 평가하고, 채용 담당자가 최적 인재를 더 효율적으로 식별하도록 지원. 이력서 검토 시간 50~70% 단축, 채용 소요 기간 20~30% 단축, 채용 일관성 증대, 조기 이직률 감소를 목표로 함.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">ESG Impact Addressed by SKALE Placement
+
+Environmental (E)
+While SKALE Placement's primary impact is social, the platform contributes to environmental sustainability by digitizing recruitment workflows, reducing paper-based processes, physical interviews, and administrative overhead. This helps organizations lower resource consumption and improve operational efficiency.
+
+Social (S)
+SKALE Placement directly supports fairer and more inclusive hiring through competency-based assessment. By evaluating candidates based on skills, capabilities, and job fit rather than subjective criteria, organizations can make more objective hiring decisions, reduce bias, and create broader access to employment opportunities. The platform also helps employees find roles that better match their strengths, improving engagement, retention, and career development.
+
+Governance (G)
+SKALE Placement promotes transparent, structured, and data-driven talent decisions. Standardized competency frameworks and documented evaluation criteria help organizations improve consistency in recruitment, strengthen compliance with HR policies, and reduce risks associated with subjective hiring practices.
+
+How a PoC with LOTTE Could Create Impact
+
+A 3–6 month PoC with LOTTE could pilot competency-based recruitment for frontline and operational roles across selected business units such as retail, hospitality, or F&B.
+
+The collaboration would aim to:
+
+- Improve fairness and consistency in candidate screening and selection.
+- Expand opportunities for diverse talent by focusing on competencies rather than background alone.
+- Reduce hiring bias through standardized evaluation criteria.
+- Increase workforce quality and retention by improving job-person fit.
+- Provide HR leaders with transparent talent analytics to support accountable decision-making.
+
+Expected ESG Outcomes
+More equitable hiring processes through objective competency assessments.
+Increased access to employment opportunities for candidates from diverse backgrounds.
+Improved employee retention and career development through better talent-role alignment.
+Stronger governance through standardized and auditable recruitment decisions.
+Reduced administrative waste and paper-based HR processes.
+
+Through this PoC, LOTTE would not only improve recruitment efficiency but also demonstrate a practical commitment to responsible workforce management, inclusive employment practices, and data-driven governance—creating measurable ESG value while strengthening business performance.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>PMF 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 매출 데이터 부재 및 유료 고객 수 불명으로 제품-시장 적합성이 입증되지 않음. Pre-seed 단계이나 Seed 투자 유치를 위해서는 반복 매출과 고객 유지율 증명 필수.</td></tr>
+<tr><td>팀 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 외부 연구 결과 팀 정보 전무. 자체 신고된 25년 경력과 역량 프레임워크 전문성을 확인할 방법이 없어 실행 역량 평가 불가능.</td></tr>
+<tr><td>AI 매칭 정확도</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 역량 프레임워크 기반 AI 매칭이 실제 채용 성과(조기 이직률 감소, 성과 개선)로 이어진다는 인과관계 검증 데이터 부재. PoC에서 이를 입증해야 함.</td></tr>
+<tr><td>고객 획득 비용</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 역량 프레임워크 설정은 컨설팅 성격이 강해 고객사별 초기 셋업 비용과 시간이 높을 가능성. 이것이 확장성을 저해할 수 있으나 구체적 CAC 데이터 없음.</td></tr>
+<tr><td>경쟁 우위 지속성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] IR Deck에서 경쟁사 대비 역량 프레임워크 특화를 주장하나 기술 특허, 데이터 독점성 등 방어 가능한 모트가 명시되지 않음. 글로벌 ATS 업체들도 AI 기능 추가 중.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">구독 모델 및 단가 설계</span><span class="dvtag dv-r">심각한 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] SKALE는 SaaS 구독료, CV/채용건당 수수료, 성공 채용 수수료, 컨설팅 비용 등 4가지 수익 모델을 제시하나, 각 모델의 단가, 고객당 평균 수익(ARPU), 수익 기여도가 전혀 명시되지 않음. 2026년 신고 매출 $3,802는 2021년 창업 이후 4년간의 성과로 보기에 극히 저조하거나 데이터 오류 가능성이 높음. 122명 사용자/파트너가 유료 고객인지 무료 트라이얼 사용자인지 구분 불가능하며, 베트남 시장의 가격 민감도를 고려할 때 구독료 지불 의향(WTP)에 대한 검증이 필수적이나 [미확인]. HR Tech SaaS의 경우 통상 seat 기반 또는 채용 건수 기반 과금이 일반적인데, SKALE의 복합 모델이 실제 판매 과정에서 고객 혼란을 야기할 가능성이 있음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">고객 획득 비용(CAC) 및 LTV 경제성</span><span class="dvtag dv-a">검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] HR Tech SaaS는 일반적으로 엔터프라이즈 세일즈 주기가 길고(3~9개월) 고객 획득 비용이 높은 편인데, SKALE의 CAC, 월간 이탈률(churn), LTV/CAC 비율 등 핵심 SaaS 메트릭이 전혀 공개되지 않음. 롯데 계열사와의 PoC는 레퍼런스 확보 측면에서 유의미하나, 대기업 1개사 성공이 중소·중견기업으로의 확장을 보장하지 않으며, 베트남 로컬 기업과 외국계 기업 간 역량 프레임워크 표준화 수준 차이가 제품 커스터마이징 비용을 높일 수 있음. [부분 확인] IR Deck에서 APAC 기업 66%가 채용 애로를 겪는다는 시장 문제는 제시되었으나, SKALE의 역량 기반 AI 매칭이 기존 ATS(Lever, Greenhouse, 베트남 로컬 솔루션) 대비 실질적 전환 비용을 정당화할 만큼 우월한지에 대한 고객 증언이나 A/B 테스트 결과는 부재함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">제품 완성도 및 기술 차별성</span><span class="dvtag dv-a">부분 검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] AI 기반 이력서 파싱 및 역량 프레임워크 기반 후보자 랭킹 기능은 제품 설명에 명시되어 있으나, 실제 AI 모델의 정확도, 베트남어/영어 지원 수준, 다양한 산업별 역량 프레임워크 라이브러리 구축 현황이 불명확함. [미확인] 경쟁사 대비 기술 우위를 입증할 벤치마크 데이터(예: 기존 수작업 대비 스크리닝 정확도 향상률, false positive/negative 비율 개선 등)가 전혀 제공되지 않음. 온보딩까지 포함한 전체 채용 라이프사이클 자동화를 주장하나, 각 단계별 기능 완성도와 통합도가 [미확인]되어 실제로는 특정 모듈(예: CV 파싱)만 작동하고 나머지는 수동 프로세스일 가능성을 배제할 수 없음. Sao Khue Award 수상은 베트남 내 제품 인지도 확보에는 긍정적이나, 글로벌 ATS 시장에서의 기술 경쟁력을 직접 입증하지는 못함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">플랫폼 확장성 및 API 생태계</span><span class="dvtag dv-a">전략 미흡</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] SKALE가 독립형(standalone) ATS로 운영되는지, 기존 HR 시스템(HRIS, 급여, 성과 관리 툴)과 API 연동이 가능한지에 대한 정보가 부재함. 롯데와 같은 대기업 고객은 SAP SuccessFactors, Workday 등 글로벌 HR 스위트를 이미 사용 중일 가능성이 높아, SKALE을 도입하기 위해서는 기존 시스템과의 원활한 통합이 필수적임. [미확인] 제3자 개발자를 위한 API 문서, Webhook 지원 여부, 데이터 이관(migration) 도구 제공 여부 등 엔터프라이즈 채택을 위한 기술 인프라 준비 상태가 불명확함. [부분 확인] APAC 시장 확장 의지는 있으나, 다국어(영어, 베트남어, 태국어, 인도네시아어 등) 지원, 국가별 노동법 준수, 현지 채용 문화 반영 등 현지화 전략이 구체화되지 않아 확장 실행력에 의문이 있음.</div></div>
+<div class="deep-category-label">Category E — 롯데 협업형(유통·물류·서비스)</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">롯데 기존 채용 시스템과의 통합 가능성</span><span class="dvtag dv-a">명확화 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 롯데 계열사들은 이미 자체 채용 시스템이나 글로벌 ATS(예: Workday Recruiting, SAP SuccessFactors)를 운영 중일 가능성이 높은데, SKALE Placement가 이들 시스템과 어떻게 통합되거나 대체될 수 있는지에 대한 구체적 방안이 제시되지 않음. PoC 제안서에서는 '플랫폼 배포'를 언급하나, 기존 HR 데이터베이스(지원자 이력, 채용 히스토리, 내부 이동 기록 등)를 SKALE로 이관하는 데이터 마이그레이션 계획이 [미확인]됨. [부분 확인] 롯데마트, 롯데호텔, 롯데리아 등 현장 인력 채용이 많은 계열사와의 적합성은 논리적으로 타당하나, 각 계열사가 요구하는 역량 프레임워크 표준이 상이할 수 있어(예: 소매업 vs. 호텔업 vs. 외식업) 커스터마이징 부담이 클 수 있음. 롯데 본사 HR 정책팀의 승인 및 계열사 간 공통 플랫폼 도입 거버넌스가 어떻게 작동하는지 [미확인]되어 실행 복잡도가 높을 수 있음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">PoC 성공 기준의 현실성 및 측정 가능성</span><span class="dvtag dv-a">부분 검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] PoC 제안서는 정량적 목표(CV 스크리닝 시간 50~70% 단축, 채용 소요 기간 20~30% 단축)를 명시하여 성공 측정 가능성이 있으나, 베이스라인 데이터(현재 롯데 계열사의 평균 채용 소요 기간, 스크리닝 시간, 면접 통과율 등)가 사전에 수집되어야 하는데 이에 대한 준비 상태가 [미확인]됨. '역량 적합도 향상'이나 '채용 일관성 증가'는 주관적 지표일 수 있어, 실제로 신규 채용자의 조기 이직률 감소, 업무 성과 점수 향상 등 장기 임팩트를 측정하려면 최소 6~12개월의 추적 기간이 필요한데 PoC 기간(3~6개월)으로는 불충분할 수 있음. [미확인] 롯데 계열사 HR팀 및 채용 매니저 대상 교육 계획은 언급되었으나, 실제 사용자 채택률(adoption rate)과 만족도를 모니터링하는 체인지 매니지먼트 프로세스가 구체화되지 않아 PoC가 기술 테스트에 그칠 가능성이 있음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-3</span><span class="deep-title">롯데 데이터 활용 및 전략적 확장 시나리오</span><span class="dvtag dv-a">전략 미흡</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] PoC 성공 후 롯데 계열사 전사 확장(roll-out) 시나리오나 단계별 확산 계획이 제시되지 않음. 롯데는 국내 및 해외(베트남, 인도네시아 등) 사업장을 다수 보유하고 있어, SKALE이 롯데의 글로벌 채용 데이터를 축적하여 국가별·산업별 역량 벤치마크 모델을 구축하거나, 롯데의 내부 인재 풀(internal talent pool)과 연계하여 내부 이동(internal mobility) 추천까지 확장하는 등의 전략적 시너지 방안이 [미확인]됨. [미확인] 롯데가 보유한 고객 데이터나 유통 인프라를 SKALE의 제품 개선에 활용하는 방안(예: 롯데마트 매장 직원의 고객 응대 역량 데이터를 AI 학습에 활용)도 구체화되지 않아, 단순 고객-공급자 관계를 넘어선 전략적 파트너십의 비전이 부족함. [부분 확인] 롯데 인프라 활용 의지는 있으나 실행 가능성과 상호 이익 창출 메커니즘이 불명확하여 L-Camp 프로그램 종료 후 지속 가능한 협력으로 이어질 가능성을 담보하기 어려움.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>Sao Khue Award 2025 수상 등 베트남 시장 내 제품 인정도 확보 [확인]</li>
+<li>채용 프로세스 전반(공고-선별-평가-온보딩)을 통합한 종합 ATS 제품 구조 명확 [확인]</li>
+<li>롯데 현장 인력 채용이 많은 유통·호텔·F&B 등 다수 계열사와 접점 가능 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>2024/2025 매출 데이터 부재, 2026 매출 $3,802는 금액 또는 연도 오류로 추정되어 실제 수익 창출 능력 미확인</li>
+<li>팀 구성원의 이름·경력·전문성이 외부 검증 불가능하여 실행 역량 평가 곤란</li>
+<li>122 사용자/파트너 중 유료 고객 비율, ARPU, 재구매율 등 핵심 SaaS 지표 전혀 공개되지 않음</li>
+<li>역량 프레임워크 기반 AI 매칭의 실제 채용 성과 개선 효과를 입증하는 고객 레퍼런스 데이터 부재</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>APAC 전역의 대규모 현장 인력 채용 시장 확장 가능성</li>
+<li>롯데 PoC 성공 시 계열사 전사 확산 및 레퍼런스 확보 기회</li>
+<li>채용 데이터 축적을 통한 성과 관리, 내부 이동 등 HR 전 영역 솔루션 확장 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>글로벌 ATS 업체(Workday, Greenhouse, Lever 등) 및 베트nam 현지 HR Tech 스타트업과의 치열한 경쟁</li>
+<li>역량 프레임워크 설정 및 커스터마이징에 높은 컨설팅 비용과 시간 소요 가능성</li>
+<li>AI 매칭 정확도가 기대에 못 미칠 경우 고객 이탈 및 재구매율 하락 리스크</li>
+<li>현장 채용 담당자의 기존 프로세스 변경 저항 및 시스템 전환 비용</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">14</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">SKALE는 역량 프레임워크 기반 AI 채용 플랫폼으로 명확한 문제 정의와 솔루션 구조를 갖추고 있으나, 핵심 가설인 '역량 기반 매칭이 채용 정확도를 실제로 높인다'는 인과관계가 검증되지 않았음. 신고된 2026년 매출 $3,802는 연도 오류 가능성이 크며, 실제 매출 규모와 유료 고객 수가 불명확하여 PMF 증명이 매우 약함. 팀 배경은 외부 검증이 전혀 이루어지지 않아 자체 신고된 25년 경력을 확인할 수 없음. 롯데 현장 인력 채용 PoC는 실행 가능성이 있으나 기존 시스템 통합 및 롯데 인프라 활용의 구체성이 부족함. 가장 큰 리스크는 역량 프레임워크 설정·운영의 복잡도와 AI 매칭 정확도에 대한 고객 검증 부재임.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">5 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">14 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>SKALE · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

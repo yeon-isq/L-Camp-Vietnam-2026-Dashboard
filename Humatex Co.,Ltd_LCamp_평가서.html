@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Humatex Co., Ltd (ANHA) — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Humatex Co., Ltd (ANHA)</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam</span>
+          <span class="etag et-ind">E-commerce & Retail</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Humatex Co., Ltd (ANHA)</div>
+        <div class="hero-sub">설립 2026 · https://anha.vn/</div>
+        <span class="hero-stage">Idea</span>
+        <p class="hero-desc">ANHA는 베트남 도시 가정을 위한 건강 생활용품 큐레이션 플랫폼이다. 바쁜 가정이 겪는 제품 선택 피로와 품질 검증 부담을 6단계 생태계(피지컬 쇼룸, 3단계 제휴 네트워크, 공동구매, 구독 배송)로 해결하며, 월 구독료 및 거래 수수료로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          피지컬 쇼룸 경험이 실제로 제휴 네트워크 전환과 구독 전환으로 이어지며, 이 플라이휠이 자본 투입 없이 자기 강화된다는 가설이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">~100K</div><div class="kpi-desc">2026년 도달 목표 (미확인 — 근거 없음)</div></div>
+<div class="kpi"><div class="kpi-val">$100K</div><div class="kpi-desc">현재 모집 중</div></div>
+<div class="kpi"><div class="kpi-val">$0</div><div class="kpi-desc">아이디어 단계, 매출 없음</div></div>
+<div class="kpi"><div class="kpi-val">8% 구독 전환</div><div class="kpi-desc">롯데마트 시범 6개월 목표</div></div>
+<div class="kpi"><div class="kpi-val">500 제휴사</div><div class="kpi-desc">6개월 차 목표 (미검증)</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 타겟 시장 규모에 대한 구체적 SAM/SOM 제시 없음 — '베트남 도시 가정'이라는 세분화만 존재하며 시장 규모 추산 근거 부재. 경쟁 환경 분석 없음(Shopee/Lazada/기존 큐레이션 서비스 대비 차별화 근거 불충분). IR Deck의 플라이휠 가설은 논리적이나 검증된 적 없음. 확장 가능성은 롯데 인프라 의존적이며 자생적 성장 경로 불명확.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 사업모델 구조는 설명되나 단위 경제가 전무 — 고객 획득 비용, 구독 이탈률, 쇼룸 운영 고정비, 제휴 수수료 구조 등 수익성 검증 데이터 없음. 매출 이력 전무(아이디어 단계). 투자 유치 이력 없음. 투자 적합성 불명확 — $100K 목표 유치 금액으로 6개월 내 쇼룸 3~5개 구축 및 500명 제휴 네트워크 확보는 자본 효율 측면에서 근거 부족. 롯데벤처스 펀드 적합성 판단 불가.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 문제 정의는 명확 — 베트남 e커머스의 품질 불신 및 바쁜 가정의 선택 피로는 실존하는 사회문제. 솔루션의 사회적 가치는 설명되나 임팩트 규모·지속성 검증 부재. ESG 주장(화학물질 감소, 탄소 배출 절감, 소상공인 소득 창출)은 논리적이나 측정 가능한 지표 없음. '대중 시장 접근성 민주화'는 롯데 협력 시에만 성립 — 자체 역량으로는 프리미엄 세그먼트에 국한될 위험.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인 — 심각] 팀 검증 실패 — CEO 응우옌 판 안 민(Nguyễn Phan Anh Minh)의 LinkedIn 프로필 부재, anha.vn 웹사이트는 산업단지 사이트로 확인, Humatex는 섬유 제조업체로만 검색됨. 자체 보고된 'FUWA Biotech BOD급 인사' 및 '슈퍼마켓 공급망 경력팀' 주장은 공개 정보에서 검증 불가. e커머스 스타트업 CEO가 디지털 존재감이 전무한 것은 비정상적. 팀 투명성 및 도메인 전문성 입증 실패 — 듀딜리전스 진행 전 법인 등록 및 팀원 신원 확인 필수.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">4<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">[부분 확인] 주요 사업분야(유통·식품) 부합. 롯데마트 PoC 제안은 구체적 — 지점 수, 기간, KPI, 역할 분담이 명시됨. 그러나 PoC 실행 가능성에 대한 근거 부족 — ANHA가 80~120 SKU 큐레이션 및 풀필먼트를 6개월 내 구축할 자본·인프라·공급망 역량 미검증. 롯데 입장에서의 benefit은 설명되나(방문 빈도·객단가 상승, 1st party data) 기존 롯데 자체 큐레이션 역량 대비 ANHA만의 차별적 가치가 불명확. 계열사 확장 시나리오는 Phase 2~3로 제시되나 전제 조건(PoC 성공) 충족 가능성 불투명.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 1 + C 3 + D 1 + E 4</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce, Hospitality/Hotel/Tourism, Logistics/Supply Chain, F&B/Food</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">호치민 소재 롯데마트 2개 지점에서 3~6개월간 ANHA Corner 시범 운영. 80~120개 건강 생활용품 SKU 큐레이션 진열 및 매장 내 구독·공동구매 활성화. 롯데는 매장 공간 및 유동 인구 제공, ANHA는 큐레이션·머천다이징·풀필먼트·제휴 네트워크 제공. KPI: 구독 전환율 8% 이상, 객단가 상승 15% 이상, 월 활성 구독자 지점당 300명 이상(6개월 차). 성공 시 롯데백화점·롯데리아·롯데건설 확장.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">ANHA advances ESG impact across all three dimensions. Environmentally, our curation standards reduce harmful chemicals in Vietnamese homes and our consolidated delivery model lowers per-order carbon footprint. Socially, embedding ANHA inside LOTTE's mass-market infrastructure democratises access to safe, trusted products beyond premium-only consumers, while our affiliate network creates low-barrier income opportunities for micro-entrepreneurs across Vietnam. On governance, ANHA's 6-criteria product vetting framework establishes transparent quality and supplier-ethics standards, and our proposed data-sharing model with LOTTE is built on anonymisation and consent-first principles. A PoC collaboration with LOTTE Mart directly amplifies each of these impacts — turning a startup-scale initiative into one with nationwide retail reach from day one.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">확인 불가 - 팀 구성원에 대한 검증 가능한 정보가 존재하지 않음. 자체 보고된 '3가지 기둥(FUWA Biotech BOD, 디지털 전환 엔지니어, 슈퍼마켓 공급망 팀)'은 공개 소스에서 확인되지 않음.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">평가 불가 - 공개된 팀 정보가 전무함. CEO 외 다른 창립 멤버, CTO, COO 또는 주요 임원에 대한 정보가 없음.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">심각한 우려 - 현대 e커머스 스타트업이 (1) CEO의 LinkedIn 프로필이 없고, (2) 검증 가능한 온라인 존재감이 없으며, (3) 팀 배경에 대한 공개 증거가 없고, (4) 회사 웹사이트가 산업단지 사이트로 보이는 것은 매우 비정상적임. Humatex는 섬유 제조업체로만 확인됨.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">전체 팀 투명성 및 검증 가능성 부재. e커머스 스타트업의 경우 창립팀의 디지털 존재감, 추적 가능한 경력, 그리고 업계 프로필이 표준임. 이 회사는 이러한 기본 요건을 충족하지 못함. 듀딜리전스 진행 전 (1) 실제 법인 등록 확인, (2) 팀원 신원 확인, (3) 주장된 FUWA Biotech 및 슈퍼마켓 공급망 연결 검증이 필수적으로 권장됨.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Nguyễn Phan Anh Minh LinkedIn · Nguyễn Phan Anh Minh CEO ANHA · Humatex Co Ltd ANHA Vietnam founders · anha.vn Vietnam e-commerce founders · FUWA Biotech BOD Vietnam · Humatex ANHA Vietnam startup team</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Nguyễn Phan Anh Minh</div><div class="member-role">CEO (자체 보고됨)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없음 - e커머스 스타트업 CEO로서 비정상적</span><span class='flag-item'>⑊ 공개된 회사 정보 없음 - anha.vn은 산업단지 웹사이트로 보임</span><span class='flag-item'>⑊ FUWA Biotech 연결 검증 불가 - FUWA는 세척제 제조 바이오텍 기업으로 e커머스와 무관</span><span class='flag-item'>⑊ Humatex는 섬유 제조업체로 확인됨 - e커머스 플랫폼이 아님</span></div><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 공개 정보 부재로 관련성 확인 불가. 검색 결과에서 e커머스 및 슈퍼마켓 공급망 관리 경험을 가진 동명의 인물을 찾을 수 없었음. '푸와 바이오텍(FUWA Biotech) BOD 멤버'라는 주장도 검증되지 않음.</div><div class="ma-overall"><strong>종합 평가:</strong> [검증 불가] 제공된 정보와 일치하는 공개 자료를 발견할 수 없음. CEO의 LinkedIn이 없고, 회사의 디지털 존재감이 거의 없으며, 주장된 배경(FUWA Biotech BOD, 슈퍼마켓 공급망 경험)을 뒷받침하는 증거가 없어 심각한 우려 사항임.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 실체 및 전문성 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] CEO 및 팀원의 공개 이력 전무. e커머스 스타트업으로서 비정상적. 법인 등록 및 신원 확인 필수.</td></tr>
+<tr><td>플라이휠 가설 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 쇼룸 → 제휴 → 구독 전환 경로가 실제 작동하는지 PoC 없음. 단위 경제 데이터 부재로 수익성 판단 불가.</td></tr>
+<tr><td>롯데 의존도</td><td><span class="rpill-sm rp-h">높음</span></td><td>[부분 확인] PoC 성공 여부가 사업 생존을 결정. 롯데 협력 없이는 확장 불가능한 구조.</td></tr>
+<tr><td>자본 효율성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] $100K로 6개월 내 쇼룸 3~5개 구축 및 500명 제휴 네트워크 확보는 비현실적일 가능성. CAPEX 구조 불명확.</td></tr>
+<tr><td>공급망 및 품질 관리</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 80~120 SKU 큐레이션 기준 및 공급업체 확보 여부 불명. 품질 사고 시 신뢰 즉시 붕괴.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — 이커머스/리테일</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">시장 검증 및 초기 트랙션</span><span class="dvtag dv-r">심각한 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 2026년 설립 예정으로 실제 운영 이력 전무. '100,000명 도달 기회'는 추정치일 뿐 실제 고객 획득·retention 데이터 없음. 베트남 e커머스 시장에서 Shopee/Lazada 대비 차별화 검증 부재 — 품질 큐레이션은 여러 플레이어가 시도한 모델이나 ANHA만의 검증된 경쟁우위 없음. CEO 및 팀의 디지털 존재감 전무(LinkedIn 부재, 웹사이트 미작동)는 e커머스 스타트업으로서 비정상적이며 실행 능력 의문을 제기함. PoC 이전 단계에서 시장 fit 자체가 입증되지 않았음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">단위경제 및 수익성 경로</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] CAC, LTV, 구독 churn rate 등 핵심 지표 전무. 피지컬 쇼룸 운영 고정비(임대료, 인건비, 재고 관리)와 월 구독료 수익 간 손익분기 분석 부재. 3단계 제휴 네트워크의 수수료 구조 및 인센티브 설계 미공개 — affiliate economics가 지속 가능한지 판단 불가. $100K 투자로 6개월 내 쇼룸 3~5개 구축 및 500명 제휴망 확보 주장은 자본 효율성 측면에서 근거 부족. 매출 이력 없는 상태에서 복잡한 6-layer 생태계를 구축·검증할 실행 로드맵이 불명확함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">공급망 및 풀필먼트 역량</span><span class="dvtag dv-a">입증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] '슈퍼마켓 공급망 경력팀' 보유 주장은 공개 정보로 검증 불가. 80~120 SKU 큐레이션을 위한 vendor 소싱·품질 검증·재고 관리 프로세스가 구체화되지 않음. 6단계 '품질 검증 기준'은 언급되나 실제 운영 경험 없이 이론적 프레임워크에 그침. 베트남 last-mile 배송의 높은 비용·낮은 신뢰도 환경에서 구독 배송 모델의 경제성 검증 부재. 롯데마트 PoC에서 ANHA가 독립적으로 merchandising 및 fulfilment를 수행할 운영 역량이 입증되지 않았음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">고객 세그먼트 및 획득 전략</span><span class="dvtag dv-a">모호함</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] '바쁜 베트남 도시 가정'이라는 타겟은 정성적으로 정의되나 구체적 페르소나·소득 수준·행동 패턴 분석 부재. 월 구독료 수용 가격대 및 willingness-to-pay 데이터 없음 — 프리미엄 세그먼트인지 mass-market인지 불명확. Affiliate 모델의 community-driven acquisition 가설은 논리적이나 실제 viral coefficient나 referral conversion rate 검증 없음. 롯데마트 foot traffic 의존은 초기 획득 경로로 타당하나 자생적 채널 다각화 전략 미흡 — 롯데 인프라 없이 standalone 성장 가능성 의문.</div></div>
+<div class="deep-category-label">Category D — 팀 검증 및 투명성</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업팀 신원 및 전문성 검증</span><span class="dvtag dv-r">심각한 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인 — 심각] CEO Nguyễn Phan Anh Minh의 LinkedIn 프로필 부재, anha.vn은 산업단지 사이트로 연결되며 Humatex는 섬유 제조업체로만 검색됨. 'FUWA Biotech BOD급 인사' 및 '디지털 전환 다년 경력 엔지니어' 주장은 공개 정보에서 검증 불가 — 이름·LinkedIn·과거 직장 등 구체적 정보 전무. E커머스 플랫폼 창업자가 디지털 존재감이 전혀 없는 것은 비정상적이며 실행 의지·역량 의문 제기. 듀딜리전스 진행 전 법인 등록증, 팀원 신원 증빙, 도메인 전문성 입증 자료 확보 필수.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">법인 및 지적재산권 상태</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 2026년 설립 예정으로 현재 법인 등록 여부 불명. 베트남 기업 등록 데이터베이스에서 'Humatex Co., Ltd' 검색 시 섬유 제조업체만 확인 — ANHA 브랜드 또는 플랫폼 사업 주체 확인 불가. 상표권·도메인 소유권 검증 필요 — anha.vn의 실제 소유자 및 사용 목적 불일치. 지적재산(큐레이션 알고리즘, 플랫폼 기술) 보호 상태 불명. 투자 적격성 판단을 위한 기본 법적 entity 투명성이 확보되지 않았음.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>롯데 인프라 활용 PoC 제안이 구체적 — 지점·기간·KPI·역할 분담 명시</li>
+<li>베트남 e커머스 품질 불신 문제는 실존하며 시의성 있음</li>
+<li>6단계 생태계 논리는 이론상 플라이휠 효과 가능성 내포</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[치명적] 창립팀의 디지털 존재감 전무 — CEO LinkedIn 부재, 회사 웹사이트 검증 불가, 팀 배경 주장 미검증</li>
+<li>매출·고객·PoC 이력 전무 — 아이디어 단계로 실행 역량 입증 불가</li>
+<li>단위 경제 부재 — CAC, LTV, 쇼룸 고정비, 마진 구조 등 수익성 근거 없음</li>
+<li>롯데 의존도 과다 — 자생적 성장 경로 불명확, 롯데 협력 없이는 확장 불가능</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>롯데 계열사 네트워크 활용 시 빠른 물리적 확장 가능</li>
+<li>베트남 건강·웰빙 트렌드 성장세</li>
+<li>큐레이션·구독 모델은 글로벌 선례 존재(Thrive Market 등)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>팀 실체 검증 불가로 인한 듀딜리전스 진행 불가 리스크</li>
+<li>Shopee, Lazada 등 기존 플랫폼의 자체 큐레이션 강화 가능성</li>
+<li>쇼룸 기반 모델의 높은 고정비 부담 — 초기 자본 부족 시 확장 불가</li>
+<li>제휴 네트워크 품질 관리 실패 시 신뢰 붕괴 위험</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">ANHA는 베트남 도시 가정의 제품 선택 피로라는 실존 문제를 타겟하며, 롯데 인프라 활용 PoC 제안은 구조적으로 구체적이나, 사업 실행 가능성을 뒷받침하는 핵심 증거가 전면 부재하다. 가장 큰 미검증 가정은 '피지컬 쇼룸 경험 → 제휴 전환 → 구독 전환 플라이휠이 최소 자본으로 자기 강화된다'는 것인데, 단위 경제·고객 획득 비용·이탈률 데이터가 없고, 무엇보다 창립팀의 실체 및 도메인 전문성이 외부 검증 불가능하여 듀딜리전스 진행 자체가 불가능하다. 현 단계에서는 법인 실체 확인 및 팀 신원 검증이 선행되어야 한다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">4 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Humatex Co., Ltd (ANHA) · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unimedtech Innovation — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Unimedtech Innovation</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Da Nang, Vietnam</span>
+          <span class="etag et-ind">Health-tech / Fintech</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Unimedtech Innovation</div>
+        <div class="hero-sub">설립 미상 (법인 등록 확인됨, 설립연도 불명) · 없음</div>
+        <span class="hero-stage">Idea</span>
+        <p class="hero-desc">Unimedtech Innovation은 치과 체인을 위한 임상-금융 백본 시스템이다. 각 치료 단계를 검증 가능하고 변조 불가능한 기록으로 전환하며, 치료 마일스톤 단위로 자금을 분산 지급하는 BNPL(선구매후결제) 금융 모델로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          치과 치료의 임상 데이터를 변조 불가능하게 검증하는 기술적 구현이 실제로 가능하며, 이를 기반으로 한 신용 리스크 감소 효과가 대출 기관의 실제 인수 기준을 충족시킬 수 있다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">아이디어 → PoC</div><div class="kpi-desc">제품 미출시, 고객 없음, PoC 준비 단계</div></div>
+<div class="kpi"><div class="kpi-val">~$80K</div><div class="kpi-desc">제안된 PoC 예산 (확보 여부 미확인)</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">시장 규모는 설명되었으나 모두 [미확인] 상태. IR에서 베트남 치과 시장 규모(VND 20~60M 케이스 다수 존재)와 BNPL 수요를 언급했으나 구체적인 SAM/SOM 산정 없음. 경쟁 현황 분석 부재 — 베트남 내 기존 치과 금융 솔루션, 일반 BNPL 업체(Fundiin, Atome 등)와의 차별성 근거 제시 안 됨. 확장 전략은 '롯데파이낸스 라이선스 활용 후 카테고리 확장'으로 서술되었으나 시장 진입 경로, 클리닉 온보딩 계획, 규제 허들 등 실행 가능성 검증 자료 없음. 시장 가능성은 인정되나 모든 근거가 주장 수준.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">비즈니스 모델은 IR에서 상세히 설명(BNPL 이자+수수료, 팩토링, 장비 리스)되었으나 [미확인]. 문제-솔루션-고객-수익 구조의 논리는 명확하나, 실제 검증 사례 전무. 매출 없음, 투자 유치 없음, 파일럿 고객 없음. 제안된 단위 경제(VND 20~60M 케이스당 수익)는 예시 수준이며 실측 데이터 부재. 롯데벤처스 투자 적합성 측면: 아이디어 단계이며 기술 구현 가능성 미검증, 시장 검증 없음, 팀 신뢰도 낮음(D 항목 참조) → 투자 적합성 매우 낮음. PoC 보조금 $80K 언급되었으나 확보 여부 불명.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">사회적 가치 논리는 명확함. 문제 정의: VND 20~60M 치과 치료비가 선불 방식으로 접근 불가능한 베트남 가구 존재. 솔루션: 치료 마일스톤 단위로 자금 분산 지급하여 미제공 치료에 대한 금융 부담 제거, 환자 보호. 추가로 데이터 프라이버시(민감 의료정보 비공개), 사기 방지(검증된 치료만 금융 지원), 세무 투명성(현금 중심 산업 공식화) 등 거버넌스 가치 언급. 다만 [부분 확인]: 실제 임팩트 규모(수혜 환자 수, 치료 접근성 증가율 등) 측정 불가. 임팩트 주장은 논리적이나 실증 사례 없음. 사회문제-솔루션 연결성은 있으나 깊이와 지속성은 PoC 성공 후 판단 가능.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 역량 전반. 팀 리서치 결과: CEO Văn Quốc Dương는 법인 대표로 등록 확인, 2025년 9월 혁신창업 교육과정 수료. LinkedIn 프로필 없음, 교육 배경 전무, 이전 경력 미확인. 신청서에서 주장한 '10년 치과 클리닉 운영자로 9개 클리닉 체인 구축 후 엑싯'(Louis Van), '15년 경력 CTO로 전국 규모 소비자 플랫폼 기술 리드'(Nguyễn Văn Quý) — 모두 검증 불가. 공동창업자 정보 전무, 온라인 전문 활동 흔적 거의 없음. 치과 산업 또는 핀테크 생태계에서의 네트워크, 평판 확인 안 됨. 헬스테크-핀테크 융합 사업 추진 팀으로서 필수 요건(의료 전문성, 기술 개발 실적, 금융 이해도) 입증 자료 부재. 팀 구성 불투명, 핵심 인력 의존 리스크 매우 높음. 투자 결정 전 직접 실사 필수.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">주요 사업분야(헬스테크-핀테크) 부합. 롯데파이낸스(소비자금융 라이선스·자본·eKYC), 롯데렌탈(장비 리스) 연계 가능성 언급. 그러나 [부분 확인]: PoC 아이디어는 구체적(샌드박스 12~16주 구축, 마일스톤 기반 대출 구현)이나, 실행 가능성이 의문. (1) 기술적 전제조건: '변조 불가능 임상 데이터 플랫폼' 구축 여부 미확인 — 암호화 기술, 치과 클리닉 EMR 통합, 독립 검증 메커니즘이 실제 작동하는지 증명 없음. (2) 롯데파이낸스 측 명시적 협의 또는 MOU 없음. 샌드박스 제공, eKYC 연동, 리스크팀 협력 등은 일방적 제안. (3) 파일럿 클리닉 1~2곳 확보 여부 불명. (4) 롯데렌탈 연계는 '오픈 기회' 수준으로 구체성 낮음. PoC는 논리적으로 설계되었으나 실행 주체(팀)와 기술 기반이 불투명하여 협력 가능성 낮음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Lotte Finance / Lotte Rental</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">Lotte Finance (주력), Lotte Rental (부차적)</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데파이낸스의 샌드박스 환경에서 12~16주간 치과 BNPL 여정을 구축. (1) 검증된 치과 임상 데이터 플랫폼과 롯데 샌드박스 간 양방향 연결, (2) 각 임상 단계가 독립적으로 검증될 때만 자금이 분산 지급되는 마일스톤 기반 대출 구현, (3) 롯데 리스크팀이 감사 가능한 대출 테이프와 재현 검증 시스템 제공. 시뮬레이션 데이터와 1~2개 파일럿 클리닉의 실제 케이스 활용. 롯데렌탈과는 장비 활용도 신호 탐색 (리스 집행 없이 신호만 생성).</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Social (primary). We expand access to essential dental care: treatment cases of VND 20–60M are unaffordable up-front for many Vietnamese households, and milestone-backed financing makes them attainable. The model is consumer-protective by design — funds are disbursed only against verified, delivered treatment milestones, and a patient's obligation is reduced if treatment stops, so patients never finance care they did not receive. It is also privacy-protective: the lender receives proof and a risk signal, never raw patient health records. Because our records distinguish functional/health-necessary care from elective-cosmetic care, financing can be steered toward genuine health needs.
+
+Governance (core strength). Tamper-evident, independently verifiable records reduce fraud in consumer lending and bring audit-grade documentation to an under-documented, cash-heavy sector — supporting proper invoicing, VAT and personal-income-tax compliance, i.e. formalisation. Lenders underwrite on verified facts, lowering systemic default.
+
+Environmental (emerging, via the asset-light roadmap). A later equipment-leasing / pay-per-use phase (with Lotte Rental) improves equipment utilisation and lifecycle, reducing over-capitalisation and waste; digital clinical-financial records reduce paper.
+
+How a PoC with LOTTE creates this impact. The mechanism only produces impact once a licensed lender operationalises it. Lotte Finance's sandbox, eKYC and (post-PoC) licence and capital turn the mechanism into real, measurable outcomes. The PoC validates it against concrete, auditable KPIs: ₫0 disbursed for undelivered care (consumer protection), % of non-existent/fraudulent treatments caught, zero raw patient health data shared with the lender (data minimisation), and the share of financed care that is functional vs elective-cosmetic.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">회사가 주장하는 사업 영역(치과 헬스케어 + 핀테크)에 대한 팀의 전문성을 검증할 수 없음. 공개 정보상으로는 CEO 1인의 제한적인 정보만 확인되며, 다른 공동창업자나 핵심 팀원에 대한 정보가 전혀 없음. 치과 임상 전문가, 재무/인력 관리 전문가, 기술 개발자 등 주장된 팀 구성에 대한 증거 부재. 베트남 의료기기 산업 또는 핀테크 생태계에서의 인지도나 네트워크도 확인되지 않음.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">매우 불완전함. 단 1명의 팀원(CEO)만 확인되었으며, 해당 인물에 대한 정보도 극히 제한적. 회사 설명에서 언급된 '치과 클리닉 운영자들과 핀테크/시스템 구축 전문가들로 구성된 팀'의 실체가 검증되지 않음. 기술 개발팀, 의료 전문가팀, 재무팀 등 핵심 기능별 인력 구성에 대한 정보 없음. 이는 초기 스타트업으로서도 비정상적으로 투명성이 낮은 수준임.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">현재 공개된 정보만으로는 팀의 신뢰성을 평가하기 어려움. 주요 우려사항: (1) 온라인 전문 프로필(LinkedIn) 부재 - 현대 비즈니스 환경에서 비정상적, (2) 교육 및 경력 배경 미공개 - 투명성 결여, (3) 공동창업자 신원 미확인 - 팀 실체 불분명, (4) 업계 네트워크/평판 확인 불가, (5) 이전 성과나 프로젝트 실적 없음. 베트남 스타트업 생태계에서도 거의 가시성이 없음. 투자자 입장에서는 매우 높은 리스크.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 격차는 '정보 투명성의 완전한 부재'임. 헬스테크-핀테크 융합 사업을 추진하는 팀이라면 필수적으로 갖춰야 할 요소들이 모두 결여됨: (1) 의료 분야 전문성 검증 불가 - 치과 임상 경험, 의료기기 개발 경험 등, (2) 기술 역량 증명 없음 - 시스템 개발 경력, 핀테크 프로젝트 실적 등, (3) 팀 구성 불투명 - 다른 창업자나 핵심 인력 정보 전무, (4) 산업 네트워크 부재 - 베트남 의료/핀테크 생태계에서의 입지 미확인. 이 정도 수준의 정보 부족은 시드 단계 스타트업에서도 투자 결정을 어렵게 만드는 중대한 레드 플래그임.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Van Quoc Duong LinkedIn · Van Quoc Duong Unimedtech · Unimedtech Innovation international medical technology · Unimedtech dental fintech Vietnam · Van Quoc Duong CEO Unimedtech · Unimedtech Innovation Da Nang dental</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Văn Quốc Dương (Van Quoc Duong)</div><div class="member-role">Co-founder / Tổng Giám đốc (CEO)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필 미확인 - 전문 네트워킹 플랫폼에서 존재감 부재</span><span class='flag-item'>⑊ 교육 배경 정보 전무 - 학력, 전공, 학위 등 확인 불가</span><span class='flag-item'>⑊ 이전 경력 정보 부재 - 과거 직장, 역할, 근무 기간 등 검증 불가</span><span class='flag-item'>⑊ 치과 클리닉 운영 경험 주장에 대한 객관적 증거 없음</span><span class='flag-item'>⑊ 핀테크/시스템 구축 경험 주장에 대한 검증 자료 없음</span><span class='flag-item'>⑊ 공동창업자 정보 전무 - 다른 팀원들에 대한 정보 부재</span><span class='flag-item'>⑊ 온라인 전문 활동 흔적 매우 제한적</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Công ty Cổ phần Công nghệ Y Khoa Quốc tế Unimedtech Innovation</td><td>Tổng Giám đốc (CEO)</td><td>현재까지</td><td style="font-size:11px;">법인 대표이사로 등록됨. 회사는 다낭시 Thanh Khê 구에 위치. 2025년 9월 호아빈대학교 주관 혁신창업 교육과정 수료.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 공개된 정보가 매우 제한적임. 의료기술 또는 치과 산업에서의 구체적인 경력, 핀테크 경험, 기술 개발 배경 등이 확인되지 않음. 혁신창업 교육과정 수료 외에는 해당 산업에 대한 전문성을 입증할 만한 자료가 발견되지 않음. 치과 클리닉 운영 경험이나 핀테크/시스템 구축 경험에 대한 검증 불가.</div><div class="ma-overall"><strong>종합 평가:</strong> 심각한 정보 부족으로 인해 실사 수행이 거의 불가능한 상태. CEO의 전문성, 경력, 학력 등 핵심 정보가 공개되어 있지 않아 팀의 역량을 평가할 수 없음. 회사가 주장하는 '치과 클리닉 운영자와 핀테크/시스템 구축 전문가로 구성된 팀'이라는 설명에 대한 객관적 검증이 불가능함. 투자 결정 전 직접 면담 및 상세한 배경 조사가 필수적임.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 실사 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 공동창업자 부재, CEO 경력 검증 불가. 헬스테크-핀테크 융합 사업 추진 팀으로서 최소 신뢰 기준 미충족.</td></tr>
+<tr><td>기술 플랫폼 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] '변조 불가능 임상 데이터 플랫폼' 존재 여부 불명. MVP, PoC, 파일럿 데이터 전무. 기술 실현 가능성 입증 필요.</td></tr>
+<tr><td>시장 검증 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 매출 없음, 파트너 클리닉 없음, 고객 수요 미확인. 아이디어 단계에서도 최소 고객 발견 필요.</td></tr>
+<tr><td>롯데 협력 불확실성</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 롯데파이낸스·렌탈과의 MOU, 샌드박스 승인, 파일럿 합의 없음. PoC 제안은 일방적.</td></tr>
+<tr><td>규제 및 법적 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] 의료정보 보호법, 금융업 라이선스 요건 언급되었으나 준수 계획 구체성 부족. 법률 자문 필요.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">제품 개발 현황 및 기술 검증</span><span class="dvtag dv-r">핵심 기술 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 신청서는 '변조 불가능한 임상 데이터 플랫폼'을 핵심 기술로 제시하나, MVP 또는 프로토타입 부재. 치과 EMR 통합, 암호화 기술, 독립 검증 메커니즘의 실제 작동 증명 없음. PoC 계획은 12~16주 구축을 제안하나, 현재 팀의 기술 개발 실적이 확인되지 않아 실행 가능성 낮음. CTO로 주장된 Nguyễn Văn Quý의 '15년 경력 및 전국 규모 플랫폼 기술 리드' 경력 검증 불가. 기술적 feasibility 입증 전 투자 부적합.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">시장 검증 및 고객 확보</span><span class="dvtag dv-r">검증 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 매출 없음, 파일럿 고객 없음, PoC 고객사 확보 여부 불명. 신청서는 베트남 치과 시장(VND 20~60M 케이스)과 BNPL 수요를 언급하나 실제 고객 인터뷰, 수요 검증, 클리닉 온보딩 의향 확인 등 시장 검증 활동 전무. [미확인] 제안된 단위 경제는 예시 수준이며 실측 데이터 부재. 아이디어 단계 상태로 Product-Market Fit 불명확.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">경쟁 우위 및 차별성</span><span class="dvtag dv-a">차별성 근거 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 베트남 내 기존 치과 금융 솔루션, 일반 BNPL 업체(Fundiin, Atome 등)와의 차별성 근거 제시 안 됨. 논리적으로 '마일스톤 기반 검증'은 차별 요소이나, 실제 구현 난이도(치과 클리닉 통합 복잡성, 데이터 표준화, 검증 비용) 대비 경쟁 우위 지속 가능성 검증 필요. 경쟁 환경 분석 부재로 시장 진입 전략의 현실성 평가 불가.</div></div>
+<div class="deep-category-label">Category B — 핀테크/금융</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">금융 라이선스 및 규제 대응</span><span class="dvtag dv-r">규제 리스크 높음</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 베트남 BNPL 사업은 금융 라이선스 필수이며, 의료 데이터 활용 시 추가 규제 적용 가능성 높음. 신청서는 '롯데파이낸스 라이선스 및 자본 활용' 계획을 언급하나, 롯데파이낸스 측과의 명시적 협의 또는 MOU 없음. [미확인] 샌드박스 제공, eKYC 연동, 리스크팀 협력 등은 일방적 제안 수준. 독립 금융사업자로의 라이선스 확보 경로 불명. 규제 허들 대응 전략 부재로 사업화 실행 가능성 의문.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">신용 리스크 모델 및 언더라이팅</span><span class="dvtag dv-r">리스크 모델 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] '마일스톤 기반 대출'로 구조적 리스크 감소를 주장하나, 실제 신용 모델 부재. 치과 치료 중단율, 환자 상환율, 클리닉 사기 리스크(허위 치료 기록) 등 핵심 리스크 요인에 대한 데이터 또는 모델 없음. [미확인] 제안된 '독립 검증 메커니즘'의 비용 구조, 검증 주체, 분쟁 해결 프로세스 불명. 금융 상품 설계의 핵심 요소가 가설 단계로, PoC 성공 후에도 상당한 추가 검증 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">비즈니스 모델 실행 가능성</span><span class="dvtag dv-a">수익 모델 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] IR에서 'BNPL 이자+수수료, 팩토링, 장비 리스' 3개 수익원 제시하나 실제 검증 사례 전무. VND 20~60M 케이스당 수익은 예시 수준이며, 클리닉 수수료율, 환자 이자율, 운영비 구조 등 단위 경제 실측 데이터 부재. [미확인] 매출 없음, 투자 유치 없음 상태에서 비즈니스 모델 검증 불가. $80K PoC 보조금 언급되었으나 확보 여부 불명. 아이디어의 논리는 명확하나 실행 검증 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">롯데 계열사 협력 실행 가능성</span><span class="dvtag dv-r">협력 기반 취약</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] PoC 아이디어는 구체적(샌드박스 12~16주 구축, 롯데파이낸스 eKYC 연동, 롯데렌탈 연계)이나 실행 주체 신뢰도 낮음. (1) 팀의 기술 개발 역량 미검증(D 항목 참조). (2) 롯데파이낸스 측 명시적 관심 또는 협의 없음. (3) 파일럿 클리닉 1~2곳 확보 여부 불명. (4) 롯데렌탈 연계는 '오픈 기회' 수준으로 구체성 낮음. 협력 제안은 논리적이나, 팀 역량 부족과 사전 협의 부재로 실제 협력 가능성 매우 낮음.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>사회적 가치 논리 명확: 치과 치료 접근성 확대, 환자 보호, 사기 방지 등 다층적 임팩트 설계 [확인: 논리 구조만]</li>
+<li>롯데 PoC 아이디어 구체성: 샌드박스 환경, 마일스톤 기반 대출, 감사 가능한 대출 테이프 등 12~16주 구축 계획 상세 서술 [부분 확인: 계획만, 실행 능력 미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>팀 투명성 전무: CEO 외 공동창업자 미확인, 주장된 경력(10년 클리닉 운영, 15년 CTO) 검증 불가, LinkedIn 없음 [미확인]</li>
+<li>기술 구현 증거 부재: '변조 불가능 임상 데이터 플랫폼' 존재 여부 불명, MVP·PoC·파일럿 없음 [미확인]</li>
+<li>시장 검증 전무: 매출 없음, 파트너 클리닉 없음, 고객 수요 확인 안 됨 [미확인]</li>
+<li>롯데 측 협의 부재: MOU, LOI, 샌드박스 사용 승인 등 명시적 합의 없음 — 일방적 제안 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 치과 시장: VND 20~60M 케이스 다수, BNPL 수요 존재 가능성 (TAM 추정치 없음, 주장 수준)</li>
+<li>롯데파이낸스 라이선스·자본 활용: PoC 성공 시 소비자금융 수직계열화 가능</li>
+<li>롯데렌탈 장비 리스 확장: 임상 데이터 기반 EaaS 모델 탐색 여지</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>기술 구현 실패 리스크: 암호화 검증 시스템, 클리닉 EMR 통합, 독립 증명 메커니즘 구축 실패 가능성 높음</li>
+<li>규제 리스크: 베트남 의료정보 보호법, 금융 라이선스 요건, 소비자금융 규제 — 준수 여부 불명</li>
+<li>경쟁: 기존 BNPL 업체(Fundiin, Atome), 은행 신용대출, 클리닉 자체 할부 — 차별화 입증 필요</li>
+<li>핵심 인력 의존도: 1인 CEO 구조, 팀 구성 불투명 → 실행 지속성 의문</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">핵심 가정: 치과 임상 데이터를 변조 불가능하게 검증하는 기술 플랫폼이 실제로 구현 가능하며, 이를 기반으로 한 신용 리스크 감소 효과가 롯데파이낸스의 실제 인수 기준을 충족시킬 수 있다는 전제 — 현재 [미확인]. IR은 논리적으로 정교하나 기술 구현 증거(PoC, MVP, 파일럿 데이터), 시장 검증(클리닉 파트너십, 고객 수요 확인), 팀 실사(창업자 배경, 공동창업자 존재) 모두 부재. 아이디어 단계에서도 비정상적으로 정보 투명성이 낮음. 롯데 PoC는 구체적으로 설계되었으나 실행 주체의 신뢰도와 기술 준비도가 불충분하여 협력 리스크 매우 높음. 투자 또는 PoC 진행 전 팀 직접 실사, 기술 검증, 파일럿 클리닉 확보 여부 확인 필수.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Unimedtech Innovation · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

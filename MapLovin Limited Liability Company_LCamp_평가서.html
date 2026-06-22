@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MapLovin Limited Liability Company — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">MapLovin Limited Liability Company</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam</span>
+          <span class="etag et-ind">E-commerce & Retail</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">MapLovin Limited Liability Company</div>
+        <div class="hero-sub">설립 2025 · https://www.maplovin.com/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">MapLovin은 로컬 비즈니스를 위한 Google Maps 가시성 및 리뷰 관리 SaaS이다. 다중 지점 운영 기업이 겪는 분산된 매장 프로필 관리 문제를 해결하며, 구독 SaaS 모델로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          AI 기반 리뷰 답변과 QR 피드백이 실제 매장 방문 증가 및 평점 개선으로 이어진다는 인과관계가 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-fail">📄 IR Deck 읽기 실패</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">12</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$6,000</div><div class="kpi-desc">[부분 확인] 통화 및 기간 명시되지 않음</div></div>
+<div class="kpi"><div class="kpi-val">300개</div><div class="kpi-desc">[미확인] 유료 고객 수 구분 없음</div></div>
+<div class="kpi"><div class="kpi-val">3개</div><div class="kpi-desc">[미확인] 파트너사 이름 및 계약 형태 미공개</div></div>
+<div class="kpi"><div class="kpi-val">Seed · $200K</div><div class="kpi-desc">[확인] 시드 라운드 목표</div></div>
+<div class="kpi"><div class="kpi-val">$25,000</div><div class="kpi-desc">[미확인] 예상 수치, 근거 없음</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[부분 확인] 타겟 시장은 베트남 및 APAC 다중 지점 운영 기업(호텔, 유통, F&B)으로 방향성은 명확하나, SAM/SOM 분석 없이 'local discovery 시장'만 언급. [미확인] 경쟁사 분석 부재 - Yext, BirdEye, Reputation.com 등 글로벌 플레이어 대비 차별화 전략 불명확. [미확인] 확장 전략 구체성 없음. API 접근권 보유는 기술 인프라이나 시장 진입 장벽 극복 증거는 아님. IR Deck 부재로 시장 검증 불가.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[부분 확인] 문제-솔루션 연결은 설명되나(분산된 매장 프로필 → 통합 관리 SaaS) 수익 구조 구체성 부족. $6,000 매출은 통화·기간·고객 수 미명시로 단위경제 검증 불가. [미확인] '300 locations, 3 key partners' 주장은 유료 고객 vs 무료 사용자 vs 파일럿 구분 없음. [미확인] MRR/ARR, churn, ARPU 등 SaaS 핵심 지표 전무. [확인] Top 30 Shinhan InnoBoost 선정은 검증 가능하나 투자 적합성 직접 증거 아님. 롯데벤처스 펀드 투자 적합성은 PoC 아이디어가 너무 일반적(감사→보고서→권고)이어서 실행 가능성 의문.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[확인] 문제 정의는 명확 - 잘못된 주소/시간으로 인한 고객 방문 낭비, 디지털 접근성 부족. [부분 확인] 솔루션(정확한 Maps 정보, 리뷰 관리)이 사회적 가치(중소상인 디지털 역량 강화, 고객 경험 개선)로 연결되는 논리는 타당하나, 임팩트 규모·깊이·지속성에 대한 정량 증거 없음. [미확인] 실제 매장의 방문 증가율, 평점 개선폭, 운영 효율 향상 데이터 부재. ESG 주장은 개념적 수준.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[확인] 창업자 Thuat Nguyen의 Foreign Trade University 학력, UOB TMRW 프로젝트 참여, Rec Rec 공동창업 및 투자 유치는 검증됨. [부분 확인] Google 및 GoBear 경력은 언급되나 정확한 직무·기간·성과 미확인. [미확인] Google Maps/Local SEO 도메인 전문성은 간접적 - 직접적 마케팅 기술 제품 개발 경험 부재. [Red Flag] 회사가 주장한 '30+ 결합 연수' 및 '기술·은행·투자펀드 배경 팀'을 뒷받침할 추가 팀원 정보 전무. 외부 검증 결과 1명의 창업자만 확인되며, CTO·기술 리더·SEO 전문가·영업 담당 등 핵심 역할 부재. [Red Flag] Rec Rec와 MapLovin 동시 운영으로 시간 분산 우려. Key Person Dependency 매우 높음.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[확인] 주요 사업분야(유통·호텔·F&B·AI/IT) 해당. [부분 확인] PoC 아이디어는 롯데 다중 매장 환경에 적용 가능한 방향이나, 계열사 지정 없고 협력 방식이 지나치게 일반적(프로필 감사→리뷰 분석→보고서 제공). [미확인] PoC가 롯데 특유의 인프라(고객 데이터, POS 시스템, 멤버십 DB)를 활용하지 않으며, 단순 외부 컨설팅과 차별화 어려움. [미확인] 예상 성과(매출 증대, 방문 증가율, 평점 개선폭) 및 롯데 측 투입 리소스 불명확. 구체적 실행 계획 부재로 PoC 실현 가능성 낮음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 2 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">12</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통(롯데백화점, 롯데몰, 롯데마트), 호텔·관광(롯데호텔, 롯데시네마, 롯데월드), F&B(롯데리아), AI/IT(롯데이노베이트)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미지정</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데 계열 매장·영화관·몰 테넌트를 대상으로 3~6개월 지역 인텔리전스 PoC 제안. Google Maps 프로필 감사, 중복 리스팅 식별, 지점별 리뷰 분석, AI 답변 워크플로우 테스트, QR 피드백 파일럿, 매장별 인텐트 신호(통화, 경로, 웹사이트 클릭, 평점) 대시보드 구축 예정. 기준선 감사, 이슈 목록, 리뷰 인텔리전스 보고서, 샘플 답변 워크플로우, QR 피드백 결과, 확대 권고안 제공 계획.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">MapLovin supports ESG by helping local businesses and retail tenants improve digital accessibility, customer responsiveness, and service quality. More accurate Google Maps information can reduce wasted visits caused by wrong addresses, hours, or duplicated pins. Review intelligence and QR feedback help businesses detect customer pain points earlier and respond more responsibly. A PoC with LOTTE can create impact by improving store-level customer experience, supporting tenants and SMEs with better digital visibility, and helping retail operators make more data-informed service improvements.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">창업자는 디지털 제품 관리, 핀테크, UI/UX 분야에서 강력한 배경을 보유하나, Google Maps/Local SEO 도메인 전문성은 간접적. 기술 개발(엔지니어링), 영업/마케팅, 데이터 과학/AI 등 핵심 기능 담당 팀원 정보 전혀 없음. 자체 보고한 '30년 이상의 결합 경험'과 '기술, 은행, 투자 펀드, 글로벌 스타트업 경험' 주장을 검증할 수 있는 추가 팀원 정보 부재. 현재 확인 가능한 것은 창업자 1명뿐</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">매우 불완전. 공개된 정보로는 창업자 1명만 확인됨. E-commerce & Retail 산업에서 Google Maps/Local SEO SaaS 제품을 성공시키려면 최소한 (1) CTO/기술 리더, (2) 프로덕트 매니저, (3) 영업/비즈니스 개발, (4) 마케팅/SEO 전문가, (5) 데이터/AI 엔지니어가 필요. 현재 팀 구성 정보 전혀 없음. ITviec 채용 페이지에서 '현재 채용 중인 포지션 없음'으로 표시되어 적극적 팀 확장 중이지 않을 가능성</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">창업자의 개인 경력은 부분적으로 검증됨(Foreign Trade University 학력, UOB TMRW 프로젝트 참여, Rec Rec 공동 창업 및 투자 유치). Google 및 GoBear 경력은 RocketReach와 Vietcetera 기사에서 언급되나 LinkedIn 프로필 접근 제한으로 완전 검증 불가. 그러나 회사가 주장하는 '30+ 결합 연수 경험'과 '기술, 은행, 투자 펀드, 글로벌 스타트업 배경의 팀'에 대한 증거는 발견되지 않음. 추가 팀원 정보 부재로 전체 팀 신뢰성 평가 불가능</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 격차는 (1) 확인된 팀 구성원 부족 - 단 1명의 창업자만 검증됨, (2) CTO 또는 기술 리더 부재 - SaaS 제품 개발에 필수, (3) Local SEO/Google Maps API 전문가 부재 - 핵심 도메인 전문성, (4) 검증 가능한 트랙션 또는 제품 성과 부족 - 2023년 10월 설립 이후 15개월 경과했으나 고객 수, MRR, 제품 기능 등 공개 정보 없음, (5) 창업자가 Rec Rec와 MapLovin을 동시 운영하며 시간 분산 우려. 투자 전 반드시 전체 팀 명단, 역할, 경력 검증 및 제품 트랙션 확인 필요</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Nguyen Quang Ban Me Thuat LinkedIn · MapLovin founder CEO LinkedIn · MapLovin Limited Liability Company founding team · maplovin.com company team · "MapLovin" startup Vietnam · Ban Me Thuat MapLovin founder</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Nguyen Quang Ban Me Thuat (Thuat Nguyen)</div><div class="member-role">Founder & CEO</div></div>
+    <div class="member-meta"><a href="https://www.linkedin.com/in/thuat/" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-h" style="margin-left:8px;">Domain: High</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필 접근 제한으로 정확한 경력 기간 및 상세 직무 미확인</span><span class='flag-item'>⑊ Google 및 GoBear에서의 정확한 직무, 기간, 성과가 공개 자료로 완전히 검증되지 않음</span><span class='flag-item'>⑊ MapLovin의 현재 팀 구성(기술, 마케팅, 영업 등) 및 규모가 공개되지 않음. RocketReach에 따르면 직원 수 1-3명으로 매우 소규모</span><span class='flag-item'>⑊ MapLovin 관련 투자 유치, 트랙션, 고객 수 등 구체적 성과 지표 미공개</span><span class='flag-item'>⑊ Co-founder 또는 핵심 팀원에 대한 정보 전혀 없음 - 단독 창업자로 추정되며 Key Person Dependency 리스크 높음</span><span class='flag-item'>⑊ Rec Rec와 MapLovin을 동시 운영 중으로 시간 분산 우려</span><span class='flag-item'>⑊ 이름 'Nguyen Quang Ban Me Thuat'은 일반적이지 않은 형식 - 'Ban Me Thuat'는 베트남 도시 이름(Buôn Ma Thuột)으로, 실명인지 별명/가명인지 불명확</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>Bachelor's Degree/International Economics</td><td>Foreign Trade University</td><td>2006-2010</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>MapLovin</td><td>Founder & CEO</td><td>2023년 10월 - 현재</td><td style="font-size:11px;">회사 등록일은 2023년 10월 30일. Google Maps 및 Apple Maps 플랫폼에서 비즈니스 위치를 관리, 최적화 및 개발하는 솔루션 제공. Local SEO, Google Business Profile 운영, 고객 리뷰 관리, AI 워크플로우 설계에 특화</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Rec Rec (Cricket One 스핀오프)</td><td>Co-Founder</td><td>2022년 9월 - 현재 (추정)</td><td style="font-size:11px;">귀뚜라미 기반 스낵 제품 스타트업. FoodMap과 50-50 비율로 10억 동 공동 투자. 2023년 2월 출시 첫 달 10,000팩 이상 판매. 2024년 12월 Blue Print Venture와 Cub Capital 주도로 시드 투자 유치. 현재 베트남, 싱가포르, 인도네시아, 태국에서 사업 확장 중</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Google</td><td>Product Manager / Cloud 관련 직무 (추정)</td><td>추정 2017-2020년대 초반</td><td style="font-size:11px;">Google Cloud 관련 업무 경험. UOB TMRW 프로젝트 중 Google 솔루션 관련 경험 언급됨</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr><tr><td>United Overseas Bank Limited (UOB)</td><td>Product Manager / Digital Banking</td><td>추정 2015-2018</td><td style="font-size:11px;">UOB의 TMRW 프로젝트(순수 디지털 뱅킹 앱) 참여. Transaction Banking, Self-servicing 및 Localization(UI & UX) 관리 담당</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>GoBear</td><td>직무 불명 (Product/Business Development 추정)</td><td>추정 2016-2017</td><td style="font-size:11px;">아시아 핀테크 유니콘. 금융상품 비교 플랫폼. 베트남 시장 진출 시기와 근무 시기 일치. 2021년 COVID-19로 인해 회사 폐쇄</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 창업자는 Google Maps/Local SEO 비즈니스에 매우 적합한 배경을 보유. Google 근무 경험으로 Google 생태계 및 제품에 대한 깊은 이해 보유. UOB에서 디지털 뱅킹 제품의 UI/UX 및 현지화 작업 경험은 다국적 플랫폼 제품 관리 역량 입증. GoBear에서의 핀테크 경험은 B2B SaaS 및 비교/분석 플랫폼 구축 경험 제공. Foreign Trade University(베트남 최고 명문 경제/무역 대학) 국제경제학 학위는 글로벌 비즈니스 이해도 제공. 그러나 직접적인 마케팅 기술 제품 개발이나 SEO 전문 경험은 명확히 확인되지 않음</div><div class="ma-overall"><strong>종합 평가:</strong> 창업자는 글로벌 기업(Google, UOB)과 핀테크 스타트업(GoBear) 경험을 보유한 시리얼 앤트러프러너. 디지털 제품 관리, UI/UX, 핀테크 플랫폼 경험은 강점이나, Local SEO/마케팅 기술 제품 개발 경험은 직접적으로 확인되지 않음. Rec Rec의 빠른 시장 진입과 투자 유치는 실행력을 입증하나, MapLovin의 구체적 성과는 아직 미공개. 단독 창업자로 추정되며 핵심 팀 구성에 대한 정보 부족이 주요 우려사항. 베트남 최고 명문대 출신으로 학업 및 리더십 역량은 검증됨</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>Key Person Dependency</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 외부 검증 결과 창업자 1명만 확인됨. CTO, 기술 개발, 영업, 마케팅 담당 팀원 정보 전무. 창업자 이탈 시 사업 연속성 불가능.</td></tr>
+<tr><td>단위경제 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] $6,000 매출의 통화, 기간, 고객 수, ARPU, CAC, LTV 등 SaaS 핵심 지표 부재. 수익성 경로 불명확.</td></tr>
+<tr><td>트랙션 과대 표현 가능성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] '300 locations, 3 key partners' 주장이 유료 고객, 무료 사용자, 파일럿, MOU 등으로 구분되지 않아 실제 시장 검증 수준 파악 불가.</td></tr>
+<tr><td>경쟁력 부족</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] Yext, BirdEye 등 글로벌 플레이어 대비 차별화 전략, 기술적 우위, 독점적 데이터 등 방어 가능한 해자 부재.</td></tr>
+<tr><td>PoC 실행 가능성 낮음</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 롯데 PoC 아이디어가 계열사 지정 없이 일반적(감사→보고서 제공) 수준. 롯데 인프라·데이터 활용 계획 부재로 외부 컨설팅과 차별화 어려움.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">경쟁 환경 및 차별화 전략</span><span class="dvtag dv-r">경쟁 분석 부재, 차별화 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] Yext, BirdEye, Reputation.com, SOCi 등 글로벌 리더들이 이미 다중 지점 Maps 관리 및 리뷰 인텔리전스 시장을 장악하고 있으나, 이들 대비 MapLovin의 차별점이 전혀 제시되지 않음. [미확인] '베트남 로컬' 포지셔닝만으로는 충분치 않으며, 가격·기능·통합 수준에서의 우위 증거가 없음. [부분 확인] Google/Apple Maps API 접근권은 기술적 역량이나, 경쟁사도 동일 접근권을 보유하므로 진입장벽이 아님. [미확인] 'AI-assisted reply'는 이미 업계 표준 기능으로 독자적 차별화 요소 아님.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">TAM/SAM/SOM 및 확장 전략</span><span class="dvtag dv-r">시장 규모 분석 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 'local discovery 시장'이라는 모호한 언급만 있을 뿐, 베트남 및 APAC 내 타겟 시장 규모(TAM/SAM/SOM)에 대한 구체적 추정 부재. [미확인] 다중 지점 운영 기업(호텔, 유통, F&B) 수, 평균 지점 수, 지불 의향 가격대 등 시장 검증 데이터 없음. [미확인] 베트남 이후 APAC 확장 전략의 구체성 결여 — 현지화 계획, 파트너십 모델, 규제 대응 방안 불명확. [Red Flag] IR Deck 부재로 투자자용 시장 분석 자료 미제출, 창업팀의 시장 이해도 검증 불가.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">단위경제 및 SaaS 지표</span><span class="dvtag dv-r">핵심 SaaS 지표 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] $6,000 매출(2025)이 월간·연간·계약 기간·고객 수·ARPU 등 기본 분해 없이 제시되어 단위경제 검증 불가. [미확인] '300 locations, 3 key partners' 주장은 유료 고객·무료 사용자·파일럿·데모 구분 없으며, 실제 계약 조건(MRR, 약정 기간, churn)이 불명확. [미확인] CAC, LTV, payback period, net revenue retention 등 SaaS 투자 판단의 핵심 지표 전무. [부분 확인] 2026년 $25,000 목표는 제시되었으나, 성장 가정(신규 고객 수, 가격 인상, upsell 비율)에 대한 근거 없음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-5</span><span class="deep-title">제품 성숙도 및 기술 스택</span><span class="dvtag dv-r">MVP 수준, 기술팀 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 'AI-assisted reply, QR feedback, dashboard' 등 기능 목록은 나열되나, 실제 프로덕션 수준·자동화 정도·UI/UX 완성도에 대한 증거 부재. [Red Flag] 외부 검증 결과 CTO·개발자·데이터 엔지니어 등 기술팀 구성원 미확인, 1인 창업자만 확인됨. [미확인] Google Maps API 통합의 복잡도(중복 리스팅 탐지, 다국어 리뷰 분석, 실시간 모니터링)를 고려할 때, 현재 팀 구성으로는 제품 확장성 및 안정성 확보 어려움. [미확인] 보안·데이터 프라이버시·GDPR/PDPA 준수 등 엔터프라이즈 SaaS 필수 요건에 대한 언급 없음.</div></div>
+<div class="deep-category-label">Category E — 롯데벤처스 투자 및 협업 적합성</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">PoC 실행 가능성 및 구체성</span><span class="dvtag dv-r">일반적 컨설팅 수준, 실행 계획 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] PoC 아이디어(프로필 감사→리뷰 분석→AI 답변→QR 피드백→대시보드)는 롯데 다중 매장 환경에 적용 가능한 방향이나, 지나치게 일반적이어서 외부 컨설팅 업체와 차별화 어려움. [미확인] 롯데 특유의 인프라(통합 POS, 멤버십 DB, 옴니채널 시스템, 기존 CRM)와의 연동 계획 전무 — 단순 외부 툴 도입에 그칠 우려. [미확인] 계열사 지정 없이 '선택된 롯데 연결 지점'이라는 모호한 표현, 협력 담당 부서·의사결정권자·예산 주체 불명확. [미확인] 예상 성과(매출 증대율, 방문 증가율, 평점 개선폭, ROI)에 대한 정량 목표 및 측정 방법론 부재, 롯데 측 투입 리소스(인력, 시간, 데이터 제공 범위) 명시 없음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">롯데 계열사 Fit 및 사업 시너지</span><span class="dvtag dv-a">방향성은 있으나 구체적 가치 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 롯데백화점, 롯데마트, 롯데리아, 롯데시네마 등 다중 지점 운영 계열사와의 연계 가능성은 존재하나, 각 사업 부문의 실제 니즈(예: 백화점은 테넌트 관리, F&B는 주문 전환율, 시네마는 상영 시간표 정확성)에 대한 맞춤형 솔루션 제시 부재. [미확인] 롯데 계열사가 이미 자체 CRM, 고객 피드백 시스템, 디지털 마케팅 플랫폼을 운영 중인 상황에서, MapLovin 도입의 증분 가치(incremental value) 불명확. [미확인] 롯데이노베이트와의 협업 가능성은 언급되었으나, AI/IT 관점에서의 기술 파트너십 구체안 없음. [부분 확인] '디지털 접근성 개선, 고객 반응성 향상'은 ESG 방향성과 일치하나, 롯데 그룹 ESG 전략(탄소중립, 포용성, 투명성)과의 직접 연결고리 약함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-3</span><span class="deep-title">투자 단계 적합성 및 팀 역량</span><span class="dvtag dv-r">Pre-seed 단계, 팀 검증 실패</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] $200K 목표 모금액은 전형적인 pre-seed 라운드이나, 현재 $6K 매출·300 지점(실질 유료 고객 수 불명)은 product-market fit 검증 이전 단계. [Red Flag] 외부 검증 결과 '30+ combined years, 기술·은행·투자펀드 배경 팀' 주장과 달리, 창업자 Thuat Nguyen 1인만 확인되며 CTO·기술 리더·영업 책임자 등 핵심 역할 부재. [Red Flag] 창업자가 Rec Rec(이커머스 스타트업)을 동시 운영 중으로 시간 분산 및 Key Person Dependency 우려. [미확인] Google/Local SEO 도메인 전문성은 간접적이며, 직접적인 SaaS 제품 개발·엔터프라이즈 영업·다중 지점 운영사 협업 경험 부족. [부분 확인] Top 30 Shinhan InnoBoost 선정은 검증 가능하나, 실제 투자 유치·고객 검증·제품 성숙도를 입증하는 직접 증거 아님.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[확인] Google Maps 및 Apple Maps API 공식 접근권 보유 - 기술 인프라 확보</li>
+<li>[확인] 창업자의 Google, UOB, GoBear 경력 - 디지털 제품 및 핀테크 경험</li>
+<li>[확인] Rec Rec 공동창업 및 빠른 투자 유치 - 실행력 입증</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] 단 1명의 창업자만 검증됨 - CTO, 기술 리더, SEO 전문가, 영업 담당 등 핵심 팀원 부재</li>
+<li>[미확인] SaaS 핵심 지표(MRR, ARR, churn, ARPU) 전무 - 단위경제 검증 불가</li>
+<li>[미확인] 매출 $6,000의 구체성 부족 - 통화, 기간, 고객 구성 미명시</li>
+<li>[미확인] Rec Rec와 MapLovin 동시 운영 - 창업자 시간 분산 우려</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 내 다중 지점 운영 기업(호텔, 유통, F&B)의 디지털 전환 니즈 증가</li>
+<li>롯데 계열사의 아시아 다중 매장 네트워크 - PoC 성공 시 대규모 확장 가능성</li>
+<li>Google Maps 리뷰 관리 자동화 시장 성장세</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Yext, BirdEye, Reputation.com 등 글로벌 경쟁사 대비 기술·자본·네트워크 열위</li>
+<li>Google의 정책 변경 또는 API 가격 인상 리스크</li>
+<li>다중 지점 기업의 기존 CRM/마케팅 툴 전환 비용 및 저항</li>
+<li>단독 창업자 구조로 인한 사업 연속성 리스크</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">12</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">MapLovin은 지역 기반 비즈니스의 Google Maps 가시성 및 리뷰 관리 니즈를 겨냥한 SaaS이나, 핵심 검증이 부재하다. 가장 큰 미검증 가정은 AI 리뷰 답변과 QR 피드백이 실제 매장 방문 및 평점 개선으로 이어진다는 인과관계이다. $6,000 매출은 통화·기간·고객 구성 미명시로 단위경제 불명확하며, '300개 지점, 3개 파트너' 주장은 유료 vs 무료 vs 파일럿 구분 없어 검증 불가하다. 외부 검증 결과 창업자 1명만 확인되며 CTO·기술 리더·SEO 전문가 등 핵심 팀원 부재로 Key Person Dependency가 매우 높다. 롯데 PoC 아이디어는 방향성은 있으나 계열사 지정 없고 실행 계획이 일반적(감사→보고서)이어서 실현 가능성 의문이다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">12 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>MapLovin Limited Liability Company · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

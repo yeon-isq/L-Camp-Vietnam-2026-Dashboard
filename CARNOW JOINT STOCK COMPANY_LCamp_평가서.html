@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CARNOW JOINT STOCK COMPANY — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">CARNOW JOINT STOCK COMPANY</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Hanoi</span>
+          <span class="etag et-ind">E-commerce & Retail</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">CARNOW JOINT STOCK COMPANY</div>
+        <div class="hero-sub">설립 2023 · https://www.carnow.com.vn/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">CarNow는 베트남 중고차 및 신차 딜러를 위한 통합 마켓플레이스이다. 자동차 매물 정보의 투명성 부족 문제를 해결하며, 딜러 구독료·광고·금융 수수료로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          Oto.com.vn 인수 합병 완료 후 통합 플랫폼이 실제 시장 지배력과 수익화로 전환될 것이라는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">13</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">70,000명</div><div class="kpi-desc">2025년 현재 (자사 주장)</div></div>
+<div class="kpi"><div class="kpi-val">50,000+</div><div class="kpi-desc">실시간 재고 (IR 자료)</div></div>
+<div class="kpi"><div class="kpi-val">180,000+</div><div class="kpi-desc">사전 인수 트래픽 (IR 자료)</div></div>
+<div class="kpi"><div class="kpi-val">2,000+</div><div class="kpi-desc">베트남 전역 중고차 딜러</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">베트남 자동차 시장 규모(연 40만 대 거래, 중고차 10만 대 추정)는 [부분 확인] — IR 덱에서 시장 추산 제시했으나 출처 미명시. TAM $37.5M~75M은 가정 기반 계산이며 실제 CarNow의 SAM/SOM 구체화 없음 [미확인]. 경쟁사 AutoHome(중국) 사례는 참고용이나 베트남 시장 특성 차이 및 CarNow의 차별화 전략이 불명확함. Oto.com.vn 인수합병 언급은 있으나 계약 상태, 조건, 완료 시점 미확인 [미확인]. 확장 가능성은 제시되었으나 구체적 실행 근거 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">비즈니스 모델(딜러 구독, 광고, 금융 수수료)은 설명되나 2024년 매출 $0, 2025년 목표 $70K는 극히 초기 단계 [확인]. 투자 유치 이력 미명시, 현재 $500K 목표 라운드 진행 중이나 조건·밸류에이션·리드 투자자 정보 없음 [미확인]. VPBank 파트너십은 언급되나 계약 규모, 수수료 구조, 실제 거래 건수 데이터 부재 [미확인]. 롯데벤처스 펀드 투자 적합성 판단을 위한 유닛 이코노믹스, CAC/LTV, 수익성 경로 전혀 제시되지 않음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">베트남 중고차 시장의 투명성·신뢰 부족 문제는 일반적으로 인정되는 사회문제 [부분 확인]. 솔루션(통합 마켓플레이스, AI 매칭, 표준화 프로세스)이 문제 해결에 기여할 가능성은 있으나, 실제 고객 피드백, 거래 완료율, 사기 감소 등 임팩트 지표 부재 [미확인]. ESG 기여도(차량 수명 연장, 자원 낭비 감소)는 간접적이며 측정 방법 미제시. 사회적 가치 창출 규모·지속성 검증 필요.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 심층 조사 결과 research_performed=false로, 외부 검증 불가 [미확인]. 지원서에서 '자동차 산업 지식, 스타트업 경험 보유'라고 주장하나 구체적 인물명, 이전 직장, 역할, 도메인 전문성 근거 전혀 제시 안 됨 [미확인]. 창업팀 구성(CEO/CTO/CFO 등), 기술 역량, 네트워크 보유 여부 불명확. Key person dependency 리스크 및 팀 완성도 평가 불가. 이 상태에서는 실행 기반이 검증되지 않은 것으로 간주.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">4<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">AI/IT 분야로 롯데이노베이트 연계 가능성 있음 [부분 확인]. PoC 아이디어는 'AI 차량 매칭, 데이터 분석 기반 딜러 관리'로 방향성은 제시되나, 롯데이노베이트의 구체적 인프라(데이터, AI 엔진, CRM)를 어떻게 활용할지 운영 레벨의 구체성 부족 [미확인]. 'Digital transformation 전문성 활용'은 포괄적 표현으로, 실제 협업 시나리오(예: 롯데 고객 데이터 연동, 롯데 계열사 딜러 네트워크 활용 등)가 명시되지 않음. PoC 성공 조건 및 측정 지표 부재.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 2 + C 3 + D 1 + E 4</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">13</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">AI/IT (LOTTE Innovate)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">롯데이노베이트</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">향후 3~6개월 내 Oto.com.vn과의 인수합병을 완료하여 베트남 최대 자동차 마켓플레이스를 구축하는 것을 목표로 함. 롯데이노베이트의 AI, 데이터 분석, 디지털 전환 역량을 활용하여 AI 기반 차량 매칭, 딜러 성과 관리 시스템, 표준화된 고객 서비스 프로세스 개발 계획. 최종적으로 차량 거래뿐 아니라 금융, 보험, A/S를 연결하는 모빌리티 생태계 구축을 지향.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Our solution addresses ESG challenges by improving transparency, trust, and standardization in Vietnam's automotive market. We help consumers make better purchasing decisions through reliable vehicle information, while creating growth opportunities for dealerships and automotive SMEs. By promoting a more efficient and trusted used-car ecosystem, we also contribute to extending vehicle lifecycles and reducing resource waste.
+
+A PoC collaboration with LOTTE would enable us to leverage LOTTE Innovate's expertise in AI, data analytics, and digital transformation to establish higher service standards, standardized operating processes, and a more transparent automotive marketplace, creating long-term positive impact across</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>Oto.com.vn 인수합병 불확실성</td><td><span class="rpill-sm rp-h">높음</span></td><td>인수 조건, 일정, 자금 조달 계획 미명시. 합병 실패 시 사업 전략 전면 재검토 필요 [미확인]</td></tr>
+<tr><td>수익 모델 검증 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>2024년 매출 $0, 2025년 목표 $70K는 초기 단계. 유닛 이코노믹스, 고객 획득 비용, 전환율 데이터 없음 [미확인]</td></tr>
+<tr><td>팀 역량 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>창업팀 구성원 신원, 경력, 도메인 전문성 외부 확인 불가. Key person dependency 및 실행 리스크 높음 [미확인]</td></tr>
+<tr><td>파트너십 실효성 불명확</td><td><span class="rpill-sm rp-m">중간</span></td><td>VPBank, Wuling 파트너십 언급되나 계약 규모, 수수료 구조, 실제 거래 건수 데이터 부재 [미확인]</td></tr>
+<tr><td>시장 경쟁 및 차별화 전략 부족</td><td><span class="rpill-sm rp-m">중간</span></td><td>베트남 내 기존 자동차 플랫폼 대비 명확한 차별점 제시 부족. AutoHome 사례는 중국 시장 기반으로 베트남 적용 가능성 검증 필요</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — 마켓플레이스/플랫폼</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">공급(딜러) 확보 전략과 네트워크 효과</span><span class="dvtag dv-r">매우 초기, 검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">Oto.com.vn 인수 통한 '50,000+ 재고' 주장은 계약 완료 여부 및 실제 활성 딜러 수 [미확인]. 월 7만 MAU 대비 거래 전환율, 딜러당 평균 리스팅 수, 활성 딜러 비율 등 공급측 핵심 지표 부재 [미확인]. VPBank·Wuling 파트너십은 명시되나 계약 규모, 독점성, 실제 금융 상품 연동 건수 데이터 없음 [미확인]. 양면 시장에서 딜러 Lock-in 메커니즘(구독 갱신율, 플랫폼 의존도)이 제시되지 않아 지속 가능한 공급 확보 전략 불명확.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">수요(구매자) 획득 경로와 CAC 효율성</span><span class="dvtag dv-r">트래픽 주장, 수익화 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">월 18만 세션, 7만 MAU 수치는 제시되나 출처·측정 방법 [미확인]. 2024년 매출 $0, 2025년 목표 $70K는 MAU 대비 극히 낮은 수익화율 시사 [확인]. CAC, 유료 전환율, 거래 완료당 비용 등 유닛 이코노믹스 전혀 공개 안 됨 [미확인]. 베트남 중고차 시장 온라인 침투율, 경쟁 플랫폼(Chợ Tốt Xe 등) 대비 차별화 포인트 불명확. 트래픽이 실제 구매 의사 있는 Quality lead인지, 아니면 정보 탐색 트래픽인지 검증 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">수익 모델 다각화와 Take Rate 현실성</span><span class="dvtag dv-a">모델 제시, 실행 증거 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">구독료·광고·금융 수수료 3축 모델 설명은 [확인]되나, 각 스트림별 기여 비중, 단가, 예상 거래량 산출 근거 없음 [미확인]. VPBank 금융 수수료 모델은 언급되나 수수료율, 승인율, 월 대출 성사 건수 부재 [미확인]. 중고차 마켓플레이스 벤치마크(중국 AutoHome 광고 매출 집중) 대비 CarNow의 광고 단가 경쟁력 및 딜러 지불 의사 검증 안 됨. 2026년 목표 $80K는 2025년 대비 미미한 성장률로, 스케일업 경로 불투명.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">Oto.com.vn 인수합병(M&A) 실행 리스크</span><span class="dvtag dv-r">전략적 중요성 높으나 불확실</span><span class="deep-arrow">▾</span></div><div class="deep-body">PoC 핵심 목표로 '3~6개월 내 Oto.com.vn 통합 완료' 제시 [확인]. 그러나 인수 조건(가격, 지분율, Earnout 구조), Due Diligence 진행 상황, 법적·재무적 리스크 전혀 공개 안 됨 [미확인]. 통합 후 시너지(재고 통합, 중복 제거, 기술 스택 일원화) 구체적 계획 부재 [미확인]. M&A 실패 시 CarNow 단독 성장 전략(Plan B) 없어, 이 딜에 과도하게 의존한 리스크 존재. 롯데 투자 자금이 M&A 대금으로 사용될 가능성 높으나 밸류에이션·Exit 시나리오 불명확.</div></div>
+<div class="deep-category-label">Category E — 대기업 협업/PoC</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">롯데이노베이트 AI/데이터 인프라 활용 구체성</span><span class="dvtag dv-a">방향성만 제시, 실행 계획 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">PoC 아이디어로 'AI 차량 매칭, 데이터 분석 기반 딜러 관리' 언급 [부분 확인]. 그러나 롯데이노베이트의 어떤 기술 자산(CRM, 추천 엔진, 고객 데이터)을 어떻게 연동할지 운영 레벨 시나리오 부재 [미확인]. CarNow 자체 데이터(7만 MAU, 5만 재고)와 롯데 데이터 결합 시 법적·프라이버시 이슈, 데이터 품질 검증 계획 없음 [미확인]. 'Digital transformation 전문성 활용'은 추상적 표현으로, 실제 PoC 성공 지표(예: AI 매칭 정확도 X% 향상, 딜러 전환율 Y% 증가) 정의 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">롯데 계열사 유통·금융 네트워크 연계 가능성</span><span class="dvtag dv-a">잠재력 있으나 구체화 안 됨</span><span class="deep-arrow">▾</span></div><div class="deep-body">롯데의 베트남 유통망(롯데마트 등), 금융 계열사와의 시너지는 제안서에 명시 안 됨 [미확인]. VPBank 파트너십 있으나 롯데 금융과의 차별화된 협업 방안(예: 롯데카드 할부, 롯데멤버십 포인트 연동) 부재 [미확인]. 롯데 고객 DB(베트남 내 수백만 멤버십 보유 추정)를 CarNow 타겟 마케팅에 활용하는 구체적 제안 없음. 롯데 계열사 법인 차량 구매·리스 수요 연결 등 B2B 확장 아이디어도 미제시.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-3</span><span class="deep-title">PoC 실행 조건과 롤아웃 계획</span><span class="dvtag dv-r">타임라인만 제시, 리소스 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">3~6개월 통합 완료 목표는 [확인]되나, PoC 단계별 마일스톤(킥오프, 프로토타입, 파일럿, 확장) 정의 없음 [미확인]. 롯데 측 투입 리소스(인력, 기술 지원, 예산), CarNow 측 준비 상태(API 개방성, 기술 스택 호환성) 불명확 [미확인]. PoC 성공 기준(예: 파일럿 딜러 X개사 전환, 거래 건수 Y% 증가) 및 실패 시 Exit 조건 부재. 롯데 투자 $500K가 PoC 실행 자금인지, M&A 자금인지, 운영 자금인지 용도 명확화 필요.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>월 70,000 MAU 및 50,000+ 매물 보유로 초기 트래픽 확보 (자사 주장, 외부 검증 필요)</li>
+<li>VPBank, Wuling 등 주요 파트너십 확보 언급 (계약 세부사항 미확인)</li>
+<li>중국 AutoHome 사례 벤치마킹을 통한 명확한 비즈니스 모델 방향성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>2024년 매출 $0, 팀 구성원 신원 및 경력 미검증으로 실행 기반 취약</li>
+<li>Oto.com.vn 인수합병 조건·일정·시너지 전략 구체성 부재</li>
+<li>유닛 이코노믹스, CAC/LTV, 수익성 경로 미제시로 투자 적합성 판단 불가</li>
+<li>롯데 PoC 아이디어가 포괄적 표현에 그쳐 실제 협업 운영 시나리오 부족</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 자동차 시장 성장(연 40만 대 거래 추정) 및 중고차 거래 디지털화 트렌드</li>
+<li>금융·보험·A/S 연계한 모빌리티 생태계 확장 가능성</li>
+<li>롯데이노베이트 AI·데이터 역량 활용 시 서비스 고도화 잠재력</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Oto.com.vn 외 기존 자동차 플랫폼들과의 경쟁 심화</li>
+<li>인수합병 실패 또는 통합 지연 시 사업 모멘텀 상실 리스크</li>
+<li>딜러 네트워크 의존 비즈니스 모델에서 딜러 이탈 시 매출 급감 가능성</li>
+<li>규제 변화(자동차 거래 투명성, 금융 규제) 리스크</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">13</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">CarNow는 베트남 자동차 마켓플레이스 통합을 목표로 하나, 2024년 매출 $0에서 2025년 목표 $70K는 극히 초기 단계이며 비즈니스 모델 검증이 이루어지지 않았다. 가장 큰 미검증 가정은 Oto.com.vn 인수합병 완료 후 통합 플랫폼이 실제 시장 지배력과 수익화로 전환될 것이라는 점이다 — 인수 조건, 시너지 창출 메커니즘, 통합 후 유닛 이코노믹스가 전혀 제시되지 않았다. 팀 구성원의 신원과 도메인 전문성이 외부 검증되지 않아 실행 리스크가 높으며, 롯데이노베이트와의 PoC 아이디어도 포괄적 표현에 그쳐 구체적 협업 시나리오가 부재하다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">4 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">13 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>CARNOW JOINT STOCK COMPANY · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antech — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Antech</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam</span>
+          <span class="etag et-ind">핀테크 / 투자 분석</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Antech</div>
+        <div class="hero-sub">설립 2022 · Antech.app</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Antech는 베트남 개인 주식 투자자를 위한 AI 기반 투자 분석 플랫폼이다. 정보 과잉 환경에서 뉴스·차트·전문가 분석·AI 매매 신호·포트폴리오 백테스팅을 통합 제공하며, 월간·연간 구독료와 파트너 수수료로 수익을 창출한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          AI 매매 신호와 백테스팅 결과가 실제 개인 투자자의 지속적인 유료 구독으로 전환되며, 증권사 라이선스 없이도 자동매매 연동이 가능하다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">1,000명</div><div class="kpi-desc">[부분 확인] 구체적 활성 사용자 정의 없음</div></div>
+<div class="kpi"><div class="kpi-val">호주 펀드 1개사</div><div class="kpi-desc">[미확인] 계약 규모·유형 불명</div></div>
+<div class="kpi"><div class="kpi-val">$20,000</div><div class="kpi-desc">[부분 확인] 통화·기간·출처 미명시</div></div>
+<div class="kpi"><div class="kpi-val">$50,000</div><div class="kpi-desc">Pre-seed 목표</div></div>
+<div class="kpi"><div class="kpi-val">+231.6%</div><div class="kpi-desc">[미확인] 실거래 성과 아님, 시뮬레이션</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 베트남 증권 계좌 1,000만 개 시장은 확인되나, TAM/SAM/SOM 세분화 없음. 경쟁사(FiinTrade, StockBiz 등) 분석 부재. [미확인] '수억 달러 규모 글로벌 상품·암호화폐 시장 확장' 주장은 구체적 진입 전략·타임라인 없이 서술적임. 국내 증권 분석 앱 시장은 혼잡하나 차별화 근거(AI 정확도, 데이터 독점성)가 정량적으로 제시되지 않음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 수익 $20,000 주장은 통화·기간·고객 구성 불명. 호주 펀드 1개사 계약 내용(금액, 계약 기간, 갱신 여부) 미제공. [미확인] 구독 모델(월 120만 VND ~ 연 1,200만 VND)의 실제 전환율·이탈률·MRR 데이터 전무. [심각한 우려] 자동매매 통합 계획은 베트남 증권위 승인 필요성만 언급, 규제 승인 경로·타임라인·법적 리스크 미분석. 투자 적합성: $50K 목표는 낮으나, 단위경제·CAC·LTV 데이터 부재로 확장 가능성 불투명.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 문제 정의는 명확(정보 과잉 → 의사결정 어려움). 솔루션(AI 통합 플랫폼)의 사회적 가치는 '전문가급 분석 도구의 대중화'로 설명되나, 실제 사용자 성과 개선 데이터(투자 수익률 향상, 의사결정 시간 단축 등) 미제공. 금융 포용성 기여는 추론 가능하나, 저소득층 접근성(가격 장벽) 고려 부족. 임팩트 규모·지속성 측정 체계 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] **치명적 투명성 결여**: 팀 리서치 결과, 창업팀의 LinkedIn 프로필·공개 이력·언론 보도가 전무. 자칭 'PM Mạc Anh Thư'는 동명이인(배우)만 검색되며 실존 여부 불명. 핀테크 스타트업에서 팀 정보 완전 비공개는 극히 이례적. [심각한 우려] 금융·AI 도메인 전문성 검증 불가. 회사 법인 등록 정보, 사업자 등록증, 과거 경력 레퍼런스 전무. **Red Flag**: 유사 이름 'Antech Group'이 베트남에서 피라미드 사기 의혹을 받은 이력 존재(연관성 불명확하나 주의 필요). 현 상태에서는 팀 실행 능력 평가 불가능.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[미확인] PoC 아이디어 '롯데 마케팅 시스템 활용'은 지나치게 포괄적. LOTTE Innovate와의 구체적 협업 방식(데이터 연동, API 통합, 고객 세그먼트 공유 등) 부재. 증권 분석 앱이 롯데 계열사(유통·식품·건설) 사업과 어떻게 연계되는지 불명확. AI/IT 영역 부합은 맞으나, 롯데 고객 데이터·인프라 활용의 구체적 유스케이스 없음. 베트남 시장 특화 제품이 한국 롯데 생태계와 어떻게 시너지를 낼지 설명 부족.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 2 + C 3 + D 1 + E 2</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">AI/IT (LOTTE Innovate)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데의 마케팅 시스템을 활용하여 고객 접근</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Giúp nhà đầu tư dễ dàng hơn trong ra quyết định</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">평가 불가: 팀 구성원에 대한 검증 가능한 정보가 없어 도메인 전문성 평가 불가능. 베트남 증권 분석 플랫폼을 운영하려면 금융, 데이터 분석, 소프트웨어 개발 전문가가 필요하나 이를 확인할 수 없음.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">심각한 투명성 부족: 창업팀의 배경, 경력, 전문성을 전혀 확인할 수 없음. 정상적인 스타트업이라면 팀 소개, LinkedIn 프로필, 언론 보도 등이 존재해야 하나 Antech.app은 이러한 정보가 완전히 부재함.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">[검증 불가] 매우 심각한 위험 신호:
+
+1. **투명성 제로**: 창업팀에 대한 어떠한 공개 정보도 없음
+2. **LinkedIn 부재**: 현대 기술 스타트업에서 팀원의 LinkedIn 프로필이 전혀 없는 것은 극히 이례적
+3. **언론 보도 없음**: Antech.app에 대한 베트남 언론 보도나 PR 자료를 찾을 수 없음
+4. **유사 이름 혼동**: Antech Group(부동산 투자회사)은 베트남 언론에서 피라미드 사기 의혹을 받은 바 있음 - Antech.app과의 연관성은 불명확하나 주의 필요
+5. **검증 불가능한 연락처**: 제공된 PM 이름이 동명이인(배우)과 동일하여 실존 인물인지 확인 불가
+
+이러한 상황은 정상적인 스타트업 운영과 거리가 멀며, 투자 전 반드시 직접 대면 미팅과 실사가 필수적임.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">**치명적 수준의 정보 부족**: 가장 큰 문제는 팀의 실체를 전혀 확인할 수 없다는 점. 기술과 금융이 결합된 핀테크 스타트업의 경우 창업팀의 배경이 성공의 핵심 요소인데, Antech.app은 이에 대한 정보를 완전히 비공개로 유지하고 있음. 이는 다음을 시사:
+
+1. 의도적인 정보 은폐 가능성
+2. 실제 운영 조직의 부재 가능성  
+3. 전문성 부족을 감추려는 시도 가능성
+4. 향후 법적 책임 회피 목적 가능성
+
+**권고사항**: 현 상태에서는 투자 권장 불가. 최소한 다음 정보 확보 필수:
+- 창업자/핵심 팀원의 실명과 LinkedIn 프로필
+- 회사 법인 등록 정보 및 사업자 등록증
+- 과거 경력 및 레퍼런스 확인
+- 직접 대면 미팅을 통한 실사</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Antech.app founding team · Mạc Anh Thư LinkedIn · Mạc Anh Thư Antech · Antech.app Vietnam stock analysis · Antech Vietnam chứng khoán · Antech.app founder team</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Mạc Anh Thư</div><div class="member-role">Project Manager (자칭)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 팀원의 LinkedIn 프로필을 찾을 수 없음</span><span class='flag-item'>⑊ 공개된 팀 정보가 전혀 존재하지 않음</span><span class='flag-item'>⑊ 회사 웹사이트에 팀 소개 페이지 부재</span><span class='flag-item'>⑊ 제공된 연락처 정보의 진위 여부 검증 불가</span></div><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 제공된 정보로는 해당 인물이 Antech.app과 연관되어 있는지 확인할 수 없음. 검색 결과는 동명이인인 베트남 배우/모델 Mạc Anh Thư만 반환함. Antech.app의 실제 팀원인지 검증 불가능.</div><div class="ma-overall"><strong>종합 평가:</strong> 검증 불가능: 공개 정보가 전혀 없어 due diligence 수행 불가. Antech.app이 실제로 운영 중인 플랫폼이지만, 창업팀에 대한 정보가 완전히 비공개 상태임.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 투명성 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] LinkedIn·이력·언론 보도 전무. 핀테크 스타트업에서 이는 극히 이례적이며, 실사 불가능 상태. 유사 이름 회사의 사기 의혹 이력도 존재하여 주의 필요.</td></tr>
+<tr><td>매출 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] $20K 매출의 기간·고객 구성·계약 조건 미제공. 호주 펀드 계약도 구체적 증빙 없음.</td></tr>
+<tr><td>AI 성과 재현성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 백테스팅 +231% 성과가 실거래 환경에서 재현 가능한지, 슬리피지·거래 비용 반영 여부 불명.</td></tr>
+<tr><td>규제 승인 불확실성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 자동매매 통합을 위한 증권위 승인 경로·타임라인·비용 미분석. 승인 실패 시 핵심 기능 제공 불가.</td></tr>
+<tr><td>단위경제 미검증</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] CAC, LTV, 이탈률, MRR 데이터 부재. 구독 모델의 지속 가능성 불명확.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — 핀테크/금융 서비스</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">단위경제 및 수익 재현성</span><span class="dvtag dv-r">데이터 부재로 검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] $20,000 수익 주장은 통화·기간·고객 구성이 불명확하며, 호주 펀드 계약 세부사항(계약 금액, 기간, 갱신 조건) 미제공. [미확인] 구독 모델(월 120만~연 1,200만 VND)의 실제 전환율·이탈률·MRR·ARR 데이터 전무. 1,000명 유저 주장에도 불구하고 CAC, LTV, Payback Period 등 핵심 단위경제 지표가 완전히 누락되어 있어 비즈니스 확장 가능성 평가 불가능. $50K 투자 목표 대비 현재 수익 규모와 성장률 간 정합성 검증 불가.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">규제 준수 및 금융 라이선스</span><span class="dvtag dv-r">심각한 법적 리스크 존재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 베트남에서 투자 자문·신호 제공 서비스는 국가증권위원회(SSC) 라이선스 필요 여부가 명확하나 보유 현황 미기재. [심각한 우려] 자동매매 통합 계획은 베트남 증권법상 별도 승인이 필수적이나, 규제 승인 경로·타임라인·법적 리스크 분석 완전 부재. AI 투자 신호 제공 시 금융 자문 규제(investment advisory regulations) 저촉 가능성 검토 안 됨. 핀테크 스타트업에서 이러한 규제 대응 계획 부재는 치명적 결함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">경쟁 우위 및 AI 모델 차별성</span><span class="dvtag dv-a">차별화 근거 미약</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 베트남 증권 분석 앱 시장은 FiinTrade, StockBiz, VNDirect 등 기존 플레이어가 포진한 레드오션이나 경쟁사 벤치마킹 분석 부재. [미확인] AI 예측 모델의 정확도·백테스팅 성과·데이터 독점성 등 기술적 우위가 정량적으로 입증되지 않음. '전문가급 분석의 대중화'는 대부분 경쟁사도 주장하는 포지셔닝이며, 독자적 데이터 소스나 알고리즘 차별점이 구체적으로 제시되지 않아 지속 가능한 경쟁 우위 불명확.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">글로벌 확장 전략의 실행 가능성</span><span class="dvtag dv-r">과도하게 낙관적</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] '수억 달러 규모 글로벌 상품·암호화폐 시장 확장' 주장은 구체적 진입 전략·파트너십·현지화 계획·타임라인 없이 서술적 수준. 베트남 시장(1,000만 계좌) 내 PMF도 명확히 입증되지 않은 상황에서 미국 주식·코모디티·암호화폐 등 다중 시장 진출 계획은 리소스 분산 리스크 존재. 각 시장별 규제 환경·데이터 파트너십·현지 경쟁사 분석 전무. 현재 수익 규모와 팀 역량 대비 실행 가능성 극히 낮음.</div></div>
+<div class="deep-category-label">Category D — 팀 투명성 및 실행 역량</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업팀 신원 및 경력 검증</span><span class="dvtag dv-r">치명적 투명성 결여</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 팀 리서치 결과, 창업팀의 LinkedIn 프로필·공개 이력·언론 보도가 전무하며 실존 여부조차 불명확. 자칭 'PM Mạc Anh Thư'는 동명이인(배우)만 검색되며 핀테크 관련 경력 확인 불가. [심각한 우려] 금융·AI 도메인 전문성, 회사 법인 등록 정보, 사업자 등록증, 과거 경력 레퍼런스 모두 누락. 핀테크 스타트업에서 팀 정보 완전 비공개는 극히 이례적이며, 유사 명칭 'Antech Group' 피라미드 사기 이력 존재(연관성 불명확하나 주의 필요). 현 상태에서 투자 적격성 평가 불가능.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">기술 개발 역량 및 IP</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] AI 모델 개발 인력 구성(데이터 과학자, ML 엔지니어 등) 및 기술 스택 정보 전무. [미확인] 베트남 증권 데이터 통합 파트너십(VSDC, 증권사 API 등) 보유 여부 불명. 포트폴리오 백테스팅·AI 신호 생성 등 핵심 기능의 기술적 구현 수준, 코드베이스 규모, 특허·IP 보유 현황 미기재. 2년 운영 주장에도 불구하고 GitHub·기술 블로그·개발자 커뮤니티 활동 흔적 부재. 기술 기반 스타트업으로서 개발 역량 입증 자료 전무.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">비즈니스 실행 이력</span><span class="dvtag dv-r">주장 대비 증거 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 1,000명 유저 주장은 앱 스크린샷이나 분석 자료 없이 자기 보고에만 의존. 호주 펀드 계약 건은 계약서·이메일·레퍼런스 등 검증 가능 증빙 미제공. [미확인] 2년 운영 기간 동안의 제품 반복(iteration) 이력, 사용자 피드백 반영 사례, 주요 피봇 결정 등 실행 과정 투명성 제로. '창립 2년차'임에도 불구하고 언론 보도, 업계 인지도, 파트너 추천사 등 객관적 검증 자료 전무. 비즈니스 실행 능력 평가 불가.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[부분 확인] 베트남 증권 계좌 1,000만 개라는 명확한 타겟 시장 존재</li>
+<li>[부분 확인] 올인원 플랫폼 컨셉(뉴스·분석·AI·백테스팅 통합)은 사용자 편의성 측면에서 차별화 가능성 있음</li>
+<li>[확인] 낮은 초기 투자 요구액($50K)으로 프로토타입 검증 부담 적음</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] 팀 배경 완전 비공개 — LinkedIn·이력·언론 보도 전무로 실행 능력 검증 불가능</li>
+<li>[미확인] 매출 $20K 주장의 세부 내용(기간, 고객 유형, 계약 조건) 부재</li>
+<li>[미확인] AI 백테스팅 성과가 시뮬레이션인지 실거래인지 불명확 — 투자자 오인 가능성</li>
+<li>[미확인] 호주 펀드 고객 계약 규모·갱신 여부 미제공으로 매출 지속성 의문</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 개인 투자자 증가 추세(계좌 수 1,000만 돌파)</li>
+<li>AI 금융 도구에 대한 글로벌 수요 증가</li>
+<li>ASEAN 증권 시장 확장 가능성(태국, 인도네시아 등)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>베트남 증권 분석 앱 시장의 높은 경쟁 강도(FiinTrade, StockBiz 등)</li>
+<li>자동매매 기능의 규제 승인 불확실성 — 타임라인·비용·승인 가능성 미분석</li>
+<li>AI 예측 정확도 미달 시 평판 리스크 및 이탈률 급증 가능성</li>
+<li>팀 투명성 부족으로 인한 투자자·파트너 신뢰 저하</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Antech는 베트남 증권 시장의 실제 문제(정보 과잉)를 타겟팅하나, **가장 큰 미검증 가정은 AI 백테스팅 성과(5년 +231%)가 실거래 환경에서 재현되며, 개인 투자자가 이를 지속 구독할 의향이 있다는 점**이다. $20K 매출 주장은 세부 내용(고객 수, 계약 유형, 갱신율) 미제공으로 [미확인]. **치명적 약점**: 창업팀의 LinkedIn·이력·언론 보도가 전무하여 실행 능력 검증 불가능 — 핀테크 스타트업에서 이는 심각한 투명성 결여. 롯데 PoC는 '마케팅 협력'이라는 포괄적 제안에 그쳐 실질적 연계성 불명확. 규제 리스크(자동매매 승인) 및 경쟁 분석 부재.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">2 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Antech · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

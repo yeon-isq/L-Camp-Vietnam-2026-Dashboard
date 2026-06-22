@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNV HOLDINGS — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">CNV HOLDINGS</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh</span>
+          <span class="etag et-ind">E-commerce & Retail</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">CNV HOLDINGS</div>
+        <div class="hero-sub">설립 2020 · Cnv.vn</div>
+        <span class="hero-stage">Series A</span>
+        <p class="hero-desc">CNV는 기업의 자사 고객 데이터를 통합하고 활성화하는 CDP(Customer Data Platform)이다. 외부 플랫폼 의존 없이 Zalo Mini App·QR·챗봇을 통해 고객을 확보하고, Customer 360 프로필로 통합하여 세그먼트별 캠페인·자동화·로열티 프로그램을 실행하며, 연간 구독 SaaS 및 Zalo Mini App 프리미엄 파트너십 수수료로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          3,000개 B2B 고객이라는 숫자가 실제 유료 구독 기업인지, 무료 사용자·트라이얼·이탈 고객을 포함한 누적치인지가 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-top">🏆 상</span>
+          <span class="rpill rpill-ir-fail">📄 IR Deck 읽기 실패</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">21</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$1.1M</div><div class="kpi-desc">연간 매출, 확인된 금액</div></div>
+<div class="kpi"><div class="kpi-val">+100% YoY</div><div class="kpi-desc">2024→2025 목표 $2.2M, 실제 달성 여부 미확인</div></div>
+<div class="kpi"><div class="kpi-val">3,000+</div><div class="kpi-desc">B2B 고객사 숫자 주장, 유료/무료 구분 없음 [미확인]</div></div>
+<div class="kpi"><div class="kpi-val">Series A · $2M</div><div class="kpi-desc">현재 투자 유치 중</div></div>
+<div class="kpi"><div class="kpi-val">독점 프리미엄</div><div class="kpi-desc">베트남 유일 Zalo Mini App 프리미엄 파트너 주장 [부분 확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">상</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">CDP 시장은 베트남 디지털 전환 가속에 따라 성장 가능성이 높으며, Zalo Mini App이라는 베트남 내 주요 채널을 독점 파트너십으로 확보했다는 점은 차별화 요소 [부분 확인 — 파트너십 공식 문서 없음]. 그러나 글로벌 CDP 경쟁사(Segment, mParticle, Salesforce) 대비 기술적 차별성이나 락인 구조가 명확하지 않으며, 베트남 내 SAM/SOM 규모가 구체적으로 제시되지 않음. 확장 전략은 LOTTE PoC 이후 APAC 진출로 언급되었으나 구체적 로드맵 부재 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">문제(외부 플랫폼 의존), 솔루션(자사 고객 데이터 활성화), 수익 모델(SaaS 구독 + 파트너십 수수료)이 명확하게 정의됨 [확인]. 2024년 $1.1M 매출 실적은 투자 적합성을 뒷받침하나, 2025년 $2.2M은 목표치이며 달성 여부 미확인 [부분 확인]. 3,000개 B2B 고객이라는 숫자가 유료 구독 기업인지, 무료 사용자·트라이얼·이탈 고객 포함인지 불명확하며, MRR/ARR·churn rate 같은 SaaS 핵심 지표 부재로 단위 경제 검증 불가 [미확인]. Wavemaker Partner의 추천은 긍정적이나 기투자 여부·금액 미확인.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">불필요한 마케팅 낭비 감소(E), 중소기업 디지털 역량 강화(S), 1st party 데이터 거버넌스 강화(G)라는 사회적 가치 방향성은 명확함 [확인]. 그러나 실제 임팩트 규모·깊이·지속성을 입증할 정량적 데이터(예: 고객사별 마케팅 비용 절감률, 중소기업 매출 증가 사례)가 없으며, ESG 주장이 CDP 사용의 부수적 결과인지 의도적 설계인지 불분명 [부분 확인]. LOTTE PoC를 통해 ESG와 수익성의 양립 가능성을 입증하겠다는 계획은 구체적이나 아직 실행 전 단계.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 배경은 자기 보고에 의존하며 외부 검증이 전혀 이루어지지 않음 [미확인]. 팀 리서치 결과에 따르면 연구 수행되지 않았고, 학력·경력·도메인 전문성·주요 인물 의존도·팀 완성도 모두 검증 불가 상태. 3명의 공동창업자 중 2명이 B2B 영업 10년 경력, 2명이 기술 배경이라는 주장은 구체적 기업명·직무·성과 없이 추상적으로만 서술됨. 7-layer CDP 아키텍처 주도 경험, B2B 세일즈 팀 구축 실적 등 핵심 역량에 대한 객관적 근거 부재. 팀 구성의 역할 분담(CEO/CTO/CMO 등)도 명시되지 않아 실행 기반 불명확.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score h">8<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-h">상</div>
+      <div class="sc-comment">유통/커머스(롯데마트·백화점), 호텔/관광(롯데호텔·월드·시네마), F&B(롯데리아) 등 주요 사업분야에 직접 해당 [확인]. PoC 아이디어는 구체적: 1~2개 매장에서 Zalo Mini App 기반 고객 데이터 통합 → 세그먼트 캠페인 → 재구매율·유지율·매출 증가 측정이라는 실행 가능한 시나리오 제시 [확인]. 롯데마트의 POS/기존 멤버십 시스템 연동 가능성 언급으로 운영 통합성 고려됨. 다만 특정 롯데 계열사가 명시되지 않았고, Zalo Mini App이 베트남에서 롯데 고객층과 실제로 얼마나 중첩되는지에 대한 데이터 부재 [부분 확인]. 성공 지표(프로필 수, 재구매율, 바우처 리뎀션율, 증분 매출)는 측정 가능하나, 3~6개월 내 의미 있는 통계적 유의성 확보 가능 여부는 불확실.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 4 + B 4 + C 3 + D 2 + E 8</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">21</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-top">상</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통/커머스(롯데백화점, 롯데마트), 호텔/관광(롯데호텔, 롯데시네마, 롯데월드), F&B(롯데리아)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데마트/백화점에서 3~6개월간 Zalo Mini App 기반 CDP 구축 PoC 제안. 1~2개 매장에서 QR·키오스크를 통해 고객 데이터를 수집하고 Customer 360 프로필로 통합한 뒤, 세그먼트별 캠페인·바우처·로열티 프로그램을 실행하여 재구매율·고객 유지율·캠페인 기여 매출 증가를 측정. CNV는 Zalo Mini App의 베트남 유일 프리미엄 파트너로서 3,000개 이상의 B2B 고객 기반을 보유하고 있다고 주장.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">CNV’s activation-first model reduces wasteful, untargeted marketing: by unifying customer data and sending relevant communications only to the right segments, brands cut spam, lower spend on mass advertising, and reduce the digital/paper waste of broad campaigns (E — less marketing waste).
+By giving Vietnamese SMEs and local merchants enterprise-grade customer-data tools they normally can’t afford, CNV helps level the playing field against large platforms, supporting local business growth and digital inclusion (S — SME empowerment).
+CNV’s governed data layer enforces consent-based, first-party data practices — helping brands move away from opaque third-party tracking toward transparent, customer-owned data (G — data governance & privacy).
+A PoC with LOTTE would demonstrate that responsible, consent-based customer activation can drive measurable revenue — proving ESG and growth aren’t in conflict.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>3,000개 B2B 고객 중 실제 유료 구독 기업 비율 불명확</td><td><span class="rpill-sm rp-h">높음</span></td><td>MRR/ARR, churn rate 등 SaaS 핵심 지표 전혀 공개되지 않아 단위 경제 검증 불가. 숫자가 누적 가입자·무료 사용자·이탈 고객 포함일 가능성 [미확인]</td></tr>
+<tr><td>팀 역량 외부 검증 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>팀 리서치 미수행, 학력·경력·도메인 전문성 모두 자기 보고에만 의존. 핵심 인물 의존도·팀 완성도 평가 불가 [미확인]</td></tr>
+<tr><td>Zalo Mini App 플랫폼 의존도</td><td><span class="rpill-sm rp-m">중간</span></td><td>독점 파트너십이 강점이나, Zalo 정책 변경·수수료 구조 변화 시 사업 모델 타격 가능성. 대체 채널 확보 전략 부재 [부분 확인]</td></tr>
+<tr><td>롯데 고객층과 Zalo 사용자 중첩도 미검증</td><td><span class="rpill-sm rp-m">중간</span></td><td>PoC 성공은 롯데 고객이 실제로 Zalo Mini App을 적극 사용하는지에 의존. 베트남 롯데 고객 디지털 행태 데이터 없음 [미확인]</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">TAM/SAM/SOM 추정 및 성장성</span><span class="dvtag dv-a">시장은 크나 포지셔닝 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 CDP 시장은 디지털 전환 가속으로 성장 중이나, 구체적인 SAM/SOM 규모가 제시되지 않음 [미확인]. 글로벌 CDP 시장은 2030년까지 $28B 규모로 예상되나, 베트남 내 시장 크기·침투율·경쟁 구도가 불명확하여 실질적 성장 가능성 검증 불가. Zalo Mini App 독점 파트너십은 채널 우위이나, 이것이 시장 지배력으로 전환되는 메커니즘 미입증 [부분 확인 — 파트너십 공식 문서 없음]. APAC 확장 계획은 언급되었으나 진입 전략·타겟 시장·현지화 요건 등 구체적 로드맵 부재.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">경쟁 우위 및 방어 가능성</span><span class="dvtag dv-a">채널 우위 있으나 기술 차별성 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">Zalo Mini App 독점 파트너십은 베트남 시장에서 명확한 유통 채널 우위를 제공하나, 이 관계의 배타성·지속 기간·계약 조건이 검증되지 않음 [미확인]. 7-layer 아키텍처 등 기술적 차별성 주장은 있으나, Segment·mParticle·Salesforce CDP 같은 글로벌 경쟁사 대비 구체적 기술 우위(예: 데이터 통합 속도, ML 정확도, API 범위)가 입증되지 않음. 고객 락인 구조(switching cost, 네트워크 효과, 데이터 의존성)가 명시되지 않아 장기 방어 가능성 불확실 [부분 확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">Unit Economics 및 확장성</span><span class="dvtag dv-r">핵심 SaaS 지표 전면 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">3,000+ B2B 고객 주장의 정의가 모호함 — 유료 구독 기업인지, 무료 사용자·트라이얼·이탈 고객 포함인지 불명확 [미확인]. MRR/ARR·CAC·LTV·churn rate·expansion revenue 등 SaaS 단위 경제를 검증할 핵심 지표가 전혀 제시되지 않아, $1.1M(2024) 매출의 질과 지속성을 판단 불가. 2025년 $2.2M은 목표치이며 달성 근거 미확인 [부분 확인]. SaaS 구독 + 파트너십 수수료 이중 수익 모델의 각 기여도·마진·확장성도 분리 제시되지 않아 성장 경로 불투명.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">기술 스택 및 제품 성숙도</span><span class="dvtag dv-r">아키텍처 주장만 있고 검증 없음</span><span class="deep-arrow">▾</span></div><div class="deep-body">7-layer activation-first CDP 아키텍처를 주장하나, 각 레이어의 구체적 기능·기술 스택(DB, ETL, orchestration, ML framework)·성능 지표(처리 속도, 동시 접속, 데이터 볼륨)가 전혀 제시되지 않음 [미확인]. Customer 360 프로필 통합 능력, 세그먼트 자동화, 캠페인 실행 등의 기능이 실제로 작동하는지 객관적 검증(예: 고객 사례, 벤치마크, 제3자 리뷰) 부재. POS·기존 멤버십 시스템 연동 가능성은 언급되었으나, API 문서·연동 사례·기술 파트너십 증빙 없음 [부분 확인]. 제품의 버그율·가동 시간·보안 인증도 미확인.</div></div>
+<div class="deep-category-label">Category D — 팀 역량 및 실행력</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업팀 배경 검증</span><span class="dvtag dv-r">자기 보고만 있고 외부 검증 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">3명 공동창업자 중 2명의 10년 B2B 영업 경력, 2명의 기술 배경 주장은 구체적 기업명·직무·성과 없이 추상적으로만 서술됨 [미확인]. LinkedIn·이력서·추천서·프로젝트 포트폴리오 등 객관적 검증 자료가 전혀 제공되지 않음. 팀 리서치 결과 '연구 수행되지 않음'으로 학력·경력·도메인 전문성·팀 완성도 모두 검증 불가 상태. CEO/CTO/CMO 등 역할 분담도 명시되지 않아 조직 구조·의사결정 체계 불명확.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">핵심 역량 실증 사례</span><span class="dvtag dv-r">주장만 있고 실적 근거 없음</span><span class="deep-arrow">▾</span></div><div class="deep-body">B2B 세일즈 팀 구축·확장 실적, 7-layer CDP 아키텍처 주도 경험 등 핵심 역량이 주장되나, 구체적 성과 지표(예: 구축한 팀 규모, 달성한 매출, 개발한 시스템의 사용자 수)가 없음 [미확인]. Samsung·FPT·Total·Viettel 등 주요 고객사 확보 방법·계약 규모·제공 가치가 서술되지 않아, 영업 역량의 질과 재현성 검증 불가. Wavemaker Partner 추천은 긍정적 시그널이나, 기투자 여부·금액·투자 조건·관계 깊이가 미확인되어 실질적 백킹 수준 불명확 [부분 확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">실행 속도 및 적응력</span><span class="dvtag dv-a">과거 실적 불충분</span><span class="deep-arrow">▾</span></div><div class="deep-body">2020년 설립 후 4년간 3,000+ 고객 확보·$1.1M 매출 달성은 긍정적이나, 연도별 성장 곡선·주요 마일스톤(제품 런칭 시점, 주요 피봇, 팀 확장)이 제시되지 않아 실행 속도 판단 어려움 [부분 확인]. Techfest 2024 Top 10 수상은 베트남 내 인지도 지표이나, 실제 사업 성과와의 상관성 미입증. LOTTE PoC 제안은 구체적 시나리오(1-2 매장, 3-6개월, 측정 지표)를 담고 있으나, 과거 유사 규모 PoC 실행 경험·성공 사례가 없어 실행 역량 불확실.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>베트남 유일 Zalo Mini App 프리미엄 파트너십 보유 (차별화 채널) [부분 확인]</li>
+<li>2024년 $1.1M 매출 실적으로 투자 적합성 입증 [확인]</li>
+<li>롯데 PoC 아이디어가 구체적이고 측정 가능한 성과 지표 제시 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>3,000개 B2B 고객의 유료/무료 구분 불명확, MRR/ARR/churn 등 SaaS 핵심 지표 전혀 공개되지 않음 [미확인]</li>
+<li>팀 배경이 자기 보고에만 의존, 외부 검증 전혀 없음 (학력·경력·도메인 전문성 모두 미확인) [미확인]</li>
+<li>글로벌 CDP 경쟁사 대비 기술적 차별성·락인 구조 불명확, SAM/SOM 규모 미제시 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 디지털 전환 가속에 따른 CDP 시장 성장</li>
+<li>롯데 계열사 PoC 성공 시 APAC 진출 레퍼런스 확보 가능성</li>
+<li>1st party data 거버넌스 강화 트렌드와 ESG 가치 결합 가능</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Salesforce, Segment 등 글로벌 CDP 플레이어의 베트남 진출 가속화</li>
+<li>Zalo Mini App 플랫폼 정책 변경 시 핵심 채널 의존도 리스크</li>
+<li>SaaS churn 관리 실패 시 고객 기반 붕괴 가능성 (현재 churn 수치 미공개)</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">21</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">상</div>
+      <p class="vc-text">CNV는 베트남 CDP 시장에서 Zalo Mini App 독점 파트너십이라는 차별화 요소와 $1.1M 매출 실적을 보유하고 있으나, 3,000개 B2B 고객이라는 숫자가 실제 유료 구독 기업인지 누적 가입자인지 검증되지 않았다는 점이 가장 큰 리스크다. MRR/ARR, churn rate 같은 SaaS 핵심 지표가 전혀 공개되지 않아 단위 경제와 지속 가능성을 판단할 수 없으며, 팀 배경 또한 외부 검증이 전혀 이루어지지 않았다. LOTTE PoC는 구체적이고 실행 가능성이 높으나, 실제 성과 창출 여부는 롯데 고객층과 Zalo 사용자 중첩도에 크게 의존한다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">8 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">21 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>CNV HOLDINGS · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lenoir Cosmetics Ltd. — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Lenoir Cosmetics Ltd.</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City, Vietnam</span>
+          <span class="etag et-ind">E-commerce & Retail</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Lenoir Cosmetics Ltd.</div>
+        <div class="hero-sub">설립 2023 · https://www.lenoirperfume.com/collections/all</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">Lenoir는 베트남 젊은 소비자(16~30세)를 위한 저가 향수 선물 브랜드로, Shopee에서 11,345건 주문과 1.78B VND 피크 매출을 기록했다. 고가 향수를 구매하기 어려운 베트남 소비층이 겪는 의미있는 선물 부재 문제를 해결하며, 10ml 선물 세트(156K VND) 판매와 76% 오가닉 주문률로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          Shopee 단일 플랫폼에서의 성과가 TikTok Shop, 오프라인(롯데마트), 호텔 어메니티 등 전혀 다른 채널과 고객 접점으로 전환 가능하다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">19</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">11,345건</div><div class="kpi-desc">12개월 Shopee 누적 주문 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">~450M VND</div><div class="kpi-desc">최고 월 매출 기록 (12개월 내) [확인]</div></div>
+<div class="kpi"><div class="kpi-val">76%</div><div class="kpi-desc">유료 광고 없이 발생한 주문 비중 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">156K VND</div><div class="kpi-desc">건당 평균 거래 금액 (~USD 6.5) [확인]</div></div>
+<div class="kpi"><div class="kpi-val">80%</div><div class="kpi-desc">10ml 제품이 전체 매출의 80% 차지 [확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">베트남 향수 시장 TAM USD 209M, SAM USD 70M은 제3자 출처(IMARC)로 [확인]되나, SOM USD 1~2M은 Lenoir 자체 추정치로 [미확인]. 16~30세 저가 선물 수요는 Shopee 매출로 [부분 확인]되나, 경쟁사 대비 차별화 전략(10ml 선물 포장)이 TikTok Shop이나 오프라인 채널에서도 유효할지는 [미확인]. 시장 확장 가능성은 제시되었으나 채널별 검증 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">문제(고가 향수 vs 저품질 대안 간 공백), 솔루션(저가 선물 향수), 고객(16~30세), 수익 구조(156K VND AOV, 80% 히어로 SKU)는 [확인]. 매출 USD 45K(2025)는 [확인]되나, 투자 유치 이력은 없고 현재 USD 80K 그랜트 신청 중 [부분 확인]. 단일 플랫폼(Shopee) 의존도 76% 오가닉률로 긍정적이나, 다채널 전환 시 CAC 구조 변화 가능성이 [미확인]되어 투자 적합성 판단 제한적.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">문제 정의가 명확함: 베트남 16~30세 소득층이 의미있는 선물을 할 수 없는 경제적 배제 문제 [확인]. 솔루션(저가 향수 선물 세트)이 사회적 가치 창출(경제적 포용)에 직접 기여함 [확인]. ASEAN Foundation x TikTok Shop SOAR Together 2026 프로그램 선정(ASEAN 전체 120개 MSME 중 1개)으로 사회적 임팩트 외부 검증 [확인]. 로컬 제조로 베트남 SME 공급망 지원 주장은 [부분 확인](제조처 미명시).</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 심층 조사 결과, CEO Phan Van Ngu의 LinkedIn 프로필 미발견, 주장된 경력(Central Retail Vietnam, Vinamilk, Grab) 전부 [미확인]. 공개 검증 가능한 경력 정보 전무, 회사 웹사이트에 팀 소개 부재, 미디어 언급 없음. 화장품/향수 제품 개발 전문성 불명확, 조향사 또는 제품 책임자 정보 없음. 팀 구성 불완전(CEO 외 핵심 인력 미공개), Key-person dependency 높음. 투명성 심각 부족으로 투자 전 대면 실사 필수.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">7<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">주요 사업분야(유통·식품) 부합 [확인]. 롯데마트(뷰티 코너 입점), 롯데호텔(어메니티), 롯데시네마(매점 번들) 연계 계열사가 구체적 [확인]. PoC 아이디어는 시즌 디스플레이, QR 코드 O2O 연결 등 실행 가능성 있으나 [부분 확인]: (1) 롯데마트 뷰티 코너 입점 조건(MOQ, 마진율, 진열 기준) 미명시, (2) 호텔 어메니티는 통상 고급 브랜드 선호로 저가 브랜드 적합성 불확실, (3) 시네마 매점 번들은 참신하나 운영 복잡도(재고, 유통기한) 고려 부족. 6개월 로드맵은 있으나 롯데 측 실무 협의 여부 [미확인].</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 3 + C 4 + D 2 + E 7</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">19</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce, Hospitality/Hotel/Tourism</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">롯데마트, 롯데호텔, 롯데시네마</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데마트(주요): 10ml 선물 세트를 뷰티/선물 코너에 입점, 밸런타인·3/8·설 시즌 디스플레이 활용. 패키지 QR코드로 TikTok Shop 재구매 연결. KPI: 판매율, 장바구니 증가, 디지털 재구매 전환율. 롯데호텔(보조): 객실 환영 선물 또는 F&B 이벤트 키트로 미니어처 제공. 롯데시네마(보조): 매점에서 10ml+손편지 번들 판매, 데이트 선물 기회 공략.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Social (S): Lenoir addresses economic inclusion by making meaningful gifting accessible to Vietnam's 16–30 demographic — a segment priced out of premium fragrance but underserved by generic alternatives. As a locally manufactured Vietnamese brand, growth directly supports domestic SME supply chains over imported substitutes.
+
+
+Governance (G): Selected for the ASEAN Foundation x TikTok Shop SOAR Together 2026 programme, Lenoir operates with transparent digital commerce practices and affiliate mechanics fully traceable on-platform.
+
+
+LOTTE PoC impact: Distribution through Lotte Mart, Hotel, and Cinema accelerates Lenoir's reach into tier-1 retail without requiring the capital typically needed to access modern trade — demonstrating that LOTTE's ecosystem can actively incubate local consumer brands, not just host international ones. This creates a replicable model for ASEAN-wide MSME retail access through Lotte's regional footprint.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">제공된 정보로는 평가 불가. 회사가 주장하는 팀 배경(리테일 제품 오너십, 전국 이커머스 운영, 상업 채널 관리)이 사실이라면 이커머스와 유통에는 강점이 있을 수 있으나, 향수/화장품 제품 개발, 조향, 브랜드 포지셔닝 전문성은 불명확함. Lenoir 웹사이트는 Grasse의 향수 장인으로부터 영감을 받았다고 언급하나 실제 조향사나 제품 개발 전문가에 대한 정보 없음.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">불완전함. CEO만 언급되었고 다른 핵심 팀원(COO, 제품 책임자, 조향사, 마케팅 책임자 등) 정보 없음. 향수 브랜드에 필수적인 전문 인력 구성 불투명. 운영, 제품 개발, 공급망 관리를 담당하는 팀에 대한 가시성 전무.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">낮음 - 검증 가능한 공개 정보 부족. 회사 웹사이트는 브랜드 스토리에 집중하지만 팀 자격증명을 제공하지 않음. LinkedIn 프로필, 미디어 보도, 업계 인지도 부재는 심각한 투명성 문제를 시사함. 주장된 배경(주요 베트남 기업 출신)이 사실이라면 강력한 자산이나 검증 필요. 현재로서는 투자자 관점에서 높은 불확실성.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">투명성과 검증 가능성의 심각한 부족. 주요 격차: (1) 공개 검증 가능한 창업자/팀 배경 정보 없음, (2) LinkedIn 또는 전문 네트워크에서의 디지털 존재감 부재, (3) 조향/화장품 제품 개발 전문성 불명확, (4) 팀 구성 및 조직 구조 정보 없음, (5) 업계 네트워크, 멘토, 자문위원 언급 없음. 투자 결정 전 대면 실사, 배경 검증, 참조 확인이 필수적임.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Phan Van Ngu LinkedIn · Phan Van Ngu Lenoir Cosmetics · Lenoir Cosmetics founders team · Lenoir perfume Vietnam team · lenoirperfume.com founders · Phan Van Ngu CEO Vietnam</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Phan Van Ngu</div><div class="member-role">CEO</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없음 - 전문 온라인 존재감 부족</span><span class='flag-item'>⑊ 공개적으로 검증 가능한 경력 정보 없음</span><span class='flag-item'>⑊ 회사 웹사이트에 팀 정보나 창업자 배경 부재</span><span class='flag-item'>⑊ 주장된 이전 고용주(Central Retail, Vinamilk, Grab)에서의 역할 확인 불가</span><span class='flag-item'>⑊ 업계 내 공개 인지도나 미디어 언급 없음</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Lenoir Cosmetics Ltd.</td><td>CEO</td><td>현재</td><td style="font-size:11px;">공개 웹 검색을 통해 확인할 수 없음. 회사 제공 정보에만 기반</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr><tr><td>Central Retail Vietnam (추정)</td><td>미확인</td><td>미확인</td><td style="font-size:11px;">회사가 제공한 배경 정보에 언급되었으나 검증 불가</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr><tr><td>Vinamilk (추정)</td><td>미확인</td><td>미확인</td><td style="font-size:11px;">회사가 제공한 배경 정보에 언급되었으나 검증 불가</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr><tr><td>Grab (추정)</td><td>미확인</td><td>미확인</td><td style="font-size:11px;">회사가 제공한 배경 정보에 언급되었으나 검증 불가</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 제공된 배경(Central Retail Vietnam, Vinamilk, Grab)이 사실이라면 리테일, 이커머스, 상업 채널 관리 경험은 화장품/향수 D2C 사업과 일부 관련성이 있을 수 있으나, 검증할 수 없어 평가 불가. 화장품 제품 개발, 향수 전문성, 브랜드 빌딩 경험에 대한 정보 없음.</div><div class="ma-overall"><strong>종합 평가:</strong> Phan Van Ngu CEO에 대한 검증 가능한 정보를 찾을 수 없음. 제공된 회사 배경 정보(Central Retail Vietnam, Vinamilk, Grab 출신)는 인상적이나 독립적으로 확인할 수 없음. 전문적인 디지털 존재감(LinkedIn, 미디어 인터뷰, 업계 프로필 등)의 부재는 우려 사항임. 투자 전 직접 실사와 경력 검증 필수.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 투명성 및 검증 가능성 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>CEO 포함 전 팀원 경력이 공개 검증 불가. 주장된 배경(Central Retail, Vinamilk, Grab) 전부 [미확인]. 투자 전 대면 실사 필수.</td></tr>
+<tr><td>단일 SKU·단일 채널 의존도</td><td><span class="rpill-sm rp-h">높음</span></td><td>10ml 제품이 매출 80%, Shopee가 유일한 검증 채널. 다채널 전환 시 성과 재현 가능성 [미확인].</td></tr>
+<tr><td>오프라인 채널 경제성 미검증</td><td><span class="rpill-sm rp-m">중간</span></td><td>롯데마트 입점 조건(마진율, MOQ, 진열 비용), 호텔 어메니티 적합성(저가 브랜드 vs 프리미엄 기대) 전부 [미확인]. PoC 실패 시 비용 회수 불가.</td></tr>
+<tr><td>제품 차별화 지속 가능성</td><td><span class="rpill-sm rp-m">중간</span></td><td>선물 포장·저가 전략은 모방 용이. 특허·독점 조향 기술 없음. 브랜드 충성도 구축 전 경쟁사 진입 시 마진 압박.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — 전자상거래/리테일</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">단일 플랫폼 의존도와 다채널 확장 리스크</span><span class="dvtag dv-a">주의 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">Shopee 매출 11,345건과 76% 오가닉률은 [확인]되나, 전체 매출이 단일 플랫폼에 집중된 구조. TikTok Shop 확장 시 CAC 구조 변화(라이브 커머스 비용, 인플루언서 마케팅)가 [미확인]되어 수익성 예측 불확실. 2026년 매출 급감(USD 6,100)은 채널 전환 실험 중 발생 가능한 리스크를 시사하나 구체적 전략 [미공개]. 오프라인 유통(롯데마트) 입점 시 마진 구조(통상 25-35% 리테일 마진) 고려 시 현 AOV 156K VND로는 수익성 확보 어려울 가능성.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">저가 포지셔닝과 브랜드 확장성 한계</span><span class="dvtag dv-r">구조적 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">10ml 156K VND(~USD 6) 가격대는 impulse purchase 전략과 [확인] 부합하나, 단위당 마진이 낮아 규모 확장 시 물류·재고 부담 증가. 80% 히어로 SKU 의존도는 포트폴리오 다각화 부족을 의미하며, 프리미엄 라인 확장 시 기존 저가 브랜드 이미지와 충돌 가능성 [부분 확인]. 베트남 향수 시장이 프리미엄화 추세(Statista 2024)인 점 고려 시, 저가 세그먼트 영구 포지셔닝은 장기 성장성 제한 요인.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">제품 차별화 및 품질 검증 부재</span><span class="dvtag dv-a">검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">향수는 높은 제품 동질화 리스크 업종이나, Lenoir의 조향 차별성이나 품질 인증(IFRA, ISO 22716) 정보 전무 [미확인]. '로컬 제조'로 SME 공급망 지원 주장은 있으나 제조 파트너사 미명시로 [부분 확인]. 경쟁 환경에서 Ali Express/Taobao 직구 제품(유사 가격대) 대비 차별점이 '선물 포장'에만 의존 시, 모방 장벽 낮고 가격 경쟁 심화 가능성. 리뷰 점수나 반품률 등 품질 지표 미제공.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">재무 지속가능성 및 투자 이력 부재</span><span class="dvtag dv-r">심각한 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">2023-2025 누적 매출 USD 65K는 2년차 스타트업으로 매우 낮은 수준이며, 2026년 USD 6.1K 급락은 사업 중단 수준 [확인]. 투자 유치 이력 전무, 현재 USD 80K 그랜트 신청 중이나 확정 여부 [미확인]. 운영 자본 조달 방식 불명확 - 창업자 자금 투입 규모, 부채 여부, 손익분기 달성 시점 전부 미공개. ASEAN SOAR 선정은 [확인]되나 금전적 지원 규모 미명시. 현금 소진율(burn rate) 고려 시 3-6개월 내 자금 고갈 리스크.</div></div>
+<div class="deep-category-label">Category D — 팀 역량 및 실행력</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">CEO 및 핵심 팀 검증 불가능</span><span class="dvtag dv-r">치명적 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">CEO Phan Van Ngu의 LinkedIn 프로필 미발견, 주장된 경력(Central Retail Vietnam, Vinamilk, Grab) 전부 제3자 검증 [불가]. 회사 웹사이트에 팀 소개 페이지 부재, 베트남 주요 스타트업 미디어(Tech in Asia, Vietnam Insider, e27) 언급 전무 [확인]. 화장품 제조·유통 라이선스 보유 여부, 조향사 파트너십, 제품 책임자 정보 일체 미공개. 투자 전 대면 실사 및 경력 증빙서류(재직증명서, 사업자등록증) 필수.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">향수 전문성 및 기술 역량 부족</span><span class="dvtag dv-r">구조적 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">향수 산업은 조향 노하우, 원료 소싱, 안정성 테스트가 핵심이나 관련 역량 일체 [미확인]. '로컬 제조' 주장에도 OEM/ODM 파트너 미공개로 품질 관리 체계 불투명. R&D 팀 또는 제품 개발 프로세스 미언급 - 신제품 개발 능력 의문. 경쟁사(Hasaki, Guardian 등 유통사의 PB 향수)는 글로벌 조향사 협업하나, Lenoir는 차별화된 기술 자산 부재로 모방 장벽 취약.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">조직 구조 및 Key-person 의존도</span><span class="dvtag dv-a">주의 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">CEO 외 핵심 인력(COO, CMO, 제품 책임자) 정보 전무로 [미확인] 1인 운영 구조 추정. 11,345건 주문 처리 위한 물류·CS 팀 구성 불명확 - 운영 확장성 의문. TikTok Shop, 오프라인 멀티채널 전환 시 요구되는 라이브커머스 PD, 리테일 영업 인력 충원 계획 미제시. Key-person risk 극대화 - CEO 이탈 시 사업 지속 불가능.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>Shopee에서 11,345건 주문, 76% 오가닉률로 저가 선물 향수 PMF 검증 [확인]</li>
+<li>명확한 타겟 세그먼트(16~30세)와 감성 선물 포지셔닝, 156K VND AOV로 충동구매 최적화 [확인]</li>
+<li>ASEAN Foundation x TikTok Shop SOAR Together 2026 선정(120개 중 1개)으로 외부 검증 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>CEO 경력 전부 미확인, 팀 구성원·조향사·제품 개발 전문성 정보 부재로 투명성 심각 부족 [미확인]</li>
+<li>단일 SKU(10ml) 매출 비중 80%, 단일 플랫폼(Shopee) 의존으로 다각화 리스크 높음 [확인]</li>
+<li>TikTok Shop·오프라인 채널 전환 시 CAC 구조, 재고 관리, 유통 마진 구조 전부 미검증 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>TikTok Shop 베트남 GMV +148% YoY 성장, 뷰티가 최상위 카테고리로 시장 타이밍 유리 [확인]</li>
+<li>롯데마트·호텔·시네마 PoC로 O2O 연결 및 프리미엄 컨텍스트 확보 가능성 [부분 확인]</li>
+<li>남성 바디케어 라인 확장으로 TAM 확대, 기업 선물(B2B) 시장 진입 가능 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>저가 향수 시장 진입장벽 낮아 모방 용이, 브랜드 충성도 구축 전 경쟁 심화 가능</li>
+<li>오프라인 유통(롯데마트) 진입 시 높은 진열 비용, MOQ, 반품 리스크로 마진 압박</li>
+<li>팀 투명성 부족으로 투자자 신뢰 확보 실패 시 자금 조달 차질 우려</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">19</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">Lenoir는 Shopee 단일 채널에서 11,345건 주문과 76% 오가닉률로 저가 선물 향수 PMF를 입증했으나, 가장 큰 미검증 가정은 이 성과가 TikTok Shop·오프라인(롯데마트)·B2B(호텔 어메니티) 등 전혀 다른 채널 특성과 고객 접점으로 전환 가능한가이다. 팀 투명성 부재(CEO 경력 전부 미확인, 제품 개발 전문성 불명확)와 단일 SKU 의존도(80%)는 확장 리스크를 높인다. 롯데 PoC는 구체적이나 실무 조율 여부와 채널별 경제성(마진, MOQ, CAC)이 검증되지 않아 조건부 추천.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">7 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">19 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Lenoir Cosmetics Ltd. · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

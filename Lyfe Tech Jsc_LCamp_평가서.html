@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lyfe Tech JSC — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Lyfe Tech JSC</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Hanoi, Vietnam</span>
+          <span class="etag et-ind">Prop-tech</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Lyfe Tech JSC</div>
+        <div class="hero-sub">설립 2025 · Smartowner.vn</div>
+        <span class="hero-stage">Idea</span>
+        <p class="hero-desc">Lyfe Tech JSC는 베트남 임대주택 시장을 위한 통합 운영 시스템이다. 자체 보고에 따르면 하노이에서 20개 건물 312개 유닛을 97% 입주율로 운영 중이며, 무료 자산관리 소프트웨어 Smartowner와 임차인 매칭 서비스 Homematch를 통해 리스팅·계약·임대료 수금을 처리하고 있다고 주장하나, 수익 모델은 명시되지 않았으며 현재 매출이 없는 상태이다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          20개 건물 312개 유닛 운영 실적과 Smartowner 플랫폼의 실제 기능 및 사용자 기반이 주장대로 존재한다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-fail">📄 IR Deck 읽기 실패</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">9</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">312개</div><div class="kpi-desc">자체 보고, 제3자 검증 없음 [미확인]</div></div>
+<div class="kpi"><div class="kpi-val">97%</div><div class="kpi-desc">2025년 자체 보고 수치 [미확인]</div></div>
+<div class="kpi"><div class="kpi-val">500-600명</div><div class="kpi-desc">임차인 또는 임대인 수 불명확 [미확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">베트남 임대주택 시장의 존재는 확인되나, 타겟 시장 규모(TAM/SAM/SOM)에 대한 구체적 데이터가 전혀 없음 [미확인]. 경쟁 환경 분석 부재 — 베트남에 이미 존재하는 부동산 관리 플랫폼(Propzy, Batdongsan 등)과의 차별점이나 경쟁 우위가 명시되지 않음 [미확인]. 시장 확장 전략은 언급되었으나 구체적 실행 경로나 검증된 채널 확보 증거 없음 [미확인]. '무료 자산관리 소프트웨어'라는 모델에서 어떻게 수익화할지 불명확하며, Rent Assurance는 아직 구상 단계로 시장 검증이 전혀 이루어지지 않음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">비즈니스 모델의 핵심 요소들이 불명확함. 문제(임차인의 일시적 현금 부족)는 인지되나, Smartowner가 실제로 이 문제를 어떻게 해결하는지 작동 메커니즘이 구체적이지 않음 [부분 확인]. 가장 심각한 것은 현재 매출이 '없음'으로 보고되어 수익 구조가 전혀 검증되지 않았다는 점 [확인]. 무료 소프트웨어 모델에서 Rent Assurance 수수료로의 전환이 성공할지 증거 없음 [미확인]. 투자 유치 이력 없으며, 2025년 설립된 회사가 이미 312개 유닛을 운영 중이라는 주장과 매출 '없음' 상태 간 논리적 모순 존재. 롯데벤처스 펀드 투자 적합성 판단 불가 — 아이디어 단계에 가까움.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">사회문제(젊은 임차인의 일시적 현금 부족, 비공식 고금리 차입)는 명확히 정의됨 [확인]. Rent Assurance 솔루션이 금융 포용성 제고에 기여할 잠재력은 인정되나 [부분 확인], 실제 임팩트 규모는 전혀 검증되지 않음. '20-30%가 매월 현금 부족 겪음'이라는 주장의 데이터 출처 불명 [미확인]. 3% 연체율 주장 역시 검증 불가 [미확인]. 환경적 가치(문서 디지털화)는 간접적이고 미미함을 솔직히 인정한 점은 긍정적. 거버넌스(시장 투명화) 기여는 방향성은 맞으나 현재 규모로는 영향력 제한적.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 역량 평가 불가능 수준의 심각한 검증 부재 [미확인]. 외부 조사 결과, 두 공동창업자 모두 LinkedIn 프로필, 공개 경력 정보, 디지털 발자취가 전혀 없음 [확인]. 현대 tech 창업자가 온라인 프로필 없이 활동한다는 것은 극히 비정상적이며 신뢰성에 치명적 적신호. CEO의 '20개 건물 312개 유닛 97% 입주율 운영' 주장을 뒷받침할 제3자 검증 자료 전무 [미확인]. Tech Lead의 Smartowner 플랫폼 개발 역량, 이전 기술 경험, GitHub 포트폴리오 등 어떠한 증거도 없음 [미확인]. 2인 팀만으로 운영·기술·재무·영업을 모두 커버하기 어려우며, 실제 조직 구성이나 추가 인력에 대한 정보 부재. 투자 검토 전 반드시 대면 실사, 운영 현장 방문, 창업자 신원 확인 필수.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">롯데 계열사(Lotte Finance/LOTTE Card) 연계는 명시되었으나 [확인], PoC 아이디어의 실행 가능성이 매우 낮음. 첫째, Lyfe가 제공한다는 '검증된 납부 이력 데이터'의 실제 존재 여부가 불확실함 — 현재 매출 없음, 플랫폼 사용자 기반 미검증 [미확인]. 둘째, 소비자금융 라이센스가 필요한 신용 상품을 3-6개월 내 론칭한다는 계획은 베트남 규제 환경 고려 시 비현실적 [미확인]. 셋째, 롯데파이낸스가 얻는 명확한 가치(젊은 베트남 고객 획득 채널)는 있으나, Lyfe 측 인프라(고객 기반, 데이터 품질)가 주장대로 작동하는지 전혀 입증되지 않음. PoC 제안은 구체적이나 전제 조건(Lyfe의 운영 실적)이 검증되지 않아 실행 시 높은 실패 리스크 존재.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 1 + C 3 + D 1 + E 2</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">9</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Lotte Finance</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">LOTTE Card</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">Smartowner 플랫폼에 임대료 선지급 상품 'Rent Assurance' 내장. 월 20-30%의 일시적 현금 부족 임차인에게 롯데파이낸스가 임대료를 선지급하고, 임차인은 단기 상환 일정으로 롯데에 상환. 롯데는 소비자금융 라이센스와 BNPL 인프라 제공, Lyfe는 거래 레이어와 검증된 납부 이력 데이터 제공. 3-6개월간 312개 유닛 기반 파일럿 후 1,000개 유닛으로 확대 계획.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Lyfe's impact is concentrated in the Social and Governance pillars, with a smaller, honest Environmental footprint.
+Social — financial inclusion & housing stability (our core impact). Our tenants are young, digital-first Vietnamese (18–35, income ~10–20M VND/month) — exactly the thin-file segment underserved by formal credit. Each month 20–30% hit a short-term cash gap on rent. Without help, they face late-payment penalties, conflict with landlords, deposit loss, or informal/high-cost borrowing. Rent Assurance gives them fair, short-term credit from a licensed lender (Lotte Finance) at the exact moment of need, keeping them housed and stable. Because repayment runs through a regulated lender, it also helps these renters build a formal credit history for the first time.
+Governance — formalizing an informal market. Much of Vietnam's rental sector runs on cash and undocumented arrangements. By moving rent flows and payment records into Smartowner, we make the market more transparent, traceable, and accountable. The product is built on responsible-lending guardrails: short-term timing-mismatch financing only (in our portfolio under 3% of late payers ultimately default), eligibility and underwriting owned by Lotte Finance, and strict data minimization — only rent-payment history is shared, in line with Vietnam's personal-data-protection rules.
+Environmental — modest and indirect. Direct environmental impact is limited; we don't overstate it. Digitizing listings, contracts, and payments removes paper and travel from the rental process, and Smartowner's AI-management direction can, over time, reduce resource waste through smarter maintenance and energy coordination.
+How a PoC with LOTTE amplifies this: Lotte Finance's consumer-lending licence, infrastructure, and credibility let responsible, well-governed credit reach far more underserved renters than Lyfe could alone — turning a single PoC into a scalable model for inclusive, transparent housing finance in Vietnam.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">자체 보고된 정보에 따르면 운영(CEO)과 기술(Tech Lead) 역량을 갖춘 것으로 보이나, 검증 불가능한 상태. 재무, 마케팅, 비즈니스 개발 등 핵심 기능에 대한 언급 없음. 2인 팀으로는 20개 건물 312개 유닛 관리와 기술 플랫폼 개발을 동시에 수행하기 어려움.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">불완전: 2명의 공동 창업자만으로는 prop-tech 스타트업 운영에 필요한 핵심 기능(운영, 기술, 재무, 영업, 고객지원)을 모두 커버할 수 없음. 실제 직원 규모, 조직 구성, 핵심 팀원에 대한 정보가 전혀 없어 실행 역량 평가 불가.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">매우 낮음: 양측 창업자 모두 검증 가능한 디지털 발자취나 공개 경력 정보가 전혀 없음. 현대 스타트업 환경에서 LinkedIn 프로필조차 없다는 것은 심각한 적신호. 회사 및 제품(Smartowner.vn)에 대한 제3자 리뷰, 언론 보도, 또는 업계 인지도가 전혀 없음. 운영 실적(20개 건물, 97% 입주율, 100% 임대료 흐름 처리)에 대한 독립적 검증 불가능. Due diligence 진행 전 신원 및 주장 검증 필수.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">검증 가능성의 완전한 부재. 투자 의사결정을 위한 최소한의 공개 정보도 확보할 수 없는 상태. 창업자 신원, 운영 실적, 기술 제품, 고객 기반 등 모든 핵심 요소에 대한 제3자 검증이 불가능함. 현장 실사(due diligence site visit), 고객 인터뷰, 재무제표 검토, 실제 운영 부동산 방문 등 직접적인 검증 과정 없이는 투자 검토 진행 불가.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Lê Đức Ánh Dương LinkedIn · Lê Đức Ánh Dương Lyfe Tech CEO · Nguyễn Thành Nhật Minh LinkedIn · Nguyễn Thành Nhật Minh Smartowner · "Lê Đức Ánh Dương" Smartowner · "Lê Đức Ánh Dương" "Lyfe Tech"</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Lê Đức Ánh Dương</div><div class="member-role">Founder & CEO</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없음 - 현대 스타트업 창업자로서는 매우 비정상적</span><span class='flag-item'>⑊ 온라인 상에서 공개적으로 확인 가능한 경력 정보 전무</span><span class='flag-item'>⑊ 회사 웹사이트(Smartowner.vn) 및 회사 자체에 대한 공개 정보 부재</span><span class='flag-item'>⑊ 20개 건물, 312개 유닛 운영에 대한 제3자 검증 자료 없음</span><span class='flag-item'>⑊ prop-tech 생태계 내에서 언론 보도나 인지도 없음</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Lyfe Tech JSC</td><td>Founder & CEO</td><td>정보 없음</td><td style="font-size:11px;">하노이에서 20개 건물, 312개 유닛(입주율 97%)의 관리형 포트폴리오 운영. 임대 운영, 공급 확보, 임대인/임차인 행동 패턴에 대한 실무 경험 보유라고 자체 보고함.</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 자체 보고에 따르면 20개 건물 312개 유닛을 97% 입주율로 운영하는 실무 경험이 있다고 주장하지만, 이를 독립적으로 검증할 수 있는 공개 정보가 전혀 없음. LinkedIn 프로필이나 이전 경력에 대한 공개 기록을 찾을 수 없어 prop-tech 분야에서의 실제 역량과 경험을 확인할 수 없음. 운영 규모에 대한 주장이 사실이라면 관련성이 높지만 검증 불가.</div><div class="ma-overall"><strong>종합 평가:</strong> 심각한 우려 사항: 창업자에 대한 검증 가능한 공개 정보가 전혀 없음. 현대 tech 창업자가 LinkedIn 프로필이나 디지털 발자취가 전혀 없다는 것은 매우 비정상적임. 운영 실적에 대한 주장을 독립적으로 검증할 수 없어 due diligence 진행이 불가능함. 투자 전 대면 검증 및 운영 현황에 대한 제3자 확인이 필수적임.</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Nguyễn Thành Nhật Minh</div><div class="member-role">Co-founder, Tech Lead</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필 부재 - tech 리더로서 매우 비정상적</span><span class='flag-item'>⑊ 기술 포트폴리오, GitHub, 또는 기술 커뮤니티에서의 존재감 없음</span><span class='flag-item'>⑊ Smartowner 플랫폼에 대한 공개 정보나 사용자 리뷰 없음</span><span class='flag-item'>⑊ 이전 기술 프로젝트나 제품 개발 경험에 대한 기록 없음</span><span class='flag-item'>⑊ 베트남 tech 생태계 내에서 인지도나 언급 사례 없음</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Lyfe Tech JSC</td><td>Co-founder, Tech Lead</td><td>정보 없음</td><td style="font-size:11px;">Smartowner 플랫폼 개발 주도. 100% 임대료 흐름 처리 및 정시 납부 데이터 캡처 기능 구현이라고 자체 보고함.</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 기술 리더로서의 배경, 이전 경험, 기술 역량에 대한 검증 가능한 정보가 전혀 없음. Smartowner 플랫폼 구축 경험을 주장하지만 이전 제품 개발 경험, 기술 스택 전문성, 또는 관련 프로젝트 이력을 확인할 수 없음. LinkedIn이나 GitHub, 기술 커뮤니티에서의 존재감이 전혀 없어 prop-tech 제품 개발 역량을 평가할 수 없음.</div><div class="ma-overall"><strong>종합 평가:</strong> 매우 높은 위험: 기술 공동 창업자에 대한 검증 가능한 정보가 전무함. 현대 tech 리더가 온라인 프로필, 기술 커뮤니티 활동, 또는 이전 프로젝트 흔적이 없다는 것은 극히 이례적임. Smartowner 플랫폼의 실제 기술적 완성도와 확장성을 평가할 수 없음. 실제 제품 데모 및 기술 아키텍처 검토 필수.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>핵심 주장 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>운영 실적, 플랫폼 기능, 사용자 기반 등 모든 핵심 요소에 대한 독립적 검증 자료 부재 [미확인]. IR 자료 접근 불가로 추가 확인 불가능.</td></tr>
+<tr><td>창업자 신뢰성</td><td><span class="rpill-sm rp-h">높음</span></td><td>두 공동창업자 모두 LinkedIn 프로필, 공개 경력, 디지털 발자취 전무 [확인]. 현대 tech 창업자로서 매우 비정상적이며 due diligence 진행 불가능한 상태.</td></tr>
+<tr><td>비즈니스 모델 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>현재 매출 없음 [확인]. 무료 소프트웨어 모델에서 Rent Assurance 수수료로의 전환 가능성 미검증 [미확인].</td></tr>
+<tr><td>팀 완성도</td><td><span class="rpill-sm rp-h">높음</span></td><td>2인 팀으로 운영·기술·재무·영업 모두 커버 불가 [확인]. 추가 인력 계획 없음 [미확인].</td></tr>
+<tr><td>규제 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>소비자금융 라이센스 필요한 Rent Assurance 상품의 베트남 규제 승인 경로 불명확 [미확인]. 3-6개월 론칭 일정은 규제 환경 고려 시 비현실적 가능성.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">플랫폼 실사용 증거 및 기술 스택 검증</span><span class="dvtag dv-r">운영 주장 대비 검증 자료 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">Smartowner가 '312개 유닛의 100% 임대료 처리'를 한다는 주장은 [미확인]. 웹사이트(Smartowner.vn) 접속 가능 여부, 실제 사용자 스크린샷, 거래 로그, API 문서 등 기술적 실체를 입증할 자료가 전혀 없음. Tech Lead 공동창업자의 디지털 발자취(GitHub, LinkedIn, 기술 커뮤니티 활동)가 완전히 부재하여 [확인], 플랫폼 개발 역량 자체를 검증할 방법이 없음. 2025년 설립 회사가 이미 20개 건물을 운영 중이라는 타임라인과 현재 매출 '없음' 상태 간 논리적 모순이 심각함. 투자 검토 전 반드시 (1) 플랫폼 실사용 현장 방문 (2) 실제 landlord/tenant 인터뷰 (3) 거래 데이터베이스 감사가 필수.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">무료 모델에서 수익화로의 전환 경로</span><span class="dvtag dv-r">수익 모델 검증 전혀 안 됨</span><span class="deep-arrow">▾</span></div><div class="deep-body">'무료 자산관리 소프트웨어'로 시장 점유 후 Rent Assurance 수수료로 수익화한다는 전략은 [부분 확인]되나, 핵심 전제들이 입증되지 않음. 현재 매출이 '없음'으로 보고되어 [확인], freemium → premium 전환율, landlord의 유료 전환 의향, 경쟁 제품 대비 lock-in 효과 등이 전혀 검증되지 않았음. 베트남 부동산 관리 시장에 이미 존재하는 Propzy, Batdongsan 등 기존 플랫폼과의 차별점이 불명확하며 [미확인], '97% 입주율' 주장이 소프트웨어 우수성 때문인지 단순히 하노이 임대시장 호황 때문인지 인과관계 불명. SaaS ARR, retention rate, CAC/LTV 등 기본 지표가 전무하여 벤처투자 적격성 판단 불가.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">데이터 품질 및 Rent Assurance 전제 조건</span><span class="dvtag dv-r">신용 데이터 가치 입증 안 됨</span><span class="deep-arrow">▾</span></div><div class="deep-body">PoC의 핵심 가치 제안인 '검증된 납부 이력 데이터'의 실제 존재와 품질이 [미확인]. '20-30%가 매월 현금 부족, 3% 최종 연체율'이라는 주장의 데이터 출처, 표본 크기, 추적 기간이 전혀 명시되지 않았으며, 외부 검증 불가능 [미확인]. 312개 유닛 규모로 통계적 유의미성을 확보하기 어렵고, 'delays-but-always-pays' 세그먼트를 신뢰성 있게 식별할 만큼의 시계열 데이터(최소 12-24개월)가 축적되었는지 의문. Lotte Finance가 이 데이터로 실제 언더라이팅을 할 수 있을지, 베트남 신용정보법 compliance 문제는 없는지, tenant 동의 절차는 확보되었는지 등 법적·기술적 feasibility가 전혀 다루어지지 않음.</div></div>
+<div class="deep-category-label">Category E — 핀테크·금융</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">소비자금융 라이센스 및 규제 준수 계획</span><span class="dvtag dv-r">규제 리스크 심각, 실행 타임라인 비현실적</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남에서 신용 상품(BNPL/rent advance)을 제공하려면 소비자금융 라이센스 또는 대부업 등록이 필수적이나, Lyfe가 이를 보유했거나 취득 계획을 가진다는 증거가 [미확인]. '3-6개월 내 PoC 론칭' 계획은 베트남 금융당국(SBV) 승인 절차를 고려할 때 극히 비현실적 [미확인] — 일반적으로 라이센스 취득에만 12개월 이상 소요. Lotte Finance의 라이센스를 활용한다 해도, white-label 파트너십 계약, 데이터 공유 협약, cross-border compliance(한국-베트남) 이슈 등 법적 구조 설계가 전혀 논의되지 않음. tenant에 대한 신용정보 제공 동의, 개인정보 처리 방침, 채권 추심 절차 등 금융소비자 보호 관련 준비 상태 불명.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">신용 리스크 관리 및 디폴트 시나리오</span><span class="dvtag dv-a">리스크 모델 부재, 손실 시나리오 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">'3% 최종 연체율' 주장은 [미확인]이며, 이것이 (1) 자체 관리 포트폴리오에서의 자연 연체율인지 (2) 신용 제공 시에도 유지될 수 있는지 구분되지 않음. Rent advance는 tenant의 재무 취약성이 높아지는 시점에 개입하므로, 역선택(adverse selection) 리스크가 크고 실제 디폴트율은 훨씬 높을 가능성 있음. 베트남 젊은 층의 informal debt(사채, 가족 차입) 의존도를 고려할 때, Lyfe 플랫폼 내 연체가 '일시적 현금 부족'인지 '구조적 채무불이행'인지 판별 메커니즘이 [미확인]. Lotte Finance 입장에서 손실 발생 시 책임 분담 구조(first-loss guarantee, recourse 조건 등)가 전혀 명시되지 않았으며, Lyfe의 재무 여력(현재 매출 없음)으로는 어떠한 신용 보강도 제공 불가능.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-3</span><span class="deep-title">롯데 계열사 시너지의 실질적 가치</span><span class="dvtag dv-a">방향성은 있으나 Lyfe 측 전제 조건 미충족</span><span class="deep-arrow">▾</span></div><div class="deep-body">Lotte Finance가 베트남 젊은 고객층에 접근할 채널로서 Lyfe를 활용한다는 전략적 방향은 [확인]되나, Lyfe 측이 제공하는 가치(tenant flow, verified data)의 실제 규모와 품질이 입증되지 않음 [미확인]. 312개 유닛 기반으로는 파일럿 이상의 의미를 갖기 어렵고, '3-6개월 내 1,000 유닛 확장' 계획의 실현 가능성이 극히 낮음 — 현재 매출 없이 운영 확장 재원 불명 [미확인]. Lotte 측이 얻을 수 있는 alternative(기존 부동산 플랫폼, 급여 플랫폼 제휴 등)와 비교했을 때 Lyfe만의 독점적 우위가 불분명. PoC 제안은 구체적이나, Lyfe의 운영 실적 검증 없이 진행 시 Lotte Finance는 unproven partner와 규제 리스크를 동시에 떠안게 됨. 투자 검토보다는 먼저 paid pilot 형태로 제한적 협업을 테스트하는 것이 합리적.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>사회적 필요성이 명확한 문제(젊은 임차인의 단기 현금 부족) 타겟팅 [확인]</li>
+<li>롯데파이낸스와의 연계 시 시너지 잠재력(젊은 베트남 고객층 접근) [부분 확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>모든 핵심 주장(운영 실적, 플랫폼 기능, 사용자 기반)에 대한 제3자 검증 자료 전무 [확인]</li>
+<li>창업자 공개 경력 정보 부재로 신뢰성 평가 불가 [확인]</li>
+<li>현재 매출 없음 — 수익 모델 미검증 [확인]</li>
+<li>2인 팀으로 운영·기술·재무·영업 커버 불가능 [확인]</li>
+<li>IR 자료 접근 불가로 추가 검증 불가 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 임대주택 시장의 디지털화 수요 증가 가능성</li>
+<li>금융 포용성 강화에 대한 정책적 관심 활용 가능성</li>
+<li>롯데 계열사를 통한 규제 라이센스 및 인프라 활용 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>운영 실적 및 기술 역량에 대한 검증 실패 시 PoC 진행 불가</li>
+<li>베트남 소비자금융 규제 강화 가능성</li>
+<li>기존 부동산 플랫폼(Propzy, Batdongsan 등)과의 경쟁</li>
+<li>단일 국가(베트남) 의존 리스크</li>
+<li>창업자 신원 및 주장 검증 실패 시 전체 투자 케이스 붕괴</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">9</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Lyfe Tech은 베트남 임대주택 시장의 실제 문제(임차인 단기 현금 부족)를 겨냥하고 있으나, 핵심 주장들에 대한 검증 가능한 증거가 전무하여 투자 검토가 불가능한 상태이다. 가장 치명적인 것은 창업자 두 명 모두 공개 경력 정보나 디지털 발자취가 전혀 없으며, 20개 건물 312개 유닛 운영 실적과 Smartowner 플랫폼의 실제 기능 및 사용자 기반을 입증할 제3자 자료가 없다는 점이다. 2025년 설립된 회사가 대규모 운영 포트폴리오를 보유했다고 주장하면서도 매출이 '없음'인 상태는 논리적으로 모순되며, IR 자료 접근 불가로 인해 추가 검증도 불가능하다. 롯데 PoC 아이디어는 구체적이나 Lyfe가 제공한다는 데이터와 인프라의 실재성이 입증되지 않아 실행 가능성이 매우 낮다. 투자 검토 전 반드시 현장 실사, 운영 부동산 방문, 고객 인터뷰, 창업자 신원 확인이 선행되어야 한다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">2 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">9 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Lyfe Tech JSC · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

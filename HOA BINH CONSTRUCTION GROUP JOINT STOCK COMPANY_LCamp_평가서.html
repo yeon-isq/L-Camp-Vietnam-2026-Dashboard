@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOA BINH CONSTRUCTION GROUP JOINT STOCK COMPANY — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">HOA BINH CONSTRUCTION GROUP JOINT STOCK COMPANY</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">235 Vo Thi Sau Street, Xuan Hoa Ward, Ho Chi Minh City, Vietnam</span>
+          <span class="etag et-ind">Social project (건설업체가 운영하는 비영리 프로젝트)</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">HOA BINH CONSTRUCTION GROUP JOINT STOCK COMPANY</div>
+        <div class="hero-sub">설립 1987 (건설사 설립 기준, 프로젝트는 준비 단계) · https://hbcg.vn</div>
+        <span class="hero-stage">Idea</span>
+        <p class="hero-desc">Planet My Homeland는 건설업체 회장 Le Viet Hai가 구상한 비영리 평화교육 프로젝트이다. 온라인 도서 출판(80개 언어), 교육 프로그램 개발, UN 옹호 활동을 계획하고 있으나 현재 준비 단계이며 구체적 실행 증거나 수익 구조는 없다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          건설업 CEO가 교육 전문가 없이도 UN급 글로벌 시민교육 프로그램을 개발하고 80개국에 확산할 수 있다는 전제가 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">7</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">2027.07.29</div><div class="kpi-desc">80개 언어 온라인 도서 출판 목표 [미확인 - 계획만 존재]</div></div>
+<div class="kpi"><div class="kpi-val">$230K</div><div class="kpi-desc">투자 유치 목표액 [확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 타겟 시장 정의가 존재하지 않음. '전 세계 80억 인구'를 대상으로 한다는 주장만 있고, 실제 도달 가능한 SAM/SOM 분석 전무. 글로벌 시민교육(GCED) 시장은 UNESCO, 각국 정부, NGO가 주도하는 공공재 영역으로 민간 스타트업의 수익화 경로가 불명확. [미확인] 경쟁자 분석 없음 - UNESCO, UNICEF, 기존 GCED 프로그램과의 차별점이 제시되지 않음. 시장 확장 가능성은 '80개 언어 번역'이라는 물리적 확장만 언급될 뿐 실제 시장 수요 검증이나 채택 전략이 부재.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[확인] 비영리 프로젝트로 수익 구조 자체가 존재하지 않음. 문제(전쟁과 갈등)는 명확하나 솔루션이 교육 콘텐츠 배포로만 제시되며, 실제 행동 변화나 평화 증진으로 연결되는 메커니즘이 없음. [미확인] 투자 적합성 전무 - 벤처캐피탈이 투자할 수 있는 exit 경로, 지속 가능한 비즈니스 모델, 확장 가능한 수익원이 완전히 부재. 제출된 $230K 모금 목표의 사용처(도서 번역, 웹사이트 구축 등)는 일회성 비용으로 자산 가치를 창출하지 않음. 롯데벤처스 펀드 투자 기준에 근본적으로 부적합.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[부분 확인] 문제 정의는 명확함 - 전쟁, 핵전쟁 위험, 인류의 생존 위협. 그러나 솔루션(80개 언어 도서 + 교육 프로그램)이 문제 해결에 실제로 기여한다는 인과관계가 검증되지 않음. [미확인] 임팩트의 규모·깊이·지속성이 완전히 추상적 - 구체적 수혜자 집단, 측정 가능한 성과 지표, 파일럿 프로그램 결과가 전무. 평화교육 분야에서 실제 임팩트 창출 사례(예: 분쟁 지역에서의 태도 변화 측정)가 없어 사회적 가치 검증 불가. 아이디어 단계의 추상적 비전에 머물러 있음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[확인 - 팀 조사 결과 기준] Le Viet Hai는 성공적인 건설업 기업가(37년 경력, 500개 프로젝트 완료)이나 GCED, 평화교육, 커리큘럼 개발 분야 전문성이 전혀 확인되지 않음. '60년 이상의 헌신'이라는 자칭 주장은 1985년 졸업 이력과 수학적으로 모순. [미확인] NGUYEN THU HUYEN의 신원 자체가 확인 불가 - LinkedIn 프로필, Hoa Binh Construction 공식 정보에서 존재 확인 안 됨. [치명적] 팀 구성이 프로젝트와 근본적으로 불일치 - 교육 전문가, 커리큘럼 개발자, 프로그램 관리자, UNESCO/GCED 네트워크 전문가가 전무. 건설업체 CEO 1명 + 미확인 커뮤니케이션 담당자로는 글로벌 교육 프로그램 실행 불가능. Red flag: 2022-2023년 회사 재무 분쟁 및 사임 압박 이력 존재.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[미확인] 주요 사업분야(식품·유통·건설·AI)와의 연관성이 매우 간접적 - 평화교육 콘텐츠가 롯데 핵심 비즈니스와 무관. Lotte Finance, Lotte Academy를 언급했으나 이들 계열사가 어떻게 GCED 프로그램 배포에 기여할 수 있는지 구체적 설명 전무. [미확인] PoC 아이디어가 극도로 일반적 - '롯데시네마·마트·이노베이트를 통해 평화 메시지 전파'는 단순 광고/홍보 협력 수준이며 롯데 인프라나 데이터를 실질적으로 활용하는 방안이 아님. 측정 가능한 성과 지표, 시범 프로그램 설계, 롯데 고객 베이스 활용 전략이 완전히 부재. 협력 가능성이 실질적으로 불명확하며 롯데 측의 비즈니스 가치 창출이 보이지 않음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 1 + B 1 + C 2 + D 1 + E 2</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">7</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Lotte Finance, Lotte Academy</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">Lotte Cinema, Lotte Mart, Lotte Innovate (IR 자료 기준)</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데의 미디어 네트워크 및 인프라(롯데시네마, 롯데마트, 롯데이노베이트 등)를 활용하여 평화 메시지를 베트남 및 국제 시민에게 전파. 구체적 협력 방식, 롯데 계열사의 실제 자산 활용 방안, 측정 가능한 성과 지표는 제시되지 않음.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">1. Environmental, Social and Governance (ESG) Impact Addressed:
+
+- Social Impact (Primary): The project champions Global Citizenship Education (GCED) to foster global peace, empathy, and cultural connection. By releasing educational and musical initiatives—such as the book and song series translated into 80 languages - it promotes inclusivity, mutual respect, and humanistic values across diverse communities.
+
+- Governance Impact: It establishes a transparent, collaborative model driven by a visionary founding team and an academic advisory board (PCEP Drafting Council), ensuring high-quality, ethical, and standardized educational content that transcends geopolitical boundaries.
+
+2. How a PoC Collaboration with LOTTE Could Create Impact:
+
+- Cross-Border Cultural & Educational Pilot: A PoC with LOTTE's retail, cultural, or educational ecosystem in Vietnam and South Korea could pilot the Global Citizenship Education framework and cultural contents (e.g., song broadcasts, book exhibitions, or workshops at LOTTE facilities).
+
+- Community Engagement & Brand Synergy: Leveraging LOTTE’s extensive footprint allows the project to reach broader public audiences and younger generations, amplifying the message of peace and global unity.
+
+- Resource Mobilization & Global Scaling: Partnering with a global conglomerate like LOTTE provides strategic support, visibility, and distribution channels to help scale the initiative internationally, working toward UN advocacy.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">심각하게 부적격함. 팀 구성이 '사회 프로젝트'로 제시된 GCED(글로벌 시민교육) 및 평화교육 이니셔티브와 전혀 일치하지 않음. 확인된 팀원들은 건설업 전문가이며 교육, 커리큘럼 개발, 사회 영향, 비영리 운영, 국제개발 또는 UNESCO 관련 프로그램에 대한 경험이 전무함. 실제로 제출된 프로젝트 설명과 회사의 핵심 사업(건설) 간 완전한 단절이 존재함.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">극도로 불완전함. 제출된 팀은 창립자 1명과 신원 미확인 커뮤니케이션 담당자 1명뿐이며, GCED 프로그램 실행에 필수적인 교육 전문가, 커리큘럼 개발자, 프로그램 관리자, 사회영향 전문가 등이 전혀 없음. 이는 실행 가능한 팀이 아니라 개념적 아이디어 수준에 불과함을 시사함.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">매우 낮음 - 다수의 중대한 위험 신호: (1) 프로젝트 설명과 팀 배경 간 근본적 불일치, (2) 검증 불가능한 주장들('60년 헌신'), (3) 핵심 팀원의 신원 미확인, (4) 건설업체가 교육 프로젝트를 표방하는 구조적 이상함, (5) GCED 분야에서의 선행 실적 전무, (6) 회사의 최근 재무 및 거버넌스 문제. 이 프로젝트는 합법적인 사회적 기업이라기보다 잘못 포지셔닝되었거나 허위로 표현되었을 가능성이 높음.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 격차는 전체 프로젝트의 진정성과 실현 가능성입니다. 건설업 CEO가 갑자기 GCED 전문가로 포지셔닝되고, 검증 가능한 교육 프로그램이나 파트너십, 파일럿 프로젝트, 학술적 기반 또는 관련 분야 전문가 없이 '글로벌 평화 교육'을 주장하는 것은 심각한 위험 신호입니다. 실제 실행 팀, 교육학적 프레임워크, UNESCO/GCED 네트워크와의 연결, 또는 이 분야에서의 실적이 완전히 부재합니다. 이는 투자자 또는 파트너에게 제출하기에 적합하지 않은 프로젝트입니다.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Le Viet Hai LinkedIn · NGUYEN THU HUYEN LinkedIn · Le Viet Hai HOA BINH CONSTRUCTION · NGUYEN THU HUYEN HOA BINH CONSTRUCTION communications · Le Viet Hai global peace education GCED · hbcg.vn social project peace</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Le Viet Hai</div><div class="member-role">Founder & Visionary (자칭)</div></div>
+    <div class="member-meta"><a href="https://vn.linkedin.com/in/le-viet-hai-09985b98" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 치명적: 제출된 '사회 프로젝트' 설명과 실제 이력 간 심각한 불일치. 건설업 CEO이지 교육/평화 전문가가 아님</span><span class='flag-item'>⑊ 치명적: '60년 이상의 헌신'이라는 주장이 실제 경력 타임라인(1985년 졸업, 64세)과 수학적으로 불가능</span><span class='flag-item'>⑊ 심각: 2022-2023년 회사 내부 분쟁 - 재무 부정 의혹으로 사임 압박받음</span><span class='flag-item'>⑊ 심각: 회사 재무 상태 불량 - 2023년 대규모 매출액 감소, 자산 매각으로 이익 창출</span><span class='flag-item'>⑊ 심각: 프로젝트가 건설업체 웹사이트(hbcg.vn)에 호스팅되어 있으나 GCED/평화교육 관련 실질적 프로그램이나 프로젝트 증거 없음</span><span class='flag-item'>⑊ 주의: GCED 분야 전문가, 학술 발표, 교육 프로그램 개발 등 검증 가능한 실적 전무</span><span class='flag-item'>⑊ 주의: 통신 담당자(NGUYEN THU HUYEN)의 신원과 자격이 확인되지 않음</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>Architecture Degree/Architecture</td><td>Ho Chi Minh City University of Architecture</td><td>1985</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Hoa Binh Construction Group</td><td>Founder and Chairman</td><td>1987-현재</td><td style="font-size:11px;">건설업체를 설립하여 베트남 5대 건설업체 중 하나로 성장시킴. 500개 이상의 프로젝트 완료. 2022-2023년 내부 분쟁과 재무 문제로 사임 시도가 있었으나 중재로 회장직 유지. 회사는 현재 재무 재구조화 중.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Saigon Construction and Building Materials Association (SACA)</td><td>Chairman</td><td>불명</td><td style="font-size:11px;">업계 협회 리더십</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Vietnam Association of Construction Contractors (VACC)</td><td>Permanent Vice Chairman</td><td>불명</td><td style="font-size:11px;">업계 협회 리더십</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 건축가 및 건설업 전문가로서 37년 경력을 보유하고 있으나, 제출된 '사회 프로젝트'의 핵심 분야인 글로벌 시민교육(GCED), 평화 교육, 교육 프로그램 개발에 대한 전문성이나 경험이 확인되지 않음. 웹사이트(hbcg.vn)의 한 기사에서 평화에 대한 개인적 관심을 표명했으나, 이는 실제 교육 프로그램 개발이나 UNESCO/GCED 분야 활동과는 무관함. 자칭 '60년 이상의 헌신'이라는 주장은 1985년 졸업 및 1987년 회사 설립 이력과 맞지 않음.</div><div class="ma-overall"><strong>종합 평가:</strong> 극도로 우려스러움. Le Viet Hai는 성공적인 건설업 기업가이지만, 제출된 '사회 프로젝트'에서 주장하는 GCED 및 평화 교육 분야의 전문성이 전혀 확인되지 않습니다. 이는 프로젝트 포지셔닝의 오해이거나 의도적 허위 진술일 가능성을 시사합니다. 또한 최근 회사의 재무 문제와 내부 분쟁도 심각한 우려 사항입니다.</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Le Viet Hieu</div><div class="member-role">추정 팀원 (공식 제출 자료에 미기재)</div></div>
+    <div class="member-meta"><a href="https://www.linkedin.com/in/hieuvietle/" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 제출된 프로젝트 팀원 명단에 포함되지 않음 - 실제 팀 구성이 불투명</span><span class='flag-item'>⑊ 네포티즘: 아버지의 회사에서 신속하게 최고 경영진으로 승진</span><span class='flag-item'>⑊ GCED/평화교육 분야 경험 전무</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>Bachelor's Degree/Corporate Finance</td><td>California Polytechnic State University-San Luis Obispo</td><td>2010-2014</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Hoa Binh Construction Group</td><td>CEO / Vice Chairman</td><td>2019-현재</td><td style="font-size:11px;">Le Viet Hai의 아들. 미국에서 기업재무 학위 취득 후 가족 사업에 합류. 2020년 CEO 임명되었으나 2022년 기업법 규정으로 사임(부회장은 회장의 친인척 불가). 현재 부회장 겸 상무이사로 활동.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>South Korean bank (이름 미확인)</td><td>직원</td><td>약 2년 (대학 졸업 후)</td><td style="font-size:11px;">가족 사업 합류 전 짧은 은행 경력</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 기업재무 전공 및 건설업 경영 경험이 있으나, GCED, 평화교육, 사회 프로젝트 개발과는 무관한 배경. 교육 또는 사회 영향 분야 경험 전무.</div><div class="ma-overall"><strong>종합 평가:</strong> 유능한 차세대 건설업 경영자로 보이나, 제출된 사회 프로젝트와는 전혀 관련이 없는 배경. 공식 팀원으로 제출되지도 않아 역할이 불명확함.</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">NGUYEN THU HUYEN</div><div class="member-role">Communications Executive (제출 자료상)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 치명적: 신원 확인 완전 실패</span><span class='flag-item'>⑊ 치명적: Hoa Binh Construction Group의 공개 정보에서 이 직책/이름 확인 안 됨</span><span class='flag-item'>⑊ 공식 연락처 정보 또는 전문 프로필 부재</span></div><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 신원 확인 불가. LinkedIn 프로필 검색 결과 동일 이름의 여러 인물이 있으나(제품 디자이너, 지질학자, 회계사 등) Hoa Binh Construction의 Communications Executive로 확인된 인물 없음. 이 사람이 실존 인물인지, 프로젝트에서 어떤 역할을 하는지 전혀 확인되지 않음.</div><div class="ma-overall"><strong>종합 평가:</strong> 신원 미확인. 존재 여부조차 검증 불가능하여 due diligence 수행 불가.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>프로젝트 포지셔닝의 근본적 오류 또는 허위 진술</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 건설업 CEO가 교육 전문가로 포지셔닝되고, '60년 헌신'이 경력과 모순되며, 팀원 신원이 확인 불가한 점은 심각한 신뢰성 문제를 시사함. 프로젝트가 실제로 실행 가능한 계획인지 의문.</td></tr>
+<tr><td>투자 적합성 전무</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 비영리 프로젝트를 벤처캐피탈에 제출한 것은 자금 조달 메커니즘에 대한 근본적 이해 부족. 수익 모델, exit 경로, 자산 가치 창출이 없어 투자 회수 불가능.</td></tr>
+<tr><td>팀 역량 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] GCED 프로그램 실행에 필수적인 교육 전문가, 커리큘럼 개발자, 프로그램 관리자가 전무. 현재 팀 구성으로는 아이디어 단계조차 넘어설 수 없음.</td></tr>
+<tr><td>롯데 PoC 가치 불명확</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 제안된 협력이 롯데 계열사의 실제 인프라, 고객 베이스, 데이터를 활용하지 않고 단순 미디어 노출 수준. 롯데에 어떤 전략적 가치나 비즈니스 기회를 제공하는지 전혀 설명되지 않음.</td></tr>
+<tr><td>창립자 재무 및 거버넌스 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>[확인] Le Viet Hai가 2022-2023년 Hoa Binh Construction에서 재무 부정 의혹으로 사임 압박받은 이력. 회사는 현재 재무 재구조화 중. 이는 신규 프로젝트 자금 관리의 투명성에 대한 우려를 야기함.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — 비영리/사회적기업 (Non-profit/Social Enterprise)</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">비영리 프로젝트의 지속 가능한 수익 모델 검증</span><span class="dvtag dv-r">수익 모델 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 'Planet My Homeland'는 명시적으로 비영리 프로젝트로 설계되어 수익 구조가 존재하지 않습니다. [미확인] 제출된 $230K 모금 목표는 도서 번역(80개 언어), 웹사이트 구축 등 일회성 비용으로 자산 가치를 창출하지 않으며, 투자 회수 경로가 전무합니다. [미확인] 벤처캐피탈 투자에 필수적인 exit 전략, 확장 가능한 수익원, 비즈니스 모델이 완전히 부재하여 롯데벤처스 펀드 기준에 근본적으로 부적합합니다. 사회적기업으로서의 재무적 자립 가능성도 검증되지 않았습니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">사회적 임팩트의 측정 가능성 및 검증</span><span class="dvtag dv-r">임팩트 검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 문제 정의(전쟁, 핵전쟁 위험)는 명확하나, 제시된 솔루션(80개 언어 도서 + 교육 프로그램)이 실제 평화 증진으로 연결되는 인과관계가 검증되지 않았습니다. [미확인] 구체적 수혜자 집단, 측정 가능한 성과 지표(KPI), 파일럿 프로그램 결과가 전무하여 임팩트의 규모·깊이·지속성이 완전히 추상적입니다. [미확인] 평화교육 분야에서의 실제 임팩트 창출 사례나 분쟁 지역에서의 태도 변화 측정 데이터가 없어 사회적 가치 검증이 불가능합니다. 현재 아이디어 단계의 추상적 비전에 머물러 있습니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">글로벌 시민교육(GCED) 시장 내 경쟁력</span><span class="dvtag dv-r">시장 포지셔닝 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] GCED 시장은 UNESCO, UNICEF, 각국 정부가 주도하는 공공재 영역으로, 기존 주요 플레이어(UNESCO GCED 프로그램, 세계시민교육 네트워크 등)와의 차별점이 전혀 제시되지 않았습니다. [미확인] 타겟 시장 정의 없이 '전 세계 80억 인구'를 대상으로 한다는 주장만 있고, 실제 도달 가능한 SAM/SOM 분석이 전무합니다. [미확인] 시장 확장 전략이 '80개 언어 번역'이라는 물리적 확장에만 집중되어 있고, 실제 시장 수요 검증, 교육기관 채택 전략, 정부/NGO 파트너십 확보 계획이 부재합니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">팀의 교육·사회사업 분야 전문성</span><span class="dvtag dv-r">치명적 팀 미스매치</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] Le Viet Hai는 건설업 분야 성공 기업가(37년 경력, 500개 프로젝트)이나, GCED/평화교육/커리큘럼 개발 분야 전문성이 전혀 확인되지 않습니다. [미확인] NGUYEN THU HUYEN의 신원이 LinkedIn, Hoa Binh Construction 공식 정보에서 확인되지 않아 실제 팀 구성이 불명확합니다. [치명적] 글로벌 교육 프로그램 실행에 필수적인 교육 전문가, 커리큘럼 개발자, UNESCO/GCED 네트워크 전문가가 팀에 전무합니다. Red flag: 2022-2023년 Le Viet Hai 관련 회사 재무 분쟁 및 사임 압박 이력이 확인되어 리더십 안정성에 우려가 있습니다.</div></div>
+<div class="deep-category-label">Category E — 전통산업의 디지털 전환 (Digital Transformation)</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">롯데 인프라 활용 구체성 및 비즈니스 가치</span><span class="dvtag dv-r">협력 가능성 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 제안된 PoC(롯데시네마·마트·이노베이트를 통한 평화 메시지 전파)는 단순 광고/홍보 협력 수준이며, 롯데의 인프라나 고객 데이터를 실질적으로 활용하는 방안이 아닙니다. [미확인] 롯데 주요 사업분야(식품·유통·건설·AI)와 평화교육 콘텐츠의 연관성이 매우 간접적이고, Lotte Finance나 Lotte Academy가 GCED 프로그램 배포에 어떻게 기여할 수 있는지 구체적 설명이 전무합니다. [미확인] 측정 가능한 성과 지표, 시범 프로그램 설계, 파일럿 실행 계획이 완전히 부재하여 롯데 측의 비즈니스 가치 창출이 보이지 않습니다. 협력 시너지가 실질적으로 불명확합니다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">디지털 플랫폼의 기술적 차별성 및 실행 역량</span><span class="dvtag dv-r">기술 역량 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 공식 웹사이트(https://earthmyhomeland.com)와 소셜미디어 채널이 구축 중이라 하나, 플랫폼의 기술적 차별성이나 사용자 경험(UX) 전략이 제시되지 않았습니다. [미확인] '80개 언어 온라인 도서 출판'의 기술 구현 방안(다국어 CMS, 자동 번역 vs 전문 번역, 품질 관리)이 불명확하고, 글로벌 교육 플랫폼(Coursera, edX, Khan Academy)과의 기술적 경쟁력이 검증되지 않았습니다. [미확인] 건설업체 출신 팀에 디지털 제품 개발, EdTech, 플랫폼 운영 전문가가 없어 기술 실행 역량에 심각한 공백이 있습니다. 현재 준비 단계라는 점만 확인될 뿐 구체적 실행 증거가 전무합니다.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[확인] 창립자의 건설업 성공 이력 - 500개 프로젝트 완료, 베트남 5대 건설사 육성 (단, 본 프로젝트와 무관한 분야)</li>
+<li>[확인] 명확한 사회문제 인식 - 전쟁, 핵전쟁 리스크, 평화의 중요성에 대한 진정성 있는 개인적 동기</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[확인] 팀과 프로젝트 간 근본적 불일치 - GCED 전문가 부재, 교육 프로그램 개발 경험 전무</li>
+<li>[확인] 비즈니스 모델 부재 - 비영리인데 VC 투자 요청, 수익 창출 경로 없음, exit 전략 전무</li>
+<li>[미확인] 핵심 팀원 신원 확인 불가 - NGUYEN THU HUYEN의 존재 자체가 검증되지 않음</li>
+<li>[확인] 구체적 실행 증거 전무 - 파일럿 프로그램, 파트너십, 학술 자문단, UNESCO 연결 등 모두 부재</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>[부분 확인] 글로벌 시민교육(GCED)에 대한 일반적 수요는 존재 - UNESCO 주도로 전 세계 교육 정책에 반영 중</li>
+<li>[미확인] 다국어 콘텐츠 배포 - 80개 언어 번역은 물리적으로 가능하나 실제 채택률은 불명</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>[확인] 자금 조달 경로 오류 - 비영리 프로젝트는 재단, 정부 보조금, CSR이 적합하며 VC 투자 대상이 아님</li>
+<li>[확인] 신뢰성 리스크 - 팀 배경 허위 진술 가능성, 건설업체 최근 재무 분쟁 이력</li>
+<li>[확인] 실행 불가능성 - 교육 전문가 없이 커리큘럼 개발, UN 옹호, 글로벌 배포는 현실적으로 불가능</li>
+<li>[확인] 롯데 협력 가치 부재 - 제안된 PoC가 롯데에 어떤 비즈니스 가치를 창출하는지 불명확</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">7</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">이 신청은 근본적인 포지셔닝 오류 또는 의도적 허위 진술 가능성이 있다. 건설업 대기업 회장이 교육 전문가 없이 UN급 글로벌 평화교육 프로그램을 개발한다는 주장은 검증 가능한 어떤 증거로도 뒷받침되지 않는다. 팀 조사 결과 Le Viet Hai의 GCED 분야 전문성이 전무하고, '60년 헌신'은 경력 타임라인과 모순되며, 핵심 팀원 신원조차 확인 불가하다. 비영리 프로젝트임에도 벤처캐피탈에 투자를 요청하는 것은 프로그램의 본질을 이해하지 못했거나 적절한 자금 조달 경로를 탐색하지 않았음을 시사한다. 가장 큰 미검증 가정은 건설업체가 교육 인프라, 학술적 기반, 파트너십 없이도 80개국에서 행동 변화를 유도할 수 있다는 전제이며, 이는 현실성이 없다. 롯데 PoC는 일반적 미디어 노출 제안에 불과해 실질적 협력 가치가 보이지 않는다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">2 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">7 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>HOA BINH CONSTRUCTION GROUP JOINT STOCK COMPANY · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

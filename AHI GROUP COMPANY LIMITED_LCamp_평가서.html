@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AHI GROUP COMPANY LIMITED (Ahimum Kids) — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">AHI GROUP COMPANY LIMITED (Ahimum Kids)</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Hanoi, Vietnam</span>
+          <span class="etag et-ind">E-commerce & Retail (아동 패션)</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">AHI GROUP COMPANY LIMITED (Ahimum Kids)</div>
+        <div class="hero-sub">설립 2019년 이후 (브랜드 검증 3년) · https://www.facebook.com/Ahimumkids</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">Ahimum Kids는 베트남 가정을 위한 문화유산 기반 프리미엄 아동 의류 브랜드이다. 세계화 속에서 문화 정체성을 잃어가는 아동들에게 자국 전통을 일상적으로 경험하게 하며, 고품질 내구성 제품 판매로 수익을 창출한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          문화유산 스토리텔링이 베트남 부모들의 실제 구매 결정으로 이어지며, 이를 한-베 협업 컬렉션으로 확장할 수 있다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-fail">📄 IR Deck 읽기 실패</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">18</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$175K</div><div class="kpi-desc">2025년 연 매출 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">$231K</div><div class="kpi-desc">2026년 현재까지 매출 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">20,000+</div><div class="kpi-desc">누적 고객 (기간·검증 방식 미확인) [부분 확인]</div></div>
+<div class="kpi"><div class="kpi-val">$100K</div><div class="kpi-desc">Seed 라운드 목표 [확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">베트남 프리미엄 아동 의류 시장은 중산층 성장과 함께 확대 중이나, TAM/SAM/SOM 구체적 수치 없음 [미확인]. 문화유산 기반 차별화 전략은 명확하나, 경쟁사 대비 가격·품질·유통 우위에 대한 정량적 근거 부족 [부분 확인]. 한-베 협업 컬렉션 및 캐릭터 IP 확장 계획은 방향성만 제시되고 시장 검증 없음 [미확인]. 현재 베트남 내 20,000 고객 기반은 있으나 재구매율·LTV 데이터 없어 확장 가능성 판단 제한적.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">문제(문화 정체성 상실)-솔루션(문화유산 의류)-고객(베트남 가정) 연결은 명확하나, 수익 구조 세부(마진율, CAC, LTV, 재구매율)는 미공개 [미확인]. 2025년 $175K → 2026 YTD $231K는 성장세를 보이나 [확인], 연간 목표 $600K 달성 근거(채널 확장, 마케팅 투자 계획) 부족 [미확인]. $100K 조달 목표는 적정하나 투자 유치 이력 없고, 롯데벤처스 펀드 투자 적합성은 PoC 구체성에 의존. IR 덱 부재로 단위경제·현금흐름 검증 불가.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">사회문제(세계화 속 차세대 문화 정체성 상실) 정의 명확하고, 솔루션(문화유산 기반 아동 의류 및 스토리텔링)이 직접 연결됨 [확인]. 부모-자녀 간 문화 경험 창출 및 패스트패션 대비 내구성 제품 제공으로 사회적·환경적 가치 모두 설명됨 [확인]. 그러나 임팩트 측정 지표(문화 인식 변화, 제품 수명 연장 효과 등) 부재로 규모·깊이·지속성은 [부분 확인]. 롯데 협업 시 한-베 문화 교류 확대 가능성은 높으나 구체적 실행 계획 필요.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">팀 연구 결과: 창업자 Lê Thị Thanh Nhàn은 11년 패션 산업 경력, 제조업체 운영(4,000+ 고객), Alium 플랫폼 구축(3,000개 제조사 네트워크), 2019 Techfest Top 10 등 도메인 전문성 [확인]. Vietnam University of Commerce 학위는 [부분 확인](졸업 연도 미확인). 그러나 공동창업자·핵심 경영진(CFO, CMO, CTO) 정보 전무 [미확인]. 여러 벤처(Alium, Ahimum, Nunakids) 동시 운영 여부 불명확하여 리소스 집중도 우려 [Red Flag]. Key-person 의존도 매우 높음. 마케팅·재무·기술 전문가 보강 필수.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">5<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">주요 사업분야(유통·호텔/관광) 부합 [확인]. 롯데백화점·마트 아동 코너 입점 또는 롯데월드 문화 체험 상품 연계 가능성 있음 [부분 확인]. 그러나 PoC 아이디어가 '한-베 문화 컬렉션 개발 및 캐릭터 IP 확장'으로 포괄적이며, 특정 롯데 계열사의 인프라·고객 데이터·유통망을 어떻게 활용할지 구체적 계획 없음 [미확인]. 예: 롯데마트 베트남 지점 전용 컬렉션 테스트, 롯데월드 캐릭터 IP 공동 개발 등 실행 가능한 pilot 제안 부재. PoC 구체성 보완 시 상 가능.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 3 + C 4 + D 3 + E 5</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">18</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통(롯데백화점, 롯데마트), 호텔/관광(롯데호텔, 롯데월드)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미지정</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데와 협력하여 한국-베트남 문화유산을 결합한 아동 컬렉션 개발 및 문화 스토리텔링, 캐릭터 IP, 교육 콘텐츠로 확장. 아시아 시장 가족 대상 문화 경험 제공.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Ahimum addresses a growing social challenge: the loss of cultural identity among younger generations in an increasingly globalized world.
+
+Through culturally inspired children's products, storytelling, and character development, we help children build a stronger connection to their heritage while creating meaningful parent-child experiences.
+
+From an environmental perspective, we focus on creating high-quality, durable products designed for long-term use rather than disposable fast fashion.
+
+A PoC collaboration with LOTTE could help validate and scale this impact by introducing culturally meaningful products to a broader audience, fostering cross-cultural understanding between Korean and Vietnamese families, and exploring new educational and cultural experiences for children across Asia.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">창업자는 패션 제조, 공급망 관리, 기술 플랫폼 개발, 전자상거래 및 소비자 행동에 대한 포괄적인 전문 지식을 보유하고 있어 아동 패션 전자상거래 사업에 필요한 주요 영역을 커버합니다. 그러나 공개된 정보로는 CEO 단독으로만 확인되며, 마케팅, 재무, 기술, 운영 등 각 기능별 전문가로 구성된 경영진 팀에 대한 정보가 부족합니다. 성공적인 확장을 위해서는 각 영역의 전문가로 구성된 균형 잡힌 경영진이 필요합니다.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">공개된 정보로는 CEO 단독으로만 확인되어 팀 완성도가 낮습니다. 성장하는 전자상거래 및 패션 브랜드는 일반적으로 마케팅 책임자(CMO), 재무 책임자(CFO), 기술 책임자(CTO), 운영 책임자(COO) 등 각 기능별 전문가가 필요합니다. 현재 팀 구성에 대한 공개 정보가 부족하여 핵심 인재 의존도 위험이 매우 높습니다. 실사 과정에서 공동 창업자, 핵심 경영진, 고문단 구성을 확인해야 합니다.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">창업자의 신뢰성은 여러 정부 지원 프로그램 및 국가 단위 스타트업 대회 수상 경력으로 검증되었습니다. Techfest Vietnam은 베트남 과학기술부가 주관하는 국가 공식 혁신 창업 행사이며, Vietnam Silicon Valley (VSV)는 정부 지원 액셀러레이터, WISE는 호주 정부 및 아시아개발은행(ADB) 지원을 받는 여성 창업 지원 기관입니다. 이러한 기관들의 선정은 사업 모델, 실행 능력, 성장 잠재력에 대한 외부 검증을 의미합니다. 또한 11년간의 산업 경험과 구체적인 성과(4,000명 고객, 3,000개 제조업체 네트워크, 수천만 달러 누적 매출)는 실행 능력을 입증합니다. 그러나 팀 구성의 투명성 부족과 여러 벤처의 동시 운영은 리소스 집중도에 대한 의문을 제기합니다.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 격차는 공개된 경영진 팀 정보의 부재입니다. 성공적인 전자상거래 및 패션 브랜드 확장을 위해서는 다음 영역의 전문가가 필요합니다: (1) 디지털 마케팅 및 브랜드 구축 전문가 - 소셜미디어, 퍼포먼스 마케팅, 브랜드 스토리텔링; (2) 전자상거래 기술 및 데이터 분석 전문가 - 플랫폼 최적화, 고객 경험, 데이터 기반 의사결정; (3) 재무 및 자금 조달 전문가 - 재무 계획, 투자 유치, 현금 흐름 관리; (4) 운영 및 물류 전문가 - 재고 관리, 공급망 최적화, 배송 효율화. 현재 이러한 역할을 CEO가 모두 담당하고 있는지, 아니면 미공개 팀원이 존재하는지 불명확합니다. 실사 과정에서 전체 조직 구조, 핵심 인재 현황, 각 역할의 책임과 경험을 확인해야 합니다.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Lê thị thanh Nhàn LinkedIn · Lê thị thanh Nhàn AHI GROUP LinkedIn · Lê thị thanh Nhàn Ahimum Kids · Alium Vietnam Techfest 2019 · Le Thi Thanh Nhan Ahimum CEO · Techfest 2019 Vietnam top 10 innovative startups</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Lê Thị Thanh Nhàn</div><div class="member-role">CEO & Founder</div></div>
+    <div class="member-meta"><a href="https://www.linkedin.com/in/nhanpull/" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-h" style="margin-left:8px;">Domain: High</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 교육 배경의 구체적인 졸업 연도 및 세부 전공이 명확히 확인되지 않음</span><span class='flag-item'>⑊ 이전 벤처인 Alium의 현재 운영 상태가 불분명함 - Ahimum Kids에 집중하면서 Alium 플랫폼의 지속성 여부 확인 필요</span><span class='flag-item'>⑊ Nhan Thanh Manufacturing Trade And Services Company Limited의 정확한 설립 연도, 규모, 재무 성과에 대한 공개 정보 부족</span><span class='flag-item'>⑊ 여러 사업체(Alium, Ahimum, Nunakids)를 동시에 운영하는 것으로 보이나 각 사업의 명확한 역할 분담 및 리소스 배분이 불명확</span><span class='flag-item'>⑊ 팀 구성원이 CEO 단독으로만 확인되며, 공동 창업자나 핵심 경영진에 대한 정보가 공개되지 않음</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>Bachelor of Business Administration/비즈니스 경영</td><td>Vietnam University of Commerce (Trường Đại học Thương mại)</td><td>정확한 졸업 연도 미확인</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Nhan Thanh Manufacturing Trade And Services Company Limited</td><td>CEO & Founder</td><td>다년간 (정확한 연도 미확인)</td><td style="font-size:11px;">패션 제조업체 운영, 4,000명 이상의 고객 확보. 이 경험을 바탕으로 Alium 플랫폼 설립.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Alium</td><td>Founder & CEO</td><td>2019 - 현재</td><td style="font-size:11px;">베트남의 검증된 의류 제조업체 네트워크를 브랜드와 연결하는 디지털 도매 플랫폼. 베트남 전역 3,000개 이상의 제조업체 네트워크 구축. 2019년 Techfest Vietnam Top 10, WISE Women Innovation Accelerator Top 9, Vietnam Silicon Valley Top 10 수상.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Ahimum Kids (AHI GROUP COMPANY LIMITED)</td><td>CEO & Founder</td><td>2019년 이후 - 현재</td><td style="font-size:11px;">베트남 문화유산과 현대적 디자인을 결합한 프리미엄 아동 패션 브랜드. Nunakids와 함께 운영.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 창업자는 11년 이상의 베트남 패션 및 의류 산업 실무 경험을 보유하고 있으며, 제품 개발, 제조, 공급망 운영 및 소비자 행동에 대한 깊은 전문 지식을 갖추고 있습니다. 대학생 시절 무자본으로 시작하여 누적 수천만 달러의 매출을 창출한 사업을 구축하고 확장한 경험이 있습니다. 이전 벤처인 Alium을 통해 기술 플랫폼 개발 경험을 쌓았으며, 이는 고객과 제조업체를 직접 연결하고 모바일 애플리케이션을 통한 생산 관리를 가능하게 했습니다. 현재 Ahimum Kids는 이러한 경험을 활용하여 아동 패션 시장에서 프리미엄 브랜드를 구축하고 있어, 도메인 관련성이 매우 높습니다.</div><div class="ma-overall"><strong>종합 평가:</strong> 창업자는 베트남 패션 및 의류 산업에서 11년 이상의 깊은 실무 경험과 입증된 실적을 보유하고 있습니다. 대학생 시절 무자본으로 시작하여 제조 및 공급망 비즈니스를 성공적으로 구축하고, 이를 바탕으로 기술 플랫폼(Alium)을 개발하여 국가 단위 스타트업 대회에서 여러 차례 수상한 경력이 있습니다. 2019년 Techfest Vietnam Top 10, WISE Women Innovation Accelerator, Vietnam Silicon Valley 등 정부 및 주요 기관의 검증을 받았습니다. 현재 Ahimum Kids는 이러한 경험을 활용하여 프리미엄 아동 패션 시장을 공략하고 있으며, 도메인 전문성이 매우 높습니다. 그러나 여러 사업을 동시에 운영하는 것으로 보이며, 팀 구성 및 각 사업의 현황에 대한 투명성이 부족한 점은 우려 사항입니다. 추가 실사를 통해 핵심 팀 구성, Alium의 현재 상태, 그리고 각 벤처의 재무 성과를 확인할 필요가 있습니다.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>Key-person 의존도</td><td><span class="rpill-sm rp-h">높음</span></td><td>CEO 단독 운영 구조로, 핵심 경영진 부재 시 확장·투자 유치·운영 전반에 병목 발생 가능. 연구 결과 공동창업자 정보 전무 [확인].</td></tr>
+<tr><td>단위경제 검증 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>마진율, CAC, LTV, 재구매율 등 핵심 지표 미공개. IR 덱 부재로 수익성 구조 및 확장 시 현금흐름 검증 불가 [미확인].</td></tr>
+<tr><td>PoC 실행 구체성 부족</td><td><span class="rpill-sm rp-m">중간</span></td><td>롯데 계열사 지정 없고, 한-베 컬렉션 아이디어가 포괄적. 특정 인프라·고객 데이터 활용 계획 부재로 pilot 실행 가능성 불명확 [미확인].</td></tr>
+<tr><td>시장 검증 데이터 부족</td><td><span class="rpill-sm rp-m">중간</span></td><td>20,000 고객 주장의 기간·검증 방식 불명. 재구매율, NPS, 고객 세그먼트 분석 없어 문화유산 콘셉트의 지속 가능성 판단 제한적 [부분 확인].</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — E-commerce/Retail (패션)</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">시장 규모 및 성장성</span><span class="dvtag dv-a">구체적 데이터 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 중산층 확대와 함께 프리미엄 아동 의류 시장이 성장 중이나 TAM/SAM/SOM 수치가 제공되지 않음 [미확인]. 20,000 고객 기반은 시장 수요를 일부 입증하나 [부분 확인], 재구매율 및 고객 세그먼트별 구매 패턴 데이터 없어 확장 가능성 판단 제한적 [미확인]. 문화유산 기반 차별화는 명확하나, 경쟁 브랜드 대비 가격·품질·유통 우위에 대한 정량적 근거 없음 [미확인]. 한-베 협업 컬렉션 및 캐릭터 IP 확장은 방향성만 제시되어 시장 검증 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">단위경제 및 수익성</span><span class="dvtag dv-r">핵심 지표 미공개</span><span class="deep-arrow">▾</span></div><div class="deep-body">2025년 $175K에서 2026 YTD $231K로 성장세는 확인되나 [확인], 연간 목표 $600K 달성을 위한 구체적 채널 확장 및 마케팅 투자 계획 부재 [미확인]. 제품 마진율, CAC(고객획득비용), LTV(고객생애가치), 재구매율 등 핵심 지표가 전혀 공개되지 않아 수익성 및 확장성 검증 불가 [미확인]. IR 덱 링크는 제공되었으나 단위경제·현금흐름·손익 구조 세부 내용 확인 필요. $100K 조달 목표는 적정 수준이나 투자 유치 이력 없음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">경쟁 우위 및 차별화</span><span class="dvtag dv-a">문화적 차별화 명확, 실행 검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">문화유산 기반 프리미엄 아동 의류라는 포지셔닝은 명확하며, 세계화 속 문화 정체성 상실 문제에 직접 대응 [확인]. 고품질 내구성 제품으로 패스트패션과 차별화 전략 설명됨 [부분 확인]. 그러나 경쟁사(로컬 브랜드 및 글로벌 아동복 브랜드) 대비 가격 경쟁력, 품질 검증, 유통 채널 우위에 대한 구체적 데이터 부족 [미확인]. 20,000 고객 기반이 있으나 고객 리텐션율 및 브랜드 충성도 지표 없어 지속 가능한 경쟁력 판단 어려움.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">유통 채널 및 확장 전략</span><span class="dvtag dv-a">온라인 중심, 오프라인 진출 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">현재 Facebook 중심 온라인 판매로 추정되며 [부분 확인], 롯데백화점·마트 아동 코너 입점 또는 롯데월드 체험 상품 연계 가능성은 언급되나 구체적 실행 계획 없음 [미확인]. 베트남 내 20,000 고객 분포(지역별, 채널별) 및 신규 채널 확보 전략 미공개 [미확인]. 롯데 계열사와의 협업 시 오프라인 유통망 활용(예: 롯데마트 베트남 지점 전용 컬렉션 테스트)이 핵심이나, PoC 아이디어가 '한-베 문화 컬렉션 개발'로 포괄적이어서 구체성 보완 필수.</div></div>
+<div class="deep-category-label">Category D — 팀 역량 및 실행력</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업자 역량 및 도메인 전문성</span><span class="dvtag dv-a">창업자 전문성 우수, 팀 구성 미흡</span><span class="deep-arrow">▾</span></div><div class="deep-body">창업자 Lê Thị Thanh Nhàn은 11년 패션 산업 경력, 제조업체 운영(4,000+ 고객), Alium 플랫폼 구축(3,000개 제조사 네트워크) 등 도메인 전문성 우수 [확인]. 2019 Techfest Top 10 수상 및 VSV·WISE 지원 받은 이력도 검증됨 [확인]. Vietnam University of Commerce 학위는 [부분 확인](졸업 연도 미확인). 그러나 공동창업자·핵심 경영진(CFO, CMO, CTO) 정보가 전혀 없으며 [미확인], 단독 창업자로 보여 key-person 의존도가 매우 높음. 여러 벤처(Alium, Ahimum, Nunakids) 동시 운영 여부 불명확하여 리소스 집중도 우려.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">팀 확장 계획 및 조직 구성</span><span class="dvtag dv-r">핵심 인력 보강 필수</span><span class="deep-arrow">▾</span></div><div class="deep-body">현재 팀 구성 정보 전무하며 [미확인], 마케팅·재무·기술·운영 전문가 보유 여부 불명확. $100K 조달로 팀 확장 계획이 있을 것으로 추정되나 구체적 채용 로드맵 제시 없음 [미확인]. 패션 브랜드 스케일업을 위해서는 디지털 마케팅(SNS, 이커머스), 재무 관리(단위경제 최적화), 공급망 관리 전문가가 필수적이나 현 상태에서는 창업자 단독 운영으로 보임. 롯데와의 PoC 실행 시 협업 전담 인력 부재가 리스크 요인.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">과거 사업 경험 활용 및 리스크 관리</span><span class="dvtag dv-r">다중 사업 운영 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">창업자가 Alium(제조 연결 플랫폼), Ahimum Kids(문화유산 아동복), Nunakids(언급된 또 다른 브랜드로 추정) 등 여러 벤처를 동시 운영 중인 것으로 보이나 [미확인], 각 사업의 현재 상태 및 리소스 배분 전략 미공개. 과거 '수천만 달러 매출 창출' 주장은 [부분 확인](구체적 재무제표나 외부 검증 없음)이며, Ahimum Kids의 2025-2026 매출($175K→$231K)과 큰 격차 존재. 여러 사업 동시 운영 시 Ahimum Kids에 대한 집중도 저하 우려되며, 투자자 입장에서 명확한 우선순위 설정 필요.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>창업자의 11년 베트남 패션 산업 경력 및 3,000개 제조사 네트워크 보유 [확인]</li>
+<li>2019 Techfest Vietnam Top 10, VSV·WISE 정부 프로그램 검증 [확인]</li>
+<li>문화유산 기반 차별화 포지셔닝 및 사회적 가치 명확 [확인]</li>
+<li>2025-2026 매출 성장세($175K→$231K YTD) [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>IR 덱 부재로 단위경제·마진율·CAC·LTV 검증 불가 [미확인]</li>
+<li>공동창업자 및 핵심 경영진(CFO, CMO, CTO) 정보 전무, key-person 의존도 높음 [확인]</li>
+<li>20,000 고객 주장의 기간·검증 방식·재구매율 데이터 없음 [부분 확인]</li>
+<li>여러 벤처 동시 운영 여부 불명확(Alium, Ahimum, Nunakids), 리소스 집중도 우려 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 중산층 확대 및 프리미엄 아동 의류 수요 증가</li>
+<li>롯데 유통망(백화점·마트) 입점 통한 오프라인 채널 확장</li>
+<li>한-베 문화 교류 트렌드 활용한 캐릭터 IP 및 교육 콘텐츠 확장</li>
+<li>동남아시아 문화유산 패션 시장으로 지역 확장 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>베트남 내 저가 아동 의류 브랜드와의 가격 경쟁</li>
+<li>문화유산 콘셉트의 대중적 수용도 불확실성(트렌드 변화 리스크)</li>
+<li>롯데 PoC 실행 시 구체적 계열사 파트너 확보 실패 가능성</li>
+<li>팀 확장 없이 성장 시 운영 병목 및 품질 관리 어려움</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">18</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">Ahimum Kids는 문화유산 기반 아동 의류라는 명확한 사회적 가치와 $175K→$231K 성장세를 보이나, 가장 큰 검증되지 않은 가정은 '문화 스토리텔링이 프리미엄 가격 정당화 및 재구매로 이어진다'는 점이다. 창업자의 11년 패션 경력과 정부 프로그램 검증은 실행력을 뒷받침하나, 핵심 경영진 부재로 확장 시 병목 위험 크다. 롯데 PoC는 방향성은 좋으나 특정 계열사·인프라 활용 계획이 구체적이지 않아 실행 가능성 불명확. 단위경제·재구매율·마진 구조 공개 없이 투자 적합성 판단 제한적.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">5 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">18 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>AHI GROUP COMPANY LIMITED (Ahimum Kids) · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

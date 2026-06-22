@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agriculture and Forestry Research & Development Center for Mountainous Region (ADC) — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Agriculture and Forestry Research & Development Center for Mountainous Region (ADC)</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Thai Nguyen Province, Vietnam</span>
+          <span class="etag et-ind">Social innovation, community based tourism, agritourism, local economic development</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Agriculture and Forestry Research & Development Center for Mountainous Region (ADC)</div>
+        <div class="hero-sub">설립 1991 · http://adc.org.vn</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">ADC는 Thai Nguyen 지역 소수민족 마을(Ban Ten)을 위한 커뮤니티 기반 농업관광 파일럿 모델이다. 대학생 창업팀과 지역 주민이 공동 개발하는 농업관광, 문화체험, 커뮤니티 학습 프로그램을 통해 산악지역 소수민족의 소득 창출 문제를 해결하며, 3-6개월 PoC 기간 동안 120-180명의 시범 방문객을 유치하여 패키지별 고객 만족도와 지불 의향을 검증하는 모델이다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          대학생 주도 팀과 지역 주민이 상업적 수준의 관광 서비스를 설계하고 운영할 수 있으며, 도시 여행객이 오지 마을의 문화체험에 지불 의향을 가질 것이라는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-fail">📄 IR Deck 읽기 실패</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">13</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">78명</div><div class="kpi-desc">초기 시험 활동 3회 누적 (Thap Sang 1·2, 여름캠프)</div></div>
+<div class="kpi"><div class="kpi-val">70%</div><div class="kpi-desc">초기 피드백 기준 만족 비율 (재방문 5%)</div></div>
+<div class="kpi"><div class="kpi-val">120-180명</div><div class="kpi-desc">3-6개월 간 6-8회 투어 목표</div></div>
+<div class="kpi"><div class="kpi-val">$68K</div><div class="kpi-desc">PoC 운영 및 역량 강화 자금</div></div>
+<div class="kpi"><div class="kpi-val">$33.5K (2024)</div><div class="kpi-desc">프로젝트 기반 수익, Ban Ten PoC 별도</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">시장 규모 및 확장 가능성에 대한 구체적 근거가 부족함. [미확인] 베트남 체험관광 시장 규모, 책임여행 고객 세그먼트 크기, 경쟁 현황(다른 커뮤니티 기반 관광 상품과의 차별성) 등이 명시되지 않음. [부분 확인] 초기 시범 활동에서 78명 참가, 70% 만족도, 5% 재방문율을 기록했으나 이는 매우 제한적 규모이며 상업적 시장 검증이라 보기 어려움. 확장 전략도 '다른 산악 지역으로 복제 가능'이라는 추상적 언급만 있을 뿐 구체적 경로나 목표 시장 정의가 없음. 지불 의향 데이터나 가격대 검증도 미확인 상태.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">사업모델 구조가 명확하지 않음. [미확인] 패키지 상품의 구체적 가격, 수익 배분 구조, 단위 경제성, 고객 획득 비용 등 핵심 사업 지표가 전혀 제시되지 않음. [미확인] Ban Ten PoC는 사전 수익 단계이며, 제시된 ADC 조직 수익($33.5K/2024)은 프로젝트 기반 보조금 수익으로 추정되어 시장 검증과 무관. [미확인] 투자 유치 이력 없음. 목표 조달액 $68K는 PoC 운영비이지 투자 라운드가 아님. 롯데벤처스 펀드 투자 적합성은 낮음 — 이는 연구기관 주도 소셜 프로젝트이며, 확장 가능한 수익 모델이나 EXIT 경로가 불명확함.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">사회적 가치 창출 의도는 명확하나 임팩트 규모의 실증은 제한적. [확인] 문제 정의가 명확함: 산악 소수민족(특히 여성·청년)의 소득 기회 부족, 토착 문화 보존 필요, 지역 경제 활성화. [확인] 솔루션 방향성도 구체적: 커뮤니티 기반 관광을 통한 생계 창출, 대학생 창업 기회 제공, 다기관 협력 거버넌스. [부분 확인] PoC 목표(20-30 가구 참여, 10-15명 학생 경험 제공)는 계획 수준이며 실제 성과는 미확인. 지속가능성 증거(재방문 5%, 장기 소득 효과 등)는 매우 초기 단계. 임팩트 측정 체계(MRV)나 장기 사회적 가치 검증 방법론은 언급되지 않음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[팀 리서치 결과 반영] ADC 조직은 35년 농업·산림 연구 경력을 보유하나 상업적 관광 사업 실행 역량은 미확인. [확인] Ho Ngoc Son 박사(ADC 부소장)는 호주국립대 박사 학위, 기후변화·토착지식 전문가로 학술적 신뢰성 높음. [미확인] 주요 담당자 Nguyen Thi Bich Ngoc은 LinkedIn 프로필 미발견, 개인 배경 검증 불가. [미확인] 파트너 조직(STG, Dream of the Border Region) 역량 및 실체가 IR 자료에서 충분히 검증되지 않음. [핵심 갭] 관광 사업의 상업적 운영(마케팅, 고객 획득, 수익 모델, 디지털 플랫폼)을 담당할 전문가 정보 전무. 대학생 창업팀의 구성·경험·역할도 구체적이지 않음. 핵심인물 의존도 높음(Ho 박사 1인). 연구기관 배경은 강하나 벤처 실행 기반은 약함.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">롯데 주요 사업분야(호텔·관광)와 연결점은 있으나 PoC 구체성과 실현 가능성이 매우 낮음. [부분 확인] Hospitality/Tourism 분야 지정은 적절하나 구체적 계열사 미지정. [미확인] PoC 협력 아이디어가 지나치게 일반적: '서비스 디자인 자문, 브랜드 조언, 마케팅 가시성, 책임여행 고객 연결' 등은 롯데의 구체적 인프라·데이터·고객기반 활용이 아닌 범용적 멘토링 수준. [미확인] 롯데 계열사(롯데호텔, 롯데월드 등)가 베트남 오지 마을 커뮤니티 관광에 어떻게 실질적으로 연계될 수 있는지 운영적 설명 부재. [리스크] PoC 성과 지표(만족도 80%, 재방문 증거)는 롯데 사업 검증이 아닌 일반 관광 상품 테스트에 가까움. 롯데에게 상업적 가치나 전략적 시너지가 불명확함.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 4 + D 2 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">13</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Hospitality/Hotel/Tourism (LOTTE Hotel, LOTTE Properties, LOTTE Cinema, LOTTE World, etc.)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">3-6개월 간 Ban Ten 마을에서 농업관광, 문화체험(켄 댄스, 몽족 전통의상 자수, 꾸아 콘 만들기), 커뮤니티 학습을 결합한 2-3개 패키지 상품을 개발하여 6-8회 시범 투어를 통해 120-180명 방문객 유치 및 피드백 수집. 20-30 가구 직접 참여, 10-15명 대학생에게 창업 경험 제공. 롯데는 서비스 디자인, 브랜드 자문, 마케팅 가시성 제공 또는 책임여행 고객 연결 가능. 고객 만족도 80% 목표, 재방문/추천 수요 조기 증거 확보, 수익 분배 메커니즘 문서화가 PoC 성과.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">The project addresses three linked ESG dimensions. Socially, it creates new livelihood opportunities for ethnic minority households, women, youth, and university students through an inclusive tourism value chain. Within the 3–6 month PoC, the project aims to develop and test three experiential tourism packages in Ban Ten: an agritourism package, a cultural experience package, and a community development learning package. These packages are expected to attract approximately 120–180 pilot visitors or participants through 6–8 test tours, directly involve around 20–30 local community members and households, and provide practical start-up and service operation experience for 10–15 students from Thai Nguyen University of Agriculture and Forestry.
+Environmentally, it promotes low-impact local tourism, place-based learning, and the integration of community development initiatives such as sustainable agriculture and clean energy storytelling into visitor experiences. The PoC will also help introduce basic visitor guidelines to reduce negative environmental impacts and promote respect for local resources.
+ From a governance perspective, the project establishes a multi-stakeholder partnership model with clearly defined roles, community participation, mentoring, transparent benefit sharing, and documented monitoring and evaluation. ADC will provide academic and technical mentoring; STG will support community facilitation and inclusive participation; Dream of the Border Region Social Enterprise will support market testing and communication; the student start-up group will participate in product design and operation; and Ban Ten community members will act as co-creators and service providers.
+With LOTTE’s PoC support, the project can transform a community-oriented concept into a tested market proposition by improving service design, customer journey management, customer validation, branding, visibility, and operational discipline. Expected PoC outcomes include three tested tourism packages, improved service readiness among local households, a documented benefit-sharing mechanism, customer feedback data, a target satisfaction rate of at least 80%, and early evidence of repeat or referral demand. These outcomes will provide the foundation for refining the business model and preparing for future.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">ADC 조직은 농업, 산림, 지속가능한 생계, 기후 변화, 천연 자원 보존 분야에서 35년 이상의 경험을 보유하고 있으며, 커뮤니티 기반 관광 및 농업 관광에 필요한 기초적인 역량을 갖춤. Ho Ngoc Son 박사는 토착 지식, 기후 변화 적응, 커뮤니티 개발 분야의 강력한 전문성을 보유. 그러나 명시된 파트너(STG, Dream of the Border Region)에 대한 구체적 정보가 부족하여 전체적인 팀 구성에 대한 평가가 제한적. 관광 사업 개발, 마케팅, 디지털 전환, 기업가정신 코칭 등의 상업적 역량에 대한 검증이 필요함</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">ADC는 16명의 정규 직원과 16명의 컨설턴트로 구성되어 있다고 명시되어 있으나, 핵심 팀원들의 구체적인 역할과 전문성에 대한 정보가 부족. Ho Ngoc Son 박사는 검증 가능한 강력한 전문가이나, 다른 팀원들의 배경이 불명확하여 팀의 완전성을 평가하기 어려움. 특히 상업적 실행 능력(시장 접근, 고객 개발, 디지털 마케팅, 재무 관리 등)을 담당할 팀원에 대한 정보가 전무. 파트너 조직(STG, Dream of the Border Region)의 역할과 전문성도 명확하게 검증되지 않음</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">ADC 조직 차원에서는 35년 이상의 실적, 150만 명 이상의 농민 지원 경험, 국제 네트워크 소속(ALiSEA, Sustainable Agriculture Network 등) 등으로 신뢰성이 확인됨. Ho Ngoc Son 박사는 학력과 연구 실적이 검증된 전문가. 그러나 주요 담당자인 Nguyen Thi Bich Ngoc의 배경이 검증되지 않고, 팀원들의 LinkedIn 프로필이 부재하여 투명성과 검증 가능성이 낮음. 연구 및 개발 조직으로서의 신뢰성은 높으나, 상업적 벤처를 성공적으로 실행할 수 있는 팀 역량에 대해서는 추가 실사가 필요</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">상업적 실행 역량의 검증 부족이 가장 큰 격차. ADC는 연구 및 개발 조직으로서 강력한 실적을 보유하나, 관광 사업의 상업적 운영(마케팅, 고객 획득, 수익 모델 개발, 디지털 플랫폼 구축, 재무 관리)에 필요한 전문성을 가진 팀원에 대한 정보가 전무. 명시된 파트너(STG - asset-based community development, entrepreneurship coaching, digital transformation 전문; Dream of the Border Region - 시장 접근, 커뮤니케이션, 고객 개발 담당)의 실체와 역량이 검증되지 않음. 또한 핵심 담당자들의 온라인 프로필 부재로 인해 due diligence 과정에서의 투명성이 크게 제한됨. 커뮤니티 기반 관광 프로젝트를 지속가능한 사업으로 전환하기 위한 기업가적 역량, 시장 검증 경험, 스케일업 능력에 대한 증거가 부족함</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Nguyen Thi Bich Ngoc LinkedIn · Nguyen Thi Bich Ngoc ADC Vietnam · ADC adc.org.vn Vietnam agriculture forestry · ADC Thai Nguyen senior researcher staff team · "Nguyen Thi Bich Ngoc" ADC researcher agriculture · ADC mountainous region director leadership Vietnam</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Nguyen Thi Bich Ngoc</div><div class="member-role">Senior Researcher / Project Development Advisor</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필 미발견 - 온라인 전문가 네트워크 부재</span><span class='flag-item'>⑊ 개인 배경 정보 검증 불가 - 학력, 경력, 전문성에 대한 공개 정보 부족</span><span class='flag-item'>⑊ 동명이인이 다수 존재하여 특정 개인 식별 어려움</span><span class='flag-item'>⑊ 디지털 발자국(digital footprint)이 매우 제한적</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>정보 없음/경제학 및 농촌 개발 분야로 추정 (Thai Nguyen University of Agriculture and Forestry와 관련된 유사 이름 연구자 발견됨)</td><td>확인되지 않음</td><td>정보 없음</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>ADC (Agriculture and Forestry Research & Development Center for Mountainous Region)</td><td>Senior Researcher / Project Development Advisor</td><td>정보 없음</td><td style="font-size:11px;">ADC는 베트남 Thai Nguyen에 위치한 비영리 연구 기관으로, 35년 이상의 경험을 가지고 있음. 16명의 정규 직원과 16명의 컨설턴트로 구성</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 담당자의 구체적인 배경을 확인할 수 없으나, ADC 조직 자체가 35년 이상 산악 지역 농업, 산림, 지속가능한 생계, 기후 변화 및 천연 자원 보존 분야에서 연구 및 훈련을 수행한 실적이 있음. 조직은 150만 명 이상의 농민(그 중 68% 이상이 소수 민족 여성)을 지원한 경험 보유. 커뮤니티 기반 관광 및 농업 관광 분야와의 관련성은 조직 차원에서는 높으나, 개인의 구체적 전문성은 미확인</div><div class="ma-overall"><strong>종합 평가:</strong> 제공된 연락처 정보만으로는 개인의 자격과 전문성을 충분히 검증할 수 없음. ADC 조직 자체는 35년 이상의 실적을 가진 신뢰할 수 있는 기관으로 확인되며, 산악 지역 농업 개발, 소수 민족 지원, 지속가능한 생계 등의 분야에서 강력한 실적을 보유. 그러나 주요 담당자의 LinkedIn 프로필 및 공개 가능한 전문 정보의 부재는 due diligence 관점에서 우려사항. 조직 차원의 신뢰성은 높으나, 개인 차원의 검증 가능성은 매우 낮음</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Ho Ngoc Son</div><div class="member-role">Deputy Director of ADC / Professor</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-h" style="margin-left:8px;">Domain: High</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필 미발견 - 글로벌 전문가 네트워크에서의 가시성 제한</span><span class='flag-item'>⑊ 최근 활동 및 현재 역할에 대한 상세 정보 부족</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>PhD/Global Environmental Change (세계 환경 변화)</td><td>Australian National University (호주 국립대학교)</td><td>2013</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Thai Nguyen University of Agriculture and Forestry</td><td>Professor in Climate Change and Indigenous Knowledge</td><td>현재</td><td style="font-size:11px;">기후 변화 및 토착 지식 분야 교수로 재직 중</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>ADC (Agriculture and Forestry Research & Development Center for Mountainous Region)</td><td>Deputy Director</td><td>정보 없음</td><td style="font-size:11px;">다수의 개발 프로젝트를 주도. 베트남 외딴 지역의 소수 민족 여성을 위한 평등, 권리, 목소리 및 역량 강화를 목표로 하는 프로젝트 수행</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 기후 변화, 토착 지식, 생물다양성 보존, 여성 역량 강화, 산림 관리 분야의 전문가로서 탁월한 학력(호주 국립대학교 박사)과 실무 경험 보유. 북부 산악 지역의 전통 농업 시스템, 문화적 관습, 토착 지식 기반에 대한 심층 연구 수행. ADC 부소장으로서 다수의 커뮤니티 개발 프로젝트를 주도한 경험이 있어, 소셜 이노베이션, 커뮤니티 기반 관광, 농업 관광, 지역 경제 개발 분야에 매우 적합한 배경 보유</div><div class="ma-overall"><strong>종합 평가:</strong> Ho Ngoc Son 박사는 검증 가능한 강력한 학력(호주 국립대학교 박사)과 연구 실적을 보유한 전문가. 기후 변화, 토착 지식, 지속가능한 농업, 커뮤니티 개발 분야에서 탁월한 전문성을 갖추고 있어, 산악 지역의 커뮤니티 기반 관광 및 농업 관광 프로젝트에 매우 적합. ADC 부소장으로서 소수 민족 여성의 역량 강화를 위한 프로젝트를 주도한 경험은 본 프로젝트의 목표와 높은 일치도를 보임. LinkedIn 프로필의 부재는 아쉬우나, 학술 데이터베이스와 국제 네트워크를 통해 실력과 신뢰성이 충분히 검증됨</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>상업적 실행 역량 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 관광 사업 운영 전문가, 마케팅·세일즈 담당자, 디지털 플랫폼 개발자 등 상업적 실행 인력 정보 전무. 연구기관 주도로는 시장 검증 및 확장 어려움</td></tr>
+<tr><td>수익 모델 불명확</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 패키지 가격, 수익 배분 비율, 단위 경제성, 손익분기점 등 핵심 사업 지표가 전혀 제시되지 않음. 보조금 의존 구조 지속 가능성 의문</td></tr>
+<tr><td>시장 검증 부족</td><td><span class="rpill-sm rp-h">높음</span></td><td>[부분 확인] 78명 초기 참가자, 70% 만족도는 있으나 규모 매우 작고, 재방문율 5%로 고객 락인 구조 약함. 지불 의향 및 타겟 고객 세그먼트 미검증</td></tr>
+<tr><td>롯데 PoC 연계 실현 가능성 낮음</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] PoC 아이디어가 범용적 멘토링 수준이며, 롯데 계열사의 구체적 인프라·고객·데이터 활용 방안 부재. 롯데에게 상업적 가치 불명확</td></tr>
+<tr><td>핵심 인물 의존도</td><td><span class="rpill-sm rp-m">중간</span></td><td>[확인] Ho Ngoc Son 박사에 대한 의존도 높으나, 다른 핵심 팀원 배경 미검증. 다기관 협력 구조의 역할 명확성 부족</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category G — 사회적 기업 / 임팩트 벤처</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">G-1</span><span class="deep-title">임팩트 측정 체계 및 지속가능성</span><span class="dvtag dv-r">측정 체계 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 장기 임팩트 측정 방법론(MRV, Theory of Change 등)이 전혀 제시되지 않음. [부분 확인] PoC 목표(20-30 가구 참여)는 계획 수준이며 실제 소득 증대 효과나 문화 보존 성과는 검증되지 않음. [미확인] 5% 재방문율은 지속가능성 근거로 매우 취약하며, 지역 주민의 실질적 소득 변화 데이터가 없음. 사회적 가치 의도는 명확하나 실증 기반이 부족하여 투자자가 임팩트 ROI를 판단하기 어려움.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">G-2</span><span class="deep-title">수익모델 및 재무 자립성</span><span class="dvtag dv-r">수익모델 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 패키지 상품의 구체적 가격, 단위경제성, 고객획득비용 등 핵심 사업지표가 전무함. [미확인] 제시된 $33.5K 수익은 프로젝트 보조금으로 추정되며 시장 검증과 무관함. [미확인] 수익 배분 구조(지역 주민-학생팀-ADC)가 불명확하여 지속가능한 비즈니스 모델로 발전 가능한지 판단 불가. 연구기관 주도 프로젝트에서 상업적 벤처로의 전환 경로가 보이지 않음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">G-3</span><span class="deep-title">확장 가능성 (Scalability)</span><span class="dvtag dv-r">확장 전략 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] '다른 산악 지역 복제 가능'이라는 추상적 언급만 있고 구체적 확장 로드맵이 없음. [미확인] 베트nam 커뮤니티 관광 시장 규모, 책임여행 고객 세그먼트, 경쟁 현황이 분석되지 않아 TAM/SAM/SOM 산정 불가. [부분 확인] 78명 초기 참가자는 PMF 검증에 턱없이 부족하며, 상업적 스케일업 가능성이 실증되지 않음. 일회성 파일럿에서 멀티사이트 운영으로 가는 운영 체계와 자본 요구사항이 불명확함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">G-4</span><span class="deep-title">팀 실행 역량 (상업 운영)</span><span class="dvtag dv-r">상업 역량 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] Ho Ngoc Son 박사의 학술 신뢰성은 높으나 [미확인] 관광 사업의 상업적 운영(마케팅, 디지털 플랫폼, 고객 획득) 전문가가 팀에 없음. [미확인] 대학생 창업팀의 구성·경험·역할이 구체적이지 않으며, 파트너 조직(STG, Dream of the Border Region)의 실체와 역량이 IR 자료에서 충분히 검증되지 않음. [미확인] Nguyen Thi Bich Ngoc의 배경 검증 불가. 연구기관 배경은 강하나 벤처 실행 기반이 매우 약하여 $68K 투자 집행 능력도 불확실함.</div></div>
+<div class="deep-category-label">Category F — 관광/여행/호스피탈리티</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">F-1</span><span class="deep-title">고객 검증 및 제품-시장 적합성</span><span class="dvtag dv-r">PMF 미달성</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 78명 참가자, 70% 만족도는 매우 제한적 규모이며 상업적 시장 검증이라 보기 어려움. [미확인] 가격대 검증, 지불 의향 데이터, 고객 세그먼트별 반응 분석이 전무함. [부분 확인] 5% 재방문율은 리텐션 지표로 매우 낮으며, NPS나 구매전환율 등 정량 지표가 없음. PoC 120-180명 목표도 초기 시장 검증 규모로 부족하며, 경쟁 관광 상품 대비 차별화 포인트(가격, 경험 품질, 접근성)가 실증되지 않음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">F-2</span><span class="deep-title">롯데 협업 구체성 및 상업적 가치</span><span class="dvtag dv-a">시너지 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] Hospitality/Tourism 분야 지정은 적절하나 구체적 계열사 미지정. [미확인] PoC 협력 아이디어가 지나치게 일반적: '서비스 디자인 자문, 브랜드 조언, 마케팅 가시성' 등은 롯데의 구체적 인프라·고객기반 활용이 아닌 범용 멘토링 수준. [미확인] 롯데호텔/롯데월드가 베트남 오지 마을 커뮤니티 관광과 어떻게 실질 연계될지 운영적 설명 부재. PoC 성과지표(만족도 80%)는 롯데 사업 검증이 아닌 일반 관광 테스트에 가까우며, 롯데에게 전략적 가치가 불명확함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">F-3</span><span class="deep-title">운영 인프라 및 디지털 역량</span><span class="dvtag dv-r">인프라 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 예약 시스템, 고객 관리 플랫폼, 결제 인프라 등 디지털 운영 체계가 전혀 언급되지 않음. [미확인] 고객 획득 채널(온라인 마케팅, OTA 연계, SNS 전략)과 CAC/LTV 분석이 없어 유닛 이코노믹스 판단 불가. [부분 확인] Dream of the Border Region이 '시장 접근' 파트너로 명시되나 구체적 역량이나 고객 DB, 유통망 검증이 없음. 오프라인 중심의 파일럿 활동만으로는 스케일업 가능한 관광 사업 인프라 구축이 어려움.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>ADC의 35년 산악지역 연구 및 150만 농민 지원 실적 (조직 차원 신뢰성 확보)</li>
+<li>Ho Ngoc Son 박사의 검증된 학술 배경 (기후변화·토착지식 전문가)</li>
+<li>명확한 사회문제 정의와 ESG 미션 (소수민족 경제적 포용, 문화 보존)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>상업적 관광 사업 운영 경험 및 전문 인력 부재 (마케팅, 고객 획득, 수익 모델 검증 불가)</li>
+<li>핵심 담당자(Nguyen Thi Bich Ngoc) 및 파트너 조직(STG, Dream of the Border Region) 역량 미검증</li>
+<li>사전 수익 단계, 시장 검증 데이터 전무 (가격, 지불 의향, 고객 세그먼트 불명확)</li>
+<li>프로젝트 기반 보조금 수익 구조, 투자 유치 이력 없음</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 내 책임여행·체험관광 수요 증가 추세 (글로벌 트렌드)</li>
+<li>롯데 ESG 전략과 연계 가능성 (사회적 가치 창출 명분)</li>
+<li>정부 및 국제기구 지원 프로그램 접근 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>연구기관 주도 구조로 인한 상업적 실행 속도 및 의사결정 지연 리스크</li>
+<li>오지 접근성, 인프라 부족으로 인한 고객 경험 품질 불안정성</li>
+<li>다기관 협력 구조의 역할 혼선 및 거버넌스 복잡성</li>
+<li>재방문율 5%로 나타난 고객 락인 구조 부재, 일회성 경험 위험</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">13</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">ADC는 35년 연구 경력과 명확한 사회적 미션을 가진 조직이나, 이는 벤처 투자 대상이 아닌 소셜 프로젝트임. 가장 큰 미검증 가정은 '연구기관과 대학생 팀이 상업적 수준의 관광 서비스를 설계·운영할 수 있으며, 도시 고객이 오지 문화체험에 지불 의향을 가질 것'이라는 점. 수익 모델, 고객 획득 경로, 단위 경제성이 모두 미확인 상태이며, 제시된 PoC 목표(120-180명 방문객, 만족도 80%)는 일반적 관광 상품 테스트이지 롯데와의 구체적 사업 검증이 아님. 롯데 계열사 연계 방식도 범용적 멘토링 수준에 그쳐 실현 가능성 낮음. 팀은 학술적 전문성은 높으나 상업적 실행 역량 검증 불가. 투자 적합성 매우 낮음.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">13 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Agriculture and Forestry Research & Development Center for Mountainous Region (ADC) · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-22 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>
